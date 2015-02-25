@@ -87,6 +87,33 @@ public class TidsIntervall {
 		return datoProperty;
 	}
 	
+	//sjekker om DET GITTE tidsintervallobjektet er i DETTE (this) objektet (f.eks 10:20 - 11:20):
+	
+	public boolean isIn(TidsIntervall gittTid) {
+		System.out.println(gittTid.getDato());
+		System.out.println(this.getDato().compareTo(gittTid.getDato()));
+		if (this.getDato().equals(gittTid.getDato())) {
+			if (this.getStart().isAfter(gittTid.getSlutt())) {
+				return false;
+			}
+			else if (this.getSlutt().isBefore(gittTid.getStart())) {
+				return false;
+			}
+			else if (this.getSlutt().compareTo(gittTid.getStart()) == 0){
+				return false;
+			}
+			else if (this.getStart().compareTo(gittTid.getSlutt()) == 0){
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+	
 	
 	
 	
