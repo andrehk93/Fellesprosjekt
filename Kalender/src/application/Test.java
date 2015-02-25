@@ -11,5 +11,9 @@ public class Test {
 	public void jojo() {
 		System.out.println("haha");
 	}
+	
+	public void haha() {
+		System.out.println("jojo");
+	}
 
 }
