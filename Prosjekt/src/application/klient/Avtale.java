@@ -73,6 +73,8 @@ public class Avtale {
 		
 	};
 	
+	
+	//Antar at det legges til én
 	public void addDeltakere(Bruker deltaker) {
 		boolean duplikat = false;
 		ArrayList<Bruker> deltakerListe = new ArrayList<Bruker>();
@@ -151,6 +153,8 @@ public class Avtale {
 		return romProperty.getValue();
 	}
 	
+	
+	// Dette vil være den såkalte "reservere møterom"-klassen
 	public void setRom(Møterom møterom, TidsIntervall tid) {
 		//finne ledige møterom i database
 		romProperty.setValue(møterom);
@@ -160,6 +164,8 @@ public class Avtale {
 		return deltakerProperty.getValue();
 	}
 	
+	
+	// Antar at det fjernes én om gangen
 	public void removeDeltakere(Bruker deltaker) {
 		ArrayList<Bruker> deltakerListen = new ArrayList<Bruker>();
 		for (Bruker deltakerne : deltakerProperty.getValue()) {
@@ -172,6 +178,8 @@ public class Avtale {
 		}
 	}
 	
+	
+	//Antar at det ikke er noen her fra før av
 	public void setDeltakere(ArrayList<Bruker> deltakere) {
 		ArrayList<Bruker> deltakerListe = new ArrayList<Bruker>();
 		for (Bruker deltaker : deltakere) {
@@ -202,11 +210,12 @@ public class Avtale {
 		brukere.add(jens);
 		brukere.add(ivar);
 		TidsIntervall tiden = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
-		Møterom rommet = new Møterom(20);
+		Møterom rommet = new Møterom(20, "Gobi");
+		rommet.setOpptatt(tiden);
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
 		Avtale møte = new Avtale(Andreas, brukere, tid, rommet, new Gruppe());
 		System.out.println(møte.toString());
-		
+		System.out.println("hei");
 	}
 	
 	
