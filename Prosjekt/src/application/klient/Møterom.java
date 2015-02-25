@@ -20,9 +20,11 @@ public class Møterom {
 	public Møterom(int kapasitet, String navn){
 		opptatteTider = new ArrayList<TidsIntervall>();
 		setKapasitet(kapasitet);
+		setNavn(navn);
 	}
 	
 	private Property<Number> kapasitetProperty = new SimpleIntegerProperty();
+	private Property<String> navnProperty = new SimpleStringProperty();
 	
 	
 	public int getKapasitet(){
@@ -56,6 +58,15 @@ public class Møterom {
 	
 	public ArrayList<TidsIntervall> getOpptatt() {
 		return opptatteTider;
+	}
+	
+	public void setNavn(String navn) {
+		navnProperty.setValue(navn);
+	}
+	
+	
+	public String getNavn() {
+		return navnProperty.getValue();
 	}
 	
 	public static void main(String[] args) {

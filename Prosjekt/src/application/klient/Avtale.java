@@ -23,6 +23,8 @@ public class Avtale {
 		setEier(eier);
 		setDeltakere(deltakere);
 		setTid(tid);
+		setRom(rom);
+		setGruppe(gruppe);
 	}
 	
 	private Property<String> emailProperty = new SimpleStringProperty();
@@ -155,7 +157,7 @@ public class Avtale {
 	
 	
 	// Dette vil være den såkalte "reservere møterom"-klassen
-	public void setRom(Møterom møterom, TidsIntervall tid) {
+	public void setRom(Møterom møterom) {
 		//finne ledige møterom i database
 		romProperty.setValue(møterom);
 	}
@@ -195,7 +197,7 @@ public class Avtale {
 		for (int i = 0; i < this.getDeltakere().size(); i++) {
 			streng += this.getDeltakere().get(i).getName() + "\n";
 		}
-		streng += "\nRom: " + this.getRom() + "\n";
+		streng += "\nRom: " + this.getRom().getNavn() + "\n";
 		streng += "Tid: " + this.getTid().getStart() + " - " + this.getTid().getSlutt() + "\n";
 		return streng;
 	}
@@ -215,7 +217,6 @@ public class Avtale {
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
 		Avtale møte = new Avtale(Andreas, brukere, tid, rommet, new Gruppe());
 		System.out.println(møte.toString());
-		System.out.println("hei");
 	}
 	
 	
