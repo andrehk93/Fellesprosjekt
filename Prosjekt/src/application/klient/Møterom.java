@@ -13,14 +13,13 @@ public class Møterom {
 	
 	private ArrayList<TidsIntervall> opptatteTider;
 	
-	public Møterom(){
+	public Møterom() {
 		
 	}
 	
-	public Møterom(int kapasitet, TidsIntervall opptatt){
+	public Møterom(int kapasitet, String navn){
 		opptatteTider = new ArrayList<TidsIntervall>();
 		setKapasitet(kapasitet);
-		setOpptatt(opptatt);
 	}
 	
 	private Property<Number> kapasitetProperty = new SimpleIntegerProperty();
@@ -62,8 +61,9 @@ public class Møterom {
 	public static void main(String[] args) {
 		TidsIntervall test1_start = new TidsIntervall(LocalTime.of(10, 20),LocalTime.of(11, 20), LocalDate.of(2015, 2, 25));
 		TidsIntervall test1_slutt = new TidsIntervall(LocalTime.of(9, 20),LocalTime.of(11, 20), LocalDate.of(2015, 3, 25));
-		Møterom rom1 = new Møterom(20, test1_start);
+		Møterom rom1 = new Møterom(20, "Gobi");
 		rom1.setOpptatt(test1_slutt);
+		System.out.println(rom1);
 	}
 	
 	
