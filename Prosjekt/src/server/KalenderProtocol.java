@@ -41,7 +41,6 @@ public class KalenderProtocol {
 				break;		
 }
 		
-		return "OK";
 	}
 	
 }

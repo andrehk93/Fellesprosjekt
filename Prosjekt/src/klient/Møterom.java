@@ -72,7 +72,13 @@ public class Møterom {
 		TidsIntervall test1_slutt = new TidsIntervall(LocalTime.of(9, 20),LocalTime.of(11, 20), LocalDate.of(2015, 3, 25));
 		Møterom rom1 = new Møterom(20, "Gobi");
 		rom1.setOpptatt(test1_slutt);
+		Møterom rom2 = new Møterom(20, "Moki");
 		System.out.println(rom1);
+		System.out.println(rom2);
+		System.out.println("rom1:");
+		System.out.println(rom1.getOpptatt().get(0).getStart() + " - " + rom1.getOpptatt().get(0).getSlutt());
+		System.out.println("rom2:");
+		System.out.println(rom2.getOpptatt().get(0).getStart() + " - " + rom2.getOpptatt().get(0).getSlutt());
 	}
 	
 	

@@ -10,14 +10,11 @@ import javafx.beans.property.Property;
 
 public class Avtale {
 	
-	klient.TCPClient klient;
-	
 	public Avtale() {
 		
 	}
 	
 	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom, Gruppe gruppe){
-		klient = new klient.TCPClient();
 		setEier(eier);
 		setDeltakere(deltakere);
 		setTid(tid);

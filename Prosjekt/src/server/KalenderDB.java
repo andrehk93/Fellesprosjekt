@@ -28,12 +28,12 @@ public class KalenderDB {
 	public String getRoom(String date, String from, String to, int kapasitet) throws Exception{
 		
 		init();
-		query = "select romnr, kapasitet\r\n" + 
+		query = "select romnavn, kapasitet\r\n" + 
 				"from moterom\r\n" + 
-				"where romnr not in(select m.romnr\r\n" + 
+				"where romnavn not in(select m.romnavn\r\n" + 
 				"from avtale as a, moterom as m\r\n" + 
-				"where a.romnr=m.romnr and dato=\"" + date + "\" and (fra<\"" + to +"\" and til>\"" + to +"\" or fra<\"" + from +"\" and til>\"" + from + "\")\r\n" + 
-				"group by romnr) and kapasitet>=\"" + kapasitet +"\"\r\n" + 
+				"where a.romnavn=m.romnavn and dato=\"" + date + "\" and (fra<\"" + to +"\" and til>\"" + to +"\" or fra<\"" + from +"\" and til>\"" + from + "\")\r\n" + 
+				"group by romnavn) and kapasitet>=\"" + kapasitet +"\"\r\n" + 
 				"order by kapasitet";
 		PreparedStatement statement = con.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
