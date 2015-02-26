@@ -39,16 +39,7 @@ public class KalenderProtocol {
 			
 			switch(input[0].toUpperCase()){
 				case("GET"):
-<<<<<<< HEAD
-					return getHandler(Arrays.copyOfRange(input, 1, input.length));
-				case("LOGIN"):
-					return kalenderdb.login(input[1], input[2]);
-=======
-					if(input[1].equals("ROOM")){
-						return kalenderdb.getRoom(input[2], input[3], input[4], Integer.parseInt(input[5]));
-					}
-					break;
->>>>>>> master
+					return getHandler(Arrays.copyOfRange(input, 1, input.length));				
 				case("CREATE"):
 					createHandler(Arrays.copyOfRange(input, 1, input.length));
 					return "OK";
