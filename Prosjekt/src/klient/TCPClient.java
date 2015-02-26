@@ -11,15 +11,17 @@ public class TCPClient {
 		Socket clientSocket = new Socket("localhost", 6789);
 		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
 		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		while(sentence != "disconnect"){
 		sentence = inFromUser.readLine();
-		outToServer.writeBytes(sentence + '\n');
-		String output = "";
-		String tempString = inFromServer.readLine();
-		while(tempString.length() > 0){
-			output += modifiedSentence = tempString + "\r\n";
-			tempString = inFromServer.readLine();
+			outToServer.writeBytes(sentence + '\n');
+			String output = "";
+			String tempString = inFromServer.readLine();
+			while(tempString.length() > 0){
+				output += modifiedSentence = tempString + "\r\n";
+				tempString = inFromServer.readLine();
+			}
+			System.out.println(output);
 		}
-		System.out.println("FROM SERVER: \n" + output);
 		clientSocket.close();
 	}
 }
