@@ -19,19 +19,6 @@ public class Avtale {
 	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom, Gruppe gruppe){
 		setEier(eier);
 		ArrayList<Bruker> lagtTilDeltakere = new ArrayList<Bruker>();
-		ChangeListener<ArrayList<Bruker>> deltakerListener = new ChangeListener<ArrayList<Bruker>>() {
-
-			@Override
-			public void changed(
-					ObservableValue<? extends ArrayList<Bruker>> observable,
-					ArrayList<Bruker> oldValue, ArrayList<Bruker> newValue) {
-				for (int i = 0; i < newValue.size(); i++) {
-					System.out.println("brukere: " + newValue.get(i).getNavn());
-					addDeltakere(newValue.get(i));
-				}
-			}
-		};
-		deltakerProperty.addListener(deltakerListener);
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
@@ -53,17 +40,15 @@ public class Avtale {
 	};
 	
 	public void setEier(Bruker eier) {
-		ChangeListener<Bruker> eierListener = new ChangeListener<Bruker>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Bruker> observable,
-					Bruker oldValue, Bruker newValue) {
-				System.out.println(newValue.getNavn() + " er nå admin");
-				
-			}
-		};
-		eierProperty.addListener(eierListener);
-		eierProperty.setValue(eier);
+		if (deltakerProperty.getValue() == null || eierProperty.getValue() == null) {
+			ArrayList<Bruker> eieren = new ArrayList<Bruker>();
+			eieren.add(eier);
+			deltakerProperty.setValue(eieren);
+			eierProperty.setValue(eier);
+		}
+		else {
+			System.out.println("Denne avtalen har en eier allerede");
+		}
 	}
 	
 	private Property<TidsIntervall> tidsProperty = new ObjectPropertyBase<TidsIntervall>(null) {
@@ -193,7 +178,7 @@ public class Avtale {
 		boolean eksisterer = false;
 		if (deltakerProperty.getValue() != null) {
 			for (Bruker deltakerne : deltakerProperty.getValue()) {
-				if (! deltakerne.equals(deltaker)){
+				if (deltakerne.equals(deltaker)){
 					eksisterer = true;
 				}
 			}
