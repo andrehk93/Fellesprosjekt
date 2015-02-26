@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.Property;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 public class Avtale {
 	
@@ -26,8 +24,6 @@ public class Avtale {
 		setRom(rom);
 		setGruppe(gruppe);
 	}
-	
-	private Property<String> emailProperty = new SimpleStringProperty();
 	
 	private Property<Bruker> eierProperty = new ObjectPropertyBase<Bruker>(null) {
 

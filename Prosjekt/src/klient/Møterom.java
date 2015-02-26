@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Møterom {
@@ -70,7 +69,6 @@ public class Møterom {
 	}
 	
 	public static void main(String[] args) {
-		TidsIntervall test1_start = new TidsIntervall(LocalTime.of(10, 20),LocalTime.of(11, 20), LocalDate.of(2015, 2, 25));
 		TidsIntervall test1_slutt = new TidsIntervall(LocalTime.of(9, 20),LocalTime.of(11, 20), LocalDate.of(2015, 3, 25));
 		Møterom rom1 = new Møterom(20, "Gobi");
 		rom1.setOpptatt(test1_slutt);
