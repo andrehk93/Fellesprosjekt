@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class Avtale {
 	
@@ -16,6 +18,20 @@ public class Avtale {
 	
 	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom, Gruppe gruppe){
 		setEier(eier);
+		ArrayList<Bruker> lagtTilDeltakere = new ArrayList<Bruker>();
+		ChangeListener<ArrayList<Bruker>> deltakerListener = new ChangeListener<ArrayList<Bruker>>() {
+
+			@Override
+			public void changed(
+					ObservableValue<? extends ArrayList<Bruker>> observable,
+					ArrayList<Bruker> oldValue, ArrayList<Bruker> newValue) {
+				for (int i = 0; i < newValue.size(); i++) {
+					System.out.println("brukere: " + newValue.get(i).getNavn());
+					addDeltakere(newValue.get(i));
+				}
+			}
+		};
+		deltakerProperty.addListener(deltakerListener);
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
@@ -37,6 +53,16 @@ public class Avtale {
 	};
 	
 	public void setEier(Bruker eier) {
+		ChangeListener<Bruker> eierListener = new ChangeListener<Bruker>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Bruker> observable,
+					Bruker oldValue, Bruker newValue) {
+				System.out.println(newValue.getNavn() + " er nå admin");
+			}
+			
+		};
+		eierProperty.addListener(eierListener);
 		eierProperty.setValue(eier);
 	}
 	
@@ -83,10 +109,14 @@ public class Avtale {
 			}
 			else {
 				deltakerProperty.getValue().add(deltaker);
+				deltaker.addAvtale(this);
 			}
 		}
 		else {
-			deltakerProperty.getValue().add(deltaker);
+			ArrayList<Bruker> deltakere = new ArrayList<Bruker>();
+			deltakere.add(deltaker);
+			deltakerProperty.setValue(deltakere);
+			deltaker.addAvtale(this);
 			System.out.println("Legger ikke til deltakere");
 		}
 	}
@@ -184,15 +214,17 @@ public class Avtale {
 	
 	//Antar at det ikke er noen her fra før av
 	public void setDeltakere(ArrayList<Bruker> deltakere) {
-		deltakerProperty.setValue(deltakere);
+		for (Bruker deltaker : deltakere) {
+			addDeltakere(deltaker);
+		}
 	}
 	
 	public String toString() {
 		String streng = "";
-		streng += "Admin: " + this.getAvtaleAdmin().getName() + "\n";
+		streng += "Admin: " + this.getAvtaleAdmin().getNavn() + "\n";
 		streng += "Deltakere: \n\n";
 		for (int i = 0; i < this.getDeltakere().size(); i++) {
-			streng += this.getDeltakere().get(i).getName() + "\n";
+			streng += this.getDeltakere().get(i).getNavn() + "\n";
 		}
 		streng += "\nRom: " + this.getRom().getNavn() + "\n";
 		streng += "Tid: " + this.getTid().getStart() + " - " + this.getTid().getSlutt() + "\n";
@@ -213,7 +245,10 @@ public class Avtale {
 		rommet.setOpptatt(tiden);
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
 		Avtale møte = new Avtale(Andreas, brukere, tid, rommet, new Gruppe());
-		System.out.println(møte.toString());
+		møte.setEier(Lars);
+		møte.setEier(jens);
+		møte.addDeltakere(ivar);
+		System.out.println("LARS SINE AVTALER: " + Lars.getAvtaler());
 	}
 	
 	
