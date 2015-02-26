@@ -3,6 +3,11 @@ package server;
 import java.util.Arrays;
 
 public class KalenderProtocol {
+	private static final int WAITING = 0;
+	private static final int LOGGEDIN = 1;
+	
+	private int state = WAITING;
+	private String user;
 
 	public String processInput(String rawInput) throws Exception{
 		if(rawInput != null){
@@ -11,14 +16,33 @@ public class KalenderProtocol {
 			
 			KalenderDB kalenderdb = new KalenderDB();
 			
+			if(state == WAITING){
+				switch(input[0].toUpperCase()){
+					case "LOGIN":
+						if(kalenderdb.login(input[1], input[2])){
+							state = LOGGEDIN;
+							user = input[1];
+							return "OK";
+						} else {
+							return "NOK";
+						}
+					case "CREATE":
+						if(input[1] == "USER"){
+							createHandler(Arrays.copyOfRange(input, 1, input.length));
+							return "OK";
+						}
+						break;
+					default:
+						return "PERMISSION DENIED";
+				}
+			} 
+			
 			switch(input[0].toUpperCase()){
 				case("GET"):
 					if(input[1].equals("ROOM")){
 						return kalenderdb.getRoom(input[2], input[3], input[4], Integer.parseInt(input[5]));
 					}
 					break;
-				case("LOGIN"):
-					return kalenderdb.login(input[1], input[2]);
 				case("CREATE"):
 					createHandler(Arrays.copyOfRange(input, 1, input.length));
 					return "OK";
@@ -35,7 +59,11 @@ public class KalenderProtocol {
 			case "USER":
 									// EPOST, FORNAVN, ETTERNAVN, PASSORD
 				kalenderdb.createUser(input[1], input[2], input[3], input[4]);
-				break;		
+				break;
+				
+			case "APP":
+				//kalenderdb.createApp();
+				break;
 		}
 		
 		return "OK";

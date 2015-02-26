@@ -47,7 +47,7 @@ public class KalenderDB {
 		return output;
 	}
 	
-	public String login(String email, String password) throws Exception {
+	public Boolean login(String email, String password) throws Exception {
 		init();
 		String query = "SELECT epost, passord FROM `bruker` WHERE epost = ?";
 		PreparedStatement statement = con.prepareStatement(query);
@@ -58,10 +58,10 @@ public class KalenderDB {
 		String servPass = result.getString(2);
 		
 		if(password.equals(servPass)){
-			return "OK";
+			return true;
 		}
 		
-		return "NOK";
+		return false;
 	}
 	
 	public void createUser(String email, String firstName, String lastName, String password) throws Exception{
