@@ -56,6 +56,7 @@ public class Varsel {
 	}
 	
 	public void setBrukerSendtTil(Bruker sendtTil) {
+		
 		brukerTilProperty.setValue(sendtTil);
 	}
 	

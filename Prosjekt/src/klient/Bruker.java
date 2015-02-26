@@ -107,6 +107,12 @@ public class Bruker {
 		}
 	}
 	
+	public void giVarsel(Varsel avtVarsel) {
+		System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
+				" har fått et varsel: \n" + avtVarsel.getMelding() +
+				"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
+	}
+	
 	public void deleteAvtale(Avtale avtale) {
 		System.out.println("SLETTER DENNE BRUKEREN: " + this.getNavn());
 		System.out.println("FØRSTE BRUKER: " + avtale.getDeltakere().get(0).getNavn());
@@ -140,6 +146,7 @@ public class Bruker {
 		};
 		avtaleListeProperty.addListener(removeAvtaleListener);
 	}
+	
 	
 	public static void main(String[] args) {
 		Bruker Andreas = new Bruker("Andreas", "a");
