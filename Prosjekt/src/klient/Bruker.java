@@ -77,10 +77,10 @@ public class Bruker {
 				}
 			}
 			if (duplikat) {
-				avtaleListeProperty.getValue().add(avtale);
+				System.out.println("avtalen finnes allerede");
 			}
 			else {
-				System.out.println("avtalen finnes");
+				avtaleListeProperty.getValue().add(avtale);
 			}
 			
 		}

@@ -59,8 +59,8 @@ public class Avtale {
 			public void changed(ObservableValue<? extends Bruker> observable,
 					Bruker oldValue, Bruker newValue) {
 				System.out.println(newValue.getNavn() + " er nå admin");
+				
 			}
-			
 		};
 		eierProperty.addListener(eierListener);
 		eierProperty.setValue(eier);
@@ -105,7 +105,7 @@ public class Avtale {
 				}
 			}
 			if (duplikat) {
-				System.out.println("brukeren er i avtalen fra før");
+				System.out.println("brukeren: " + deltaker.getNavn() + " er i avtalen fra før");
 			}
 			else {
 				deltakerProperty.getValue().add(deltaker);
@@ -117,7 +117,6 @@ public class Avtale {
 			deltakere.add(deltaker);
 			deltakerProperty.setValue(deltakere);
 			deltaker.addAvtale(this);
-			System.out.println("Legger ikke til deltakere");
 		}
 	}
 	
@@ -199,6 +198,7 @@ public class Avtale {
 				}
 			}
 			if (eksisterer) {
+				deltaker.getAvtaler().remove(this);
 				deltakerProperty.getValue().remove(deltaker);
 				System.out.println("Brukeren er fjernet.");
 			}
@@ -239,16 +239,24 @@ public class Avtale {
 		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
 		brukere.add(Lars);
 		brukere.add(jens);
-		brukere.add(ivar);
 		TidsIntervall tiden = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
 		Møterom rommet = new Møterom(20, "Gobi");
+		Møterom rom_2 = new Møterom(20, "Moki");
 		rommet.setOpptatt(tiden);
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
+		TidsIntervall tid_2 = new TidsIntervall(LocalTime.of(11, 15), LocalTime.of(12, 15), LocalDate.of(2015, 12, 12));
 		Avtale møte = new Avtale(Andreas, brukere, tid, rommet, new Gruppe());
-		møte.setEier(Lars);
+		Andreas.addAvtale(møte);
+		
+		//Tester:
+		System.out.println("ANDREAS SINE AVTALER: " + Andreas.getAvtaler());
 		møte.setEier(jens);
 		møte.addDeltakere(ivar);
+		møte.setTid(tid_2);
+		møte.setRom(rom_2);
 		System.out.println("LARS SINE AVTALER: " + Lars.getAvtaler());
+		System.out.println("Andreas: " + Andreas.getAvtaler());
+		System.out.println("IVAR SINE AVTALER: " + ivar.getAvtaler());
 	}
 	
 	
