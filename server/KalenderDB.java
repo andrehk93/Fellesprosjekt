@@ -64,6 +64,27 @@ public class KalenderDB {
 		return "NOK";
 	}
 	
+	public String getAvailableUsers(String date, String from, String to) throws Exception{
+		init();
+		
+		query = "select epost\n" + 
+				"from bruker\n" + 
+				"where epost not in(select b.epost\n" + 
+				"from avtale as a, ermed as e, bruker as b\n" + 
+				"where a.avtaleid=e.avtaleid and b.epost=e.epost and (dato=\""+date+"\" and (fra<\""+to+"\" and til>\""+to+"\" or fra<\""+from+"\" and til>\""+from+"\"))\n" + 
+				"order by epost)";
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+			
+		String output = "";
+		
+		while(result.next()){
+			output += result.getString(1) + "\n";
+		}
+		
+		return output;
+	}
+	
 	public void createUser(String email, String firstName, String lastName, String password) throws Exception{
 		init();
 		

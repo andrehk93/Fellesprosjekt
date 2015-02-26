@@ -13,10 +13,7 @@ public class KalenderProtocol {
 			
 			switch(input[0].toUpperCase()){
 				case("GET"):
-					if(input[1].equals("ROOM")){
-						return kalenderdb.getRoom(input[2], input[3], input[4], Integer.parseInt(input[5]));
-					}
-					break;
+					return getHandler(Arrays.copyOfRange(input, 1, input.length));
 				case("LOGIN"):
 					return kalenderdb.login(input[1], input[2]);
 				case("CREATE"):
@@ -41,4 +38,17 @@ public class KalenderProtocol {
 		return "OK";
 	}
 	
+	private String getHandler(String[] input) throws Exception{
+		KalenderDB kalenderdb = new KalenderDB();
+		switch(input[0]){
+			case "ROOM":
+				return kalenderdb.getRoom(input[1], input[2], input[3], Integer.parseInt(input[4]));
+			case "AVAILABLE":
+				if(input[1].equals("USERS")){
+					return kalenderdb.getAvailableUsers(input[2], input[3], input[4]);
+				}
+		break;
+		}
+		return "-1";
+	}
 }
