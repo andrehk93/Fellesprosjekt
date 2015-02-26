@@ -28,12 +28,12 @@ public class KalenderDB {
 	public String getRoom(String date, String from, String to, int kapasitet) throws Exception{
 		
 		init();
-		query = "select romnr, kapasitet\r\n" + 
+		query = "select romnavn, kapasitet\r\n" + 
 				"from moterom\r\n" + 
-				"where romnr not in(select m.romnr\r\n" + 
+				"where romnavn not in(select m.romnavn\r\n" + 
 				"from avtale as a, moterom as m\r\n" + 
-				"where a.romnr=m.romnr and dato=\"" + date + "\" and (fra<\"" + to +"\" and til>\"" + to +"\" or fra<\"" + from +"\" and til>\"" + from + "\")\r\n" + 
-				"group by romnr) and kapasitet>=\"" + kapasitet +"\"\r\n" + 
+				"where a.romnavn=m.romnavn and dato=\"" + date + "\" and (fra<\"" + to +"\" and til>\"" + to +"\" or fra<\"" + from +"\" and til>\"" + from + "\")\r\n" + 
+				"group by romnavn) and kapasitet>=\"" + kapasitet +"\"\r\n" + 
 				"order by kapasitet";
 		PreparedStatement statement = con.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
@@ -47,8 +47,21 @@ public class KalenderDB {
 		return output;
 	}
 	
-	public Boolean login(String email, String password) {		
-		return false;
+	public String login(String email, String password) throws Exception {
+		init();
+		String query = "SELECT epost, passord FROM `bruker` WHERE epost = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, email);
+		ResultSet result = statement.executeQuery();
+		
+		result.next();
+		String servPass = result.getString(2);
+		
+		if(password.equals(servPass)){
+			return "OK";
+		}
+		
+		return "NOK";
 	}
 	
 	public void createUser(String email, String firstName, String lastName, String password) throws Exception{

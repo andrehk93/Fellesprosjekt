@@ -16,10 +16,10 @@ public class TCPClient {
 		String output = "";
 		String tempString = inFromServer.readLine();
 		while(tempString.length() > 0){
-			output += modifiedSentence = tempString + "\n";
+			output += modifiedSentence = tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
-		System.out.println("FROM SERVER: " + output);
+		System.out.println("FROM SERVER: \n" + output);
 		clientSocket.close();
 	}
 }

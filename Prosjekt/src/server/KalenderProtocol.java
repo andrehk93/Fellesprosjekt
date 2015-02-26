@@ -18,10 +18,7 @@ public class KalenderProtocol {
 					}
 					break;
 				case("LOGIN"):
-					if(kalenderdb.login(input[1], input[2])){
-						
-					}
-					break;
+					return kalenderdb.login(input[1], input[2]);
 				case("CREATE"):
 					createHandler(Arrays.copyOfRange(input, 1, input.length));
 					return "OK";
@@ -32,15 +29,14 @@ public class KalenderProtocol {
 		return "-1";
 	}
 	
-	private void createHandler(String[] input) throws Exception{
+	private String createHandler(String[] input) throws Exception{
 		KalenderDB kalenderdb = new KalenderDB();
 		switch(input[0]){
 			case "USER":
 									// EPOST, FORNAVN, ETTERNAVN, PASSORD
 				kalenderdb.createUser(input[1], input[2], input[3], input[4]);
-				break;		
-}
-		
+				break;
+		}
 		return "OK";
 	}
 	
