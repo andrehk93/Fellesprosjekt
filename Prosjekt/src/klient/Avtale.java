@@ -51,6 +51,15 @@ public class Avtale {
 		}
 	}
 	
+	public void endreRom(Møterom rom) {
+		romProperty.setValue(rom);
+	}
+	
+	public void endreTid(TidsIntervall tid) {
+		tidsProperty.setValue(tid);
+		finnRom();
+	}
+	
 	private Property<TidsIntervall> tidsProperty = new ObjectPropertyBase<TidsIntervall>(null) {
 
 		@Override
@@ -161,10 +170,16 @@ public class Avtale {
 		return romProperty.getValue();
 	}
 	
+	public Møterom finnRom() {
+		//Skal spørre databasen om ledige rom i tidspunktet angitt.
+		
+		
+		//Midlertidig løsning
+		return romProperty.getValue();
+	}
 	
-	// Dette vil være den såkalte "reservere møterom"-klassen
+	
 	public void setRom(Møterom møterom) {
-		//finne ledige møterom i database
 		romProperty.setValue(møterom);
 	}
 	
@@ -239,6 +254,7 @@ public class Avtale {
 		møte.addDeltakere(ivar);
 		møte.setTid(tid_2);
 		møte.setRom(rom_2);
+		møte.endreRom(rommet);
 		System.out.println("LARS SINE AVTALER: " + Lars.getAvtaler());
 		System.out.println("Andreas: " + Andreas.getAvtaler());
 		System.out.println("IVAR SINE AVTALER: " + ivar.getAvtaler());
