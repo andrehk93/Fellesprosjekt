@@ -33,6 +33,9 @@ public class KalenderThread extends Thread {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
