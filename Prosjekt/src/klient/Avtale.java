@@ -72,8 +72,7 @@ public class Avtale {
 	//Antar at det legges til én
 	public void addDeltakere(Bruker deltaker) {
 		boolean duplikat = false;
-		ArrayList<Bruker> deltakerListe = new ArrayList<Bruker>();
-		if (! deltakerProperty.getValue().isEmpty()) {
+		if (deltakerProperty.getValue() != null) {
 			for (Bruker deltakere : deltakerProperty.getValue()) {
 				if (deltaker.equals(deltakere)) {
 					duplikat = true;
@@ -87,7 +86,7 @@ public class Avtale {
 			}
 		}
 		else {
-			deltakerListe.add(deltaker);
+			deltakerProperty.getValue().add(deltaker);
 			System.out.println("Legger ikke til deltakere");
 		}
 	}
@@ -162,25 +161,30 @@ public class Avtale {
 	
 	// Antar at det fjernes én om gangen
 	public void removeDeltakere(Bruker deltaker) {
-		ArrayList<Bruker> deltakerListen = new ArrayList<Bruker>();
-		for (Bruker deltakerne : deltakerProperty.getValue()) {
-			if (! deltakerne.equals(deltaker)){
-				deltakerListen.add(deltakerne);
+		boolean eksisterer = false;
+		if (deltakerProperty.getValue() != null) {
+			for (Bruker deltakerne : deltakerProperty.getValue()) {
+				if (! deltakerne.equals(deltaker)){
+					eksisterer = true;
+				}
+			}
+			if (eksisterer) {
+				deltakerProperty.getValue().remove(deltaker);
+				System.out.println("Brukeren er fjernet.");
 			}
 			else {
-				System.out.println("Deltaker fjernet");
+				System.out.println("Brukeren er ikke deltakende.");
 			}
+		}
+		else {
+			System.out.println("Det er ingen deltakere for øyeblikket.");
 		}
 	}
 	
 	
 	//Antar at det ikke er noen her fra før av
 	public void setDeltakere(ArrayList<Bruker> deltakere) {
-		ArrayList<Bruker> deltakerListe = new ArrayList<Bruker>();
-		for (Bruker deltaker : deltakere) {
-			deltakerListe.add(deltaker);
-		}
-		deltakerProperty.setValue(deltakerListe);
+		deltakerProperty.setValue(deltakere);
 	}
 	
 	public String toString() {
