@@ -13,8 +13,13 @@ public class TCPClient {
 		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		sentence = inFromUser.readLine();
 		outToServer.writeBytes(sentence + '\n');
-		modifiedSentence = inFromServer.readLine();
-		System.out.println("FROM SERVER: " + modifiedSentence);
+		String output = "";
+		String tempString = inFromServer.readLine();
+		while(tempString.length() > 0){
+			output += modifiedSentence = tempString + "\n";
+			tempString = inFromServer.readLine();
+		}
+		System.out.println("FROM SERVER: " + output);
 		clientSocket.close();
 	}
 }
