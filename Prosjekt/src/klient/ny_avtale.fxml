@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField fx:id="avtalenavn" layoutX="158.0" layoutY="81.0" promptText="Avtalenavn" />
+      <TextField fx:id="fratid" layoutX="406.0" layoutY="166.0" prefHeight="31.0" prefWidth="70.0" promptText="10:00" />
+      <TextField fx:id="tiltid" layoutX="555.0" layoutY="166.0" prefHeight="31.0" prefWidth="70.0" promptText="12:00" />
+      <TextField fx:id="legg_til_gjester" layoutX="161.0" layoutY="347.0" prefHeight="31.0" prefWidth="208.0" promptText="Legg til e-postadresser.." />
+      <TextField fx:id="antall_gjester" layoutX="266.0" layoutY="583.0" prefHeight="31.0" prefWidth="88.0" promptText="15" />
+      <TextField fx:id="valgt_rom" layoutX="799.0" layoutY="578.0" prefHeight="31.0" prefWidth="88.0" promptText="Valgt rom" />
+      <CheckBox fx:id="hele_dagen" layoutX="163.0" layoutY="233.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="116.0" text="Hele dagen" />
+      <CheckBox fx:id="gjentakelse" layoutX="328.0" layoutY="233.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="116.0" text="Gjentakelse" />
+      <DatePicker fx:id="startdato" layoutX="158.0" layoutY="166.0" />
+      <DatePicker fx:id="sluttdato" layoutX="663.0" layoutY="166.0" />
+      <ListView fx:id="gjesteliste" layoutX="166.0" layoutY="429.0" prefHeight="137.0" prefWidth="208.0" />
+      <ListView fx:id="møteromliste" layoutX="611.0" layoutY="361.0" prefHeight="200.0" prefWidth="295.0" />
+      <Slider fx:id="møteromliste_slider" layoutX="915.0" layoutY="359.0" max="10.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="18.0" />
+      <Button fx:id="søk_møterom" layoutX="787.0" layoutY="318.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="61.0" text="Søk" />
+      <Button fx:id="forkast_knapp" layoutX="883.0" layoutY="641.0" mnemonicParsing="false" text="Forkast" />
+      <Button fx:id="lagre_knapp" layoutX="793.0" layoutY="641.0" mnemonicParsing="false" text="Lagre" />
+      
+      
+      <Label layoutX="470.0" layoutY="33.0" prefHeight="21.0" prefWidth="66.0" text="Ny avtale" />
+      <Label layoutX="221.0" layoutY="137.0" text="Startdato" />
+      <Label layoutX="741.0" layoutY="137.0" text="Sluttdato" />
+      <Label layoutX="512.0" layoutY="171.0" text="-" />
+      <Label layoutX="161.0" layoutY="308.0" text="Legg til gjester" />
+      <Label layoutX="161.0" layoutY="391.0" text="Gjesteliste" />
+      <Label layoutX="161.0" layoutY="588.0" text="Antall gjester" />
+      <Label layoutX="625.0" layoutY="299.0" text="Finn møterom med kapasitet til" />
+      <Label layoutX="671.0" layoutY="323.0" text="antall" underline="true" />
+      <Label layoutX="714.0" layoutY="323.0" text="deltakere:" />     
+      <Label layoutX="719.0" layoutY="583.0" text="Møterom:" />
+
+   </children>
+</AnchorPane>
