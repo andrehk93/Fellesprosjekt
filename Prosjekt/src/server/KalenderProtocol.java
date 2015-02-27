@@ -99,12 +99,24 @@ public class KalenderProtocol {
 				kalenderdb.inviteUser(input[1], input[2]);
 				break;
 			case "NOTIFICATION":
-				System.out.println("hei");
-				kalenderdb.sendNotification(user, input[1], input[2], Arrays.copyOfRange(input, 3, input.length));
+				String message = findMessage(Arrays.copyOfRange(input, 2, input.length));
+				System.out.println((message.split(" ").length+3));
+				kalenderdb.sendNotification(user, input[1], message, Arrays.copyOfRange(input, message.split(" ").length+3, input.length));
 				break;
 		}
 	}
 	
+	private String findMessage(String[] input) {
+		String message = "";
+		int i = 0;
+		while(!input[i].equals("ENDOFMESSAGE")){
+			message += input[i]+" ";
+			i++;
+		}
+		return message;
+		
+	}
+
 	private String getHandler(String[] input) throws Exception{
 		KalenderDB kalenderdb = new KalenderDB();
 		String output = "-1";
