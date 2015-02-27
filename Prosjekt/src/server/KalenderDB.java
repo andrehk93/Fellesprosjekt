@@ -139,12 +139,23 @@ public class KalenderDB {
 	public String getAppAttendees(String avtale, String status) throws Exception {
 		init();
 		
-		query = "SELECT epost \n" + 
-				"FROM ermed \n" + 
-				"WHERE avtaleid = ? AND oppmotestatus = ?";
+		Boolean checkNull = false;
+		
+		if(!status.toUpperCase().equals("NULL")){
+			query = "SELECT epost \n" + 
+					"FROM ermed \n" + 
+					"WHERE avtaleid = ? AND oppmotestatus = ?";
+		} else {
+			query = "SELECT epost \n" + 
+					"FROM ermed \n" + 
+					"WHERE avtaleid = ? AND oppmotestatus IS NULL";
+			checkNull = true;
+		}
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, avtale);
-		statement.setString(2, status);
+		if(!checkNull) {
+			statement.setString(2, status);
+		}
 		ResultSet result = statement.executeQuery();
 		
 		String output = "";
