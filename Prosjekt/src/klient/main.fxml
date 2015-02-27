@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?scenebuilder-stylesheet vista.css?>
 
-<VBox prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.MainController">
+<VBox prefHeight="200.0" prefWidth="300.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.MainController">
   <children>
-    <Label  maxWidth="1.7976931348623157E308" text="Header" VBox.vgrow="NEVER" />
+    <Label maxWidth="1.7976931348623157E308" text="" VBox.vgrow="NEVER" />
     <StackPane fx:id="screenHolder" VBox.vgrow="ALWAYS" />
   </children>
 </VBox>
