@@ -62,7 +62,9 @@ public class KalenderProtocol {
 		switch(input[1].toUpperCase()){
 			case "EMAIL":
 				kalenderdb.changeEmail(user, input[2]);
-			break;
+				break;
+			case "STATUS":
+				kalenderdb.changeStatus(user, input[2], input[3]);
 		}
 	}
 
@@ -87,23 +89,40 @@ public class KalenderProtocol {
 	
 	private String getHandler(String[] input) throws Exception{
 		KalenderDB kalenderdb = new KalenderDB();
+		String output = "-1";
 		switch(input[0].toUpperCase()){
 			case "ROOM":
-				return kalenderdb.getRoom(input[1], input[2], input[3], Integer.parseInt(input[4]));
+				output = kalenderdb.getRoom(input[1], input[2], input[3], Integer.parseInt(input[4]));
+				break;
 			case "AVAILABLE":
 				if(input[1].equals("USERS")){
-					return kalenderdb.getAvailableUsers(input[2], input[3], input[4]);
+					output = kalenderdb.getAvailableUsers(input[2], input[3], input[4]);
 				}
 				break;
 			case "APPS":
-				return kalenderdb.getDayApps(input[1]);
+				output = kalenderdb.getDayApps(input[1]);
+				break;
 			case "APPDETAILS":
-				return kalenderdb.getAppDetails(input[1]);
+				output = kalenderdb.getAppDetails(input[1]);
+				break;
+			case "MYAPPS":
+				output = kalenderdb.getMyApps(user);
+				break;
+			case "APPATTS":
+				output = kalenderdb.getAppAttendees(input[1], input[2]);
+				break;
 			case "INVS":
-				return kalenderdb.getInvitations(user);
+				output = kalenderdb.getInvitations(user);
+				break;
 			case "INVDETAILS":
-				return kalenderdb.getInvDetails(user, input[1]);
-		}
-		return "-1";
+				output = kalenderdb.getInvDetails(user, input[1]);
+				break;
+			}
+			if(output.trim().equals("")){
+				output = "NONE";
+			} else if(output.equals("-1")){
+				output = "INCORRECT INPUT";
+			}
+			return output;
 	}
 }
