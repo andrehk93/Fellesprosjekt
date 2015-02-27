@@ -7,9 +7,9 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.OpprettingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.OpprettingController">
    <children>
-      <Text layoutX="374.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opprett en bruker">
+      <Text layoutX="338.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-header" text="Opprett en bruker">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
@@ -38,12 +38,14 @@
             <Label prefHeight="27.0" prefWidth="175.0" text="Skriv inn på nytt" GridPane.rowIndex="4" />
             <PasswordField fx:id="passord" promptText="Skriv inn ønsket passord" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <PasswordField fx:id="passord2" prefHeight="39.0" prefWidth="345.0" promptText="Skriv passordet inn på nytt" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label fx:id="fornavn_lbl" text="Kun bokstaver" textFill="#948c8c" GridPane.columnIndex="2" />
-            <Label fx:id="etternavn_lbl" text="Kun bokstaver" textFill="#948c8c" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="fornavn_lbl" styleClass="label-errormsg" text="feilmld" textFill="#948c8c" GridPane.columnIndex="2" />
+            <Label fx:id="etternavn_lbl" styleClass="label-errormsg" text="feilmld" textFill="#948c8c" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label textFill="#948c8c" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label fx:id="epost_lbl" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label fx:id="passord2_lbl" text="Identisk pw" textFill="#9a9797" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label fx:id="passord2_lbl" styleClass="label-errormsg" text="ha feilmld her" textFill="#9a9797" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <Label fx:id="passord_lbl" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label fx:id="etternavn_lbl1" styleClass="label-errormsg" text="feilmld" textFill="#948c8c" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="etternavn_lbl2" prefHeight="77.0" prefWidth="42.0" styleClass="label-errormsg" textFill="#948c8c" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       
@@ -51,9 +53,9 @@
        <!-- BUTTON: Tilbake -->
       <HBox layoutX="88.0" layoutY="539.0" prefHeight="55.0" prefWidth="825.0" spacing="600.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#previousPane" text="Tilbake" />
+            <Button mnemonicParsing="false" onAction="#previousPane" prefHeight="35.0" prefWidth="125.0" text="Tilbake" />
             <!-- BUTTON: LAGRE -->
-            <Button fx:id="lagre" mnemonicParsing="false" onAction="#nextPane" prefHeight="39.0" prefWidth="126.0" text="Lagre" />
+            <Button fx:id="lagre" mnemonicParsing="false" onAction="#nextPane" prefHeight="35.0" prefWidth="135.0" text="Lagre" />
          </children>
          <padding>
             <Insets left="10.0" />

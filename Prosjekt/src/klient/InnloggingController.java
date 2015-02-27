@@ -20,8 +20,10 @@ public class InnloggingController {//implements Initializable
 
 
 	@FXML// LOGG INN KNAPPEN
-	private void handleButtonAction(ActionEvent event) {
+	private void checkLoginInput(ActionEvent event) {
 		checkInput();
+		//ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING); 
+		
 	}
 
 	@FXML// OPPRETT BRUKER - Gå til neste screen
@@ -49,6 +51,7 @@ public class InnloggingController {//implements Initializable
 			brukernavn.setStyle("-fx-text-box-border : white ");
 			passord.setStyle("-fx-text-box-border : white ");
 			msg.setText(" ");
+			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 		}
 
 	}

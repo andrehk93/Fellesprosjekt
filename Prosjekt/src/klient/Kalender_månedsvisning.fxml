@@ -10,42 +10,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.KalenderController">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.KalenderController">
    <children>
-      <Label layoutX="67.0" layoutY="48.0" text="Kalender" textFill="#476cd0">
+      <Label layoutX="33.0" layoutY="32.0" styleClass="label-header" text="Kalender" textFill="#3b8ad1">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <Button layoutX="733.0" layoutY="45.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="57.0" text="Dag" />
-      <Button layoutX="790.0" layoutY="45.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="55.0" text="Uke" />
-      <Button layoutX="844.0" layoutY="45.0" mnemonicParsing="false" text="Måned" />
       
     <!-- NY AVTALE - KNAPP -->
-      <Button layoutX="49.0" layoutY="245.0" mnemonicParsing="false" onAction="#nextPaneMakeAppointment" text="Ny avtale" />
+      <Button layoutX="49.0" layoutY="162.0" mnemonicParsing="false" onAction="#nextPaneMakeAppointment" text="Ny avtale" />
       <Line endX="655.0" layoutX="275.0" layoutY="100.0" opacity="0.33" startX="-215.0" stroke="#aeadad" />
-      <Text layoutX="57.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <Label layoutX="89.0" layoutY="179.0" text="bn">
+      <Label fx:id="logginn_som" layoutX="89.0" layoutY="179.0">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Line endX="640.0" layoutX="285.0" layoutY="135.0" opacity="0.72" startX="-75.0" stroke="#aeadad" />
-      <Button layoutX="272.0" layoutY="50.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="38.0" text="&gt;">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="18.0" />
-         </font>
-      </Button>
-      <Button layoutX="224.0" layoutY="50.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="38.0" text="&lt;">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="18.0" />
-         </font>
-      </Button>
-      <HBox layoutX="221.0" layoutY="101.0" prefHeight="34.0" prefWidth="504.0" spacing="45.0">
+      <Line endX="640.0" layoutX="285.0" layoutY="136.0" opacity="0.72" startX="-75.0" stroke="#aeadad" />
+      <HBox layoutX="221.0" layoutY="105.0" prefHeight="27.0" prefWidth="694.0" spacing="45.0">
          <children>
             <Text fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Mandag" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tirsdag" />
@@ -56,7 +38,7 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Søndag" />
          </children>
       </HBox>
-      <GridPane gridLinesVisible="true" layoutX="210.0" layoutY="155.0" opacity="0.34" prefHeight="471.0" prefWidth="716.0">
+      <GridPane gridLinesVisible="true" layoutX="210.0" layoutY="156.0" opacity="0.34" prefHeight="471.0" prefWidth="716.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -77,5 +59,37 @@
             <Insets top="1.0" />
          </padding>
       </GridPane>
+      <HBox layoutX="221.0" layoutY="45.0" prefHeight="37.0" prefWidth="125.0" styleClass="button-arrows">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="38.0" text="&lt;">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="48.0" text="&gt;">
+               <font>
+                  <Font name="Bodoni MT Condensed" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <HBox layoutX="696.0" layoutY="46.0" prefHeight="27.0" prefWidth="235.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="57.0" text="Dag" />
+            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="55.0" text="Uke" />
+            <Button mnemonicParsing="false" text="Måned" />
+         </children>
+      </HBox>
+      <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="436.0" prefHeight="155.0" prefWidth="144.0" spacing="20.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:" wrappingWidth="108.4189453125">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
+            <Label alignment="CENTER" prefHeight="44.0" prefWidth="131.0" />
+            <Button mnemonicParsing="false" onAction="#nextPaneLogOut" text="Logg ut" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

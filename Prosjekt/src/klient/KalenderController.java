@@ -16,6 +16,11 @@ public class KalenderController {
 	private void nextPaneMakeAppointment(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
 	}
+	
+	@FXML
+	private void nextPaneLogOut(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+	}
 
 
 }

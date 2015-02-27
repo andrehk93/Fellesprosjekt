@@ -1,5 +1,7 @@
 package klient;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -7,6 +9,19 @@ import javafx.scene.input.KeyEvent;
 public class ny_avtale_controller {
 	private Scene scene;
     public void setScene(Scene scene) { this.scene = scene; }
+    
+    @FXML// FORKAST - Går tilbake til kalenderviewet all informasjon skrevet inn i feltene skl ignoreres
+	private void handleForkastButton(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+	}
+    
+    @FXML// LAGRE - Går tilbake til kalenderviewet. 
+    //All informasjon skal lagres som en ny avtale og settes i kalenderen
+   	private void handleLagreButton(ActionEvent event) {
+    	//FYLL INN KODE
+   		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+   	}
+       
 
 	public void handleavtalenavn(KeyEvent event){
 		TextField avtalenavn = (TextField) scene.lookup("#avtalenavn");
