@@ -1,1 +1,22 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/**
+ * vista.css
+ *   Place in the same source directory as Main.java
+ *   Ensure that your build system copies this file to your build output directory.
+ */
+ 
+#header {
+    -fx-background-color: steelblue;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+}
+ 
+#vistaHolder {
+    -fx-background-color: lightgrey;
+}
+ 
+
+ 
+.button {
+    /**-fx-base: lightblue;*/
+    -fx-font-size: 15px;
+}
