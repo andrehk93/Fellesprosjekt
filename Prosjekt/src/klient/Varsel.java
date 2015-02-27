@@ -80,5 +80,4 @@ public class Varsel {
 	public void setBrukerSendtFra(Bruker sendtFra) {
 		brukerFraProperty.setValue(sendtFra);
 	}
-
 }
