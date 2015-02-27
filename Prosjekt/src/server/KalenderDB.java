@@ -163,10 +163,10 @@ public class KalenderDB {
 		statement.executeUpdate();
 	}
 
-	public void changeTime(String appID, String newTime, String when) throws Exception {
+	public void changeApp(String appID, String newTime, String what) throws Exception {
 		init();
 		
-		query = "UPDATE `christwg_fp`.`avtale` SET `"+when+"`=? \n" + 
+		query = "UPDATE `christwg_fp`.`avtale` SET `"+what+"`=? \n" + 
 				"WHERE `avtaleid`=?;";
 		
 		PreparedStatement statement = con.prepareStatement(query);
