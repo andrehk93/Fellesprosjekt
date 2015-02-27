@@ -100,7 +100,65 @@ public class ny_avtale_controller {
     	
     }
     
+    
     public void handleTid(KeyEvent event) {
+    	String tall = "0123456789";
+    	String tekst = fratid.getText();
+    	if (tekst.length() == 1) {
+    		if (tekst.equals("0") || tekst.equals("1") || tekst.equals("2")) {
+    			System.out.println("ok");
+    		}
+    		else {
+    			fratid.setText(null);
+    		}
+    	}
+    	if (tekst.length() == 2) {
+    		if (tekst.substring(0,1).equals("0") || tekst.substring(0,1).equals("1")) {
+    			if (tall.contains(tekst.substring(1,2))) {
+    				System.out.println("MHMH");
+    			}
+    			else {
+    				fratid.setText(tekst.substring(0,1));
+    				fratid.end();
+    			}
+    		}
+    		else {
+    			if (tall.substring(0,4).contains(tekst.substring(1,2))) {
+    				System.out.println("MHMH");
+    			}
+    			else {
+    				fratid.setText(tekst.substring(0,1));
+    				fratid.end();
+    			}
+    		}
+    	}
+    	if (tekst.length() == 3) {
+    		if (tekst.charAt(2) == ':') {
+    			System.out.println("jippi");
+    		}
+    		else {
+    			fratid.setText(tekst.substring(0,2));
+    			fratid.end();
+    		}
+    	}
+    	if (tekst.length() == 4) {
+    		if (tall.substring(0,6).contains(tekst.substring(3,4))) {
+    			System.out.println("Nice");
+    		}
+    		else {
+    			fratid.setText(tekst.substring(0,3));
+    			fratid.end();
+    		}
+    	}
+    	if (tekst.length() == 5) {
+    		if (tall.contains(tekst.substring(4,5))) {
+    			System.out.println("ferdig");
+    		}
+    		else {
+    			fratid.setText(tekst.substring(0,4));
+    			fratid.end();
+    		}
+    	}
     }
     
     public void addGjest() {
