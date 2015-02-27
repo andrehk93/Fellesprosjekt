@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.Property;
-import javafx.beans.property.SimpleStringProperty;
 
 public class Dag {
 	
