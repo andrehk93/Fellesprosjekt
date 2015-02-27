@@ -13,7 +13,7 @@ public class Dag {
 	}
 	
 	public Dag(LocalDate dato) {
-		
+		setDato(dato);
 	}
 	
 	Property<LocalDate> datoProperty = new ObjectPropertyBase<LocalDate>(null) {
