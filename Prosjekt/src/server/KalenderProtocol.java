@@ -90,6 +90,10 @@ public class KalenderProtocol {
 				return kalenderdb.getDayApps(input[1]);
 			case "APPDETAILS":
 				return kalenderdb.getAppDetails(input[1]);
+			case "INVS":
+				return kalenderdb.getInvitations(user);
+			case "INVDETAILS":
+				return kalenderdb.getInvDetails(user, input[1]);
 		}
 		return "-1";
 	}
