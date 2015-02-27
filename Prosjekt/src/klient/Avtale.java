@@ -214,24 +214,7 @@ public class Avtale {
 	
 	public void settOppVarsel(Avtale avtale) {
 		
-		//Lager varsel for endring av deltakere
-		ChangeListener<ArrayList<Bruker>> gruppeEndringVarsel = new ChangeListener<ArrayList<Bruker>>() {
-
-			@Override
-			public void changed(
-					ObservableValue<? extends ArrayList<Bruker>> observable,
-					ArrayList<Bruker> oldValue, ArrayList<Bruker> newValue) {
-				try {
-					System.out.println("Det har skjedd en endring i gruppen");
-				}
-				catch (NullPointerException e) {
-					System.out.println("WUT");
-				}
-			}
-		};
-		gruppeProperty.getValue().getMedlemListeProperty().addListener(gruppeEndringVarsel);
-		
-		//Lager varsel for endring/oppretting av møterom
+		//Lager listeners for Møterom-klassen
 		ChangeListener<Møterom> rom = new ChangeListener<Møterom>() {
 
 			@Override
