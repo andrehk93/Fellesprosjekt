@@ -32,7 +32,7 @@ public class KalenderDB {
 				"from moterom\r\n" + 
 				"where romnavn not in(select m.romnavn\r\n" + 
 				"from avtale as a, moterom as m\r\n" + 
-				"where a.romnavn=m.romnavn and dato=\"" + date + "\" and (fra<\"" + to +"\" and til>\"" + to +"\" or fra<\"" + from +"\" and til>\"" + from + "\")\r\n" + 
+				"where a.romnavn=m.romnavn and dato=\"" + date + "\" and (fra<=\"" + to +"\" and til>=\"" + to +"\" or fra<=\"" + from +"\" and til>=\"" + from + "\")\r\n" + 
 				"group by romnavn) and kapasitet>=\"" + kapasitet +"\"\r\n" + 
 				"order by kapasitet";
 		PreparedStatement statement = con.prepareStatement(query);
@@ -92,6 +92,31 @@ public class KalenderDB {
 		"VALUES(\"" + email + "\", \"" + firstName + "\", \"" + lastName + "\", \"" + password + "\");";
 		Statement statement = (Statement) con.createStatement();
 		statement.executeUpdate(query);
+	}
+	
+	public void createApp(String user, String date, String from, String to, int room) throws Exception{
+		init();
+		
+		query = "INSERT INTO `avtale` (`fra`, `til`, `dato`, `romnavn`, `avtaleadmin`) \r\n" +
+				"VALUES(?, ?, ?, ?, ?);";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, from);
+		statement.setString(2, to);
+		statement.setString(3, date);
+		statement.setInt(4, room);
+		statement.setString(5, user);
+		statement.executeUpdate();
+	}
+	
+	public void inviteUser(String user, String avtale) throws Exception{
+		init();
+		
+		query = "INSERT INTO `ermed` (`epost`, `avtaleid`) \r\n" +
+				"VALUES(?, ?);";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		statement.setString(2, avtale);
+		statement.executeUpdate();
 	}
 }
 

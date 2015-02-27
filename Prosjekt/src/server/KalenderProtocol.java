@@ -42,6 +42,9 @@ public class KalenderProtocol {
 				case("CREATE"):
 					createHandler(Arrays.copyOfRange(input, 1, input.length));
 					return "OK";
+				case("INVITE"):
+					createHandler(input);
+					return "OK";
 				case("LOGOUT"):
 					state = WAITING;
 					return "Bye.";
@@ -61,7 +64,12 @@ public class KalenderProtocol {
 				break;
 				
 			case "APP":
-				//kalenderdb.createApp();
+									// DATO, FRA, TIL, ROM
+				kalenderdb.createApp(user, input[1], input[2], input[3], Integer.parseUnsignedInt(input[4]));
+				break;
+				
+			case "INVITE":
+				kalenderdb.inviteUser(input[1], input[2]);
 				break;
 		}
 		
