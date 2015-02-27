@@ -117,6 +117,37 @@ public class KalenderDB {
 		return output;
 	}
 	
+	public String getInvitations(String user) throws Exception{
+		init();
+		
+		query = "SELECT avtaleid FROM ermed WHERE epost = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;	
+	}
+	
+	public String getInvDetails(String user, String avtale) throws Exception {
+		init();
+		
+		query = "SELECT * FROM ermed WHERE epost = ? AND avtaleid = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		statement.setString(2, avtale);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+ " " + result.getString(2) + " " + result.getString(3);
+		}
+		return output;	
+	}
+	
 	public void createUser(String email, String firstName, String lastName, String password) throws Exception{
 		init();
 		
