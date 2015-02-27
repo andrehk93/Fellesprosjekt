@@ -53,7 +53,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#previousPane" text="Tilbake" />
             <!-- BUTTON: LAGRE -->
-            <Button fx:id="lagre" mnemonicParsing="false" prefHeight="39.0" prefWidth="126.0" text="Lagre" />
+            <Button fx:id="lagre" mnemonicParsing="false" onAction="#nextPane" prefHeight="39.0" prefWidth="126.0" text="Lagre" />
          </children>
          <padding>
             <Insets left="10.0" />
