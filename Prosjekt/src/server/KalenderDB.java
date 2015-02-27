@@ -265,5 +265,40 @@ public class KalenderDB {
 		statement.setString(3, avtale);
 		statement.executeUpdate();
 	}
+
+	public String getNotifications(String user) throws Exception {
+		init();
+		
+		query = "select varsel,fra,avtaleid,tidspunkt\n" + 
+				"from varsler\n" + 
+				"where epost=?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+ " !?END?! " + result.getString(2) + " " + result.getString(3) + " " + result.getString(4);
+		}
+		return output;	
+	}
+
+	public void sendNotification(String user, String appID, String message, String[] recepients) throws Exception {
+		init();
+		
+		for(int i=0; i<recepients.length;i++){
+			query = "INSERT INTO `christwg_fp`.`varsler` (`epost`, `varsel`, `fra`, `avtaleid`, `tidspunkt`) VALUES (?, ?, ?, ?, ?)\n";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, recepients[i]);
+			statement.setString(2, message);
+			statement.setString(3, user);
+			statement.setString(4, appID);
+			statement.setString(5, LocalTime.now().toString());
+			
+			statement.executeUpdate();
+		}
+		
+	
+	}
 }
 
