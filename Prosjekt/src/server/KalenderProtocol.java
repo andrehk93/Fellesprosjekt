@@ -97,6 +97,10 @@ public class KalenderProtocol {
 			case "INVITE":
 				kalenderdb.inviteUser(input[1], input[2]);
 				break;
+			case "NOTIFICATION":
+				System.out.println("hei");
+				kalenderdb.sendNotification(user, input[1], input[2], Arrays.copyOfRange(input, 3, input.length));
+				break;
 		}
 	}
 	
@@ -130,7 +134,10 @@ public class KalenderProtocol {
 			case "INVDETAILS":
 				output = kalenderdb.getInvDetails(user, input[1]);
 				break;
+			case "NOTIFICATIONS":
+				output = kalenderdb.getNotifications(user);
 			}
+			
 			if(output.trim().equals("")){
 				output = "NONE";
 			} else if(output.equals("-1")){
