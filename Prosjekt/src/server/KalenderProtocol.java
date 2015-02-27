@@ -42,6 +42,8 @@ public class KalenderProtocol {
 				case("CREATE"):
 					createHandler(Arrays.copyOfRange(input, 1, input.length));
 					return "OK";
+				case("CHANGE"):
+					changeHandler(input);
 				case("INVITE"):
 					createHandler(input);
 					return "OK";
@@ -55,7 +57,16 @@ public class KalenderProtocol {
 		return "-1";
 	}
 	
-	private String createHandler(String[] input) throws Exception{
+	private void changeHandler(String[] input) throws Exception {
+		KalenderDB kalenderdb = new KalenderDB();
+		switch(input[1].toUpperCase()){
+			case "EMAIL":
+				kalenderdb.changeEmail(user, input[2]);
+			break;
+		}
+	}
+
+	private void createHandler(String[] input) throws Exception{
 		KalenderDB kalenderdb = new KalenderDB();
 		switch(input[0].toUpperCase()){
 			case "USER":
@@ -72,8 +83,6 @@ public class KalenderProtocol {
 				kalenderdb.inviteUser(input[1], input[2]);
 				break;
 		}
-		
-		return "OK";
 	}
 	
 	private String getHandler(String[] input) throws Exception{
@@ -90,6 +99,10 @@ public class KalenderProtocol {
 				return kalenderdb.getDayApps(input[1]);
 			case "APPDETAILS":
 				return kalenderdb.getAppDetails(input[1]);
+			case "INVS":
+				return kalenderdb.getInvitations(user);
+			case "INVDETAILS":
+				return kalenderdb.getInvDetails(user, input[1]);
 		}
 		return "-1";
 	}

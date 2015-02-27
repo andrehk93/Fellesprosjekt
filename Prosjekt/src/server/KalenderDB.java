@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -117,6 +118,37 @@ public class KalenderDB {
 		return output;
 	}
 	
+	public String getInvitations(String user) throws Exception{
+		init();
+		
+		query = "SELECT avtaleid FROM ermed WHERE epost = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;	
+	}
+	
+	public String getInvDetails(String user, String avtale) throws Exception {
+		init();
+		
+		query = "SELECT * FROM ermed WHERE epost = ? AND avtaleid = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		statement.setString(2, avtale);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+ " " + result.getString(2) + " " + result.getString(3);
+		}
+		return output;	
+	}
+	
 	public void createUser(String email, String firstName, String lastName, String password) throws Exception{
 		init();
 		
@@ -148,6 +180,17 @@ public class KalenderDB {
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
 		statement.setString(2, avtale);
+		statement.executeUpdate();
+	}
+
+	public void changeEmail(String user, String newEmail) throws Exception {
+		init();
+		
+		query = "UPDATE `christwg_fp`.`bruker` SET `epost`=? \n" + 
+				"WHERE `epost`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, newEmail);
+		statement.setString(2, user);
 		statement.executeUpdate();
 	}
 }
