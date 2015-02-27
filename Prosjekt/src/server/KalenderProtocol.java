@@ -68,6 +68,8 @@ public class KalenderProtocol {
 				break;
 			case "ENDTIME":
 				kalenderdb.changeTime(input[2], input[3], "til");
+			case "DATE":
+				kalenderdb.changeTime(input[2], input[3], "dato");
 		}
 	}
 
