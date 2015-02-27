@@ -1,42 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField fx:id="avtalenavn" layoutX="158.0" layoutY="81.0" promptText="Avtalenavn" />
-      <TextField fx:id="fratid" layoutX="406.0" layoutY="166.0" prefHeight="31.0" prefWidth="70.0" promptText="10:00" />
-      <TextField fx:id="tiltid" layoutX="555.0" layoutY="166.0" prefHeight="31.0" prefWidth="70.0" promptText="12:00" />
-      <TextField fx:id="legg_til_gjester" layoutX="161.0" layoutY="347.0" prefHeight="31.0" prefWidth="208.0" promptText="Legg til e-postadresser.." />
       <TextField fx:id="antall_gjester" layoutX="266.0" layoutY="583.0" prefHeight="31.0" prefWidth="88.0" promptText="15" />
-      <TextField fx:id="valgt_rom" layoutX="799.0" layoutY="578.0" prefHeight="31.0" prefWidth="88.0" promptText="Valgt rom" />
-      <CheckBox fx:id="hele_dagen" layoutX="163.0" layoutY="233.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="116.0" text="Hele dagen" />
-      <CheckBox fx:id="gjentakelse" layoutX="328.0" layoutY="233.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="116.0" text="Gjentakelse" />
-      <DatePicker fx:id="startdato" layoutX="158.0" layoutY="166.0" />
-      <DatePicker fx:id="sluttdato" layoutX="663.0" layoutY="166.0" />
-      <ListView fx:id="gjesteliste" layoutX="166.0" layoutY="429.0" prefHeight="137.0" prefWidth="208.0" />
-      <ListView fx:id="møteromliste" layoutX="611.0" layoutY="361.0" prefHeight="200.0" prefWidth="295.0" />
-      <Slider fx:id="møteromliste_slider" layoutX="915.0" layoutY="359.0" max="10.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="18.0" />
-      <Button fx:id="søk_møterom" layoutX="787.0" layoutY="318.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="61.0" text="Søk" />
+      <TextField fx:id="valgt_rom" layoutX="684.0" layoutY="582.0" prefHeight="31.0" prefWidth="88.0" promptText="Valgt rom" />
+      <CheckBox fx:id="hele_dagen" layoutX="163.0" layoutY="233.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="147.0" text="Hele dagen" />
+      <CheckBox fx:id="gjentakelse" layoutX="354.0" layoutY="233.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="Gjentakelse" />
       <Button fx:id="forkast_knapp" layoutX="883.0" layoutY="641.0" mnemonicParsing="false" text="Forkast" />
       <Button fx:id="lagre_knapp" layoutX="793.0" layoutY="641.0" mnemonicParsing="false" text="Lagre" />
       
       
-      <Label layoutX="470.0" layoutY="33.0" prefHeight="21.0" prefWidth="66.0" text="Ny avtale" />
-      <Label layoutX="221.0" layoutY="137.0" text="Startdato" />
-      <Label layoutX="741.0" layoutY="137.0" text="Sluttdato" />
-      <Label layoutX="512.0" layoutY="171.0" text="-" />
-      <Label layoutX="161.0" layoutY="308.0" text="Legg til gjester" />
-      <Label layoutX="161.0" layoutY="391.0" text="Gjesteliste" />
-      <Label layoutX="161.0" layoutY="588.0" text="Antall gjester" />
-      <Label layoutX="625.0" layoutY="299.0" text="Finn møterom med kapasitet til" />
-      <Label layoutX="671.0" layoutY="323.0" text="antall" underline="true" />
-      <Label layoutX="714.0" layoutY="323.0" text="deltakere:" />     
-      <Label layoutX="719.0" layoutY="583.0" text="Møterom:" />
+      <Label layoutX="412.0" layoutY="14.0" prefHeight="39.0" prefWidth="204.0" text="Ny avtale">
+         <font>
+            <Font name="System Bold" size="39.0" />
+         </font></Label>
+      <Label layoutX="165.0" layoutY="137.0" text="Startdato" />
+      <Label layoutX="611.0" layoutY="137.0" text="Sluttdato" />
+      <Label layoutX="161.0" layoutY="588.0" text="Antall gjester" />     
+      <Label layoutX="592.0" layoutY="589.0" text="Møterom:" />
+      <HBox layoutX="163.0" layoutY="170.0" prefHeight="39.0" prefWidth="681.0" spacing="30.0">
+         <children>
+            <DatePicker fx:id="startdato" prefHeight="35.0" prefWidth="160.0" />
+            <TextField fx:id="fratid" prefHeight="35.0" prefWidth="80.0" promptText="10:00" />
+            <Label text="-" />
+            <TextField fx:id="tiltid" prefHeight="35.0" prefWidth="80.0" promptText="12:00" />
+            <DatePicker fx:id="sluttdato" prefHeight="35.0" prefWidth="160.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="127.0" layoutY="299.0" prefHeight="285.0" prefWidth="790.0" spacing="150.0">
+         <children>
+            <VBox prefHeight="301.0" prefWidth="309.0">
+               <children>
+                  <Label text="Legg til gjester" />
+                  <TextField fx:id="legg_til_gjester" prefHeight="31.0" prefWidth="208.0" promptText="Legg til e-postadresser.." />
+                  <Label text="Gjesteliste" />
+                  <ListView fx:id="gjesteliste" prefHeight="137.0" prefWidth="169.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="301.0" prefWidth="332.0" spacing="5.0">
+               <children>
+                  <Label text="Finn møterom med kapasitet til" />
+                  <HBox prefHeight="32.0" prefWidth="107.0" spacing="5.0">
+                     <children>
+                        <Label text="antall" underline="true" />
+                        <Label text="deltakere:" />
+                        <HBox prefHeight="39.0" prefWidth="74.0">
+                           <children>
+                              <Button fx:id="søk_møterom" mnemonicParsing="false" prefHeight="31.0" prefWidth="61.0" text="Søk" />
+                           </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="217.0" prefWidth="309.0">
+                     <children>
+                        <ListView fx:id="møteromliste" prefHeight="200.0" prefWidth="295.0" />
+                        <Slider fx:id="møteromliste_slider" max="10.0" orientation="VERTICAL" prefHeight="217.0" prefWidth="30.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
 
    </children>
 </AnchorPane>

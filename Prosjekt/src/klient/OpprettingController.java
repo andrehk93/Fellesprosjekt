@@ -20,6 +20,10 @@ public class OpprettingController {
     void previousPane(ActionEvent event) {
         ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
     }
+	@FXML// OPPRETT BRUKER - Gå til neste screen
+	private void nextPane(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+	}
  
     //Validere og sjekke om navn er gyldig, hver gang man trykker på en key
    

@@ -8,6 +8,9 @@ public class ScreenNavigator {
 	public static final String MAIN    = "main.fxml";
 	public static final String INNLOGGING = "Startside_Innlogging.fxml";
 	public static final String OPPRETTING = "Oppretting.fxml";
+	public static final String AVTALE = "ny_avtale.fxml";
+	public static final String MANEDSVISNING = "Kalender_månedsvisning.fxml";
+	public static final String DAGSVISNING = "Kalender_månedsvisning.fxml";
 
 	/** The main application layout controller. */
 	private static MainController mainController;
@@ -42,10 +45,7 @@ public class ScreenNavigator {
 		try {
 			mainController.setScreen(
 					FXMLLoader.load(
-							ScreenNavigator.class.getResource(
-									fxml
-									)
-							)
+							ScreenNavigator.class.getResource(fxml))
 					);
 		} catch (IOException e) {
 			e.printStackTrace();
