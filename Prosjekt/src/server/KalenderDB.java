@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -179,6 +180,17 @@ public class KalenderDB {
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
 		statement.setString(2, avtale);
+		statement.executeUpdate();
+	}
+
+	public void changeEmail(String user, String newEmail) throws Exception {
+		init();
+		
+		query = "UPDATE `christwg_fp`.`bruker` SET `epost`=? \n" + 
+				"WHERE `epost`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, newEmail);
+		statement.setString(2, user);
 		statement.executeUpdate();
 	}
 }
