@@ -25,11 +25,11 @@ public class KalenderThread extends Thread {
             KalenderProtocol kp = new KalenderProtocol();
             
             while ((inputLine = in.readLine()) != null) {
-                outputLine = kp.processInput(inputLine) + "\n";
+                outputLine = kp.processInput(inputLine) + "\r\n";
                 System.out.println(outputLine);
                 out.println(outputLine);
-                out.flush();
-                if (outputLine.equals("Bye."))
+                
+                if (outputLine.equals("Bye.\r\n"))
                     break;
             }
             socket.close();

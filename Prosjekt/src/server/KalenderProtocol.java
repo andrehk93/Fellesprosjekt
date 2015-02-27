@@ -11,7 +11,6 @@ public class KalenderProtocol {
 
 	public String processInput(String rawInput) throws Exception{
 		if(rawInput != null){
-			System.out.println(rawInput);
 			String[] input = rawInput.split(" ");
 			
 			KalenderDB kalenderdb = new KalenderDB();
@@ -43,6 +42,9 @@ public class KalenderProtocol {
 				case("CREATE"):
 					createHandler(Arrays.copyOfRange(input, 1, input.length));
 					return "OK";
+				case("LOGOUT"):
+					state = WAITING;
+					return "Bye.";
 			}
 			
 		}
@@ -52,7 +54,7 @@ public class KalenderProtocol {
 	
 	private String createHandler(String[] input) throws Exception{
 		KalenderDB kalenderdb = new KalenderDB();
-		switch(input[0]){
+		switch(input[0].toUpperCase()){
 			case "USER":
 									// EPOST, FORNAVN, ETTERNAVN, PASSORD
 				kalenderdb.createUser(input[1], input[2], input[3], input[4]);
@@ -68,7 +70,7 @@ public class KalenderProtocol {
 	
 	private String getHandler(String[] input) throws Exception{
 		KalenderDB kalenderdb = new KalenderDB();
-		switch(input[0]){
+		switch(input[0].toUpperCase()){
 			case "ROOM":
 				return kalenderdb.getRoom(input[1], input[2], input[3], Integer.parseInt(input[4]));
 			case "AVAILABLE":

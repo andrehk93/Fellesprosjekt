@@ -41,7 +41,7 @@ public class KalenderDB {
 		String output = "";
 		
 		while(result.next()){
-			output += result.getString(1) + "\n";
+			output += result.getString(1) + " ";
 		}
 		
 		return output;
@@ -79,7 +79,7 @@ public class KalenderDB {
 		String output = "";
 		
 		while(result.next()){
-			output += result.getString(1) + "\n";
+			output += result.getString(1) + " ";
 		}
 		
 		return output;
