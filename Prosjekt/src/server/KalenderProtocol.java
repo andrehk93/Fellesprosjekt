@@ -85,7 +85,11 @@ public class KalenderProtocol {
 				if(input[1].equals("USERS")){
 					return kalenderdb.getAvailableUsers(input[2], input[3], input[4]);
 				}
-		break;
+				break;
+			case "APPS":
+				return kalenderdb.getDayApps(input[1]);
+			case "APPDETAILS":
+				return kalenderdb.getAppDetails(input[1]);
 		}
 		return "-1";
 	}

@@ -85,6 +85,38 @@ public class KalenderDB {
 		return output;
 	}
 	
+	public String getDayApps(String date) throws Exception{
+		init();
+		
+		query = "select avtaleid\n" + 
+				"from avtale\n" + 
+				"where dato=\""+date+"\"";
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;
+	}
+	
+	public String getAppDetails(String appID) throws Exception{
+		init();
+		
+		query = "select fra,til,dato,romnavn,avtaleadmin\n" + 
+				"from avtale\n" + 
+				"where avtaleid="+Integer.parseInt(appID);
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		
+		String output = result.getString(1)+" "+result.getString(2)+" "+result.getString(3)+" "+result.getString(4)+" "+result.getString(5);
+		return output;
+	}
+	
 	public void createUser(String email, String firstName, String lastName, String password) throws Exception{
 		init();
 		
