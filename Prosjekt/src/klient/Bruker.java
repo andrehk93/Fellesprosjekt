@@ -36,6 +36,20 @@ public class Bruker {
 		
 	};
 	
+	private Property<ArrayList<Varsel>> varselListeProperty = new ObjectPropertyBase<ArrayList<Varsel>>(null) {
+
+		@Override
+		public Object getBean() {
+			return this;
+		}
+
+		@Override
+		public String getName() {
+			return "VarselListe";
+		}
+		
+	};
+	
 	private Property<String> nameProperty = new SimpleStringProperty();
 	private Property<String> emailProperty = new SimpleStringProperty();
 	
@@ -108,9 +122,32 @@ public class Bruker {
 	}
 	
 	public void giVarsel(Varsel avtVarsel) {
-		System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
-				" har fått et varsel: \n" + avtVarsel.getMelding() +
-				"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
+		try {
+			boolean duplikat = false;
+			for (int i = 0; i < varselListeProperty.getValue().size(); i++) {
+				if (varselListeProperty.getValue().get(i).equals(avtVarsel)) {
+					duplikat = true;
+				}
+			}
+			if (! duplikat) {
+				varselListeProperty.getValue().add(avtVarsel);
+				System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
+						" har fått et varsel: \n" + avtVarsel.getMelding() +
+						"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
+			}
+			else {
+				System.out.println("Varselet er der fra før av.");
+			}
+		}
+		catch (NullPointerException e) {
+			ArrayList<Varsel> varselet = new ArrayList<Varsel>();
+			varselet.add(avtVarsel);
+			varselListeProperty.setValue(varselet);
+			System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
+					" har fått et varsel: \n" + avtVarsel.getMelding() +
+					"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
+		}
+		
 	}
 	
 	public void deleteAvtale(Avtale avtale) {
@@ -158,7 +195,7 @@ public class Bruker {
 		Møterom rom = new Møterom(20, "GOBI");
 		Møterom rom_2 = new Møterom(20, "MOKI");
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(12, 15), LocalTime.of(12, 45), LocalDate.of(2015,12,12));
-		Avtale avtale_1 = new Avtale(Andreas, delt, tid, rom, null);
+		Avtale avtale_1 = new Avtale(Andreas, delt, tid, rom);
 		System.out.println(avtale_1);
 		
 		

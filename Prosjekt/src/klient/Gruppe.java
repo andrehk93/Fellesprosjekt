@@ -52,6 +52,10 @@ public class Gruppe {
 		return medlemListeProperty.getValue();
 	}
 	
+	public Property<ArrayList<Bruker>> getMedlemListeProperty() {
+		return medlemListeProperty;
+	}
+	
 	public void addMedlem(Bruker medlem) {
 		boolean duplikat = false;
 		try {
