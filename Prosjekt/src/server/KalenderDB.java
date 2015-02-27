@@ -118,6 +118,43 @@ public class KalenderDB {
 		return output;
 	}
 	
+	public String getMyApps(String user) throws Exception{
+		init();
+		
+		query = "select avtaleid \n" + 
+				"from avtale \n" + 
+				"where avtaleadmin = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;
+	}
+	
+	public String getAppAttendees(String avtale, String status) throws Exception {
+		init();
+		
+		query = "SELECT epost \n" + 
+				"FROM ermed \n" + 
+				"WHERE avtaleid = ? AND oppmotestatus = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, avtale);
+		statement.setString(2, status);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;
+	}
+	
 	public String getInvitations(String user) throws Exception{
 		init();
 		
@@ -203,6 +240,18 @@ public class KalenderDB {
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, newTime);
 		statement.setString(2, appID);
+		statement.executeUpdate();
+	}
+	
+	public void changeStatus(String user, String avtale, String newStatus) throws Exception {
+		init();
+		
+		query = "UPDATE `christwg_fp`.`ermed` SET `oppmotestatus`=? \n" + 
+				"WHERE `epost`=? AND `avtaleid`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, newStatus);
+		statement.setString(2, user);
+		statement.setString(3, avtale);
 		statement.executeUpdate();
 	}
 }
