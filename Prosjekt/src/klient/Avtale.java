@@ -16,13 +16,13 @@ public class Avtale {
 		
 	}
 	
-	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom, Gruppe gruppe){
+	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom){
 		setEier(eier);
 		settOppVarsel(this);
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
-		setGruppe(gruppe);
+		lagVarsel(this);
 	}
 	
 	private Property<Bruker> eierProperty = new ObjectPropertyBase<Bruker>(null) {
@@ -40,10 +40,8 @@ public class Avtale {
 	};
 	
 	public void setEier(Bruker eier) {
-		if (deltakerProperty.getValue() == null || eierProperty.getValue() == null) {
-			ArrayList<Bruker> eieren = new ArrayList<Bruker>();
-			eieren.add(eier);
-			deltakerProperty.setValue(eieren);
+		if (gruppeProperty.getValue() == null || eierProperty.getValue() == null) {
+			addDeltakere(eier);
 			eierProperty.setValue(eier);
 		}
 		else {
@@ -74,26 +72,11 @@ public class Avtale {
 		
 	};
 	
-	private Property<ArrayList<Bruker>> deltakerProperty = new ObjectPropertyBase<ArrayList<Bruker>>(null) {
-
-		@Override
-		public Object getBean() {
-			return this;
-		}
-
-		@Override
-		public String getName() {
-			return "deltaker";
-		}
-		
-	};
-	
-	
 	//Antar at det legges til én
 	public void addDeltakere(Bruker deltaker) {
 		boolean duplikat = false;
-		if (deltakerProperty.getValue() != null) {
-			for (Bruker deltakere : deltakerProperty.getValue()) {
+		if (gruppeProperty.getValue() != null) {
+			for (Bruker deltakere : gruppeProperty.getValue().getMedlemmer()) {
 				if (deltaker.equals(deltakere)) {
 					duplikat = true;
 				}
@@ -102,14 +85,15 @@ public class Avtale {
 				System.out.println("brukeren: " + deltaker.getNavn() + " er i avtalen fra før");
 			}
 			else {
-				deltakerProperty.getValue().add(deltaker);
+				gruppeProperty.getValue().addMedlem(deltaker);
 				deltaker.addAvtale(this);
 			}
 		}
 		else {
-			ArrayList<Bruker> deltakere = new ArrayList<Bruker>();
-			deltakere.add(deltaker);
-			deltakerProperty.setValue(deltakere);
+			ArrayList<Bruker> deltakeren = new ArrayList<Bruker>();
+			deltakeren.add(deltaker);
+			Gruppe gruppen = new Gruppe(this, deltakeren);
+			gruppeProperty.setValue(gruppen);
 			deltaker.addAvtale(this);
 		}
 	}
@@ -180,43 +164,40 @@ public class Avtale {
 	
 	
 	public void setRom(Møterom møterom) {
-		romProperty.setValue(møterom);
+		if (romProperty.getValue() == null) {
+			romProperty.setValue(møterom);
+		}
+		else {
+			System.out.println("For å endre møterom må funksjonen ENDREROM benyttes");
+		}
 	}
 	
 	public ArrayList<Bruker> getDeltakere() {
-		return deltakerProperty.getValue();
+		return gruppeProperty.getValue().getMedlemmer();
 	}
 	
 	
 	// Antar at det fjernes én om gangen
 	public void removeDeltakere(Bruker deltaker) {
-		boolean eksisterer = false;
-		if (deltakerProperty.getValue() != null) {
-			for (Bruker deltakerne : deltakerProperty.getValue()) {
-				if (deltakerne.equals(deltaker)){
-					eksisterer = true;
-				}
-			}
-			if (eksisterer) {
-				deltaker.getAvtaler().remove(this);
-				deltakerProperty.getValue().remove(deltaker);
-				System.out.println("Brukeren er fjernet.");
-			}
-			else {
-				System.out.println("Brukeren er ikke deltakende.");
-			}
+		try {
+			gruppeProperty.getValue().removeMedlem(deltaker);
 		}
-		else {
-			System.out.println("Det er ingen deltakere for øyeblikket.");
+		catch (NullPointerException e) {
 		}
+		
 	}
 	
 	
 	//Antar at det ikke er noen her fra før av
 	public void setDeltakere(ArrayList<Bruker> deltakere) {
-		for (Bruker deltaker : deltakere) {
-			addDeltakere(deltaker);
+		try {
+			for (int i = 0; i < deltakere.size(); i++) {
+				gruppeProperty.getValue().addMedlem(deltakere.get(i));
+			}
 		}
+		catch (NullPointerException e) {
+		}
+		
 	}
 	
 	public String toString() {
@@ -232,78 +213,70 @@ public class Avtale {
 	}
 	
 	public void settOppVarsel(Avtale avtale) {
-		ChangeListener<ArrayList<Bruker>> deltakerVarsel = new ChangeListener<ArrayList<Bruker>>() {
-
-			@Override
-			public void changed(
-					ObservableValue<? extends ArrayList<Bruker>> observable,
-					ArrayList<Bruker> oldValue, ArrayList<Bruker> newValue) {
-				System.out.println("Det har skjedd en endring i gruppen: " + newValue.get(0).getNavn());
-			}
-		};
-		deltakerProperty.addListener(deltakerVarsel);
 		
+		//Lager listeners for Møterom-klassen
 		ChangeListener<Møterom> rom = new ChangeListener<Møterom>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Møterom> observable,
 					Møterom oldValue, Møterom newValue) {
 				try {
-					String melding = "Avtalen klokken: " + avtale.getTid().getStart()
-							+ " - " + avtale.getTid().getSlutt()
-							+ " er endret: " + avtale.getAvtaleAdmin().getNavn() + " har endret møterom fra: "
-									+ oldValue.getNavn() + " til: " + newValue.getNavn();
-					for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-						Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
-						avtale.getDeltakere().get(i).giVarsel(avtVarsel);
+					if (! oldValue.equals(newValue)) {
+						String melding = "En avtale er endret: \nKlokken: " + avtale.getTid().getStart()
+								+ " - " + avtale.getTid().getSlutt() + "\nDato: " + avtale.getTid().getDato()
+								+ " \nAdmin: " + avtale.getAvtaleAdmin().getNavn() + 
+								" \nTidligere møterom: " + oldValue.getNavn() + "\nNytt møterom: " + avtale.getRom().getNavn();
+						for (int i = 1; i < avtale.getDeltakere().size(); i++) {
+							Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
+							avtale.getDeltakere().get(i).giVarsel(avtVarsel);
+						}
 					}
 					
 				}
 				catch (NullPointerException e) {
-					String melding = "En avtale er opprettet klokken: " + avtale.getTid().getStart()
-							+ " - " + avtale.getTid().getSlutt()
-							+ " av: " + avtale.getAvtaleAdmin().getNavn() + 
-							" og møterom er satt til: " + newValue.getNavn();
-					for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-						Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
-						avtale.getDeltakere().get(i).giVarsel(avtVarsel);
-					}
 				}
 			}
 		};
 		romProperty.addListener(rom);
 		
+		
+		//Lager varsel for endring/oppretting av tidspunkt
 		ChangeListener<TidsIntervall> tid = new ChangeListener<TidsIntervall>() {
 
 			@Override
 			public void changed(ObservableValue<? extends TidsIntervall> observable,
 					TidsIntervall oldValue, TidsIntervall newValue) {
 				try {
-					String melding = "Avtalen klokken: " + oldValue.getStart() + oldValue.getSlutt()
-							+ " er endret til klokkken: " + avtale.getTid().getStart()
-							+ " - " + avtale.getTid().getSlutt() + avtale.getAvtaleAdmin().getNavn() + " møterom: "
-									+ avtale.getRom().getNavn();
-					for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-						Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
-						avtale.getDeltakere().get(i).giVarsel(avtVarsel);
+					if (! oldValue.equals(newValue)) {
+						//Hvis den nye eventen ikke er det samme som forrige
+						String melding = "En avtale er endret: \nTidligere klokken: " + oldValue.getStart()
+								+ " - " + oldValue.getSlutt() + "\nNytt tidspunkt: " + avtale.getTid().getStart()
+								+ " - " + avtale.getTid().getSlutt() + "\nDato: " + avtale.getTid().getDato()
+								+ " \nAdmin: " + avtale.getAvtaleAdmin().getNavn() + 
+								" \nMøterom: " + avtale.getRom().getNavn();
+						for (int i = 1; i < avtale.getDeltakere().size(); i++) {
+							Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
+							avtale.getDeltakere().get(i).giVarsel(avtVarsel);
+						}
 					}
 					
 				}
 				catch (NullPointerException e) {
-					String melding = "En avtale er opprettet klokken: " + avtale.getTid().getStart()
-							+ " - " + avtale.getTid().getSlutt()
-							+ " av: " + avtale.getAvtaleAdmin().getNavn() + 
-							" og møterom er satt til: " + avtale.getRom().getNavn();
-					for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-						Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
-						avtale.getDeltakere().get(i).giVarsel(avtVarsel);
-					}
 				}
 			}
 		};
-		romProperty.addListener(rom);
-		
-		
+		tidsProperty.addListener(tid);
+	}
+	
+	public void lagVarsel(Avtale avtale) {
+		String melding = "En avtale er opprettet: \nklokken: " + avtale.getTid().getStart()
+				+ " - " + avtale.getTid().getSlutt() + "\ndato: " + avtale.getTid().getDato()
+				+ " \nav: " + avtale.getAvtaleAdmin().getNavn() + 
+				" \nmøterom: " + avtale.getRom().getNavn();
+		for (int i = 1; i < avtale.getDeltakere().size(); i++) {
+			Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
+			avtale.getDeltakere().get(i).giVarsel(avtVarsel);
+		}
 	}
 	
 	
@@ -321,16 +294,18 @@ public class Avtale {
 		rommet.setOpptatt(tiden);
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
 		TidsIntervall tid_2 = new TidsIntervall(LocalTime.of(11, 15), LocalTime.of(12, 15), LocalDate.of(2015, 12, 12));
-		Avtale møte = new Avtale(Andreas, brukere, tid, rommet, new Gruppe());
+		Avtale møte = new Avtale(Andreas, brukere, tid, rommet);
 		Andreas.addAvtale(møte);
 		
 		//Tester:
 		System.out.println("ANDREAS SINE AVTALER: " + Andreas.getAvtaler());
 		møte.setEier(jens);
-		møte.removeDeltakere(jens);
+		System.out.println("ENDRER TIDEN");
 		møte.setTid(tid_2);
-		møte.setRom(rom_2);
-		møte.endreRom(rommet);
+		System.out.println("ENDRER ROMMET");
+		møte.endreRom(rom_2);
+		System.out.println("ENDRER DELTAKERE");
+		møte.removeDeltakere(Lars);
 		System.out.println("LARS SINE AVTALER: " + Lars.getAvtaler());
 		System.out.println("Andreas: " + Andreas.getAvtaler());
 		System.out.println("IVAR SINE AVTALER: " + ivar.getAvtaler());
