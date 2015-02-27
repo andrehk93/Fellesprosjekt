@@ -62,7 +62,12 @@ public class KalenderProtocol {
 		switch(input[1].toUpperCase()){
 			case "EMAIL":
 				kalenderdb.changeEmail(user, input[2]);
-			break;
+				break;
+			case "STARTTIME":
+				kalenderdb.changeTime(input[2],input[3],"fra");
+				break;
+			case "ENDTIME":
+				kalenderdb.changeTime(input[2], input[3], "til");
 		}
 	}
 

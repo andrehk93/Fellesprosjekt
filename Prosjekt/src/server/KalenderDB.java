@@ -162,5 +162,17 @@ public class KalenderDB {
 		statement.setString(2, user);
 		statement.executeUpdate();
 	}
+
+	public void changeTime(String appID, String newTime, String when) throws Exception {
+		init();
+		
+		query = "UPDATE `christwg_fp`.`avtale` SET `"+when+"`=? \n" + 
+				"WHERE `avtaleid`=?;";
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, newTime);
+		statement.setString(2, appID);
+		statement.executeUpdate();
+	}
 }
 
