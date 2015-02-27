@@ -77,10 +77,10 @@ public class Bruker {
 				}
 			}
 			if (duplikat) {
-				avtaleListeProperty.getValue().add(avtale);
+				System.out.println("avtalen finnes allerede");
 			}
 			else {
-				System.out.println("avtalen finnes");
+				avtaleListeProperty.getValue().add(avtale);
 			}
 			
 		}
@@ -90,8 +90,14 @@ public class Bruker {
 		if (avtaleListeProperty.getValue() == null) {
 			System.out.println("Du har ingen avtaler");
 		}
+		else if (! avtale.getAvtaleAdmin().equals(this)) {
+			this.deleteAvtale(avtale);
+		}
 		else {
 			try {
+				for (int i = 0; i < avtale.getDeltakere().size(); i++) {
+					avtale.getDeltakere().get(i).deleteAvtale(avtale);
+				}
 				avtaleListeProperty.getValue().remove(avtale);
 				System.out.println("Avtalen ble fjernet");
 			}
@@ -101,22 +107,46 @@ public class Bruker {
 		}
 	}
 	
+	public void giVarsel(Varsel avtVarsel) {
+		System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
+				" har fått et varsel: \n" + avtVarsel.getMelding() +
+				"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
+	}
+	
+	public void deleteAvtale(Avtale avtale) {
+		System.out.println("SLETTER DENNE BRUKEREN: " + this.getNavn());
+		System.out.println("FØRSTE BRUKER: " + avtale.getDeltakere().get(0).getNavn());
+		avtale.removeDeltakere(this);
+	}
+	
 	public void addListeners() {
-		ChangeListener<ArrayList<Avtale>> listener = new ChangeListener<ArrayList<Avtale>>() {
+		ChangeListener<ArrayList<Avtale>> removeAvtaleListener = new ChangeListener<ArrayList<Avtale>>() {
 
 			@Override
 			public void changed(
 					ObservableValue<? extends ArrayList<Avtale>> arg0,
 					ArrayList<Avtale> arg1, ArrayList<Avtale> arg2) {
-				System.out.println("nå skjedde det noe!");
-				for (int i = 0; i < arg2.get(0).getDeltakere().size(); i++) {
-					arg2.get(0).getDeltakere().get(i).addAvtale(arg2.get(0));
+				if (! arg2.isEmpty() && ! arg2.get(0).getDeltakere().isEmpty()) {
+					if (arg1 != null) {
+						if (arg1.size() > arg2.size()) {
+							System.out.println("En avtale ble slettet");
+							for (int i = 0; i < arg2.get(0).getDeltakere().size(); i++) {
+								arg2.get(0).getDeltakere().get(i).removeAvtale(arg2.get(0));
+							}
+						}
+						else {
+							System.out.println("Det ble lagt til en avtale");
+							for (int i = 0; i < arg2.get(0).getDeltakere().size(); i++) {
+								arg2.get(0).getDeltakere().get(i).addAvtale(arg2.get(0));
+							}
+						}
+					}
 				}
 			}
 		};
-		avtaleListeProperty.addListener(listener);
-	
+		avtaleListeProperty.addListener(removeAvtaleListener);
 	}
+	
 	
 	public static void main(String[] args) {
 		Bruker Andreas = new Bruker("Andreas", "a");
@@ -130,12 +160,20 @@ public class Bruker {
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(12, 15), LocalTime.of(12, 45), LocalDate.of(2015,12,12));
 		Avtale avtale_1 = new Avtale(Andreas, delt, tid, rom, null);
 		System.out.println(avtale_1);
+		
+		
+		//TESTER:
 		Andreas.addAvtale(avtale_1);
 		Andreas.getAvtaler().get(0).setRom(rom_2);
 		System.out.println(Andreas.getAvtaler());
 		System.out.println("Martins avtaler: " + Martin.getAvtaler());
 		System.out.println("Chs avtaler: " + Ch.getAvtaler());
-		Andreas.removeAvtale(avtale_1);
+		Ch.removeAvtale(avtale_1);
+		System.out.println(avtale_1);
+		Martin.removeAvtale(avtale_1);
+		System.out.println("Chs avtaler: " + Ch.getAvtaler());
+		System.out.println("ANDREAS Avtaler: " + Andreas.getAvtaler());
+		System.out.println("MARTINS AVTALER: " + Martin.getAvtaler());
 	}
 	
 	
