@@ -1,5 +1,7 @@
 package klient;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,8 +23,13 @@ public class OpprettingController {
         ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
     }
 	@FXML// OPPRETT BRUKER - Gå til neste screen
-	private void nextPane(ActionEvent event) {
+	private void nextPane(ActionEvent event) throws IOException {
+		lagBruker(event);
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+	}
+	
+	public void lagBruker(ActionEvent event) throws IOException {
+		Klienten.createUser(epost.getText(), fornavn.getText(), etternavn.getText(), passord.getText());
 	}
  
     //Validere og sjekke om navn er gyldig, hver gang man trykker på en key

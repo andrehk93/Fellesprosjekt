@@ -50,4 +50,9 @@ public class Klienten {
 		String rom = sendTilServer(toServer);
 		return rom;
 	}
+
+	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException {
+		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passord;
+		sendTilServer(toServer);
+	}
 }
