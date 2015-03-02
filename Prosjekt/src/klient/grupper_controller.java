@@ -23,17 +23,7 @@ public class grupper_controller {
 	
 	public grupper_controller(){
 		medlemmer = new ArrayList<Bruker>();
-		brukere = new ArrayList<Bruker>();
-		Andreas.setNavn("Andreas");
-		Christoffer.setNavn("Christoffer");
-		Lars.setNavn("Lars");
-		Martin.setNavn("Martin");
-		My.setNavn("My");
-		brukere.add(Andreas);
-		brukere.add(Christoffer);
-		brukere.add(Lars);
-		brukere.add(Martin);
-		brukere.add(My);		
+		brukere = new ArrayList<Bruker>();		
 	}
 	
 
@@ -57,11 +47,15 @@ public class grupper_controller {
     @FXML
     Button lagre_gruppe_knapp = new Button();
 	
+    @FXML
     public void handleGruppenavn(KeyEvent event) {
     	System.out.println("Hei");
     }
     
-    
+    @FXML
+    public void handleBrukersøk(KeyEvent event) {
+    	System.out.println("Hei");
+    }
     
     
 }
