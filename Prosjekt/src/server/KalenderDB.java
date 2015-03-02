@@ -300,5 +300,66 @@ public class KalenderDB {
 		
 	
 	}
+
+	public String getGroup(String groupId) throws Exception {
+		init();
+		
+		query = "select epost\n" + 
+				"from bruker, gruppe\n" + 
+				"where gruppeid=? and gruppe=gruppeid";
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, groupId);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;
+	}
+
+	public void createGroup(String name, String user, String[] users) throws Exception {
+		init();
+		
+		query = "INSERT INTO `christwg_fp`.`gruppe` (`gruppenavn`) VALUES (?);";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, name);
+		statement.executeUpdate();
+		
+		query = "select COUNT(*) from gruppe";
+		statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		String gruppeId = result.getString(1);
+		
+		String[] bruker = {user};
+		
+		addGroupMember(gruppeId,bruker);
+		addGroupMember(gruppeId,users);
+	}
+
+	public void addGroupMember(String groupId, String[] newMembers) throws Exception {
+		init();
+		
+		for(int i=0; i<newMembers.length;i++){
+			query = "UPDATE `christwg_fp`.`bruker` SET `gruppe`=? WHERE `epost`=?;";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, groupId);
+			statement.setString(2, newMembers[i]);
+			
+			statement.executeUpdate();
+		}
+	}
+	
+	public void removeGroupMember(String groupId, String member) throws Exception {
+		init();
+		
+		query = "UPDATE `christwg_fp`.`bruker` SET `gruppe`=NULL WHERE `epost`=? and `gruppe`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, member);
+		statement.setString(2, groupId);
+		statement.executeUpdate();
+	}
 }
 

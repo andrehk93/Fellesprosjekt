@@ -48,6 +48,11 @@ public class KalenderProtocol {
 				case("INVITE"):
 					createHandler(input);
 					return "OK";
+				case("ADD"):
+					addHandler(input);
+					return "OK";
+				case("REMOVE"):
+					removeHandler(input);
 				case("LOGOUT"):
 					state = WAITING;
 					return "Bye.";
@@ -58,6 +63,24 @@ public class KalenderProtocol {
 		return "-1";
 	}
 	
+	private void removeHandler(String[] input) throws Exception {
+		KalenderDB kalenderdb = new KalenderDB();
+		switch(input[1].toUpperCase()){
+		case "GROUPMEMBER":
+			kalenderdb.removeGroupMember(input[2], input[3]);
+		}
+		
+	}
+
+	private void addHandler(String[] input) throws Exception {
+		KalenderDB kalenderdb = new KalenderDB();
+		switch(input[1].toUpperCase()){
+			case "GROUPMEMBER":
+				kalenderdb.addGroupMember(input[2], Arrays.copyOfRange(input,2,input.length));
+		}
+		
+	}
+
 	private void changeHandler(String[] input) throws Exception {
 		KalenderDB kalenderdb = new KalenderDB();
 		switch(input[1].toUpperCase()){
@@ -103,6 +126,8 @@ public class KalenderProtocol {
 				System.out.println((message.split(" ").length+3));
 				kalenderdb.sendNotification(user, input[1], message, Arrays.copyOfRange(input, message.split(" ").length+3, input.length));
 				break;
+			case "GROUP":
+				kalenderdb.createGroup(input[1], user, Arrays.copyOfRange(input,2,input.length));
 		}
 	}
 	
@@ -149,6 +174,10 @@ public class KalenderProtocol {
 				break;
 			case "NOTIFICATIONS":
 				output = kalenderdb.getNotifications(user);
+				break;
+			case "GROUP":
+				output = kalenderdb.getGroup(input[1]);
+				break;
 			}
 			
 			if(output.trim().equals("")){
