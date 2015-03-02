@@ -149,6 +149,8 @@ public class KalenderProtocol {
 				break;
 			case "NOTIFICATIONS":
 				output = kalenderdb.getNotifications(user);
+			case "ROOMDETAILS":
+				output = kalenderdb.getRoomDetails(input[1]);
 			}
 			
 			if(output.trim().equals("")){

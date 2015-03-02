@@ -298,7 +298,19 @@ public class KalenderDB {
 			statement.executeUpdate();
 		}
 		
+	}
 	
+	public String getRoomDetails(String roomname) throws Exception{
+		init();
+		
+		query = "SELECT * FROM moterom WHERE romnavn = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, roomname);
+		ResultSet result = statement.executeQuery();
+		
+		result.next();
+		return result.getString(1) + " " + result.getString(2);
+		
 	}
 }
 
