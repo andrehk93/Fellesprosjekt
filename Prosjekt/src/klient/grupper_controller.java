@@ -1,6 +1,8 @@
 package klient;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -14,7 +16,7 @@ import javafx.scene.input.KeyEvent;
 public class grupper_controller {
 	
 	private ArrayList<Bruker> medlemmer;
-	private ArrayList<Bruker> brukere;
+	private ArrayList<String> brukere;
 	private Bruker Andreas;
 	private Bruker Christoffer;
 	private Bruker Lars;
@@ -23,17 +25,7 @@ public class grupper_controller {
 	
 	public grupper_controller(){
 		medlemmer = new ArrayList<Bruker>();
-		brukere = new ArrayList<Bruker>();
-		Andreas.setNavn("Andreas");
-		Christoffer.setNavn("Christoffer");
-		Lars.setNavn("Lars");
-		Martin.setNavn("Martin");
-		My.setNavn("My");
-		brukere.add(Andreas);
-		brukere.add(Christoffer);
-		brukere.add(Lars);
-		brukere.add(Martin);
-		brukere.add(My);		
+		brukere = new ArrayList<String>();		
 	}
 	
 
@@ -59,6 +51,10 @@ public class grupper_controller {
 	
     public void handleGruppenavn(KeyEvent event) {
     	System.out.println("Hei");
+    }
+    
+    public void getUsers() throws IOException{
+    	brukere = (ArrayList<String>) Arrays.asList(Klienten.getAllUsers().split(" "));
     }
     
     
