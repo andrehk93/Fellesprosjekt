@@ -57,6 +57,7 @@ public class grupper_controller {
     @FXML
     Button lagre_gruppe_knapp = new Button();
 	
+    @FXML
     public void handleGruppenavn(KeyEvent event) {
     	System.out.println("Hei");
     }

@@ -6,9 +6,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.gruppe_controller">
    <children>
-      <TextField fx:id="gruppenavn" layoutX="119.0" layoutY="85.0" onKeyTyped="#handleKeyInput" promptText="Gruppenavn" />
+      <TextField fx:id="gruppenavn" layoutX="119.0" layoutY="85.0" onKeyTyped="#handleGruppenavn" promptText="Gruppenavn" />
       <TextField fx:id="antall_gruppemedlemmer" layoutX="762.0" layoutY="582.0" prefHeight="31.0" prefWidth="88.0" promptText="10" />
       <Button fx:id="forkast_gruppe_knapp" layoutX="883.0" layoutY="641.0" mnemonicParsing="false" text="Forkast" />
       <Button fx:id="lagre_gruppe_knapp" layoutX="793.0" layoutY="641.0" mnemonicParsing="false" text="Lagre" />
