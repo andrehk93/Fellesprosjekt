@@ -32,7 +32,7 @@ public class Main extends Application {
 		MainController mainController = loader.getController();
 		
 		ScreenNavigator.setMainController(mainController);
-		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
 		
 		return mainPane;
 	}
