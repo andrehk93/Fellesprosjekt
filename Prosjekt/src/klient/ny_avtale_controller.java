@@ -11,7 +11,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -24,9 +23,8 @@ import javafx.scene.text.Text;
 
 public class ny_avtale_controller {
 	
-	private ArrayList<Node> alle_enheter;
-	private ArrayList<Bruker> deltakere;
-	private Møterom rom;
+	private ArrayList<Møterom> alle_møterom;
+	private ArrayList<Bruker> gjeste_liste;
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
@@ -76,13 +74,12 @@ public class ny_avtale_controller {
     ObservableList<String> gjestene;
 	
 	public void initialize() {
+		gjeste_liste = new ArrayList<Bruker>();
 		gjestelisten = new ArrayList<String>();
     	gjestene = FXCollections.observableList(gjestelisten);
 		feilTekst.setVisible(false);
 		feilDato.setVisible(false);
 		System.out.println("LETS CREATE");
-		alle_enheter = new ArrayList<Node>();
-		deltakere = new ArrayList<Bruker>();
 		List<String> list = new ArrayList<String>();
 		ObservableList<String> timer = FXCollections.observableList(list);
 		for (int i = 0; i < 24; i++) {
@@ -121,16 +118,14 @@ public class ny_avtale_controller {
     
     
     public void showRom(ArrayList<Møterom> rommene) {
-    	ChangeListener<Number> romvalg = new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> arg0,
-					Number arg1, Number arg2) {
-				System.out.println("Valg");
-				valgt_rom.setText(møteromliste.getItems().get(møteromliste.getEditingIndex()));
-			}
-    	};
-    	
+    	møteromliste.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+    	    @Override
+    	    public void changed(ObservableValue<? extends String> observable,
+    	            String oldValue, String newValue) {
+    	    	valgt_rom.setText(newValue);
+    	    }
+    	});
+    	alle_møterom = rommene;
     	System.out.println("Lager rom: ");
     	List<String> rom_liste = new ArrayList<String>();
     	for (Møterom rom : rommene) {
@@ -138,7 +133,16 @@ public class ny_avtale_controller {
     	}
     	ObservableList<String> rom = FXCollections.observableList(rom_liste);
     	møteromliste.setItems(rom);
-    	møteromliste.editingIndexProperty().addListener(romvalg);
+    }
+    
+    public Møterom getRom() {
+    	System.out.println(valgt_rom.getText());
+    	for (Møterom rom : alle_møterom) {
+    		if ((rom.getNavn() + " - " + rom.getKapasitet() + " plasser").equals(valgt_rom.getText())) {
+    			return rom;
+    		}
+    	}
+    	return null;
     }
     
     public void reset() {
@@ -167,6 +171,7 @@ public class ny_avtale_controller {
     		if (gjentakelse.isSelected()) {
     			if (startdato.getValue().isBefore(sluttdato.getValue())) {
     				feilDato.setVisible(false);
+    				dato = start;
     				return true;
     			}
     			else {
@@ -203,7 +208,6 @@ public class ny_avtale_controller {
 					}
 				}
 				catch (NullPointerException e) {
-					System.out.println("må fylle ut alle");
 				}
 			}
     	};
@@ -237,6 +241,7 @@ public class ny_avtale_controller {
     	//Må finne brukeren i databasen
     	Bruker gjest = new Bruker(legg_til_gjester.getText(), "ahk9339@gmail.com");
     	showGjest(gjest);
+    	gjeste_liste.add(gjest);
     }
     
     public void finnRom(ActionEvent event) {
@@ -270,13 +275,15 @@ public class ny_avtale_controller {
 	}
 	
 	public void lagre(ActionEvent event) {
+		System.out.println(getRom().getNavn());
 		if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
-			Avtale avtale = new Avtale(getBruker(), deltakere, new TidsIntervall(start, slutt, dato), rom);
+			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), getRom());
 		}
 	}
 	
 	public Bruker getBruker() {
-		return null;
+		Bruker meg = new Bruker("Andreas Kvistad", "ahk9339@gmail.com");
+		return meg;
 	}
 		
 	public boolean basicInputCheck(String input) {
