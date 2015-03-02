@@ -10,9 +10,13 @@ import javafx.scene.layout.Pane;
 
 
 public class Main extends Application {
+	
+	Klienten klienten;
+	
 	@Override
 	public void start(Stage stage) throws Exception{
 			stage.setTitle("Kalender Viewer");
+			klienten = new Klienten();
 			stage.setScene(createScene ( loadMainPane()));
 			stage.show();
 //			Parent root = FXMLLoader.load(getClass().getResource("../klient/Startside_innlogging.FXML"));
@@ -32,7 +36,7 @@ public class Main extends Application {
 		MainController mainController = loader.getController();
 		
 		ScreenNavigator.setMainController(mainController);
-		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
+		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
 		
 		return mainPane;
 	}
