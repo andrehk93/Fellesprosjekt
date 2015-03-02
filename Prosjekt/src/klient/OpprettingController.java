@@ -22,6 +22,7 @@ public class OpprettingController {
     void previousPane(ActionEvent event) {
         ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
     }
+    
 	@FXML// OPPRETT BRUKER - Gå til neste screen
 	private void nextPane(ActionEvent event) throws IOException {
 		lagBruker(event);
