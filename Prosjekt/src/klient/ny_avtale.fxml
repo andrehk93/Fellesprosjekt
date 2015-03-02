@@ -9,8 +9,8 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
    <children>
       <TextField fx:id="avtalenavn" layoutX="158.0" layoutY="81.0" onKeyTyped="#handleKeyInput" promptText="Avtalenavn" />
-      <TextField fx:id="antall_gjester" layoutX="266.0" layoutY="583.0" prefHeight="31.0" prefWidth="88.0" promptText="15" />
-      <TextField fx:id="valgt_rom" layoutX="684.0" layoutY="582.0" onAction="#showRom" prefHeight="31.0" prefWidth="88.0" promptText="Valgt rom" />
+      <TextField fx:id="antall_gjester" editable="false" layoutX="266.0" layoutY="583.0" prefHeight="31.0" prefWidth="88.0" promptText="15" />
+      <TextField fx:id="valgt_rom" editable="false" layoutX="684.0" layoutY="582.0" prefHeight="31.0" prefWidth="88.0" promptText="Valgt rom" />
       <CheckBox fx:id="hele_dagen" layoutX="163.0" layoutY="233.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="147.0" text="Hele dagen" />
       <CheckBox fx:id="gjentakelse" layoutX="354.0" layoutY="233.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="Gjentakelse" />
       <Button fx:id="forkast_knapp" layoutX="883.0" layoutY="641.0" mnemonicParsing="false" onAction="#reset" text="Forkast" />
@@ -22,15 +22,17 @@
             <Font name="System Bold" size="39.0" />
          </font></Label>
       <Label layoutX="165.0" layoutY="137.0" text="Startdato" />
-      <Label layoutX="611.0" layoutY="137.0" text="Sluttdato" />
+      <Label layoutX="694.0" layoutY="137.0" text="Sluttdato" />
       <Label layoutX="161.0" layoutY="588.0" text="Antall gjester" />     
       <Label layoutX="592.0" layoutY="589.0" text="Møterom:" />
       <HBox layoutX="163.0" layoutY="170.0" prefHeight="39.0" prefWidth="681.0" spacing="30.0">
          <children>
             <DatePicker fx:id="startdato" onAction="#handleDato" prefHeight="35.0" prefWidth="160.0" />
-            <TextField fx:id="fratid" onKeyTyped="#handleTid" prefHeight="35.0" prefWidth="80.0" promptText="10:00" />
+            <ChoiceBox fx:id="timeFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="minuttFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
             <Label text="-" />
-            <TextField fx:id="tiltid" onKeyTyped="#handleTid" prefHeight="35.0" prefWidth="80.0" promptText="12:00" />
+            <ChoiceBox fx:id="timeTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="minuttTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
             <DatePicker fx:id="sluttdato" onAction="#handleDato" prefHeight="35.0" prefWidth="160.0" />
          </children>
       </HBox>
@@ -40,6 +42,11 @@
                <children>
                   <Label text="Legg til gjester" />
                   <TextField fx:id="legg_til_gjester" onAction="#addGjest" prefHeight="31.0" prefWidth="208.0" promptText="Legg til e-postadresser.." />
+                  <Button fx:id="leggTil" mnemonicParsing="false" onAction="#addGjest" text="Legg til">
+                     <VBox.margin>
+                        <Insets left="250.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
                   <Label text="Gjesteliste" />
                   <ListView fx:id="gjesteliste" prefHeight="137.0" prefWidth="169.0" />
                </children>
@@ -71,6 +78,10 @@
             </VBox>
          </children>
       </HBox>
+      <Label layoutX="354.0" layoutY="137.0" text="Fra: " />
+      <Label layoutX="537.0" layoutY="137.0" text="Til:" />
+      <Text fx:id="feilTekst" fill="RED" layoutX="413.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tiden må være etter fra-tidspunkt!" />
+      <Text fx:id="feilDato" fill="RED" layoutX="688.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Datoen må være etter startdato" />
 
    </children>
 </AnchorPane>

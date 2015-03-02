@@ -312,5 +312,76 @@ public class KalenderDB {
 		return result.getString(1) + " " + result.getString(2);
 		
 	}
+
+	public String getGroup(String groupId) throws Exception {
+		init();
+		
+		query = "select epost\n" + 
+				"from gruppemedlem\n" + 
+				"where gruppeid=?";
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, groupId);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;
+	}
+
+	public void createGroup(String name, String user, String[] users) throws Exception {
+		init();
+		
+		query = "INSERT INTO `christwg_fp`.`gruppe` (`gruppenavn`) VALUES (?);";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, name);
+		statement.executeUpdate();
+		
+		query = "select COUNT(*) from gruppe";
+		statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		String gruppeId = result.getString(1);
+		
+		String[] bruker = {user};
+		System.out.println(users.length);
+		
+		addGroupMember(gruppeId,bruker);
+		addGroupMember(gruppeId,users);
+	}
+
+	public void addGroupMember(String groupId, String[] newMembers) throws Exception {
+		init();
+		
+		for(int i=0; i<newMembers.length;i++){
+			query = "INSERT INTO `christwg_fp`.`gruppemedlem` (`epost`, `gruppeid`) VALUES (?, ?);";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, newMembers[i]);
+			statement.setString(2, groupId);
+			
+			statement.executeUpdate();
+		}
+	}
+	
+	public void removeGroupMember(String groupId, String member) throws Exception {
+		init();
+		
+		query = "DELETE FROM `christwg_fp`.`gruppemedlem` WHERE `epost`=? and`gruppeid`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, member);
+		statement.setString(2, groupId);
+		statement.executeUpdate();
+	}
+	
+	public void removeGroup(String groupId) throws Exception {
+		init();
+		
+		query = "DELETE FROM `christwg_fp`.`gruppe` WHERE `gruppeid`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setInt(1, Integer.parseInt(groupId));
+		statement.executeUpdate();
+	}
 }
 
