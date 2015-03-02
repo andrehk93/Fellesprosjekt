@@ -1,80 +1,66 @@
 package klient;
 
-import java.text.ParseException;
-import java.time.DateTimeException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-
-import com.sun.javafx.scene.layout.region.Margins.Converter;
+import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 
 public class ny_avtale_controller {
 	
-	private ArrayList<Node> alle_enheter;
-	private ArrayList<Bruker> deltakere;
-	private Møterom rom;
+	private ArrayList<Møterom> alle_møterom;
+	private ArrayList<Bruker> gjeste_liste;
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
 	
-	public ny_avtale_controller() {
-		alle_enheter = new ArrayList<Node>();
-		deltakere = new ArrayList<Bruker>();
-		alle_enheter.add(avtalenavn);
-		alle_enheter.add(startdato);
-		alle_enheter.add(sluttdato);
-		alle_enheter.add(fratid);
-		alle_enheter.add(tiltid);
-		alle_enheter.add(legg_til_gjester);
-		alle_enheter.add(gjesteliste);
-		alle_enheter.add(søk_møterom);
-		alle_enheter.add(møteromliste);
-		alle_enheter.add(møteromliste_slider);
-		alle_enheter.add(antall_gjester);
-		alle_enheter.add(valgt_rom);
-		alle_enheter.add(forkast_knapp);
-		alle_enheter.add(lagre_knapp);
-		
-		
-	}
-	private Scene scene;
-    public void setScene(Scene scene) { this.scene = scene; }
-    
-    
-    
-    @FXML
+	
+	@FXML
+	Button leggTil = new Button();
+	@FXML
+	Text feilDato = new Text();
+	@FXML
+	CheckBox gjentakelse = new CheckBox();
+	@FXML
     TextField avtalenavn = new TextField();
+	@FXML
+    Text feilTekst = new Text();
     @FXML
     DatePicker startdato = new DatePicker();
     @FXML
     DatePicker sluttdato = new DatePicker();
     @FXML
-    TextField fratid = new TextField();
+    ChoiceBox<String> timeFra = new ChoiceBox<String>();
     @FXML
-    TextField tiltid = new TextField();
+    ChoiceBox<String> timeTil = new ChoiceBox<String>();
+    @FXML
+    ChoiceBox<String> minuttFra = new ChoiceBox<String>();
+    @FXML
+    ChoiceBox<String> minuttTil = new ChoiceBox<String>();
     @FXML
     TextField legg_til_gjester = new TextField();
     @FXML
-    ListView gjesteliste = new ListView();
+    ListView<String> gjesteliste = new ListView<String>();
     @FXML
     Button søk_møterom = new Button();
     @FXML
-    ListView møteromliste = new ListView();
+    ListView<String> møteromliste = new ListView<String>();
     @FXML
     Slider møteromliste_slider = new Slider();
     @FXML
@@ -85,11 +71,73 @@ public class ny_avtale_controller {
     Button forkast_knapp = new Button();
     @FXML
     Button lagre_knapp = new Button();
+    List<String> gjestelisten;
+    ObservableList<String> gjestene;
+	
+	public void initialize() {
+		gjeste_liste = new ArrayList<Bruker>();
+		gjestelisten = new ArrayList<String>();
+    	gjestene = FXCollections.observableList(gjestelisten);
+		feilTekst.setVisible(false);
+		feilDato.setVisible(false);
+		System.out.println("LETS CREATE");
+		List<String> list = new ArrayList<String>();
+		ObservableList<String> timer = FXCollections.observableList(list);
+		for (int i = 0; i < 24; i++) {
+			String leggTil = "";
+			if (i < 10) {
+				leggTil = "0" + i;
+			}
+			else {
+				leggTil = i +"";
+			}
+			timer.add(leggTil);
+		}
+		System.out.println(timer);
+		timeFra.setItems(timer);
+		timeTil.setItems(timer);
+		List<String> list_2 = new ArrayList<String>();
+		ObservableList<String> minutter = FXCollections.observableList(list_2);
+		for (int i = 0; i < 60; i++) {
+			String leggTil = "";
+			if (i%5 == 0) {
+				if (i < 10) {
+					leggTil = "0" + i;
+				}
+				else {
+					leggTil = i +"";
+				}
+				minutter.add(leggTil);
+			}
+		}
+		System.out.println(minutter);
+		minuttFra.setItems(minutter);
+		System.out.println(minuttFra.getItems());
+		minuttTil.setItems(minutter);
+	}
     
     
     
-    public void showRom() {
-    	
+    public void showRom(ArrayList<String> rommene) {
+    	møteromliste.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+    	    @Override
+    	    public void changed(ObservableValue<? extends String> observable,
+    	            String oldValue, String newValue) {
+    	    	valgt_rom.setText(newValue);
+    	    }
+    	});
+    	ObservableList<String> rom = FXCollections.observableList(rommene);
+    	møteromliste.setItems(rom);
+    }
+    
+    public Møterom getRom() {
+    	System.out.println(valgt_rom.getText());
+    	for (Møterom rom : alle_møterom) {
+    		if ((rom.getNavn() + " - " + rom.getKapasitet() + " plasser").equals(valgt_rom.getText())) {
+    			return rom;
+    		}
+    	}
+    	return null;
     }
     
     public void reset() {
@@ -97,76 +145,118 @@ public class ny_avtale_controller {
     }
     
     public void handleDato() {
-    	
+    	ChangeListener<LocalDate> datoEndring = new ChangeListener<LocalDate>() {
+
+			@Override
+			public void changed(ObservableValue<? extends LocalDate> arg0,
+					LocalDate arg1, LocalDate arg2) {
+				if (sjekkDato(startdato.getValue(), sluttdato.getValue())) {
+					dato = startdato.getValue();
+				}
+				else {
+					
+				}
+			}
+    	};
+    	startdato.valueProperty().addListener(datoEndring);
+    	sluttdato.valueProperty().addListener(datoEndring);
     }
     
-    
-    public void handleTid(KeyEvent event) {
-    	String tall = "0123456789";
-    	String tekst = fratid.getText();
-    	if (tekst.length() == 1) {
-    		if (tekst.equals("0") || tekst.equals("1") || tekst.equals("2")) {
-    			System.out.println("ok");
-    		}
-    		else {
-    			fratid.setText(null);
-    		}
-    	}
-    	if (tekst.length() == 2) {
-    		if (tekst.substring(0,1).equals("0") || tekst.substring(0,1).equals("1")) {
-    			if (tall.contains(tekst.substring(1,2))) {
-    				System.out.println("MHMH");
+    public boolean sjekkDato(LocalDate start, LocalDate slutt) {
+    	try {
+    		if (gjentakelse.isSelected()) {
+    			if (startdato.getValue().isBefore(sluttdato.getValue())) {
+    				feilDato.setVisible(false);
+    				dato = start;
+    				return true;
     			}
     			else {
-    				fratid.setText(tekst.substring(0,1));
-    				fratid.end();
+    				sluttdato.setValue(startdato.getValue());
+    				feilDato.setVisible(true);
+    				return false;
     			}
     		}
     		else {
-    			if (tall.substring(0,4).contains(tekst.substring(1,2))) {
-    				System.out.println("MHMH");
-    			}
-    			else {
-    				fratid.setText(tekst.substring(0,1));
-    				fratid.end();
-    			}
+    			dato = start;
     		}
     	}
-    	if (tekst.length() == 3) {
-    		if (tekst.charAt(2) == ':') {
-    			System.out.println("jippi");
-    		}
-    		else {
-    			fratid.setText(tekst.substring(0,2));
-    			fratid.end();
-    		}
+    	catch (NullPointerException e) {
+    		feilDato.setVisible(false);
+    		return false;
     	}
-    	if (tekst.length() == 4) {
-    		if (tall.substring(0,6).contains(tekst.substring(3,4))) {
-    			System.out.println("Nice");
-    		}
-    		else {
-    			fratid.setText(tekst.substring(0,3));
-    			fratid.end();
-    		}
+    	return false;
+    }
+    
+    //Holder kontroll på tidene og at de er etter hverandre
+    public void handleTid() {
+    	ChangeListener<String> tider = new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) {
+				try {
+					slutt = LocalTime.of(Integer.parseInt(timeTil.getValue().toString()),
+							Integer.parseInt(minuttTil.getValue().toString()));
+			    	start = LocalTime.of(Integer.parseInt(timeFra.getValue().toString()),
+			    			Integer.parseInt(minuttFra.getValue().toString()));
+					if (sjekkTid(start, slutt)) {
+						feilTekst.setVisible(false);
+					}
+					else {
+						feilTekst.setVisible(true);
+					}
+				}
+				catch (NullPointerException e) {
+				}
+			}
+    	};
+    	minuttTil.valueProperty().addListener(tider);
+    	minuttFra.valueProperty().addListener(tider);
+    	timeTil.valueProperty().addListener(tider);
+    	timeFra.valueProperty().addListener(tider);
+    }
+    
+    public boolean sjekkTid(LocalTime start, LocalTime slutt) {
+    	if (start.isBefore(slutt)) {
+    		return true;
     	}
-    	if (tekst.length() == 5) {
-    		if (tall.contains(tekst.substring(4,5))) {
-    			System.out.println("ferdig");
-    		}
-    		else {
-    			fratid.setText(tekst.substring(0,4));
-    			fratid.end();
-    		}
+    	else {
+    		timeTil.setValue(timeFra.getValue());
+    		minuttTil.setValue(minuttFra.getValue());
+    		slutt = LocalTime.of(Integer.parseInt(timeTil.getValue().toString()),
+    				Integer.parseInt(minuttTil.getValue().toString()));
+    		return false;
+    		
     	}
     }
     
-    public void addGjest() {
+    public void showGjest(Bruker gjest) {
+    	gjestene.add(gjest.getNavn());
+    	this.gjesteliste.setItems(gjestene);
     	
     }
     
-    public void finnRom() {
-    	
+    public void addGjest(ActionEvent event) {
+    	//Må finne brukeren i databasen
+    	Bruker gjest = new Bruker(legg_til_gjester.getText(), "ahk9339@gmail.com");
+    	showGjest(gjest);
+    	gjeste_liste.add(gjest);
+    }
+    
+    public void finnRom(ActionEvent event) throws IOException {
+    	System.out.println("DATO: " + dato.toString());
+    	System.out.println("FRA: " + start.toString());
+    	System.out.println("TIL: " + slutt.toString());
+    	System.out.println("STR: " + gjeste_liste.size());
+    	String rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
+    	System.out.println("ROMMENE: " + rom);
+    	ArrayList<String> rommene = new ArrayList<String>();
+    	String[] rom_listen = rom.split(" ");
+    	for (int i = 0; i < rom_listen.length; i++) {
+    		rommene.add(rom_listen[i]);
+		}
+    	//Må spørre database om ledig(e) rom, midlertidig metode:
+    	showRom(rommene);
     }
     
     
@@ -190,20 +280,15 @@ public class ny_avtale_controller {
 	}
 	
 	public void lagre(ActionEvent event) {
-		boolean farge_sjekk = true;
-		for (Node enhet : alle_enheter) {
-			if (enhet.getStyle().equals("-fx-text-box-border : red ")) {
-				farge_sjekk = false;
-			}
-		}
-		
-		if (farge_sjekk) {
-			Avtale avtale = new Avtale(getBruker(), deltakere, new TidsIntervall(start, slutt, dato), rom);
+		System.out.println(getRom().getNavn());
+		if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
+			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), getRom());
 		}
 	}
 	
 	public Bruker getBruker() {
-		return null;
+		Bruker meg = new Bruker("Andreas Kvistad", "ahk9339@gmail.com");
+		return meg;
 	}
 		
 	public boolean basicInputCheck(String input) {
