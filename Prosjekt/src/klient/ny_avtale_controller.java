@@ -1,5 +1,6 @@
 package klient;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class ny_avtale_controller {
     
     
     
-    public void showRom(ArrayList<Møterom> rommene) {
+    public void showRom(ArrayList<String> rommene) {
     	møteromliste.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
     	    @Override
     	    public void changed(ObservableValue<? extends String> observable,
@@ -125,13 +126,7 @@ public class ny_avtale_controller {
     	    	valgt_rom.setText(newValue);
     	    }
     	});
-    	alle_møterom = rommene;
-    	System.out.println("Lager rom: ");
-    	List<String> rom_liste = new ArrayList<String>();
-    	for (Møterom rom : rommene) {
-    		rom_liste.add(rom.getNavn() + " - " + rom.getKapasitet() + " plasser");
-    	}
-    	ObservableList<String> rom = FXCollections.observableList(rom_liste);
+    	ObservableList<String> rom = FXCollections.observableList(rommene);
     	møteromliste.setItems(rom);
     }
     
@@ -156,6 +151,7 @@ public class ny_avtale_controller {
 			public void changed(ObservableValue<? extends LocalDate> arg0,
 					LocalDate arg1, LocalDate arg2) {
 				if (sjekkDato(startdato.getValue(), sluttdato.getValue())) {
+					dato = startdato.getValue();
 				}
 				else {
 					
@@ -179,6 +175,9 @@ public class ny_avtale_controller {
     				feilDato.setVisible(true);
     				return false;
     			}
+    		}
+    		else {
+    			dato = start;
     		}
     	}
     	catch (NullPointerException e) {
@@ -244,13 +243,19 @@ public class ny_avtale_controller {
     	gjeste_liste.add(gjest);
     }
     
-    public void finnRom(ActionEvent event) {
+    public void finnRom(ActionEvent event) throws IOException {
+    	System.out.println("DATO: " + dato.toString());
+    	System.out.println("FRA: " + start.toString());
+    	System.out.println("TIL: " + slutt.toString());
+    	System.out.println("STR: " + gjeste_liste.size());
+    	String rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
+    	System.out.println("ROMMENE: " + rom);
+    	ArrayList<String> rommene = new ArrayList<String>();
+    	String[] rom_listen = rom.split(" ");
+    	for (int i = 0; i < rom_listen.length; i++) {
+    		rommene.add(rom_listen[i]);
+		}
     	//Må spørre database om ledig(e) rom, midlertidig metode:
-    	Møterom rom = new Møterom(20, "gobi");
-    	Møterom rom2 = new Møterom(30, "moki");
-    	ArrayList<Møterom> rommene = new ArrayList<Møterom>();
-    	rommene.add(rom);
-    	rommene.add(rom2);
     	showRom(rommene);
     }
     

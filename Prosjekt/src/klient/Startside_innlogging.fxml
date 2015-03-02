@@ -9,7 +9,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.InnloggingController">
    <children>
    <!-- BUTTON - LOGG INN https://gist.github.com/jewelsea/6460130-->
-      <Button fx:id="logginn" layoutX="435.0" layoutY="350.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="94.0" text="Logg inn" />
+      <Button fx:id="logginn" layoutX="435.0" layoutY="350.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="94.0" text="Logg inn" onAction="#handleButtonAction" />
        
       <Label fx:id="msg" layoutX="387.0" layoutY="52.0" text="Velkommen">
         
