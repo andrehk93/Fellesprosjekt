@@ -51,6 +51,12 @@ public class Klienten {
 		return rom;
 	}
 	
+	public static String getAllUsers() throws IOException{
+		String toServer = "GET AVAILABLE USERS 2000-01-01 00:00 00:01";
+		String users = sendTilServer(toServer);
+		return users;
+	}
+	
 	public static void lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
 	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
