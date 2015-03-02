@@ -30,7 +30,8 @@ public class ny_avtale_controller {
 	private LocalTime slutt;
 	private LocalDate dato;
 	
-	
+	@FXML
+	CheckBox hele_dagen = new CheckBox();
 	@FXML
 	Button leggTil = new Button();
 	@FXML
@@ -75,6 +76,59 @@ public class ny_avtale_controller {
     ObservableList<String> gjestene;
 	
 	public void initialize() {
+		sluttdato.setDisable(true);
+		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean arg1, Boolean arg2) {
+				if (gjentakelse.isSelected()) {
+					sluttdato.setDisable(false);
+				}
+				else {
+					sluttdato.setValue(null);
+					slutt = null;
+					sluttdato.setDisable(true);
+				}
+			}
+			
+		};
+		gjentakelse.selectedProperty().addListener(aktiver);
+		
+		ChangeListener<Boolean> allDay = new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean arg1, Boolean arg2) {
+				if (hele_dagen.isSelected()) {
+					timeFra.setDisable(true);
+					timeTil.setDisable(true);
+					minuttFra.setDisable(true);
+					minuttTil.setDisable(true);
+					timeFra.setValue(null);
+					timeTil.setValue(null);
+					minuttFra.setValue(null);
+					minuttTil.setValue(null);
+					start = null;
+					slutt = null;
+					sluttdato.setValue(null);
+					slutt = null;
+					sluttdato.setDisable(true);
+				}
+				else {
+					timeFra.setDisable(false);
+					timeTil.setDisable(false);
+					minuttFra.setDisable(false);
+					minuttTil.setDisable(false);
+					sluttdato.setDisable(false);
+				}
+			}
+			
+		};
+		hele_dagen.selectedProperty().addListener(allDay);
+		
+		
+		
 		gjeste_liste = new ArrayList<Bruker>();
 		gjestelisten = new ArrayList<String>();
     	gjestene = FXCollections.observableList(gjestelisten);
@@ -128,16 +182,6 @@ public class ny_avtale_controller {
     	});
     	ObservableList<String> rom = FXCollections.observableList(rommene);
     	møteromliste.setItems(rom);
-    }
-    
-    public Møterom getRom() {
-    	System.out.println(valgt_rom.getText());
-    	for (Møterom rom : alle_møterom) {
-    		if ((rom.getNavn() + " - " + rom.getKapasitet() + " plasser").equals(valgt_rom.getText())) {
-    			return rom;
-    		}
-    	}
-    	return null;
     }
     
     public void reset() {
@@ -237,6 +281,7 @@ public class ny_avtale_controller {
     }
     
     public void addGjest(ActionEvent event) {
+    	
     	//Må finne brukeren i databasen
     	Bruker gjest = new Bruker(legg_til_gjester.getText(), "ahk9339@gmail.com");
     	showGjest(gjest);
@@ -244,11 +289,13 @@ public class ny_avtale_controller {
     }
     
     public void finnRom(ActionEvent event) throws IOException {
-    	System.out.println("DATO: " + dato.toString());
-    	System.out.println("FRA: " + start.toString());
-    	System.out.println("TIL: " + slutt.toString());
-    	System.out.println("STR: " + gjeste_liste.size());
-    	String rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
+    	String rom = "";
+    	if (hele_dagen.isSelected()) {
+    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", gjeste_liste.size() + "");
+    	}
+    	else {
+    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
+    	}
     	System.out.println("ROMMENE: " + rom);
     	ArrayList<String> rommene = new ArrayList<String>();
     	String[] rom_listen = rom.split(" ");
@@ -279,10 +326,10 @@ public class ny_avtale_controller {
 		avtalenavn.textProperty().addListener(avtaleListener);
 	}
 	
-	public void lagre(ActionEvent event) {
-		System.out.println(getRom().getNavn());
+	public void lagre(ActionEvent event) throws IOException {
+		Møterom rom =  new Møterom(100, valgt_rom.getText());
 		if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
-			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), getRom());
+			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom);
 		}
 	}
 	
@@ -290,7 +337,8 @@ public class ny_avtale_controller {
 		Bruker meg = new Bruker("Andreas Kvistad", "ahk9339@gmail.com");
 		return meg;
 	}
-		
+	
+
 	public boolean basicInputCheck(String input) {
 		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
 				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";

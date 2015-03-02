@@ -1,6 +1,7 @@
 package klient;
 
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -16,13 +17,14 @@ public class Avtale {
 		
 	}
 	
-	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom){
+	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom) throws IOException{
 		setEier(eier);
 		settOppVarsel(this);
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
 		lagVarsel(this);
+		Klienten.lagAvtale(tid, rom);
 	}
 	
 	private Property<Bruker> eierProperty = new ObjectPropertyBase<Bruker>(null) {
@@ -279,37 +281,6 @@ public class Avtale {
 		}
 	}
 	
-	
-	public static void main(String[] args) {
-		Bruker Andreas = new Bruker("Andreas", "ahk9339@gmail.com");
-		Bruker Lars = new Bruker("lars", "l@hotmail.com");
-		Bruker jens = new Bruker("jens", "j@hotmail.com");
-		Bruker ivar = new Bruker("ivar", "i@hotmail.com");
-		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
-		brukere.add(Lars);
-		brukere.add(jens);
-		TidsIntervall tiden = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
-		Møterom rommet = new Møterom(20, "Gobi");
-		Møterom rom_2 = new Møterom(20, "Moki");
-		rommet.setOpptatt(tiden);
-		TidsIntervall tid = new TidsIntervall(LocalTime.of(10, 15), LocalTime.of(11, 15), LocalDate.of(2015, 12, 12));
-		TidsIntervall tid_2 = new TidsIntervall(LocalTime.of(11, 15), LocalTime.of(12, 15), LocalDate.of(2015, 12, 12));
-		Avtale møte = new Avtale(Andreas, brukere, tid, rommet);
-		Andreas.addAvtale(møte);
-		
-		//Tester:
-		System.out.println("ANDREAS SINE AVTALER: " + Andreas.getAvtaler());
-		møte.setEier(jens);
-		System.out.println("ENDRER TIDEN");
-		møte.setTid(tid_2);
-		System.out.println("ENDRER ROMMET");
-		møte.endreRom(rom_2);
-		System.out.println("ENDRER DELTAKERE");
-		møte.removeDeltakere(Lars);
-		System.out.println("LARS SINE AVTALER: " + Lars.getAvtaler());
-		System.out.println("Andreas: " + Andreas.getAvtaler());
-		System.out.println("IVAR SINE AVTALER: " + ivar.getAvtaler());
-	}
 	
 	
 }

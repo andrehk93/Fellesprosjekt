@@ -50,4 +50,10 @@ public class Klienten {
 		String rom = sendTilServer(toServer);
 		return rom;
 	}
+	
+	public static void lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
+		String toServer = "CREATE APP " + tid.getDato().toString() + " "
+	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
+		sendTilServer(toServer);
+	}
 }
