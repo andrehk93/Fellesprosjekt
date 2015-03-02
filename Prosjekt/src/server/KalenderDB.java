@@ -305,8 +305,8 @@ public class KalenderDB {
 		init();
 		
 		query = "select epost\n" + 
-				"from bruker, gruppe\n" + 
-				"where gruppeid=? and gruppe=gruppeid";
+				"from gruppemedlem\n" + 
+				"where gruppeid=?";
 		
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, groupId);
@@ -334,6 +334,7 @@ public class KalenderDB {
 		String gruppeId = result.getString(1);
 		
 		String[] bruker = {user};
+		System.out.println(users.length);
 		
 		addGroupMember(gruppeId,bruker);
 		addGroupMember(gruppeId,users);
@@ -343,10 +344,10 @@ public class KalenderDB {
 		init();
 		
 		for(int i=0; i<newMembers.length;i++){
-			query = "UPDATE `christwg_fp`.`bruker` SET `gruppe`=? WHERE `epost`=?;";
+			query = "INSERT INTO `christwg_fp`.`gruppemedlem` (`epost`, `gruppeid`) VALUES (?, ?);";
 			PreparedStatement statement = con.prepareStatement(query);
-			statement.setString(1, groupId);
-			statement.setString(2, newMembers[i]);
+			statement.setString(1, newMembers[i]);
+			statement.setString(2, groupId);
 			
 			statement.executeUpdate();
 		}
@@ -355,10 +356,19 @@ public class KalenderDB {
 	public void removeGroupMember(String groupId, String member) throws Exception {
 		init();
 		
-		query = "UPDATE `christwg_fp`.`bruker` SET `gruppe`=NULL WHERE `epost`=? and `gruppe`=?;";
+		query = "DELETE FROM `christwg_fp`.`gruppemedlem` WHERE `epost`=? and`gruppeid`=?;";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, member);
 		statement.setString(2, groupId);
+		statement.executeUpdate();
+	}
+	
+	public void removeGroup(String groupId) throws Exception {
+		init();
+		
+		query = "DELETE FROM `christwg_fp`.`gruppe` WHERE `gruppeid`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setInt(1, Integer.parseInt(groupId));
 		statement.executeUpdate();
 	}
 }

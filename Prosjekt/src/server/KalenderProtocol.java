@@ -53,6 +53,7 @@ public class KalenderProtocol {
 					return "OK";
 				case("REMOVE"):
 					removeHandler(input);
+					return "OK";
 				case("LOGOUT"):
 					state = WAITING;
 					return "Bye.";
@@ -68,6 +69,8 @@ public class KalenderProtocol {
 		switch(input[1].toUpperCase()){
 		case "GROUPMEMBER":
 			kalenderdb.removeGroupMember(input[2], input[3]);
+		case "GROUP":
+			kalenderdb.removeGroup(input[2]);
 		}
 		
 	}
@@ -76,7 +79,7 @@ public class KalenderProtocol {
 		KalenderDB kalenderdb = new KalenderDB();
 		switch(input[1].toUpperCase()){
 			case "GROUPMEMBER":
-				kalenderdb.addGroupMember(input[2], Arrays.copyOfRange(input,2,input.length));
+				kalenderdb.addGroupMember(input[2], Arrays.copyOfRange(input,3,input.length));
 		}
 		
 	}
