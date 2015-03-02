@@ -178,6 +178,9 @@ public class KalenderProtocol {
 			case "NOTIFICATIONS":
 				output = kalenderdb.getNotifications(user);
 				break;
+			case "ROOMDETAILS":
+				output = kalenderdb.getRoomDetails(input[1]);
+				break;
 			case "GROUP":
 				output = kalenderdb.getGroup(input[1]);
 				break;
