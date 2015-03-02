@@ -371,5 +371,17 @@ public class KalenderDB {
 		statement.setInt(1, Integer.parseInt(groupId));
 		statement.executeUpdate();
 	}
+	
+	public String getUserDetails(String email) throws Exception{
+		init();
+		
+		query = "SELECT epost, fornavn, etternavn FROM bruker WHERE epost = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, email);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		
+		return result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
+	}
 }
 
