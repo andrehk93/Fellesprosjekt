@@ -56,4 +56,9 @@ public class Klienten {
 	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
 		sendTilServer(toServer);
 	}
+
+	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException {
+		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passord;
+		sendTilServer(toServer);
+	}
 }

@@ -1,5 +1,6 @@
 package klient;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -185,7 +186,7 @@ public class Bruker {
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Bruker Andreas = new Bruker("Andreas", "a");
 		Bruker Martin = new Bruker("Martin", "m");
 		Bruker Ch = new Bruker("Ch", "c");
