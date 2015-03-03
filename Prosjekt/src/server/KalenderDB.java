@@ -207,7 +207,11 @@ public class KalenderDB {
 		return result;
 	}
 	
+<<<<<<< HEAD
+	public String createApp(String user, String date, String from, String to, String room) throws Exception{
+=======
 	public long createApp(String user, String date, String from, String to, int room) throws Exception{
+>>>>>>> 460ec986b4703490ed37f235e43386ba0e1f3ce7
 		init();
 		
 		query = "INSERT INTO `avtale` (`fra`, `til`, `dato`, `romnavn`, `avtaleadmin`) \r\n" +
@@ -216,8 +220,17 @@ public class KalenderDB {
 		statement.setString(1, from);
 		statement.setString(2, to);
 		statement.setString(3, date);
-		statement.setInt(4, room);
+		statement.setString(4, room);
 		statement.setString(5, user);
+<<<<<<< HEAD
+		statement.executeUpdate();
+		query = "SELECT LAST_INSERT_ID();";
+		statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		String res= result.getString(1);
+		return res;
+=======
 		
 		int rows = statement.executeUpdate();
 		
@@ -228,6 +241,7 @@ public class KalenderDB {
 		try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
 			return generatedKeys.getLong(1);
 		}
+>>>>>>> 460ec986b4703490ed37f235e43386ba0e1f3ce7
 	}
 	
 	public int inviteUser(String user, String avtale) throws Exception{
@@ -352,11 +366,11 @@ public class KalenderDB {
 		statement.setString(1, name);
 		statement.executeUpdate();
 		
-		query = "select COUNT(*) from gruppe";
+		query = "SELECT LAST_INSERT_ID();";
 		statement = con.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		result.next();
-		String gruppeId = result.getString(1);
+		String gruppeId= result.getString(1);
 		
 		String[] bruker = {user};
 		System.out.println(users.length);
@@ -373,7 +387,6 @@ public class KalenderDB {
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setString(1, newMembers[i]);
 			statement.setString(2, groupId);
-			
 			statement.executeUpdate();
 		}
 	}

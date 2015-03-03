@@ -37,10 +37,12 @@ public class Klienten {
 		outToServer.writeBytes(message + "\r\n");
 		String output = "";
 		String tempString = inFromServer.readLine();
+		System.out.println("ER DET HER FOR F:" +tempString);
 		while(tempString.length() > 0) {
 			output += modifiedSentence = tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
+		System.out.println("SENDTIL; " + output);
 		return output;
 	}
 	
@@ -50,6 +52,7 @@ public class Klienten {
 		return rom;
 	}
 	
+<<<<<<< HEAD
 	public static String getAllUsers() throws IOException{
 		String toServer = "GET AVAILABLE USERS 2000-01-01 00:00 00:01";
 		String users = sendTilServer(toServer);
@@ -59,6 +62,11 @@ public class Klienten {
 	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
 		+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
+=======
+	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
+		String toServer = "CREATE APP " + tid.getDato().toString() + " "
+	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
+>>>>>>> 460ec986b4703490ed37f235e43386ba0e1f3ce7
 		return sendTilServer(toServer);
 	}
 	
@@ -69,10 +77,13 @@ public class Klienten {
 	public static String getBruker(String email) throws IOException {
 		String toServer = "GET USERFULLNAME " + email;
 		return sendTilServer(toServer);
+<<<<<<< HEAD
 	}
 
 	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException {
 		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passord;
 		sendTilServer(toServer);
+=======
+>>>>>>> 460ec986b4703490ed37f235e43386ba0e1f3ce7
 	}
 }
