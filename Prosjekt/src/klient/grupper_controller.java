@@ -52,7 +52,6 @@ public class grupper_controller {
 	
     public void handleGruppenavn(KeyEvent event) throws IOException {
     	System.out.println("Hei");
-    	getUsers();
     }
     
     public void getUsers() throws IOException{
