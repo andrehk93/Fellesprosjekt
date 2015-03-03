@@ -19,6 +19,8 @@ public class KalenderController {
 	@FXML private GridPane ruter;
 	@FXML private Button forrigeManed;
 	@FXML private Button nesteManed;
+	@FXML private Label manedLabel;
+	@FXML private Label arLabel;
 	private int maned;
 	private int aar;
 	
@@ -37,6 +39,7 @@ public class KalenderController {
 	
 	private void setMonth(int month){
 		maned = month;
+		manedLabel.setText(LocalDate.of(2015, month, 01).getMonth().toString());
 	}
 	
 	private int getMonth(){
@@ -45,6 +48,7 @@ public class KalenderController {
 	
 	private void setYear(int year){
 		aar = year;
+		arLabel.setText(String.valueOf(year));
 	}
 	
 	private int getYear(){
@@ -121,20 +125,24 @@ public class KalenderController {
 	
 	@FXML
 	private void nextMonth(ActionEvent event) {
-		setMonth(getMonth()+1);
-		if(getMonth()>=12){
+		if(getMonth()+1>=13){
 			setMonth(1);
 			setYear(getYear()+1);
+		}
+		else{
+			setMonth(getMonth()+1);
 		}
 		flushView();
 	}
 	
 	@FXML
 	private void previousMonth(ActionEvent event) {
-		setMonth(getMonth()-1);
-		if(getMonth()<=0){
+		if(getMonth()-1<=0){
 			setMonth(12);
 			setYear(getYear()-1);
+		}
+		else{
+			setMonth(getMonth()-1);
 		}
 		flushView();
 	}
