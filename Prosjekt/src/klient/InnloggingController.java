@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +35,7 @@ public class InnloggingController {//implements Initializable
 
 
 	@FXML// LOGG INN KNAPPEN
-	private void handleButtonAction(ActionEvent event) throws IOException {
+	private void handleButtonAction(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		checkInput();
 		if (Klienten.login(brukernavn.getText(), passord.getText())) {
 			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);

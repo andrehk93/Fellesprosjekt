@@ -1,22 +1,124 @@
 /**
- * vista.css
+ * name.css
  *   Place in the same source directory as Main.java
  *   Ensure that your build system copies this file to your build output directory.
  */
  
+ /**.root {
+ 	-fx-background-image: url("subtlewhite.jpg")
+ }*/
+ 
+
+/**
+.root{
+	-fx-background-color: #FFFFFF;
+	-fx-background-image: url("subtlewhite.jpg")
+	}*/
+
+html { 
+  background: url(./images/mintbackground.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+	
 #header {
     -fx-background-color: steelblue;
     -fx-text-fill: white;
     -fx-padding: 10px;
 }
- 
-#vistaHolder {
-    -fx-background-color: lightgrey;
+
+
+.label {
+	-fx-font-size: 18px;
+    -fx-font-family: "Segoe UI Light";
+}
+
+.label-name {
+	-fx-font-size: 15px;
+    -fx-font-family: "Segoe UI Light";
+}
+
+.label-errormsg {
+	-fx-font-size: 15px;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: red;
+    
+}
+
+.appointments {
+	-fx-font-size: 12px;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: black;
+    
+}
+
+.label-days {
+	-fx-font-size: 18px;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: black;
+    
+}
+
+.label-header {
+    -fx-font-size: 32pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-opacity: 1;
+}
+
+.text-field {
+    -fx-font-size: 15px;
+    -fx-font-family: "Segoe UI Semibold";
 }
  
+.button-arrows{
+	-fx-base: lightgrey;
+	-fx-font-size: 15px;
+	-fx-font-family: "Segoe UI Bold";
+	-fx-text-fill: black;
+	-fx-border-color: #e2e2e2;
+	-fx-pref-width:  125 px;
+    -fx-pref-height: 35 px;
+	
+}
 
- 
-.button {
-    /**-fx-base: lightblue;*/
+.button-Leggtil{
+	-fx-base: lightgrey;
+	-fx-font-size: 15px;
+	-fx-font-family: "Segoe UI Light";
+	-fx-text-fill: black;
+	-fx-border-color: #e2e2e2;
+	-fx-pref-width:  100 px;
+    -fx-pref-height: 35 px;
+	
+}
+
+.button-pressed {
+    -fx-base: blue;
     -fx-font-size: 15px;
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-font-family: "Segoe UI";
+    -fx-alignment: center;
+    -fx-pref-width: 125 px;
+    -fx-pref-height: 35 px;
+
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+    
+
+}
+.button {
+    -fx-base: lightblue;
+    -fx-font-size: 15px;
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-font-family: "Segoe UI";
+    -fx-alignment: center;
+    -fx-pref-width: 125 px;
+    -fx-pref-height: 35 px;
+
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+    
+
 }

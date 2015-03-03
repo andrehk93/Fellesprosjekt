@@ -1,6 +1,7 @@
 package klient;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,12 +24,12 @@ public class OpprettingController {
         ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
     }
 	@FXML// OPPRETT BRUKER - Gå til neste screen
-	private void nextPane(ActionEvent event) throws IOException {
+	private void nextPane(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		lagBruker(event);
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 	}
 	
-	public void lagBruker(ActionEvent event) throws IOException {
+	public void lagBruker(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		Klienten.createUser(epost.getText(), fornavn.getText(), etternavn.getText(), passord.getText());
 	}
  
