@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Klienten {
 	
@@ -57,10 +56,19 @@ public class Klienten {
 		return users;
 	}
 	
-	public static void lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
+	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
-	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
-		sendTilServer(toServer);
+		+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
+		return sendTilServer(toServer);
+	}
+	
+	public static void leggTilAvtale(String email, String avtaleid) {
+		
+	}
+	
+	public static String getBruker(String email) throws IOException {
+		String toServer = "GET USERFULLNAME " + email;
+		return sendTilServer(toServer);
 	}
 
 	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException {

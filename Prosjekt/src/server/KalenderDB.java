@@ -197,30 +197,40 @@ public class KalenderDB {
 		return output;	
 	}
 	
-	public void createUser(String email, String firstName, String lastName, String password) throws Exception{
+	public int createUser(String email, String firstName, String lastName, String password) throws Exception{
 		init();
 		
 		query = "INSERT INTO `bruker` (`epost`, `fornavn`, `etternavn`, `passord`) \r\n" +
 		"VALUES(\"" + email + "\", \"" + firstName + "\", \"" + lastName + "\", \"" + password + "\");";
 		Statement statement = (Statement) con.createStatement();
-		statement.executeUpdate(query);
+		int result = statement.executeUpdate(query);
+		return result;
 	}
 	
-	public void createApp(String user, String date, String from, String to, int room) throws Exception{
+	public long createApp(String user, String date, String from, String to, int room) throws Exception{
 		init();
 		
 		query = "INSERT INTO `avtale` (`fra`, `til`, `dato`, `romnavn`, `avtaleadmin`) \r\n" +
 				"VALUES(?, ?, ?, ?, ?);";
-		PreparedStatement statement = con.prepareStatement(query);
+		PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, from);
 		statement.setString(2, to);
 		statement.setString(3, date);
 		statement.setInt(4, room);
 		statement.setString(5, user);
-		statement.executeUpdate();
+		
+		int rows = statement.executeUpdate();
+		
+		if (rows == 0) {
+			throw new SQLException("FAKK");
+		}
+		
+		try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+			return generatedKeys.getLong(1);
+		}
 	}
 	
-	public void inviteUser(String user, String avtale) throws Exception{
+	public int inviteUser(String user, String avtale) throws Exception{
 		init();
 		
 		query = "INSERT INTO `ermed` (`epost`, `avtaleid`) \r\n" +
@@ -228,7 +238,9 @@ public class KalenderDB {
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
 		statement.setString(2, avtale);
-		statement.executeUpdate();
+		int result = statement.executeUpdate();
+		return result;
+		
 	}
 
 	public void changeEmail(String user, String newEmail) throws Exception {
@@ -283,9 +295,9 @@ public class KalenderDB {
 		return output;	
 	}
 
-	public void sendNotification(String user, String appID, String message, String[] recepients) throws Exception {
+	public int sendNotification(String user, String appID, String message, String[] recepients) throws Exception {
 		init();
-		
+		int result = -1;
 		for(int i=0; i<recepients.length;i++){
 			query = "INSERT INTO `christwg_fp`.`varsler` (`epost`, `varsel`, `fra`, `avtaleid`, `tidspunkt`) VALUES (?, ?, ?, ?, ?)\n";
 			PreparedStatement statement = con.prepareStatement(query);
@@ -295,8 +307,9 @@ public class KalenderDB {
 			statement.setString(4, appID);
 			statement.setString(5, LocalTime.now().toString());
 			
-			statement.executeUpdate();
+			result = statement.executeUpdate();
 		}
+		return result;
 		
 	}
 	
@@ -387,13 +400,13 @@ public class KalenderDB {
 	public String getUserDetails(String email) throws Exception{
 		init();
 		
-		query = "SELECT epost, fornavn, etternavn FROM bruker WHERE epost = ?";
+		query = "SELECT fornavn, etternavn FROM bruker WHERE epost = ?";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, email);
 		ResultSet result = statement.executeQuery();
 		result.next();
 		
-		return result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
+		return result.getString(1) + " " + result.getString(2);
 	}
 }
 
