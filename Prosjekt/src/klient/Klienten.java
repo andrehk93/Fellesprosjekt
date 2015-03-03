@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Klienten {
 	
@@ -51,9 +50,15 @@ public class Klienten {
 		return rom;
 	}
 	
+	public static String getAllUsers() throws IOException{
+		String toServer = "GET AVAILABLE USERS 2000-01-01 00:00 00:01";
+		String users = sendTilServer(toServer);
+		return users;
+	}
+	
 	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
-	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
+		+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
 		return sendTilServer(toServer);
 	}
 	
@@ -64,5 +69,10 @@ public class Klienten {
 	public static String getBruker(String email) throws IOException {
 		String toServer = "GET USERFULLNAME " + email;
 		return sendTilServer(toServer);
+	}
+
+	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException {
+		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passord;
+		sendTilServer(toServer);
 	}
 }
