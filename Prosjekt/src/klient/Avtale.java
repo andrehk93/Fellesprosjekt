@@ -22,14 +22,10 @@ public class Avtale {
 	
 	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom) throws IOException{
 		setEier(eier);
-		System.out.println("OK");
 		//settOppVarsel(this);
 		setDeltakere(deltakere);
-		System.out.println("SÅLANGT");
 		setTid(tid);
-		System.out.println("Eller?");
 		setRom(rom);
-		System.out.println("OGSOAGDSÅ");
 		//lagVarsel(this);
 		avtaleid = Klienten.lagAvtale(tid, rom);
 		System.out.println("avtaleid: " + avtaleid);

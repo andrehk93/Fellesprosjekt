@@ -37,10 +37,12 @@ public class Klienten {
 		outToServer.writeBytes(message + "\r\n");
 		String output = "";
 		String tempString = inFromServer.readLine();
+		System.out.println("ER DET HER FOR F:" +tempString);
 		while(tempString.length() > 0) {
 			output += modifiedSentence = tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
+		System.out.println("SENDTIL; " + output);
 		return output;
 	}
 	

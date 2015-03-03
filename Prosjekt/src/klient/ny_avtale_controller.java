@@ -170,7 +170,6 @@ public class ny_avtale_controller {
 	}
     
     
-    
     public void showRom(ArrayList<String> rommene) {
     	møteromliste.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
     	    @Override
