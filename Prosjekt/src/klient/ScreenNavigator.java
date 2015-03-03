@@ -10,7 +10,8 @@ public class ScreenNavigator {
 	public static final String OPPRETTING = "Oppretting.fxml";
 	public static final String AVTALE = "ny_avtale.fxml";
 	public static final String MANEDSVISNING = "Kalender_månedsvisning.fxml";
-	public static final String DAGSVISNING = "Kalender_månedsvisning.fxml";
+	public static final String DAGSVISNING = "Dagsvisning.fxml";
+	public static final String UKESVISNING = "Ukesvisning.fxml";
 	public static final String GRUPPER ="grupper.fxml";
 	
 	/** The main application layout controller. */
