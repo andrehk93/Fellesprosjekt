@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -37,7 +38,7 @@ public class grupper_controller {
     @FXML
     TextField brukersøk = new TextField();
     @FXML
-    ListView brukerliste = new ListView();
+    ListView<Bruker> brukerliste = new ListView<Bruker>();
     @FXML
     ListView gruppemedlemmer_liste = new ListView();
     @FXML
@@ -55,6 +56,7 @@ public class grupper_controller {
     
     public void getUsers() throws IOException{
     	brukere = Klienten.getAllUserDetails();
+    	brukerliste.setItems((ObservableList) brukere);
     }
     
     
