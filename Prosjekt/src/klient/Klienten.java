@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Klienten {
 	
@@ -22,8 +24,20 @@ public class Klienten {
 		inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
 	
-	public static boolean login(String brukernavn, String passord) throws IOException {
-		String svar = sendTilServer("login " + brukernavn + " " + passord);
+	public static boolean login(String brukernavn, String passord) throws IOException, NoSuchAlgorithmException {	
+		
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		digest.update(passord.getBytes("UTF-8"));
+		byte[] passBytes = digest.digest();
+		
+		StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < passBytes.length; i++) {
+          sb.append(Integer.toString((passBytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        
+        String passw = sb.toString();
+		
+		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
 			return true;
 		}
@@ -71,8 +85,21 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 
-	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException {
-		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passord;
+	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException, NoSuchAlgorithmException {
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		digest.update(passord.getBytes("UTF-8"));
+		byte[] passBytes = digest.digest();
+		
+		StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < passBytes.length; i++) {
+          sb.append(Integer.toString((passBytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        
+        String passw = sb.toString();
+		
+		System.out.println(passw);
+		
+		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passw;
 		sendTilServer(toServer);
 	}
 }
