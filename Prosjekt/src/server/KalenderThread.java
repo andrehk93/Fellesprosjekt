@@ -28,7 +28,7 @@ public class KalenderThread extends Thread {
             	try {
             		outputLine = kp.processInput(inputLine) + "\r\n";
             	} catch(Exception ArrayIndexOutOfBoudsException){
-        			outputLine = "INCORRECT INPUT \r\n";
+        			outputLine = "ABSOLUTT RAR INPUT \r\n";
         		}
                 System.out.println(outputLine);
                 out.println(outputLine);

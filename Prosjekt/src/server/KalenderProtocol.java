@@ -46,8 +46,7 @@ public class KalenderProtocol {
 				case("CHANGE"):
 					changeHandler(input);
 				case("INVITE"):
-					createHandler(input);
-					return "OK";
+					return createHandler(input);
 				case("LOGOUT"):
 					state = WAITING;
 					return "Bye.";
@@ -82,28 +81,37 @@ public class KalenderProtocol {
 		}
 	}
 
-	private void createHandler(String[] input) throws Exception{
+	private String createHandler(String[] input) throws Exception{
 		KalenderDB kalenderdb = new KalenderDB();
+		String output = "-1";
 		switch(input[0].toUpperCase()){
 			case "USER":
 									// EPOST, FORNAVN, ETTERNAVN, PASSORD
-				kalenderdb.createUser(input[1], input[2], input[3], input[4]);
+				output = kalenderdb.createUser(input[1], input[2], input[3], input[4]) + "";
 				break;
 				
 			case "APP":
 									// DATO, FRA, TIL, ROM
-				kalenderdb.createApp(user, input[1], input[2], input[3], Integer.parseUnsignedInt(input[4]));
+				output = kalenderdb.createApp(user, input[1], input[2], input[3], Integer.parseUnsignedInt(input[4])) + "";
 				break;
 				
 			case "INVITE":
-				kalenderdb.inviteUser(input[1], input[2]);
+				output = kalenderdb.inviteUser(input[1], input[2]) + "";
 				break;
 			case "NOTIFICATION":
 				String message = findMessage(Arrays.copyOfRange(input, 2, input.length));
 				System.out.println((message.split(" ").length+3));
-				kalenderdb.sendNotification(user, input[1], message, Arrays.copyOfRange(input, message.split(" ").length+3, input.length));
+				output = "" + kalenderdb.sendNotification(user, input[1], message, Arrays.copyOfRange(input, message.split(" ").length+3, input.length));
 				break;
 		}
+		if(output.trim().equals("")){
+			output = "NONE";
+		} else if(output.equals("-1")){
+			output = "INCORRECT INPUT";
+		}
+		return output;
+		
+		
 	}
 	
 	private String findMessage(String[] input) {
@@ -156,7 +164,7 @@ public class KalenderProtocol {
 			case "GROUP":
 				output = kalenderdb.getGroup(input[1]);
 				break;
-			case "USERDETAILS":
+			case "USERFULLNAME":
 				output = kalenderdb.getUserDetails(input[1]);
 				break;
 			}

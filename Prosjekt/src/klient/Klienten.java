@@ -51,9 +51,18 @@ public class Klienten {
 		return rom;
 	}
 	
-	public static void lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
+	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
 	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
-		sendTilServer(toServer);
+		return sendTilServer(toServer);
+	}
+	
+	public static void leggTilAvtale(String email, String avtaleid) {
+		
+	}
+	
+	public static String getBruker(String email) throws IOException {
+		String toServer = "GET USERFULLNAME " + email;
+		return sendTilServer(toServer);
 	}
 }

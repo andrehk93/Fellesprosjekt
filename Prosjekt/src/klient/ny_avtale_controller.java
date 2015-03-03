@@ -109,10 +109,9 @@ public class ny_avtale_controller {
 					timeTil.setValue(null);
 					minuttFra.setValue(null);
 					minuttTil.setValue(null);
-					start = null;
-					slutt = null;
+					start = LocalTime.of(0, 0);
+					slutt = LocalTime.of(23, 59);
 					sluttdato.setValue(null);
-					slutt = null;
 					sluttdato.setDisable(true);
 				}
 				else {
@@ -280,10 +279,12 @@ public class ny_avtale_controller {
     	
     }
     
-    public void addGjest(ActionEvent event) {
+    public void addGjest(ActionEvent event) throws IOException {
     	
     	//Må finne brukeren i databasen
-    	Bruker gjest = new Bruker(legg_til_gjester.getText(), "ahk9339@gmail.com");
+    	String brukernavn = Klienten.getBruker(legg_til_gjester.getText());
+    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getText());
+    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getText());
     	showGjest(gjest);
     	gjeste_liste.add(gjest);
     }
@@ -327,6 +328,9 @@ public class ny_avtale_controller {
 	}
 	
 	public void lagre(ActionEvent event) throws IOException {
+		System.out.println(start);
+		System.out.println(slutt);
+		System.out.println(dato);
 		Møterom rom =  new Møterom(100, valgt_rom.getText());
 		if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
 			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom);

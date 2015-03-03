@@ -13,18 +13,26 @@ import javafx.beans.value.ObservableValue;
 
 public class Avtale {
 	
+	
+	String avtaleid;
+	
 	public Avtale() {
 		
 	}
 	
 	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom) throws IOException{
 		setEier(eier);
-		settOppVarsel(this);
+		System.out.println("OK");
+		//settOppVarsel(this);
 		setDeltakere(deltakere);
+		System.out.println("SÅLANGT");
 		setTid(tid);
+		System.out.println("Eller?");
 		setRom(rom);
-		lagVarsel(this);
-		Klienten.lagAvtale(tid, rom);
+		System.out.println("OGSOAGDSÅ");
+		//lagVarsel(this);
+		avtaleid = Klienten.lagAvtale(tid, rom);
+		System.out.println("avtaleid: " + avtaleid);
 	}
 	
 	private Property<Bruker> eierProperty = new ObjectPropertyBase<Bruker>(null) {
@@ -76,27 +84,14 @@ public class Avtale {
 	
 	//Antar at det legges til én
 	public void addDeltakere(Bruker deltaker) {
-		boolean duplikat = false;
-		if (gruppeProperty.getValue() != null) {
-			for (Bruker deltakere : gruppeProperty.getValue().getMedlemmer()) {
-				if (deltaker.equals(deltakere)) {
-					duplikat = true;
-				}
-			}
-			if (duplikat) {
-				System.out.println("brukeren: " + deltaker.getNavn() + " er i avtalen fra før");
-			}
-			else {
+		try {
+			for (Bruker bruker : gruppeProperty.getValue().getMedlemmer()) {
 				gruppeProperty.getValue().addMedlem(deltaker);
-				deltaker.addAvtale(this);
+				Klienten.leggTilAvtale(bruker.getEmail(), avtaleid);
 			}
 		}
-		else {
-			ArrayList<Bruker> deltakeren = new ArrayList<Bruker>();
-			deltakeren.add(deltaker);
-			Gruppe gruppen = new Gruppe(this, deltakeren);
-			gruppeProperty.setValue(gruppen);
-			deltaker.addAvtale(this);
+		catch (NullPointerException e) {
+			
 		}
 	}
 	
@@ -175,7 +170,15 @@ public class Avtale {
 	}
 	
 	public ArrayList<Bruker> getDeltakere() {
-		return gruppeProperty.getValue().getMedlemmer();
+		try {
+			return gruppeProperty.getValue().getMedlemmer();
+		}
+		catch (NullPointerException e) {
+			System.out.println("LOL tom liste");
+			ArrayList<Bruker> nan = new ArrayList<Bruker>();
+			nan.add(new Bruker("Andreas", "ahk9339@gmail.com"));
+			return nan;
+		}
 	}
 	
 	
@@ -198,8 +201,9 @@ public class Avtale {
 			}
 		}
 		catch (NullPointerException e) {
+			Gruppe gruppa = new Gruppe(this, deltakere);
+			gruppeProperty.setValue(gruppa);
 		}
-		
 	}
 	
 	public String toString() {
