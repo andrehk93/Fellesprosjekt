@@ -18,8 +18,8 @@ public class KalenderController {
 	
 	public void initialize(){
 		dager = new ArrayList<Dag>();
-		setMonth(5);
-		setYear(2015);
+		setMonth(2);
+		setYear(2016);
 		getDays();
 		loadLabels();
 	}
@@ -42,12 +42,13 @@ public class KalenderController {
 				i++;
 			}
 		}
-		catch (DateTimeException e){
-			
-		 }
+		catch (DateTimeException e){}
 	}
 	
+	
+	
 	private void loadLabels(){
+		int lengde = dager.size();
 		LocalDate fysteDag = dager.get(0).getDato();
 		int firstDiM = fysteDag.getDayOfWeek().getValue()-1;
 		System.out.println(firstDiM);
@@ -60,15 +61,16 @@ public class KalenderController {
 			for(int j=0;j<7;j++){
 				ruter.add(new Label(dager.get(t).getDayinMonth()), j, i);
 				t++;
+				if(t>=lengde){
+					break;
+				}
+			}
+			if(t>=lengde){
+				break;
 			}
 		}
 	}
 	
-	private String getNumberofDiM(int row, int col){
-		LocalDate fysteDag = LocalDate.of(2015, maned, 1);
-		int firstDiM = fysteDag.getDayOfWeek().getValue();
-		return "";
-	}
 	
 	@FXML
 	private void nextPaneDayView(ActionEvent event) {

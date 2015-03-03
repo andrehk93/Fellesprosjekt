@@ -54,26 +54,6 @@
          <padding>
             <Insets top="1.0" />
          </padding>
-         <children>
-            <!-- <Label fx:id="l1" text="Label" />
-            <Label fx:id="l2" text="Label" GridPane.columnIndex="1" />
-            <Label fx:id="l3" text="Label" GridPane.columnIndex="2" />
-            <Label fx:id="l4" text="Label" GridPane.columnIndex="3" />
-            <Label fx:id="l5" text="Label" GridPane.columnIndex="4" />
-            <Label fx:id="l6" text="Label" GridPane.columnIndex="5" />
-            <Label fx:id="l7" text="Label" GridPane.columnIndex="6" />
-            <Label fx:id="l8" text="Label" GridPane.rowIndex="1" />
-            <Label fx:id="l9" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="l10" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label fx:id="l11" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Label fx:id="l12" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Label fx:id="l13" text="Label" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-            <Label fx:id="l14" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-            <Label fx:id="l15" text="Label" GridPane.rowIndex="2" />
-            <Label fx:id="l16" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="l17" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label fx:id="l18" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2" /> -->
-         </children>
       </GridPane>
       <HBox layoutX="221.0" layoutY="48.0" prefHeight="35.0" prefWidth="110.0">
          <children>
