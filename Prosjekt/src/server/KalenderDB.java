@@ -1,5 +1,9 @@
 package server;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +12,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 import com.mysql.jdbc.Statement;
 
@@ -50,15 +55,20 @@ public class KalenderDB {
 	
 	public Boolean login(String email, String password) throws Exception {
 		init();
-		String query = "SELECT epost, passord FROM `bruker` WHERE epost = ?";
+		String query = "SELECT epost, passord, salt FROM `bruker` WHERE epost = ?";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, email);
 		ResultSet result = statement.executeQuery();
 		
 		result.next();
 		String servPass = result.getString(2);
+		String salt = result.getString(3);
 		
-		if(password.equals(servPass)){
+		String temp_pass = salt + password;
+        
+        String userPass =  toSha(temp_pass);
+		
+		if(userPass.equals(servPass)){
 			return true;
 		}
 		
@@ -200,10 +210,23 @@ public class KalenderDB {
 	public int createUser(String email, String firstName, String lastName, String password) throws Exception{
 		init();
 		
-		query = "INSERT INTO `bruker` (`epost`, `fornavn`, `etternavn`, `passord`) \r\n" +
-		"VALUES(\"" + email + "\", \"" + firstName + "\", \"" + lastName + "\", \"" + password + "\");";
-		Statement statement = (Statement) con.createStatement();
-		int result = statement.executeUpdate(query);
+		final Random r = new SecureRandom();
+		byte[] salt = new byte[32];
+		r.nextBytes(salt);
+		
+        String s = bytesToHex(salt);
+        String temp_pass = s + password;
+        String passw = toSha(temp_pass);
+        
+		query = "INSERT INTO `bruker` (`epost`, `fornavn`, `etternavn`, `passord`, `salt`) \r\n" +
+		"VALUES(?, ?, ?, ?, ?);";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, email);
+		statement.setString(2, firstName);
+		statement.setString(3, lastName);
+		statement.setString(4, passw);
+		statement.setString(5, s);
+		int result = statement.executeUpdate();
 		return result;
 	}
 	
@@ -407,6 +430,26 @@ public class KalenderDB {
 		result.next();
 		
 		return result.getString(1) + " " + result.getString(2);
+	}
+	
+	
+	private String toSha(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		digest.update(text.getBytes("UTF-8"));
+		byte[] bytes = digest.digest();
+		
+        return bytesToHex(bytes);
+	}
+	
+	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
+	private static String bytesToHex(byte[] bytes) {
+	    char[] hexChars = new char[bytes.length * 2];
+	    for ( int j = 0; j < bytes.length; j++ ) {
+	        int v = bytes[j] & 0xFF;
+	        hexChars[j * 2] = hexArray[v >>> 4];
+	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+	    }
+	    return new String(hexChars);
 	}
 }
 
