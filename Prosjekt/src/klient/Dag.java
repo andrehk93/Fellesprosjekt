@@ -50,6 +50,10 @@ public class Dag {
 		return datoProperty.getValue();
 	}
 	
+	public String getDayinMonth() {
+		return (datoProperty.getValue().toString().split("-"))[2];
+	}
+	
 	public ArrayList<Avtale> getAvtaleListe() {
 		return avtaleListeProperty.getValue();
 	}
