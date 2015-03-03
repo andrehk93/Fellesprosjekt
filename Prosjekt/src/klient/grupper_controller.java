@@ -50,8 +50,9 @@ public class grupper_controller {
     @FXML
     Button lagre_gruppe_knapp = new Button();
 	
-    public void handleGruppenavn(KeyEvent event) {
+    public void handleGruppenavn(KeyEvent event) throws IOException {
     	System.out.println("Hei");
+    	getUsers();
     }
     
     public void getUsers() throws IOException{
