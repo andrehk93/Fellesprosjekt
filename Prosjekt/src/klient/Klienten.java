@@ -51,10 +51,18 @@ public class Klienten {
 		return rom;
 	}
 	
-	public static String getAllUsers() throws IOException{
+	public static ArrayList<Bruker> getAllUserDetails() throws IOException{
 		String toServer = "GET AVAILABLE USERS 2000-01-01 00:00 00:01";
-		String users = sendTilServer(toServer);
-		return users;
+		String[] users = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
+		for(String email : users){
+			toServer = "GET USERDETAILS "+email;
+			String[] userDetails = sendTilServer(toServer).split(" ");
+			Bruker user = new Bruker(userDetails[1]+" "+userDetails[2], userDetails[0]);
+			allUsers.add(user);
+		}
+		
+		return allUsers;
 	}
 	
 	public static void lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {

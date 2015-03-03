@@ -16,7 +16,7 @@ import javafx.scene.input.KeyEvent;
 public class grupper_controller {
 	
 	private ArrayList<Bruker> medlemmer;
-	private ArrayList<String> brukere;
+	private ArrayList<Bruker> brukere;
 	private Bruker Andreas;
 	private Bruker Christoffer;
 	private Bruker Lars;
@@ -25,7 +25,7 @@ public class grupper_controller {
 	
 	public grupper_controller(){
 		medlemmer = new ArrayList<Bruker>();
-		brukere = new ArrayList<String>();		
+		brukere = new ArrayList<Bruker>();		
 	}
 	
 
@@ -54,7 +54,7 @@ public class grupper_controller {
     }
     
     public void getUsers() throws IOException{
-    	brukere = (ArrayList<String>) Arrays.asList(Klienten.getAllUsers().split(" "));
+    	brukere = Klienten.getAllUserDetails();
     }
     
     
