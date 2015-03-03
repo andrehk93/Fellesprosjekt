@@ -6,30 +6,49 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 public class KalenderController {
 	
 	private ArrayList<Dag> dager;
 	@FXML private GridPane ruter;
+	@FXML private Button forrigeManed;
+	@FXML private Button nesteManed;
 	private int maned;
 	private int aar;
 	
 	public void initialize(){
+		setMonth(LocalDate.now().getMonthValue());
+		setYear(LocalDate.now().getYear());
+		flushView();
+	}
+	
+	private void flushView(){
 		dager = new ArrayList<Dag>();
-		setMonth(2);
-		setYear(2016);
+		ruter.getChildren().clear();
 		getDays();
-		loadLabels();
+		loadGrid();	
 	}
 	
 	private void setMonth(int month){
 		maned = month;
 	}
 	
+	private int getMonth(){
+		return maned;
+	}
+	
 	private void setYear(int year){
 		aar = year;
+	}
+	
+	private int getYear(){
+		return aar;
 	}
 	
 	private void getDays(){
@@ -47,19 +66,24 @@ public class KalenderController {
 	
 	
 	
-	private void loadLabels(){
+	private void loadGrid(){
 		int lengde = dager.size();
 		LocalDate fysteDag = dager.get(0).getDato();
 		int firstDiM = fysteDag.getDayOfWeek().getValue()-1;
-		System.out.println(firstDiM);
 		int t=0;
 		for(int j=firstDiM;j<7;j++){
-			ruter.add(new Label(dager.get(t).getDayinMonth()), j, 0);
+			Label label = new Label(dager.get(t).getDayinMonth());
+			ruter.add(label, j, 0);
+			ruter.setValignment(label, VPos.TOP);
+			setTexts(j,0,t);
 			t++;
 		}
 		for(int i=1;i<8;i++){
 			for(int j=0;j<7;j++){
-				ruter.add(new Label(dager.get(t).getDayinMonth()), j, i);
+				Label label = new Label(dager.get(t).getDayinMonth());
+				ruter.add(label, j, i);
+				ruter.setValignment(label, VPos.TOP);
+				setTexts(j,i,t);
 				t++;
 				if(t>=lengde){
 					break;
@@ -71,6 +95,19 @@ public class KalenderController {
 		}
 	}
 	
+	private void setTexts(int j,int i,int t){
+		Text text = new Text();
+		ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
+		avtaler = dager.get(t).getAvtaleListe();
+		String temp = "";
+		if(avtaler!=null){
+			for(Avtale app : avtaler){
+				temp += app.getTid().getStart().toString()+"\n";		
+			}
+		}
+		text.setText(temp);
+		ruter.add(text, j, i);
+	}
 	
 	@FXML
 	private void nextPaneDayView(ActionEvent event) {
@@ -81,6 +118,24 @@ public class KalenderController {
 	private void nextPaneMakeAppointment(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
 	}
-
-
+	
+	@FXML
+	private void nextMonth(ActionEvent event) {
+		setMonth(getMonth()+1);
+		if(getMonth()>=12){
+			setMonth(1);
+			setYear(getYear()+1);
+		}
+		flushView();
+	}
+	
+	@FXML
+	private void previousMonth(ActionEvent event) {
+		setMonth(getMonth()-1);
+		if(getMonth()<=0){
+			setMonth(12);
+			setYear(getYear()-1);
+		}
+		flushView();
+	}
 }
