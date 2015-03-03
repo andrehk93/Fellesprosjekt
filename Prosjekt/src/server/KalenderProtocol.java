@@ -91,8 +91,12 @@ public class KalenderProtocol {
 				
 			case "APP":
 									// DATO, FRA, TIL, ROM
+<<<<<<< HEAD
 				output = kalenderdb.createApp(user, input[1], input[2], input[3], input[4]) + "";
 				System.out.println("OG HER ER OUTPUT: " + output);
+=======
+				output = kalenderdb.createApp(user, input[1], input[2], input[3], Integer.parseUnsignedInt(input[4])) + "";
+>>>>>>> 460ec986b4703490ed37f235e43386ba0e1f3ce7
 				break;
 			case "INVITE":
 				output = kalenderdb.inviteUser(input[1], input[2]) + "";
@@ -101,10 +105,13 @@ public class KalenderProtocol {
 				String message = findMessage(Arrays.copyOfRange(input, 2, input.length));
 				System.out.println((message.split(" ").length+3));
 				output = "" + kalenderdb.sendNotification(user, input[1], message, Arrays.copyOfRange(input, message.split(" ").length+3, input.length));
+<<<<<<< HEAD
 				break;
 			case "GROUP":
 				kalenderdb.createGroup(input[1], user, Arrays.copyOfRange(input, 2, input.length));
 				output = "";
+=======
+>>>>>>> 460ec986b4703490ed37f235e43386ba0e1f3ce7
 				break;
 		}
 		if(output.trim().equals("")){
@@ -112,7 +119,10 @@ public class KalenderProtocol {
 		} else if(output.equals("-1")){
 			output = "INCORRECT INPUT";
 		}
+<<<<<<< HEAD
 		System.out.println("SAMME? " + output);
+=======
+>>>>>>> 460ec986b4703490ed37f235e43386ba0e1f3ce7
 		return output;
 		
 		
