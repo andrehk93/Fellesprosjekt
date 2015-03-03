@@ -38,7 +38,7 @@ public class InnloggingController {//implements Initializable
 	private void handleButtonAction(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		checkInput();
 		if (Klienten.login(brukernavn.getText(), passord.getText())) {
-			ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
+			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 		}
 	}
 

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class Klienten {
 	
@@ -51,10 +52,12 @@ public class Klienten {
 		outToServer.writeBytes(message + "\r\n");
 		String output = "";
 		String tempString = inFromServer.readLine();
+		System.out.println("ER DET HER FOR F:" +tempString);
 		while(tempString.length() > 0) {
 			output += modifiedSentence = tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
+		System.out.println("SENDTIL; " + output);
 		return output;
 	}
 	
@@ -64,15 +67,23 @@ public class Klienten {
 		return rom;
 	}
 	
-	public static String getAllUsers() throws IOException{
+	public static ArrayList<Bruker> getAllUserDetails() throws IOException{
 		String toServer = "GET AVAILABLE USERS 2000-01-01 00:00 00:01";
-		String users = sendTilServer(toServer);
-		return users;
+		String[] users = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
+		for(String email : users){
+			toServer = "GET USERDETAILS "+email;
+			String[] userDetails = sendTilServer(toServer).split(" ");
+			Bruker user = new Bruker(userDetails[1]+" "+userDetails[2], userDetails[0]);
+			allUsers.add(user);
+		}
+		
+		return allUsers;
 	}
 	
 	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
-		+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
+	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
 		return sendTilServer(toServer);
 	}
 	
