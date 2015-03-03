@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,7 +17,7 @@ import javafx.scene.input.KeyEvent;
 public class grupper_controller {
 	
 	private ArrayList<Bruker> medlemmer;
-	private ArrayList<String> brukere;
+	private ArrayList<Bruker> brukere;
 	private Bruker Andreas;
 	private Bruker Christoffer;
 	private Bruker Lars;
@@ -25,7 +26,7 @@ public class grupper_controller {
 	
 	public grupper_controller(){
 		medlemmer = new ArrayList<Bruker>();
-		brukere = new ArrayList<String>();		
+		brukere = new ArrayList<Bruker>();		
 	}
 	
 
@@ -37,7 +38,7 @@ public class grupper_controller {
     @FXML
     TextField brukersøk = new TextField();
     @FXML
-    ListView brukerliste = new ListView();
+    ListView<Bruker> brukerliste = new ListView<Bruker>();
     @FXML
     ListView gruppemedlemmer_liste = new ListView();
     @FXML
@@ -49,12 +50,13 @@ public class grupper_controller {
     @FXML
     Button lagre_gruppe_knapp = new Button();
 	
-    public void handleGruppenavn(KeyEvent event) {
+    public void handleGruppenavn(KeyEvent event) throws IOException {
     	System.out.println("Hei");
     }
     
     public void getUsers() throws IOException{
-    	brukere = (ArrayList<String>) Arrays.asList(Klienten.getAllUsers().split(" "));
+    	brukere = Klienten.getAllUserDetails();
+    	brukerliste.setItems((ObservableList) brukere);
     }
     
     
