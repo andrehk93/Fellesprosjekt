@@ -78,12 +78,16 @@ public class Bruker {
 		return avtaleListeProperty.getValue();
 	}
 	
-	public void addAvtale(Avtale avtale) {
+	
+	public void addAvtale(Avtale avtale) throws IOException {
 		boolean duplikat = false;
 		if (avtaleListeProperty.getValue() == null) {
 			ArrayList<Avtale> denne_avtalen = new ArrayList<Avtale>();
 			denne_avtalen.add(avtale);
 			avtaleListeProperty.setValue(denne_avtalen);
+			if (! avtale.getAvtaleAdmin().equals(this)) {
+				Klienten.inviterDeltaker(this.getEmail(), avtale.avtaleid);
+			}
 		}
 		else {
 			for (Avtale avtaler : avtaleListeProperty.getValue()) {
@@ -158,60 +162,6 @@ public class Bruker {
 	}
 	
 	public void addListeners() {
-		ChangeListener<ArrayList<Avtale>> removeAvtaleListener = new ChangeListener<ArrayList<Avtale>>() {
-
-			@Override
-			public void changed(
-					ObservableValue<? extends ArrayList<Avtale>> arg0,
-					ArrayList<Avtale> arg1, ArrayList<Avtale> arg2) {
-				if (! arg2.isEmpty() && ! arg2.get(0).getDeltakere().isEmpty()) {
-					if (arg1 != null) {
-						if (arg1.size() > arg2.size()) {
-							System.out.println("En avtale ble slettet");
-							for (int i = 0; i < arg2.get(0).getDeltakere().size(); i++) {
-								arg2.get(0).getDeltakere().get(i).removeAvtale(arg2.get(0));
-							}
-						}
-						else {
-							System.out.println("Det ble lagt til en avtale");
-							for (int i = 0; i < arg2.get(0).getDeltakere().size(); i++) {
-								arg2.get(0).getDeltakere().get(i).addAvtale(arg2.get(0));
-							}
-						}
-					}
-				}
-			}
-		};
-		avtaleListeProperty.addListener(removeAvtaleListener);
-	}
-	
-	
-	public static void main(String[] args) throws IOException {
-		Bruker Andreas = new Bruker("Andreas", "a");
-		Bruker Martin = new Bruker("Martin", "m");
-		Bruker Ch = new Bruker("Ch", "c");
-		ArrayList<Bruker> delt = new ArrayList<Bruker>();
-		delt.add(Martin);
-		delt.add(Ch);
-		Møterom rom = new Møterom(20, "GOBI");
-		Møterom rom_2 = new Møterom(20, "MOKI");
-		TidsIntervall tid = new TidsIntervall(LocalTime.of(12, 15), LocalTime.of(12, 45), LocalDate.of(2015,12,12));
-		Avtale avtale_1 = new Avtale(Andreas, delt, tid, rom);
-		System.out.println(avtale_1);
-		
-		
-		//TESTER:
-		Andreas.addAvtale(avtale_1);
-		Andreas.getAvtaler().get(0).setRom(rom_2);
-		System.out.println(Andreas.getAvtaler());
-		System.out.println("Martins avtaler: " + Martin.getAvtaler());
-		System.out.println("Chs avtaler: " + Ch.getAvtaler());
-		Ch.removeAvtale(avtale_1);
-		System.out.println(avtale_1);
-		Martin.removeAvtale(avtale_1);
-		System.out.println("Chs avtaler: " + Ch.getAvtaler());
-		System.out.println("ANDREAS Avtaler: " + Andreas.getAvtaler());
-		System.out.println("MARTINS AVTALER: " + Martin.getAvtaler());
 	}
 	
 	

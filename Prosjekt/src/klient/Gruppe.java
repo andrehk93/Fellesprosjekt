@@ -1,5 +1,6 @@
 package klient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.beans.property.ObjectPropertyBase;
@@ -56,7 +57,7 @@ public class Gruppe {
 		return medlemListeProperty;
 	}
 	
-	public void addMedlem(Bruker medlem) {
+	public void addMedlem(Bruker medlem) throws IOException {
 		boolean duplikat = false;
 		try {
 			for (int i = 0; i < medlemListeProperty.getValue().size(); i++) {

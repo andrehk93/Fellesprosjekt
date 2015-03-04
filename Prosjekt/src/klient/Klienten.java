@@ -88,6 +88,11 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 	
+	public static String inviterDeltaker(String deltaker, String avtaleid) throws IOException {
+		String toServer = "CREATE INVITE " + deltaker + " " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
 	public static String getRomStr(String romnavn) throws IOException {
 		String toServer = "GET ROOMSTR " + romnavn;
 		return sendTilServer(toServer);
