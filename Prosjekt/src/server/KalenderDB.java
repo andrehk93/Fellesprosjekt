@@ -128,6 +128,39 @@ public class KalenderDB {
 		return output;
 	}
 	
+	public String getAppTime(String appID) throws Exception{
+		init();
+		
+		query = "select fra,til\n" + 
+				"from avtale\n" + 
+				"where avtaleid="+Integer.parseInt(appID);
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		
+		String output = result.getString(1)+" "+result.getString(2)+" ";
+		return output;
+	}
+	
+	public String getMyAppRom(String avtaleid) throws Exception {
+		init();
+		
+		query = "select romnavn\n" + 
+				"from avtale\n" + 
+				"where avtaleid=" + Integer.parseInt(avtaleid);
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";	
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		System.out.println("Svaret: " + output);
+		return output;
+	}
+	
 	public String getMyApps(String user) throws Exception{
 		init();
 		
@@ -142,6 +175,24 @@ public class KalenderDB {
 		
 		while(result.next()){
 			output += result.getString(1)+" ";
+		}
+		return output;
+	}
+	
+	public String getMyDagApps(String user) throws Exception{
+		init();
+		
+		query = "select avtaleid, dato \n" + 
+				"from avtale \n" + 
+				"where avtaleadmin = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		
+		while(result.next()){
+			output += result.getString(1)+" " + result.getString(2) + " ";
 		}
 		return output;
 	}
@@ -343,6 +394,22 @@ public class KalenderDB {
 		
 		result.next();
 		return result.getString(1) + " " + result.getString(2);
+		
+	}
+	
+	public String getRoomStr(String roomname) throws Exception{
+		init();
+		
+		query = "SELECT kapasitet FROM moterom WHERE romnavn = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, roomname);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;
 		
 	}
 

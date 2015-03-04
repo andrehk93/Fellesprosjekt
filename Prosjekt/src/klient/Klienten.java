@@ -14,6 +14,7 @@ public class Klienten {
 	public static Socket socket;
 	public static DataOutputStream outToServer;
 	public static BufferedReader inFromServer;
+	public static Bruker bruker;
 	
 	
 	public Klienten() throws IOException {
@@ -40,6 +41,8 @@ public class Klienten {
 		
 		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
+			String navn = getBruker(brukernavn);
+			bruker = new Bruker(navn, brukernavn);
 			return true;
 		}
 		else {
@@ -47,17 +50,30 @@ public class Klienten {
 		}
 	}
 	
+	public static String getDeltakere(String avtaleid) throws IOException {
+		String toServer = "GET APPATTS " + avtaleid + " " + "1";
+		return sendTilServer(toServer);
+	}
+	
+	public static String getTidspunkt(String avtaleid) throws IOException {
+		String toServer = "GET APPTIME " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
+	public static String mineAvtaler(String brukernavn) throws IOException {
+		String toServer = "GET MYDAGAPPS ";
+		return sendTilServer(toServer);
+	}
+	
 	public static String sendTilServer(String message) throws IOException {
 		String modifiedSentence;
 		outToServer.writeBytes(message + "\r\n");
 		String output = "";
 		String tempString = inFromServer.readLine();
-		System.out.println("ER DET HER FOR F:" +tempString);
 		while(tempString.length() > 0) {
 			output += modifiedSentence = tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
-		System.out.println("SENDTIL; " + output);
 		return output;
 	}
 	
@@ -65,6 +81,16 @@ public class Klienten {
 		String toServer = "GET ROOM " + dato + " " + start + " " + slutt + " " + gjester_antall;
 		String rom = sendTilServer(toServer);
 		return rom;
+	}
+	
+	public static String getAvtaleRom(String avtaleid) throws IOException {
+		String toServer = "GET MYAVTALEROM " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
+	public static String getRomStr(String romnavn) throws IOException {
+		String toServer = "GET ROOMSTR " + romnavn;
+		return sendTilServer(toServer);
 	}
 	
 	public static ArrayList<Bruker> getAllUserDetails() throws IOException{

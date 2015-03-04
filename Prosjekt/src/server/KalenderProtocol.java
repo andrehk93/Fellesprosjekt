@@ -145,8 +145,17 @@ public class KalenderProtocol {
 			case "APPDETAILS":
 				output = kalenderdb.getAppDetails(input[1]);
 				break;
+			case "APPTIME":
+				output = kalenderdb.getAppTime(input[1]);
+				break;
 			case "MYAPPS":
 				output = kalenderdb.getMyApps(user);
+				break;
+			case "MYAVTALEROM":
+				output = kalenderdb.getMyAppRom(input[1]);
+				break;
+			case "MYDAGAPPS":
+				output = kalenderdb.getMyDagApps(user);
 				break;
 			case "APPATTS":
 				output = kalenderdb.getAppAttendees(input[1], input[2]);
@@ -162,6 +171,9 @@ public class KalenderProtocol {
 				break;
 			case "ROOMDETAILS":
 				output = kalenderdb.getRoomDetails(input[1]);
+				break;
+			case "ROOMSTR":
+				output = kalenderdb.getRoomStr(input[1]);
 				break;
 			case "GROUP":
 				output = kalenderdb.getGroup(input[1]);

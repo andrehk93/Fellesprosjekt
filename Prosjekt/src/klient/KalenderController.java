@@ -1,7 +1,9 @@
 package klient;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
@@ -23,14 +25,15 @@ public class KalenderController {
 	@FXML private Label arLabel;
 	private int maned;
 	private int aar;
+	private String[] avtale_liste;
 	
-	public void initialize(){
+	public void initialize() throws IOException{
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
 		flushView();
 	}
 	
-	private void flushView(){
+	private void flushView() throws IOException{
 		dager = new ArrayList<Dag>();
 		ruter.getChildren().clear();
 		getDays();
@@ -68,10 +71,20 @@ public class KalenderController {
 		catch (DateTimeException e){}
 	}
 	
+	private Dag getDag(LocalDate dato) {
+		for (Dag dag : dager) {
+			if (dag.getDato().equals(dato)) {
+				return dag;
+			}
+		}
+		return null;
+	}
 	
 	
-	private void loadGrid(){
+	
+	private void loadGrid() throws IOException{
 		int lengde = dager.size();
+		hentAvtaler();
 		LocalDate fysteDag = dager.get(0).getDato();
 		int firstDiM = fysteDag.getDayOfWeek().getValue()-1;
 		int t=0;
@@ -99,14 +112,58 @@ public class KalenderController {
 		}
 	}
 	
-	private void setTexts(int j,int i,int t){
+	private void hentAvtaler() throws IOException {
+		avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail()).split(" ");
+		for (int k = 0; k < avtale_liste.length; k++) {
+			if (k%2 != 0) {
+				String dato = avtale_liste[k];
+				String avtaleid = avtale_liste[k-1];
+				createAvtale(dato, avtaleid);
+			}
+		}
+		
+	}
+	
+	
+	// VELDIG MYE TULL, MEN FUNKER
+	private void createAvtale(String dato, String avtaleid) throws IOException {
+		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
+		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
+		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
+		Møterom rom = new Møterom(kapasitet, romnavn);
+		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
+		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
+				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
+				Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
+						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
+		String[] deltakere = Klienten.getDeltakere(avtaleid).split(" ");
+		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
+			for (String epost : deltakere) {
+				if (epost.trim().equals("NONE")) {
+					break;
+				}
+				else {
+					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost);
+					deltaker_liste.add(deltaker);
+				}
+			}
+		}
+		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom);
+		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
+						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
+	}
+	
+	private void setTexts(int j,int i,int t) throws IOException{
 		Text text = new Text();
-		ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
-		avtaler = dager.get(t).getAvtaleListe();
+		String avtale_dag = dager.get(t).getDato().toString();
 		String temp = "";
-		if(avtaler!=null){
-			for(Avtale app : avtaler){
-				temp += app.getTid().getStart().toString()+"\n";		
+		for (int k = 0; k < avtale_liste.length; k++) {
+			if (k%2 != 0) {
+				String dato = avtale_liste[k];
+				String avtaleid = avtale_liste[k-1];
+				if (avtale_dag.equals(dato)) {
+					temp += avtaleid + " ";
+				}
 			}
 		}
 		text.setText(temp);
@@ -124,7 +181,7 @@ public class KalenderController {
 	}
 	
 	@FXML
-	private void nextMonth(ActionEvent event) {
+	private void nextMonth(ActionEvent event) throws IOException {
 		if(getMonth()+1>=13){
 			setMonth(1);
 			setYear(getYear()+1);
@@ -136,7 +193,7 @@ public class KalenderController {
 	}
 	
 	@FXML
-	private void previousMonth(ActionEvent event) {
+	private void previousMonth(ActionEvent event) throws IOException {
 		if(getMonth()-1<=0){
 			setMonth(12);
 			setYear(getYear()-1);
