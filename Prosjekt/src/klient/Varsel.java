@@ -18,7 +18,7 @@ public class Varsel {
 		setBrukerSendtFra(sendtFra);
 		setBrukerSendtTil(sendtTil);
 		setLest(lest);
-		sendVarsel(avtale.getId());
+		sendVarsel(avtale.getAvtaleid());
 	}
 	
 	private void sendVarsel(String id) throws IOException {

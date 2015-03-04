@@ -104,7 +104,7 @@ public class Bruker {
 	
 	public void inviterTilNyAvtale(Avtale avtale) throws IOException {
 		if (! avtale.getAvtaleAdmin().equals(this)) {
-			Klienten.inviterDeltaker(this.getEmail(), avtale.avtaleid);
+			Klienten.inviterDeltaker(this.getEmail(), avtale.getAvtaleid());
 		}
 	}
 	
