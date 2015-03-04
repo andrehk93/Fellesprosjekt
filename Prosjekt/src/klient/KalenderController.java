@@ -168,7 +168,7 @@ public class KalenderController {
 	
 	private void hentAvtaler() throws IOException {
 		try {
-			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail()).split(" ");
+			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(),0).split(" "); //Tallet er filtrering!
 			for (int k = 0; k < avtale_liste.length; k++) {
 				if (k%2 != 0) {
 					String dato = avtale_liste[k];

@@ -154,7 +154,7 @@ public class KalenderProtocol {
 				output = kalenderdb.getMyAppRom(input[1]);
 				break;
 			case "MYDAGAPPS":
-				output = kalenderdb.getMyDagApps(user);
+				output = kalenderdb.getMyDagApps(user, Integer.parseInt(input[1]));
 				break;
 			case "APPATTS":
 				output = kalenderdb.getAppAttendees(input[1], input[2]);
