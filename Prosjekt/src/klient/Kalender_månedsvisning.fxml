@@ -88,7 +88,7 @@
                   <Font size="15.0" />
                </font>
             </Text>
-            <Label styleClass="label-name" text="brukernavn">
+            <Label fx:id="brukernavn" styleClass="label-name" text="brukernavn">
                <font>
                   <Font size="15.0" />
                </font>
@@ -104,9 +104,11 @@
                         <Font size="15.0" />
                      </font>
                   </Text>
-                  <ListView prefHeight="211.0" prefWidth="169.0" />
+                  <ListView fx:id="notifikasjoner" prefHeight="211.0" prefWidth="169.0" />
                </children>
-               <Button mnemonicParsing="false" text="Logg ut" />
+               <children>
+                  <Button mnemonicParsing="false" text="Logg ut" />
+               </children>
             </VBox>
          </children>
       </VBox>
