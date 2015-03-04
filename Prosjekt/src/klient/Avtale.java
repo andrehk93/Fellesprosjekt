@@ -21,7 +21,6 @@ public class Avtale {
 	}
 	
 	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom, String avtaleid) throws IOException{
-		System.out.println("Gjestene FORTSATT: " + deltakere);
 		this.avtaleid = avtaleid;
 		setEier(eier);
 		setDeltakere(deltakere);
