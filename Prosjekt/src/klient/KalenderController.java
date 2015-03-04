@@ -5,13 +5,17 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
@@ -21,8 +25,8 @@ public class KalenderController {
 	@FXML private GridPane ruter;
 	@FXML private Button forrigeManed;
 	@FXML private Button nesteManed;
-	@FXML private Label manedLabel;
-	@FXML private Label arLabel;
+	@FXML private Label manedLabel, brukernavn, arLabel;
+	@FXML private ListView<String> notifikasjoner;
 	private int maned;
 	private int aar;
 	private String[] avtale_liste;
@@ -38,6 +42,23 @@ public class KalenderController {
 		ruter.getChildren().clear();
 		getDays();
 		loadGrid();	
+		showNotifikasjoner();
+		showBruker();
+	}
+	
+	public void showBruker() {
+		brukernavn.setText(Klienten.bruker.getNavn());
+	}
+	
+	
+	public void showNotifikasjoner() throws IOException {
+		String[] notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < notifikasjonene.length; i++) {
+			list.add(notifikasjonene[i]);
+		}
+		ObservableList<String> items = FXCollections.observableList(list);
+		notifikasjoner.setItems(items);
 	}
 	
 	private void setMonth(int month){

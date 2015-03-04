@@ -93,6 +93,11 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 	
+	public static String getInvitasjoner(Bruker bruker) throws IOException {
+		String toServer = "GET INVS ";
+		return sendTilServer(toServer);
+	}
+	
 	public static String getRomStr(String romnavn) throws IOException {
 		String toServer = "GET ROOMSTR " + romnavn;
 		return sendTilServer(toServer);
