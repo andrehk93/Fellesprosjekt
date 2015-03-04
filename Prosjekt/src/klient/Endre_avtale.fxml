@@ -1,0 +1,94 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css">
+         <children>
+            <TextField fx:id="avtalenavn" layoutX="132.0" layoutY="101.0" onKeyTyped="#handleKeyInput" prefHeight="39.0" prefWidth="284.0" promptText="Avtalenavn" />
+            <CheckBox fx:id="hele_dagen" layoutX="135.0" layoutY="260.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="147.0" styleClass="label-name" text="Hele dagen" />
+            <CheckBox fx:id="gjentakelse" layoutX="321.0" layoutY="262.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" styleClass="label-name" text="Gjentakelse" />
+            <Label layoutX="336.0" layoutY="14.0" prefHeight="62.0" prefWidth="373.0" styleClass="label-header" text="Redigering av Avtale">
+               <font>
+                  <Font name="System Bold" size="39.0" />
+               </font>
+            </Label>
+            <Label layoutX="130.0" layoutY="151.0" text="Startdato" />
+            <Label layoutX="670.0" layoutY="151.0" text="Sluttdato" />
+            <HBox layoutX="128.0" layoutY="186.0" prefHeight="39.0" prefWidth="736.0" spacing="30.0">
+               <children>
+                  <DatePicker fx:id="startdato" onAction="#handleDato" prefHeight="45.0" prefWidth="154.0" />
+                  <ChoiceBox fx:id="timeFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+                  <ChoiceBox fx:id="minuttFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+                  <Label text="-" />
+                  <ChoiceBox fx:id="timeTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+                  <ChoiceBox fx:id="minuttTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+                  <DatePicker fx:id="sluttdato" onAction="#handleDato" prefHeight="40.0" prefWidth="160.0" />
+               </children>
+            </HBox>
+            <Label layoutX="310.0" layoutY="151.0" text="Fra: " />
+            <Label layoutX="512.0" layoutY="151.0" text="Til:" />
+            <Text fx:id="feilTekst" fill="RED" layoutX="321.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-errormsg" text="Tiden må være etter fra-tidspunkt!" />
+            <Text fx:id="feilDato" fill="RED" layoutX="676.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-errormsg" text="Datoen må være etter startdato" />
+            <HBox layoutX="710.0" layoutY="643.0" prefHeight="35.0" prefWidth="199.0">
+               <children>
+                  <Button fx:id="lagre_knapp" mnemonicParsing="false" onAction="#lagre" text="Lagre" />
+                  <Button fx:id="forkast_knapp" mnemonicParsing="false" onAction="#reset" text="Forkast" />
+               </children>
+            </HBox>
+            <TextField fx:id="antall_gjester" editable="false" layoutX="248.0" layoutY="602.0" prefHeight="20.0" prefWidth="88.0" promptText="15" />
+         </children>
+      </AnchorPane>
+      <HBox layoutX="137.0" layoutY="321.0" prefHeight="285.0" prefWidth="790.0" spacing="150.0" stylesheets="@application.css">
+         <children>
+            <VBox prefHeight="301.0" prefWidth="309.0" spacing="10.0">
+               <children>
+                  <Label text="Legg til gjester" />
+                  <TextField fx:id="legg_til_gjester" onAction="#addGjest" prefHeight="31.0" prefWidth="208.0" promptText="Legg til e-postadresser.." />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="309.0">
+                     <children>
+                        <Button fx:id="leggTil" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#addGjest" prefHeight="33.0" prefWidth="92.0" styleClass="button-Leggtil" text="Legg til" />
+                     </children>
+                  </HBox>
+                  <Label text="Gjesteliste" />
+                  <ListView fx:id="gjesteliste" prefHeight="136.0" prefWidth="309.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="293.0" prefWidth="332.0" spacing="5.0">
+               <children>
+                  <HBox alignment="TOP_RIGHT" prefHeight="35.0" prefWidth="295.0" spacing="75.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="125.0" text="Finn møterom" />
+                        <Button fx:id="søk_møterom" mnemonicParsing="false" onAction="#finnRom" prefHeight="31.0" prefWidth="61.0" text="Søk" />
+                     </children>
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="217.0" prefWidth="309.0">
+                     <children>
+                        <ListView fx:id="møteromliste" prefHeight="200.0" prefWidth="295.0" />
+                        <Slider fx:id="møteromliste_slider" max="10.0" orientation="VERTICAL" prefHeight="217.0" prefWidth="30.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="332.0" spacing="15.0">
+                     <children>
+                        <Label text="Møterom" />
+                        <TextField fx:id="valgt_rom" editable="false" prefHeight="31.0" prefWidth="116.0" promptText="Valgt rom" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Label layoutX="138.0" layoutY="611.0" stylesheets="@application.css" text="Antall gjester" />
+   </children>
+</AnchorPane>
