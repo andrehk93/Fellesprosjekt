@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
 
 public class KalenderController {
 	
-	private ArrayList<Dag> dager;
+	public static ArrayList<Dag> dager;
 	@FXML private GridPane ruter;
 	@FXML private Button forrigeManed;
 	@FXML private Button nesteManed;
@@ -126,6 +126,7 @@ public class KalenderController {
 	
 	
 	// VELDIG MYE TULL, MEN FUNKER
+	//Lager: bruker(deltaker)-objektene, avtale-objekt, møterom-objekt og tidsobjekt
 	private void createAvtale(String dato, String avtaleid) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
@@ -148,7 +149,7 @@ public class KalenderController {
 				}
 			}
 		}
-		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom);
+		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
 		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
 	}

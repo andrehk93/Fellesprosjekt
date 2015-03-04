@@ -106,6 +106,7 @@
                   </Text>
                   <ListView prefHeight="211.0" prefWidth="169.0" />
                </children>
+               <Button mnemonicParsing="false" text="Logg ut" />
             </VBox>
          </children>
       </VBox>

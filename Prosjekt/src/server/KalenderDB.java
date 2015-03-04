@@ -301,16 +301,18 @@ public class KalenderDB {
 		return res;
 	}
 	
-	public int inviteUser(String user, String avtale) throws Exception{
+	public String inviteUser(String user, String avtale) throws Exception{
 		init();
+		System.out.println("AVTALEID : " + avtale + " USER: " + user);
 		
 		query = "INSERT INTO `ermed` (`epost`, `avtaleid`) \r\n" +
 				"VALUES(?, ?);";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
 		statement.setString(2, avtale);
-		int result = statement.executeUpdate();
-		return result;
+		statement.executeUpdate();
+		String output = "OK";
+		return output;	
 		
 	}
 
