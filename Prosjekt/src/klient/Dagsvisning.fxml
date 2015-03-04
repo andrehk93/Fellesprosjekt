@@ -37,6 +37,7 @@
                         <ListView prefHeight="211.0" prefWidth="169.0" />
                      </children>
                   </VBox>
+                  <Button mnemonicParsing="false" onAction="#nextPaneLogOut" text="Logg ut" />
                </children>
             </VBox>
             <HBox layoutX="643.0" layoutY="58.0" prefHeight="35.0" prefWidth="291.0">

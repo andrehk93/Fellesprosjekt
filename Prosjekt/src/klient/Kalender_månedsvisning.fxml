@@ -68,8 +68,8 @@
       </HBox>
       <HBox layoutX="633.0" layoutY="48.0" prefHeight="35.0" prefWidth="291.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="57.0" text="Dag" />
-            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="55.0" text="Uke" />
+            <Button mnemonicParsing="false" onAction="#nextPaneDayView" prefHeight="27.0" prefWidth="57.0" text="Dag" />
+            <Button mnemonicParsing="false" onAction="#nextPaneWeekView" prefHeight="20.0" prefWidth="55.0" text="Uke" />
             <Button mnemonicParsing="false" text="Måned">
                <effect>
                   <ColorAdjust contrast="-0.25" />
@@ -100,6 +100,7 @@
                      </font>
                   </Text>
                   <ListView prefHeight="211.0" prefWidth="169.0" />
+                  <Button mnemonicParsing="false" onAction="#nextPaneLogOut" text="Logg ut" />
                </children>
             </VBox>
          </children>
