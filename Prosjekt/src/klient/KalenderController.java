@@ -33,6 +33,7 @@ public class KalenderController {
 	private int maned;
 	private int aar;
 	private String[] avtale_liste;
+	public static String[] enheter;
 	
 	public void initialize() throws IOException{
 		setMonth(LocalDate.now().getMonthValue());
@@ -47,6 +48,7 @@ public class KalenderController {
 		loadGrid();	
 		showInvitasjoner();
 		showBruker();
+		svarInvite();
 	}
 	
 	public void grupperView(ActionEvent event) {
@@ -61,16 +63,15 @@ public class KalenderController {
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
 	
-	private void svarInvite() {
+	private void svarInvite() throws IOException {
 		ChangeListener<String> invite = new ChangeListener<String>() {
 
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
-				//RSVPController.setAvtale(Klienten.)
-				//ScreenNavigator.loadScreen(ScreenNavigator.RSVP);
+				enheter = newValue.split(" ");
+				ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
 			}
-			
 		};
 		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
 	}
@@ -87,7 +88,7 @@ public class KalenderController {
 				
 			}
 			else {
-				list.add("Invitasjon: " + notifikasjonene[i] + " (Dobbeltrykk)");
+				list.add("Invitasjon: " + notifikasjonene[i] + " (Trykk her)");
 			}
 		}
 		ObservableList<String> items = FXCollections.observableList(list);
