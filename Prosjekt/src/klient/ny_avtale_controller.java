@@ -133,7 +133,6 @@ public class ny_avtale_controller {
     	gjestene = FXCollections.observableList(gjestelisten);
 		feilTekst.setVisible(false);
 		feilDato.setVisible(false);
-		System.out.println("LETS CREATE");
 		List<String> list = new ArrayList<String>();
 		ObservableList<String> timer = FXCollections.observableList(list);
 		for (int i = 0; i < 24; i++) {
