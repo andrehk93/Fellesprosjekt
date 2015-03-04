@@ -334,6 +334,9 @@ public class ny_avtale_controller {
 			System.out.println("GJESTENE: " + gjeste_liste);
 			String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom);
 			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
+			for (Bruker deltaker : gjeste_liste) {
+				deltaker.inviterTilNyAvtale(avtale);
+			}
 			for (Dag dag : KalenderController.dager) {
 				if (dag.getDato().equals(dato)) {
 					dag.addAvtale(avtale);

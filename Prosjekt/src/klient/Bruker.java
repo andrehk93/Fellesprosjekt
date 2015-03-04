@@ -85,9 +85,6 @@ public class Bruker {
 			ArrayList<Avtale> denne_avtalen = new ArrayList<Avtale>();
 			denne_avtalen.add(avtale);
 			avtaleListeProperty.setValue(denne_avtalen);
-			if (! avtale.getAvtaleAdmin().equals(this)) {
-				Klienten.inviterDeltaker(this.getEmail(), avtale.avtaleid);
-			}
 		}
 		else {
 			for (Avtale avtaler : avtaleListeProperty.getValue()) {
@@ -102,6 +99,12 @@ public class Bruker {
 				avtaleListeProperty.getValue().add(avtale);
 			}
 			
+		}
+	}
+	
+	public void inviterTilNyAvtale(Avtale avtale) throws IOException {
+		if (! avtale.getAvtaleAdmin().equals(this)) {
+			Klienten.inviterDeltaker(this.getEmail(), avtale.avtaleid);
 		}
 	}
 	
