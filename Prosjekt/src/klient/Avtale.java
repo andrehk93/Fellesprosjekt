@@ -27,8 +27,6 @@ public class Avtale {
 		setTid(tid);
 		setRom(rom);
 		//lagVarsel(this);
-		avtaleid = Klienten.lagAvtale(tid, rom);
-		System.out.println("avtaleid: " + avtaleid);
 	}
 	
 	private Property<Bruker> eierProperty = new ObjectPropertyBase<Bruker>(null) {
@@ -47,8 +45,8 @@ public class Avtale {
 	
 	public void setEier(Bruker eier) {
 		if (gruppeProperty.getValue() == null || eierProperty.getValue() == null) {
-			addDeltakere(eier);
 			eierProperty.setValue(eier);
+			addDeltakere(eier);
 		}
 		else {
 			System.out.println("Denne avtalen har en eier allerede");
@@ -83,7 +81,9 @@ public class Avtale {
 		try {
 			for (Bruker bruker : gruppeProperty.getValue().getMedlemmer()) {
 				gruppeProperty.getValue().addMedlem(deltaker);
-				Klienten.leggTilAvtale(bruker.getEmail(), avtaleid);
+				if (! deltaker.equals(eierProperty.getValue())) {
+					Klienten.leggTilAvtale(bruker.getEmail(), avtaleid);
+				}
 			}
 		}
 		catch (NullPointerException e) {
