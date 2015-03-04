@@ -163,6 +163,9 @@ public class Klienten {
 	}
 
 	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException, NoSuchAlgorithmException {
+		if(socket.isClosed()){
+			init();
+		}
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		digest.update(passord.getBytes("UTF-8"));
 		byte[] passBytes = digest.digest();
