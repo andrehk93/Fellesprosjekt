@@ -26,7 +26,29 @@ public class Avtale {
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
-		//lagVarsel(this);
+		lagVarsel(this);
+	}
+	
+	private Property<String> idProperty = new ObjectPropertyBase<String>(null) {
+
+		@Override
+		public Object getBean() {
+			return this;
+		}
+
+		@Override
+		public String getName() {
+			return "id";
+		}
+		
+	};
+	
+	public void setId(String id){
+		idProperty.setValue(id);
+	}
+	
+	public String getId() {
+		return idProperty.getValue();
 	}
 	
 	private Property<Bruker> eierProperty = new ObjectPropertyBase<Bruker>(null) {
@@ -43,7 +65,7 @@ public class Avtale {
 		
 	};
 	
-	public void setEier(Bruker eier) {
+	public void setEier(Bruker eier) throws IOException {
 		if (gruppeProperty.getValue() == null || eierProperty.getValue() == null) {
 			eierProperty.setValue(eier);
 			addDeltakere(eier);
@@ -229,13 +251,13 @@ public class Avtale {
 								+ " \nAdmin: " + avtale.getAvtaleAdmin().getNavn() + 
 								" \nTidligere møterom: " + oldValue.getNavn() + "\nNytt møterom: " + avtale.getRom().getNavn();
 						for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-							Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
+							Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false, avtale);
 							avtale.getDeltakere().get(i).giVarsel(avtVarsel);
 						}
 					}
 					
 				}
-				catch (NullPointerException e) {
+				catch (NullPointerException | IOException e) {
 				}
 			}
 		};
@@ -257,27 +279,27 @@ public class Avtale {
 								+ " \nAdmin: " + avtale.getAvtaleAdmin().getNavn() + 
 								" \nMøterom: " + avtale.getRom().getNavn();
 						for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-							Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
+							Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false, avtale);
 							avtale.getDeltakere().get(i).giVarsel(avtVarsel);
 						}
 					}
 					
 				}
-				catch (NullPointerException e) {
+				catch (NullPointerException | IOException e) {
 				}
 			}
 		};
 		tidsProperty.addListener(tid);
 	}
 	
-	public void lagVarsel(Avtale avtale) {
-		String melding = "En avtale er opprettet: \nklokken: " + avtale.getTid().getStart()
-				+ " - " + avtale.getTid().getSlutt() + "\ndato: " + avtale.getTid().getDato()
-				+ " \nav: " + avtale.getAvtaleAdmin().getNavn() + 
-				" \nmøterom: " + avtale.getRom().getNavn();
+	public void lagVarsel(Avtale avtale) throws IOException {
+		String melding = "En avtale er opprettet: klokken: " + avtale.getTid().getStart()
+				+ " - " + avtale.getTid().getSlutt() + "dato: " + avtale.getTid().getDato()
+				+ " av: " + avtale.getAvtaleAdmin().getNavn() + 
+				" møterom: " + avtale.getRom().getNavn();
 		for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-			Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
-			avtale.getDeltakere().get(i).giVarsel(avtVarsel);
+			Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false, this);
+			//avtale.getDeltakere().get(i).giVarsel(avtVarsel);
 		}
 	}
 	

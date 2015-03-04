@@ -139,4 +139,14 @@ public class Klienten {
 		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passw;
 		sendTilServer(toServer);
 	}
+	
+	public static void sendVarsel(String id, String email, String melding) throws IOException {
+		String toServer = "CREATE NOTIFICATION "+id+" "+melding+" "+email;
+		sendTilServer(toServer);
+	}
+	
+	public static String getLastID() throws IOException {
+		String toServer = "GET LASTID";
+		return sendTilServer(toServer);
+	}
 }

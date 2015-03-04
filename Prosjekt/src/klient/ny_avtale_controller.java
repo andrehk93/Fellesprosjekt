@@ -333,6 +333,7 @@ public class ny_avtale_controller {
 		if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
 			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom);
 		}
+		
 	}
 	
 	public Bruker getBruker() {
