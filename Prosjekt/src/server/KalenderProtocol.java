@@ -98,8 +98,7 @@ public class KalenderProtocol {
 				break;
 			case "NOTIFICATION":
 				String message = findMessage(Arrays.copyOfRange(input, 2, input.length));
-				System.out.println((message.split(" ").length+3));
-				output = "" + kalenderdb.sendNotification(user, input[1], message, Arrays.copyOfRange(input, message.split(" ").length+3, input.length));
+				output = "" + kalenderdb.sendNotification(user, input[1], message,input[message.split(" ").length+3]);
 				break;
 			case "GROUP":
 				kalenderdb.createGroup(input[1], user, Arrays.copyOfRange(input, 2, input.length));
@@ -181,6 +180,8 @@ public class KalenderProtocol {
 			case "USERFULLNAME":
 				output = kalenderdb.getUserDetails(input[1]);
 				break;
+			case "LASTID":
+				output = kalenderdb.getLastID();
 			}
 			
 			if(output.trim().equals("")){

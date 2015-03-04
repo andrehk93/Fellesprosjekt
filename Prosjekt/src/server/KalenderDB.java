@@ -368,20 +368,17 @@ public class KalenderDB {
 		return output;	
 	}
 
-	public int sendNotification(String user, String appID, String message, String[] recepients) throws Exception {
+	public int sendNotification(String user, String appID, String message, String recepient) throws Exception {
 		init();
 		int result = -1;
-		for(int i=0; i<recepients.length;i++){
-			query = "INSERT INTO `christwg_fp`.`varsler` (`epost`, `varsel`, `fra`, `avtaleid`, `tidspunkt`) VALUES (?, ?, ?, ?, ?)\n";
-			PreparedStatement statement = con.prepareStatement(query);
-			statement.setString(1, recepients[i]);
-			statement.setString(2, message);
-			statement.setString(3, user);
-			statement.setString(4, appID);
-			statement.setString(5, LocalTime.now().toString());
-			
-			result = statement.executeUpdate();
-		}
+		query = "INSERT INTO `christwg_fp`.`varsler` (`epost`, `varsel`, `fra`, `avtaleid`, `tidspunkt`) VALUES (?, ?, ?, ?, ?)";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, recepient);
+		statement.setString(2, message);
+		statement.setString(3, user);
+		statement.setString(4, appID);
+		statement.setString(5, LocalTime.now().toString());
+		result = statement.executeUpdate();
 		return result;
 		
 	}
@@ -515,6 +512,14 @@ public class KalenderDB {
 	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
 	    }
 	    return new String(hexChars);
+	}
+	
+	public String getLastID() throws SQLException {
+		query = "SELECT LAST_INSERT_ID();";
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		return result.getString(1);
 	}
 }
 

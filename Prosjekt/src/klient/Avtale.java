@@ -14,7 +14,7 @@ import javafx.beans.value.ObservableValue;
 public class Avtale {
 	
 	
-	String avtaleid;
+	private String avtaleid;
 	
 	public Avtale() {
 		
@@ -27,6 +27,32 @@ public class Avtale {
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
+	}
+	
+	public String getAvtaleid(){
+		return this.avtaleid;
+	}
+	
+	private Property<String> idProperty = new ObjectPropertyBase<String>(null) {
+
+		@Override
+		public Object getBean() {
+			return this;
+		}
+
+		@Override
+		public String getName() {
+			return "id";
+		}
+		
+	};
+	
+	public void setId(String id){
+		idProperty.setValue(id);
+	}
+	
+	public String getId() {
+		return idProperty.getValue();
 	}
 	
 	private Property<Bruker> eierProperty = new ObjectPropertyBase<Bruker>(null) {
