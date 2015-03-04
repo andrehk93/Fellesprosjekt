@@ -26,6 +26,11 @@ public class Klienten {
 		inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
 	
+	public static String hentAvtale(String avtaleid) throws IOException {
+		String toServer = "GET APPDETAILS " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
 	public static boolean login(String brukernavn, String passord) throws IOException, NoSuchAlgorithmException {	
 		
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");

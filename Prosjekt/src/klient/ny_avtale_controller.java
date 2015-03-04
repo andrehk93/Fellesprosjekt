@@ -336,6 +336,7 @@ public class ny_avtale_controller {
 			for (Bruker deltaker : gjeste_liste) {
 				deltaker.inviterTilNyAvtale(avtale);
 			}
+			getBruker().inviterTilNyAvtale(avtale);
 			for (Dag dag : KalenderController.dager) {
 				if (dag.getDato().equals(dato)) {
 					dag.addAvtale(avtale);
