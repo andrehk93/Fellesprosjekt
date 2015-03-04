@@ -24,5 +24,11 @@ public class DagsvisningController {
 	private void nextPaneEditGroups(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
 	}
+	
+	@FXML
+	private void nextPaneLogOut(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+	}
+	
 
 }
