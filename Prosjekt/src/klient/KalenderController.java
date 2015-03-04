@@ -7,6 +7,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +24,7 @@ import javafx.scene.text.Text;
 public class KalenderController {
 	
 	public static ArrayList<Dag> dager;
+	@FXML private Button refresh, grupper;
 	@FXML private GridPane ruter;
 	@FXML private Button forrigeManed;
 	@FXML private Button nesteManed;
@@ -42,20 +45,50 @@ public class KalenderController {
 		ruter.getChildren().clear();
 		getDays();
 		loadGrid();	
-		showNotifikasjoner();
+		showInvitasjoner();
 		showBruker();
 	}
 	
-	public void showBruker() {
+	public void grupperView(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
+	}
+	
+	public void refreshKalender(ActionEvent event) throws IOException {
+		flushView();
+	}
+	
+	private void showBruker() {
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
 	
+	private void svarInvite() {
+		ChangeListener<String> invite = new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) {
+				//RSVPController.setAvtale(Klienten.)
+				//ScreenNavigator.loadScreen(ScreenNavigator.RSVP);
+			}
+			
+		};
+		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
+	}
 	
-	public void showNotifikasjoner() throws IOException {
+	
+	private void showInvitasjoner() throws IOException {
 		String[] notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < notifikasjonene.length; i++) {
-			list.add(notifikasjonene[i]);
+			if (notifikasjonene[i].trim().equals("NONE")) {
+				list.add("Ingen notifikasjoner");
+			}
+			else if (notifikasjonene[i].equals("\r\n")) {
+				
+			}
+			else {
+				list.add("Invitasjon: " + notifikasjonene[i] + " (Dobbeltrykk)");
+			}
 		}
 		ObservableList<String> items = FXCollections.observableList(list);
 		notifikasjoner.setItems(items);
@@ -134,13 +167,18 @@ public class KalenderController {
 	}
 	
 	private void hentAvtaler() throws IOException {
-		avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail()).split(" ");
-		for (int k = 0; k < avtale_liste.length; k++) {
-			if (k%2 != 0) {
-				String dato = avtale_liste[k];
-				String avtaleid = avtale_liste[k-1];
-				createAvtale(dato, avtaleid);
+		try {
+			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail()).split(" ");
+			for (int k = 0; k < avtale_liste.length; k++) {
+				if (k%2 != 0) {
+					String dato = avtale_liste[k];
+					String avtaleid = avtale_liste[k-1];
+					createAvtale(dato, avtaleid);
+				}
 			}
+		}
+		catch (NullPointerException e) {
+			
 		}
 		
 	}
