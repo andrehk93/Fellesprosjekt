@@ -263,4 +263,9 @@ public class KalenderController {
 		}
 		flushView();
 	}
+	
+	@FXML
+	private void logout() throws IOException{
+		Klienten.logout();
+	}
 }

@@ -107,7 +107,7 @@
                   <ListView fx:id="notifikasjoner" prefHeight="211.0" prefWidth="169.0" />
                </children>
                <children>
-                  <Button mnemonicParsing="false" text="Logg ut" />
+                  <Button mnemonicParsing="false" onAction="#logout" text="Logg ut" />
                </children>
             </VBox>
          </children>

@@ -182,6 +182,10 @@ public class KalenderProtocol {
 				break;
 			case "LASTID":
 				output = kalenderdb.getLastID();
+				break;
+			case "USERS":
+				output = kalenderdb.getUsers();
+				break;
 			}
 			
 			if(output.trim().equals("")){
