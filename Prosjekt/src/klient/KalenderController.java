@@ -1,5 +1,6 @@
 package klient;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class KalenderController {
 	@FXML private Button nesteManed;
 	@FXML private Label manedLabel;
 	@FXML private Label arLabel;
+	
 	private int maned;
 	private int aar;
 	
@@ -145,5 +147,10 @@ public class KalenderController {
 			setMonth(getMonth()-1);
 		}
 		flushView();
+	}
+	
+	@FXML
+	private void logout() throws IOException{
+		Klienten.logout();
 	}
 }

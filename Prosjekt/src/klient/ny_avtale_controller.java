@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -29,6 +30,7 @@ public class ny_avtale_controller {
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
+	private String[] ledigeBrukere;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -55,7 +57,7 @@ public class ny_avtale_controller {
     @FXML
     ChoiceBox<String> minuttTil = new ChoiceBox<String>();
     @FXML
-    TextField legg_til_gjester = new TextField();
+    ComboBox<String> legg_til_gjester = new ComboBox<String>();
     @FXML
     ListView<String> gjesteliste = new ListView<String>();
     @FXML
@@ -75,10 +77,13 @@ public class ny_avtale_controller {
     List<String> gjestelisten;
     ObservableList<String> gjestene;
 	
-	public void initialize() {
+	public void initialize() throws IOException {
 		sluttdato.setDisable(true);
+		
+		ledigeBrukere = Klienten.getAllUserEmails();
+		legg_til_gjester.getItems().addAll(ledigeBrukere);
+		
 		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0,
 					Boolean arg1, Boolean arg2) {
@@ -281,9 +286,10 @@ public class ny_avtale_controller {
     public void addGjest(ActionEvent event) throws IOException {
     	
     	//Må finne brukeren i databasen
-    	String brukernavn = Klienten.getBruker(legg_til_gjester.getText());
-    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getText());
-    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getText());
+    	
+    	String brukernavn = Klienten.getBruker(legg_til_gjester.getValue());
+    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getValue());
+    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getValue());
     	showGjest(gjest);
     	gjeste_liste.add(gjest);
     }
@@ -353,6 +359,9 @@ public class ny_avtale_controller {
 		}
 	}
 		
+	public void avbryt(){
+		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+	}
 		
 }
 

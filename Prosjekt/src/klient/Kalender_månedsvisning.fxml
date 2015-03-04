@@ -97,6 +97,7 @@
           <!-- NY AVTALE - KNAPP -->
             <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" text="Ny avtale" />
             <Button mnemonicParsing="false" text="Grupper" />
+            <Button mnemonicParsing="false" onAction="#logout" text="Logg ut" />
             <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">

@@ -3,8 +3,10 @@ package klient;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
@@ -24,6 +26,16 @@ public class Main extends Application {
 //			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 //			primaryStage.setScene(scene);
 //			primaryStage.show();
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+				public void handle(WindowEvent we){
+					try {
+						Klienten.logout();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
 	}
 	
 	private Pane loadMainPane() throws IOException{

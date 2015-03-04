@@ -428,7 +428,23 @@ public class KalenderDB {
 		return result.getString(1) + " " + result.getString(2);
 	}
 	
+	public String getUsers() throws Exception {
+		init();
+		
+		query = "SELECT epost FROM bruker";
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+			System.out.println(result.getString(1));
+		}
+		return output;
+	}
 	
+	
+	// Hashing 
 	private String toSha(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		digest.update(text.getBytes("UTF-8"));
@@ -437,6 +453,7 @@ public class KalenderDB {
         return bytesToHex(bytes);
 	}
 	
+	// Bytes to hex
 	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
 	private static String bytesToHex(byte[] bytes) {
 	    char[] hexChars = new char[bytes.length * 2];

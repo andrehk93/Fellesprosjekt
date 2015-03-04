@@ -169,6 +169,9 @@ public class KalenderProtocol {
 			case "USERFULLNAME":
 				output = kalenderdb.getUserDetails(input[1]);
 				break;
+			case "USERS":
+				output = kalenderdb.getUsers();
+				break;
 			}
 			
 			if(output.trim().equals("")){
