@@ -79,6 +79,19 @@ public class OpprettingController {
     		etternavn_lbl.setText("");
     	}
     	
+    public boolean isPasswordTheSame(){
+   		if(!password.getText().matches(password2.getText()){
+   			password.setStyle("-fx-text-box-border : red");
+   			password2.setStyle("-fx-text-box-border : red");
+   			password2_lbl.setText("*Første passord er ikke det samme som andre passord");
+   		}else{
+   			password.setStyle("-fx-text-box-border : white");
+   			password2.setStyle("-fx-text-box-border : ");
+   			password2_lbl.setText("");
+   		}
+    
+    }
+    	
     }*/
 
 }
