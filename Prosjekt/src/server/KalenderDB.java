@@ -181,12 +181,14 @@ public class KalenderDB {
 	
 	public String getMyDagApps(String user, int which) throws Exception{
 		init();
+		System.out.println("1WHAT?!!!");
 		
 		switch(which){
 			case 0: //Alle avtaler
-				query = "select avtaleid, dato\n" + 
+				query = "select a.avtaleid, dato\n" + 
 						"from avtale as a, ermed as e\n" + 
 						"where a.avtaleid=e.avtaleid and epost=?";
+				System.out.println("8WHAT?!!!");
 				break;
 			case 1: //Alle har godtatt
 				query = "select a.avtaleid, dato\n" + 
@@ -216,16 +218,21 @@ public class KalenderDB {
 						"where oppmotestatus!=0\n" + 
 						"group by avtaleid)";
 		}
+		System.out.println(query);
 		
 		PreparedStatement statement = con.prepareStatement(query);
+		System.out.println("10WHAT??!");
 		statement.setString(1, user);
+		System.out.println("11WHAT??!");
 		ResultSet result = statement.executeQuery();
 		
 		String output = "";
+		System.out.println("4WHAT?!!!");
 		
 		while(result.next()){
 			output += result.getString(1)+" " + result.getString(2) + " ";
 		}
+		System.out.println("5WHAT?!!!");
 		return output;
 	}
 	
