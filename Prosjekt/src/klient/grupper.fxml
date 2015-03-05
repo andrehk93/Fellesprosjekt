@@ -29,8 +29,8 @@
             </VBox>
             <VBox alignment="CENTER" maxHeight="-Infinity" prefHeight="78.0" prefWidth="100.0" spacing="15.0">
                <children>
-                  <Button mnemonicParsing="false" text="Legg til -&gt;" />
-                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0" text="&lt;- Fjern" />
+                  <Button mnemonicParsing="false" onAction="#handleLeggTil"  text="Legg til -&gt;" />
+                  <Button mnemonicParsing="false" onAction="#handleFjern"  prefHeight="31.0" prefWidth="90.0" text="&lt;- Fjern" />
                </children>
             </VBox>
             <VBox maxHeight="-Infinity" prefHeight="409.0" prefWidth="332.0" spacing="5.0">
