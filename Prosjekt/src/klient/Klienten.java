@@ -84,7 +84,6 @@ public class Klienten {
 	
 	public static String mineAvtaler(String brukernavn, int which) throws IOException {
 		String toServer = "GET MYDAGAPPS "+String.valueOf(which);
-		System.out.println("toServer: "+toServer);
 		return sendTilServer(toServer);
 	}
 	
@@ -197,8 +196,14 @@ public class Klienten {
 	}
 	
 	public static void sendVarsel(String id, String email, String melding) throws IOException {
-		String toServer = "CREATE NOTIFICATION "+id+" "+melding+" "+email;
+		String toServer = "CREATE NOTIFICATION " + id + " "+ email + " " + melding + " ENDOFMESSAGE";
+		System.out.println("TO SERVER: " + toServer);
 		sendTilServer(toServer);
+	}
+	
+	public static String getVarsel() throws IOException {
+		String toServer = "GET NOTIFICATIONS ";
+		return sendTilServer(toServer);
 	}
 	
 	public static String getLastID() throws IOException {

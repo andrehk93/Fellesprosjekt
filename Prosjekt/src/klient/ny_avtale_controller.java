@@ -150,7 +150,6 @@ public class ny_avtale_controller {
 			}
 			timer.add(leggTil);
 		}
-		System.out.println(timer);
 		timeFra.setItems(timer);
 		timeTil.setItems(timer);
 		List<String> list_2 = new ArrayList<String>();
@@ -167,9 +166,7 @@ public class ny_avtale_controller {
 				minutter.add(leggTil);
 			}
 		}
-		System.out.println(minutter);
 		minuttFra.setItems(minutter);
-		System.out.println(minuttFra.getItems());
 		minuttTil.setItems(minutter);
 	}
     
