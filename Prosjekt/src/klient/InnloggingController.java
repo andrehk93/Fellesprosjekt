@@ -27,6 +27,7 @@ public class InnloggingController {//implements Initializable
 	@FXML private Label msg;
 	@FXML private PasswordField passord;
 	@FXML private Button logginn, opprettbruker;
+	@FXML private Button retryButton;
 	public Socket socket;
 	public DataOutputStream outToServer;
 	public BufferedReader inFromServer;
@@ -57,6 +58,14 @@ public class InnloggingController {//implements Initializable
 	@FXML// OPPRETT BRUKER - Gå til neste screen
 	private void nextPane(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.OPPRETTING);
+	}
+	
+	@FXML
+	private void retryCon(ActionEvent event) throws IOException {
+		Klienten klienten = new Klienten();
+		if(klienten.getTilkobling()){
+			ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+		}
 	}
 
 

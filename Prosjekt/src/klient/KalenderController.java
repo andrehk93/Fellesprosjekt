@@ -216,18 +216,19 @@ public class KalenderController {
 	private void hentAvtaler() throws IOException {
 		try {
 			if (Klienten.avtaler.isEmpty()) {
-				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail()).split(" ");
+				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 				for (int k = 0; k < avtale_liste.length; k++) {
 					if (k%2 != 0) {
 						String dato = avtale_liste[k];
 						String avtaleid = avtale_liste[k-1];
 						createAvtale(dato, avtaleid);
 					}
+				}
 			}
 			else {
-				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail()).split(" ");
+				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 			}
-		}
+			}
 		catch (NullPointerException e) {
 			
 		}
