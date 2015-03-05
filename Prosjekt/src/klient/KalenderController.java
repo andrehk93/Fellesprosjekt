@@ -42,8 +42,7 @@ public class KalenderController {
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
 		setFiltVerdi(0);
-		//filtrering.setItems(FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag"));
-		//filtrering.setValue("Alle");
+		setUpFiltrering();
 		flushView();
 	}
 	
@@ -55,6 +54,39 @@ public class KalenderController {
 		showInvitasjoner();
 		showBruker();
 	}
+	
+	private void setUpFiltrering(){
+		filtrering.setItems(FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag"));
+		filtrering.setValue("Alle");
+		filtrering.getSelectionModel().selectedIndexProperty().addListener(filtChange);
+	}
+	
+	ChangeListener<? super Number> filtChange = new ChangeListener<Number>() {
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			try{
+				switch(filtrering.getValue()){
+				case "Alle":
+					setFiltVerdi(0);
+					flushView();
+					break;
+				case "Bare godtatt":
+					setFiltVerdi(1);
+					flushView();
+					break;
+				case "Ikke svart":
+					setFiltVerdi(2);
+					flushView();
+					break;
+				case "Avslag":
+					setFiltVerdi(3);
+					flushView();
+					break;
+				}
+			}
+			catch (IOException e) {}
+		}
+	};
 	
 	public void grupperView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
