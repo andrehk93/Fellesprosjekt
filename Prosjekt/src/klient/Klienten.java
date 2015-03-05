@@ -23,7 +23,7 @@ public class Klienten {
 	
 	
 	public Klienten() throws IOException {
-		System.out.println("hallo");
+		avtaler = new ArrayList<Avtale>();
 		init();
 	}
 	
@@ -95,7 +95,6 @@ public class Klienten {
 	
 	public static String mineAvtaler(String brukernavn, int which) throws IOException {
 		String toServer = "GET MYDAGAPPS "+String.valueOf(which);
-		System.out.println("toServer: "+toServer);
 		return sendTilServer(toServer);
 	}
 	
