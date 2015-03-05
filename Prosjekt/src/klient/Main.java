@@ -26,7 +26,7 @@ public class Main extends Application {
 //			primaryStage.show();
 	}
 	
-	private Pane loadMainPane() throws IOException{
+	public Pane loadMainPane() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		
 		Pane mainPane = (Pane) loader.load(

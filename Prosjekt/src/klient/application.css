@@ -15,30 +15,25 @@
 	-fx-background-image: url("subtlewhite.jpg")
 	}*/
 
-html { 
-  background: url(./images/mintbackground.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+.root{ 
+  -fx-background-color: white;/**url(./images/mintbackground.jpg) no-repeat center center fixed;*/ 
+  -fx-background-size: cover;
 }
 	
 #header {
-    -fx-background-color: steelblue;
+    -fx-background-color: #a6ce39;
     -fx-text-fill: white;
     -fx-padding: 10px;
 }
 
 
 .label {
-	-fx-font-size: 18px;
+	-fx-font-size: 15pt;
     -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: Black;
+    -fx-opacity: 0.6;
 }
 
-.label-name {
-	-fx-font-size: 15px;
-    -fx-font-family: "Segoe UI Light";
-}
 
 .label-errormsg {
 	-fx-font-size: 15px;
@@ -47,12 +42,6 @@ html {
     
 }
 
-.appointments {
-	-fx-font-size: 12px;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: black;
-    
-}
 
 .label-days {
 	-fx-font-size: 18px;
@@ -64,15 +53,15 @@ html {
 .label-header {
     -fx-font-size: 32pt;
     -fx-font-family: "Segoe UI Light";
-    -fx-opacity: 1;
+    -fx-opacity: 2;
 }
 
 .text-field {
     -fx-font-size: 15px;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Segoe UI Light";
 }
  
-.button-arrows{
+/**.button-arrows{
 	-fx-base: lightgrey;
 	-fx-font-size: 15px;
 	-fx-font-family: "Segoe UI Bold";
@@ -81,33 +70,26 @@ html {
 	-fx-pref-width:  125 px;
     -fx-pref-height: 35 px;
 	
-}
+}*/
 
-.button-Leggtil{
-	-fx-base: lightgrey;
+#button-main{
+	-fx-base: blue;
 	-fx-font-size: 15px;
-	-fx-font-family: "Segoe UI Light";
+	-fx-font-family: "Segoe UI";
 	-fx-text-fill: black;
 	-fx-border-color: #e2e2e2;
-	-fx-pref-width:  100 px;
+	-fx-pref-width:  150 px;
     -fx-pref-height: 35 px;
 	
 }
-
-.button-pressed {
-    -fx-base: blue;
-    -fx-font-size: 15px;
-    -fx-border-color: #e2e2e2;
+.button-link{
+	-fx-font-size: 15px;
     -fx-border-width: 2;
     -fx-font-family: "Segoe UI";
     -fx-alignment: center;
-    -fx-pref-width: 125 px;
-    -fx-pref-height: 35 px;
-
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-    
-
+    -fx-base: white;
 }
+
 .button {
     -fx-base: lightblue;
     -fx-font-size: 15px;
@@ -115,10 +97,18 @@ html {
     -fx-border-width: 2;
     -fx-font-family: "Segoe UI";
     -fx-alignment: center;
-    -fx-pref-width: 125 px;
-    -fx-pref-height: 35 px;
-
     -fx-background-insets: 0 0 0 0, 0, 1, 2;
-    
+
+	-fx-moz-border-radius-bottomright: 50px;
+	border-bottom-right-radius: 50px;
 
 }
+
+
+.button:hover {
+   -fx-background: #3c7ecf;
+   -fx-color: #ffffff;
+   }
+.button:active {
+   -fx-background: #2d6082;
+   }

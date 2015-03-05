@@ -39,6 +39,8 @@ public class InnloggingController {//implements Initializable
 		checkInput();
 		if (Klienten.login(brukernavn.getText(), passord.getText())) {
 			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+		}else{
+			msg.setText("Feil brukernavn eller passord.");
 		}
 	}
 
@@ -53,16 +55,18 @@ public class InnloggingController {//implements Initializable
 		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
 				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
-		if (brukernavn.getText().equals("") || passord.getText().equals("") ){ 
+		if (brukernavn.getText().equals("")){ 
 			brukernavn.setStyle("-fx-text-box-border : red ");
-			msg.setText("Manglende brukernavn og/eller passord.");
-		}else if(!(brukernavn.getText().matches(regex))){
+			msg.setText("Manglende brukernavn.");
+			
+		}else if(passord.getText().equals("")){
 			brukernavn.setStyle("-fx-text-box-border : red ");
-			msg.setText("Brukernavn/epostadresse er på ugyldig format!");
+			msg.setText("Manglende passord.");
+		}
+		else if(!(brukernavn.getText().matches(regex))){
+			brukernavn.setStyle("-fx-text-box-border : red ");
+			msg.setText("Brukernavn er på ugyldig format!");
 
-			//Sjekk om brukernavnet finnes, sjekk mot db liste av brukernavn. Gi tilbakemld = "Brukernavn eksisterer ikke"
-
-			//Sjekk om brukernavner riktig, hvis riktig sjekk om det tilhørende pw er identisk til d skrevet inn. 
 		}else{
 			brukernavn.setStyle("-fx-text-box-border : white ");
 			passord.setStyle("-fx-text-box-border : white ");

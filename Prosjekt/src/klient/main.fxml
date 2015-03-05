@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -7,7 +8,10 @@
 
 <VBox prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.MainController">
   <children>
-    <Label  maxWidth="1.7976931348623157E308" text="Header" VBox.vgrow="NEVER" />
+    <Label id="header" maxWidth="1.7976931348623157E308" stylesheets="@application.css" text="Fellesprosjekt - Gruppe 4" VBox.vgrow="NEVER">
+         <font>
+            <Font name="Segoe UI Light Italic" size="18.0" />
+         </font></Label>
     <StackPane fx:id="screenHolder" VBox.vgrow="ALWAYS" />
   </children>
 </VBox>
