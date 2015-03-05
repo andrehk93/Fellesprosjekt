@@ -34,6 +34,7 @@ public class Klienten {
 			System.out.println("Connected to server " + ip + ":" + port);
 		} catch(Exception ConnectException){
 			System.out.println("Kunne ikke koble til server");
+			ScreenNavigator.loadScreen(ScreenNavigator.TILKOBLING_ERROR);
 		}
 	}
 	
