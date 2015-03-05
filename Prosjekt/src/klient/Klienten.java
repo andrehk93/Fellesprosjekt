@@ -19,6 +19,7 @@ public class Klienten {
 	public static BufferedReader inFromServer;
 	public static Bruker bruker;
 	private static boolean tilkobling;
+	public static ArrayList<Avtale> avtaler;
 	
 	
 	public Klienten() throws IOException {
@@ -146,6 +147,11 @@ public class Klienten {
 	public static String getInvitasjoner(Bruker bruker) throws IOException {
 		String toServer = "GET INVS ";
 		return sendTilServer(toServer);
+	}
+	
+	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
+		String toServer = "CHANGE STATUS " + avtaleid + " " + newStatus;
+		sendTilServer(toServer);
 	}
 	
 	public static String getRomStr(String romnavn) throws IOException {

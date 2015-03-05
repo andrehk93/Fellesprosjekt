@@ -55,7 +55,7 @@ public class Main extends Application {
 		else {
 			ScreenNavigator.loadScreen(ScreenNavigator.TILKOBLING_ERROR);
 		}
-		
+
 		return mainPane;
 	}
 	
@@ -70,7 +70,6 @@ public class Main extends Application {
 	private Scene createScene(Pane mainPane){
 		Scene scene = new Scene(mainPane);
 		scene.getStylesheets().setAll(getClass().getResource("application.css").toExternalForm());
-		
 		return scene;
 	}
 	

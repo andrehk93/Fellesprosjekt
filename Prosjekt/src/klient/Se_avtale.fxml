@@ -89,7 +89,7 @@
             <Font name="Segoe UI Semilight" size="18.0" />
          </font>
       </Text>
-      <Button layoutX="782.0" layoutY="583.0" mnemonicParsing="false" text="Bekreft" />
+      <Button layoutX="782.0" layoutY="583.0" mnemonicParsing="false" text="Bekreft" fx:id="bekreft" onAction="#bekreftEndringer" />
       <HBox layoutX="174.0" layoutY="409.0" prefHeight="35.0" prefWidth="272.0" spacing="25.0" styleClass="label-name">
          <children>
             <RadioButton fx:id="ikke_svart" mnemonicParsing="false" onAction="#ikke_svart" styleClass="label-name" text="Ikke svart" />

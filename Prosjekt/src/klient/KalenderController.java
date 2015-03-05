@@ -119,7 +119,7 @@ public class KalenderController {
 		String[] notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < notifikasjonene.length; i++) {
-			if (notifikasjonene[i].trim().equals("NONE")) {
+			if (notifikasjonene[i].trim().equals("NONE") || notifikasjonene[i].trim().equals("-1")) {
 				list.add("Ingen notifikasjoner");
 			}
 			else if (notifikasjonene[i].equals("\r\n")) {
@@ -215,15 +215,20 @@ public class KalenderController {
 	
 	private void hentAvtaler() throws IOException {
 		try {
-			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
-			for (int k = 0; k < avtale_liste.length; k++) {
-				if (k%2 != 0) {
-					String dato = avtale_liste[k];
-					String avtaleid = avtale_liste[k-1];
-					createAvtale(dato, avtaleid);
+			if (Klienten.avtaler.isEmpty()) {
+				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
+				for (int k = 0; k < avtale_liste.length; k++) {
+					if (k%2 != 0) {
+						String dato = avtale_liste[k];
+						String avtaleid = avtale_liste[k-1];
+						createAvtale(dato, avtaleid);
+					}
 				}
 			}
-		}
+			else {
+				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
+			}
+			}
 		catch (NullPointerException e) {
 			
 		}
@@ -258,6 +263,7 @@ public class KalenderController {
 			}
 		}
 		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		Klienten.avtaler.add(avtale);
 		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
 	}
