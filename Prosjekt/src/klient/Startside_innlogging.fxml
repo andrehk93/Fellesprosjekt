@@ -30,11 +30,11 @@
          
          <!-- BRUKERNAVN/EPOSTADRESSE -->
             <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Brukernavn" />
-            <TextField fx:id="brukernavn" promptText="mytn@stud.ntnu.no" GridPane.columnIndex="1" />
+            <TextField fx:id="brukernavn" promptText="mytn@stud.ntnu.no" GridPane.columnIndex="1" onKeyReleased="#enterKeyPress" />
          
          <!-- PASSORD -->
-            <PasswordField fx:id="passord" promptText="*******" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label contentDisplay="RIGHT" prefHeight="27.0" prefWidth="94.0" text="Passord" GridPane.rowIndex="1" />
+            <PasswordField fx:id="passord" promptText="*******" GridPane.columnIndex="1" GridPane.rowIndex="1" onKeyReleased="#enterKeyPress"/>
+            <Label contentDisplay="RIGHT" prefHeight="27.0" prefWidth="94.0" text="Passord" GridPane.rowIndex="1"  />
          
          <!-- TILBAKEMELD -->
             <Label fx:id="msg" contentDisplay="RIGHT" textFill="#9e1414" GridPane.columnIndex="1" GridPane.rowIndex="2">

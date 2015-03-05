@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.net.ConnectException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -21,11 +23,20 @@ public class Klienten {
 	public Klienten() throws IOException {
 		avtaler = new ArrayList<Avtale>();
 		System.out.println("hallo");
+		init();
+	}
+	
+	public static void init() throws UnknownHostException, IOException{
 		String ip = "localhost";
 		int port = 6789;
-		socket = new Socket(ip, port);
-		outToServer = new DataOutputStream(socket.getOutputStream());
-		inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		try {
+			socket = new Socket(ip, port);
+			outToServer = new DataOutputStream(socket.getOutputStream());
+			inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			System.out.println("Connected to server " + ip + ":" + port);
+		} catch(Exception ConnectException){
+			System.out.println("Kunne ikke koble til server");
+		}
 	}
 	
 	public static String hentAvtale(String avtaleid) throws IOException {
@@ -34,6 +45,10 @@ public class Klienten {
 	}
 	
 	public static boolean login(String brukernavn, String passord) throws IOException, NoSuchAlgorithmException {	
+		
+		if(socket.isClosed()){
+			init();
+		}
 		
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		digest.update(passord.getBytes("UTF-8"));
@@ -67,9 +82,21 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 	
-	public static String mineAvtaler(String brukernavn) throws IOException {
-		String toServer = "GET MYDAGAPPS ";
+	public static String mineAvtaler(String brukernavn, int which) throws IOException {
+		String toServer = "GET MYDAGAPPS "+String.valueOf(which);
+		System.out.println("toServer: "+toServer);
 		return sendTilServer(toServer);
+	}
+	
+	public static void logout() throws IOException{
+		try {
+			sendTilServer("LOGOUT");
+			socket.close();
+		} catch (Exception NullPointerException){
+			
+		}
+		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+		System.out.println("Logget ut");
 	}
 	
 	public static String sendTilServer(String message) throws IOException {
@@ -129,6 +156,10 @@ public class Klienten {
 		return allUsers;
 	}
 	
+	public static String[] getAllUserEmails() throws IOException{
+		return  sendTilServer("GET USERS").split(" ");
+	}
+	
 	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
 	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
@@ -145,6 +176,9 @@ public class Klienten {
 	}
 
 	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException, NoSuchAlgorithmException {
+		if(socket.isClosed()){
+			init();
+		}
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		digest.update(passord.getBytes("UTF-8"));
 		byte[] passBytes = digest.digest();
