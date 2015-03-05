@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
@@ -30,14 +31,18 @@ public class KalenderController {
 	@FXML private Button nesteManed;
 	@FXML private Label manedLabel, brukernavn, arLabel;
 	@FXML private ListView<String> notifikasjoner;
+	@FXML private ChoiceBox<String> filtrering;
 	private int maned;
 	private int aar;
 	private String[] avtale_liste;
+	private int filtverdi;
 	public static String[] enheter;
 	
 	public void initialize() throws IOException{
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
+		setFiltVerdi(0);
+		setUpFiltrering();
 		flushView();
 	}
 	
@@ -48,8 +53,40 @@ public class KalenderController {
 		loadGrid();	
 		showInvitasjoner();
 		showBruker();
-		svarInvite();
 	}
+	
+	private void setUpFiltrering(){
+		filtrering.setItems(FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag"));
+		filtrering.setValue("Alle");
+		filtrering.getSelectionModel().selectedIndexProperty().addListener(filtChange);
+	}
+	
+	ChangeListener<? super Number> filtChange = new ChangeListener<Number>() {
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			try{
+				switch(filtrering.getItems().get((Integer) newValue)){
+				case "Alle":
+					setFiltVerdi(0);
+					flushView();
+					break;
+				case "Bare godtatt":
+					setFiltVerdi(1);
+					flushView();
+					break;
+				case "Ikke svart":
+					setFiltVerdi(2);
+					flushView();
+					break;
+				case "Avslag":
+					setFiltVerdi(3);
+					flushView();
+					break;
+				}
+			}
+			catch (IOException e) {}
+		}
+	};
 	
 	public void grupperView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
@@ -63,15 +100,16 @@ public class KalenderController {
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
 	
-	private void svarInvite() throws IOException {
+	private void svarInvite() {
 		ChangeListener<String> invite = new ChangeListener<String>() {
 
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
-				enheter = newValue.split(" ");
-				ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+				//RSVPController.setAvtale(Klienten.)
+				//ScreenNavigator.loadScreen(ScreenNavigator.RSVP);
 			}
+			
 		};
 		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
 	}
@@ -88,7 +126,7 @@ public class KalenderController {
 				
 			}
 			else {
-				list.add("Invitasjon: " + notifikasjonene[i] + " (Trykk her)");
+				list.add("Invitasjon: " + notifikasjonene[i] + " (Dobbeltrykk)");
 			}
 		}
 		ObservableList<String> items = FXCollections.observableList(list);
@@ -135,6 +173,14 @@ public class KalenderController {
 		return null;
 	}
 	
+	private void setFiltVerdi(int verdi) {
+		this.filtverdi = verdi;
+	}
+	
+	private int getFiltVerdi() {
+		return this.filtverdi;
+	}
+	
 	
 	
 	private void loadGrid() throws IOException{
@@ -169,7 +215,7 @@ public class KalenderController {
 	
 	private void hentAvtaler() throws IOException {
 		try {
-			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail()).split(" ");
+			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 			for (int k = 0; k < avtale_liste.length; k++) {
 				if (k%2 != 0) {
 					String dato = avtale_liste[k];
@@ -190,7 +236,9 @@ public class KalenderController {
 	private void createAvtale(String dato, String avtaleid) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
+		System.out.println("romnavn: "+romnavn);
 		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
+		System.out.println("kap :" +kapasitet);
 		Møterom rom = new Møterom(kapasitet, romnavn);
 		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
@@ -200,7 +248,7 @@ public class KalenderController {
 		String[] deltakere = Klienten.getDeltakere(avtaleid).split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
-				if (epost.trim().equals("NONE")) {
+				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
 					break;
 				}
 				else {
@@ -268,5 +316,10 @@ public class KalenderController {
 	@FXML
 	private void logout() throws IOException{
 		Klienten.logout();
+	}
+	
+	@FXML
+	private void changeFiltrering(ActionEvent e) {
+		
 	}
 }

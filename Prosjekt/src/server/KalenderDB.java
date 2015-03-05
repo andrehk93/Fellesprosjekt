@@ -179,12 +179,48 @@ public class KalenderDB {
 		return output;
 	}
 	
-	public String getMyDagApps(String user) throws Exception{
+	public String getMyDagApps(String user, int which) throws Exception{
 		init();
 		
-		query = "select avtaleid, dato \n" + 
-				"from avtale \n" + 
-				"where avtaleadmin = ?";
+		switch(which){
+			case 0: //Alle avtaler
+				query = "select a.avtaleid, dato\n" + 
+						"from avtale as a, ermed as e\n" + 
+						"where a.avtaleid=e.avtaleid and epost=?";
+				break;
+			case 1: //Alle har godtatt
+				query = "select a.avtaleid, dato\n" + 
+						"from avtale as a, ermed as e\n" + 
+						"where a.avtaleid=e.avtaleid and epost=?\n" + 
+						"and a.avtaleid not in\n" + 
+						"(select avtaleid\n" + 
+						"from ermed\n" + 
+						"where oppmotestatus IS NULL or oppmotestatus=0\n" + 
+						"group by avtaleid)";
+				break;
+			case 2: //Noen har ikke svart
+				query = "select a.avtaleid, dato\n" + 
+						"from avtale as a, ermed as e\n" + 
+						"where a.avtaleid=e.avtaleid and epost=?\n" + 
+						"and a.avtaleid not in\n" + 
+						"(select avtaleid\n" + 
+						"from ermed\n" + 
+						"where oppmotestatus IS NULL\n" + 
+						"group by avtaleid)";
+				break;
+			case 3: //Noen har sagt nei
+				query = "select a.avtaleid, dato\n" + 
+						"from avtale as a, ermed as e\n" + 
+						"where a.avtaleid=e.avtaleid and epost=?\n" + 
+						"and a.avtaleid not in\n" + 
+						"(select avtaleid\n" + 
+						"from ermed\n" + 
+						"where oppmotestatus!=0\n" + 
+						"group by avtaleid)";
+				break;
+		}
+		System.out.println(query);
+		
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
 		ResultSet result = statement.executeQuery();
@@ -192,7 +228,7 @@ public class KalenderDB {
 		String output = "";
 		
 		while(result.next()){
-			output += result.getString(1)+" " + result.getString(2) + " ";
+			output += result.getString(1)+" " + result.getString(2)+" ";
 		}
 		return output;
 	}
