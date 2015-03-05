@@ -181,14 +181,12 @@ public class KalenderDB {
 	
 	public String getMyDagApps(String user, int which) throws Exception{
 		init();
-		System.out.println("1WHAT?!!!");
 		
 		switch(which){
 			case 0: //Alle avtaler
 				query = "select a.avtaleid, dato\n" + 
 						"from avtale as a, ermed as e\n" + 
 						"where a.avtaleid=e.avtaleid and epost=?";
-				System.out.println("8WHAT?!!!");
 				break;
 			case 1: //Alle har godtatt
 				query = "select a.avtaleid, dato\n" + 
@@ -199,6 +197,7 @@ public class KalenderDB {
 						"from ermed\n" + 
 						"where oppmotestatus IS NULL or oppmotestatus=0\n" + 
 						"group by avtaleid)";
+				break;
 			case 2: //Noen har ikke svart
 				query = "select a.avtaleid, dato\n" + 
 						"from avtale as a, ermed as e\n" + 
@@ -208,6 +207,7 @@ public class KalenderDB {
 						"from ermed\n" + 
 						"where oppmotestatus IS NULL\n" + 
 						"group by avtaleid)";
+				break;
 			case 3: //Noen har sagt nei
 				query = "select a.avtaleid, dato\n" + 
 						"from avtale as a, ermed as e\n" + 
@@ -217,22 +217,19 @@ public class KalenderDB {
 						"from ermed\n" + 
 						"where oppmotestatus!=0\n" + 
 						"group by avtaleid)";
+				break;
 		}
 		System.out.println(query);
 		
 		PreparedStatement statement = con.prepareStatement(query);
-		System.out.println("10WHAT??!");
 		statement.setString(1, user);
-		System.out.println("11WHAT??!");
 		ResultSet result = statement.executeQuery();
 		
 		String output = "";
-		System.out.println("4WHAT?!!!");
 		
 		while(result.next()){
-			output += result.getString(1)+" " + result.getString(2) + " ";
+			output += result.getString(1)+" " + result.getString(2)+" ";
 		}
-		System.out.println("5WHAT?!!!");
 		return output;
 	}
 	

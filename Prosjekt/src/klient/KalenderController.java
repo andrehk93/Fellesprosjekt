@@ -65,7 +65,7 @@ public class KalenderController {
 		@Override
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			try{
-				switch(filtrering.getValue()){
+				switch(filtrering.getItems().get((Integer) newValue)){
 				case "Alle":
 					setFiltVerdi(0);
 					flushView();
@@ -236,7 +236,9 @@ public class KalenderController {
 	private void createAvtale(String dato, String avtaleid) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
+		System.out.println("romnavn: "+romnavn);
 		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
+		System.out.println("kap :" +kapasitet);
 		Møterom rom = new Møterom(kapasitet, romnavn);
 		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
@@ -246,7 +248,7 @@ public class KalenderController {
 		String[] deltakere = Klienten.getDeltakere(avtaleid).split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
-				if (epost.trim().equals("NONE")) {
+				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
 					break;
 				}
 				else {

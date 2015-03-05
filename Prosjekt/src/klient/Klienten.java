@@ -82,6 +82,7 @@ public class Klienten {
 	
 	public static String mineAvtaler(String brukernavn, int which) throws IOException {
 		String toServer = "GET MYDAGAPPS "+String.valueOf(which);
+		System.out.println("toServer: "+toServer);
 		return sendTilServer(toServer);
 	}
 	
