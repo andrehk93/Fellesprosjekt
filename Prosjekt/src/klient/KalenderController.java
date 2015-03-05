@@ -36,6 +36,7 @@ public class KalenderController {
 	private int aar;
 	private String[] avtale_liste;
 	private int filtverdi;
+	public static String[] enheter;
 	
 	public void initialize() throws IOException{
 		setMonth(LocalDate.now().getMonthValue());

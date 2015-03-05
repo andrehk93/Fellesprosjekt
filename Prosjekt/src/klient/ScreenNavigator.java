@@ -13,6 +13,8 @@ public class ScreenNavigator {
 	public static final String DAGSVISNING = "Dagsvisning.fxml";
 	public static final String UKESVISNING = "Ukesvisning.fxml";
 	public static final String GRUPPER ="grupper.fxml";
+	public static final String SE_AVTALE = "Se_avtale.fxml";
+	public static final String ENDRE_AVTALE = "Endre_avtale.fxml";
 	
 	/** The main application layout controller. */
 	private static MainController mainController;

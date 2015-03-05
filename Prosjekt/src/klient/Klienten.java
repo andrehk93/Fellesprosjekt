@@ -37,6 +37,11 @@ public class Klienten {
 		}
 	}
 	
+	public static String hentAvtale(String avtaleid) throws IOException {
+		String toServer = "GET APPDETAILS " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
 	public static boolean login(String brukernavn, String passord) throws IOException, NoSuchAlgorithmException {	
 		
 		if(socket.isClosed()){
