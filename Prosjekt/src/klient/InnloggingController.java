@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 
 public class InnloggingController {//implements Initializable
@@ -39,6 +41,16 @@ public class InnloggingController {//implements Initializable
 		checkInput();
 		if (Klienten.login(brukernavn.getText(), passord.getText())) {
 			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+		}
+	}
+	
+	@FXML
+	private void enterKeyPress(KeyEvent event) throws NoSuchAlgorithmException, IOException{
+		if(event.getCode() == KeyCode.ENTER){
+			checkInput();
+			if (Klienten.login(brukernavn.getText(), passord.getText())){
+				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+			}
 		}
 	}
 
