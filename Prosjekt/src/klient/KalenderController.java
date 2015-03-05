@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
@@ -30,13 +31,18 @@ public class KalenderController {
 	@FXML private Button nesteManed;
 	@FXML private Label manedLabel, brukernavn, arLabel;
 	@FXML private ListView<String> notifikasjoner;
+	@FXML private ChoiceBox<String> filtrering;
 	private int maned;
 	private int aar;
 	private String[] avtale_liste;
+	private int filtverdi;
 	
 	public void initialize() throws IOException{
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
+		setFiltVerdi(0);
+		//filtrering.setItems(FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag"));
+		//filtrering.setValue("Alle");
 		flushView();
 	}
 	
@@ -134,6 +140,14 @@ public class KalenderController {
 		return null;
 	}
 	
+	private void setFiltVerdi(int verdi) {
+		this.filtverdi = verdi;
+	}
+	
+	private int getFiltVerdi() {
+		return this.filtverdi;
+	}
+	
 	
 	
 	private void loadGrid() throws IOException{
@@ -168,7 +182,7 @@ public class KalenderController {
 	
 	private void hentAvtaler() throws IOException {
 		try {
-			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(),0).split(" "); //Tallet er filtrering!
+			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 			for (int k = 0; k < avtale_liste.length; k++) {
 				if (k%2 != 0) {
 					String dato = avtale_liste[k];
@@ -267,5 +281,10 @@ public class KalenderController {
 	@FXML
 	private void logout() throws IOException{
 		Klienten.logout();
+	}
+	
+	@FXML
+	private void changeFiltrering(ActionEvent e) {
+		
 	}
 }

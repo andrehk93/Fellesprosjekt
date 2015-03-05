@@ -10,6 +10,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.collections.FXCollections ?>
 
 <AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.KalenderController">
    <children>
@@ -96,7 +97,7 @@
             
           <!-- NY AVTALE - KNAPP -->
             <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" text="Ny avtale" />
-            <Button mnemonicParsing="false" text="Grupper" fx:id="grupper" onAction="#grupperView" />
+            <Button fx:id="grupper" mnemonicParsing="false" onAction="#grupperView" text="Grupper" />
             <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
@@ -115,5 +116,6 @@
       <Label fx:id="manedLabel" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
       <Label fx:id="arLabel" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
       <Button fx:id="refresh" layoutX="50.0" layoutY="626.0" mnemonicParsing="false" onAction="#refreshKalender" text="Last inn igjen" />
+      <!-- <ChoiceBox fx:id="filtrering" onAction="#changeFiltrering" layoutX="746.0" layoutY="642.0" prefWidth="150.0"/> -->
    </children>
 </AnchorPane>
