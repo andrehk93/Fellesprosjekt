@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -18,18 +20,11 @@ public class grupper_controller {
 	
 	private ArrayList<Bruker> medlemmer;
 	private ArrayList<Bruker> brukere;
-	private Bruker Andreas;
-	private Bruker Christoffer;
-	private Bruker Lars;
-	private Bruker Martin;
-	private Bruker My;
-	
-	public grupper_controller(){
-		medlemmer = new ArrayList<Bruker>();
-		brukere = new ArrayList<Bruker>();		
-	}
-	
-
+	private String søk;
+	private ArrayList<String> søk_liste;
+	private ArrayList<String> søk_liste2;
+	private ArrayList<String> testliste;
+	private ArrayList<String> søkBruker_liste;
 	private Scene scene;
     public void setScene(Scene scene) { this.scene = scene; }
     
@@ -38,9 +33,10 @@ public class grupper_controller {
     @FXML
     TextField brukersøk = new TextField();
     @FXML
-    ListView<Bruker> brukerliste = new ListView<Bruker>();
+    ListView<String> brukerliste = new ListView<>();
     @FXML
-    ListView gruppemedlemmer_liste = new ListView();
+	ListView<String> gruppemedlemmer_liste = new ListView<>();
+
     @FXML
     Slider gruppemedlemmer_slider = new Slider();
     @FXML
@@ -49,10 +45,61 @@ public class grupper_controller {
     Button forkast_gruppe_knapp = new Button();
     @FXML
     Button lagre_gruppe_knapp = new Button();
+    
+    
 	
-    public void handleGruppenavn(KeyEvent event) throws IOException {
-    	System.out.println("Hei");
+	public grupper_controller(){
+		medlemmer = new ArrayList<Bruker>();
+		brukere = new ArrayList<Bruker>();
+		testliste = new ArrayList<String>();
+		søkBruker_liste = new ArrayList<String>();
+		søk_liste = new ArrayList<String>();
+		søk_liste2 = new ArrayList<String>();
+		testlisteAdd();
+		brukerliste(testliste);
+		
+	}
+	
+	public void testlisteAdd(){
+		testliste.add("Andreas");
+		testliste.add("Christoffer");
+		testliste.add("Lars");
+		testliste.add("Martin");
+		testliste.add("My");
+	}
+	
+	public void brukerliste(ArrayList SøkBrukere){
+    	ObservableList<String> liste_brukere = FXCollections.observableList(SøkBrukere);
+		brukerliste.setItems(liste_brukere);
+	}
+    
+    @FXML
+    public void handleGruppesøk(KeyEvent event) throws IOException {
+    	søkBruker_liste.clear();
+    	søk = brukersøk.getText();
+    	
+    	for (int i = 0; i < testliste.size(); i++){
+    		søkBruker_liste.add(testliste.get(i));
+    	}
+    	
+/*		søk_liste = søk.split("");
+    	for (int i = 0; i < testliste.size(); i++){
+    		if (søk.length() < testliste.get(i).length()){
+    			for (int j = 0; j < søk.length(); j++){
+    				søk_liste2 = testliste.get(i).split("");
+    				if (søk_liste[j] == søk_liste2[j]){
+    					søkBruker_liste.add(testliste.get(i));
+    				}
+    			}
+    		}
+    	}
+    	System.out.println(søk_liste[1]);
+    	System.out.println(søk_liste2[1]);*/
+    	
+    	System.out.println(søk);
+    	brukerliste(søkBruker_liste);
     }
+    
     
     public void getUsers() throws IOException{
     	brukere = Klienten.getAllUserDetails();

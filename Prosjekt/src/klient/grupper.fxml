@@ -6,9 +6,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.grupper_controller">
    <children>
-      <TextField fx:id="gruppenavn" layoutX="119.0" layoutY="103.0" onKeyTyped="#handleKeyInput" promptText="Gruppenavn" />
+      <TextField fx:id="gruppenavn" layoutX="119.0" layoutY="103.0"  promptText="Gruppenavn" />
       <TextField fx:id="antall_gruppemedlemmer" layoutX="762.0" layoutY="582.0" prefHeight="31.0" prefWidth="88.0" promptText="10" />
       
       
@@ -22,7 +22,7 @@
             <VBox prefHeight="301.0" prefWidth="309.0" spacing="5.0">
                <children>
                   <Label text="Søk etter brukere" />
-                  <TextField fx:id="brukersøk" maxWidth="-Infinity" prefHeight="31.0" prefWidth="300.0" promptText="Søk..." />
+                  <TextField fx:id="brukersøk" maxWidth="-Infinity" prefHeight="31.0" prefWidth="300.0" onKeyPressed="#handleGruppesøk" promptText="Søk..." />
                   <Label text="Brukere" />
                   <ListView fx:id="brukerliste" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="336.0" prefWidth="300.0" />
                </children>
