@@ -15,9 +15,11 @@ public class Klienten {
 	public static DataOutputStream outToServer;
 	public static BufferedReader inFromServer;
 	public static Bruker bruker;
+	public static ArrayList<Avtale> avtaler;
 	
 	
 	public Klienten() throws IOException {
+		avtaler = new ArrayList<Avtale>();
 		System.out.println("hallo");
 		String ip = "localhost";
 		int port = 6789;
@@ -101,6 +103,11 @@ public class Klienten {
 	public static String getInvitasjoner(Bruker bruker) throws IOException {
 		String toServer = "GET INVS ";
 		return sendTilServer(toServer);
+	}
+	
+	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
+		String toServer = "CHANGE STATUS " + avtaleid + " " + newStatus;
+		sendTilServer(toServer);
 	}
 	
 	public static String getRomStr(String romnavn) throws IOException {

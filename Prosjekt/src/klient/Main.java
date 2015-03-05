@@ -37,14 +37,12 @@ public class Main extends Application {
 		
 		ScreenNavigator.setMainController(mainController);
 		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
-		
 		return mainPane;
 	}
 	
 	private Scene createScene(Pane mainPane){
 		Scene scene = new Scene(mainPane);
 		scene.getStylesheets().setAll(getClass().getResource("application.css").toExternalForm());
-		
 		return scene;
 	}
 	
