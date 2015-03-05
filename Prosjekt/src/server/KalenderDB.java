@@ -128,6 +128,39 @@ public class KalenderDB {
 		return output;
 	}
 	
+	public String getAppTime(String appID) throws Exception{
+		init();
+		
+		query = "select fra,til\n" + 
+				"from avtale\n" + 
+				"where avtaleid="+Integer.parseInt(appID);
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		
+		String output = result.getString(1)+" "+result.getString(2)+" ";
+		return output;
+	}
+	
+	public String getMyAppRom(String avtaleid) throws Exception {
+		init();
+		
+		query = "select romnavn\n" + 
+				"from avtale\n" + 
+				"where avtaleid=" + Integer.parseInt(avtaleid);
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";	
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		System.out.println("Svaret: " + output);
+		return output;
+	}
+	
 	public String getMyApps(String user) throws Exception{
 		init();
 		
@@ -142,6 +175,24 @@ public class KalenderDB {
 		
 		while(result.next()){
 			output += result.getString(1)+" ";
+		}
+		return output;
+	}
+	
+	public String getMyDagApps(String user) throws Exception{
+		init();
+		
+		query = "select avtaleid, dato \n" + 
+				"from avtale \n" + 
+				"where avtaleadmin = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		
+		while(result.next()){
+			output += result.getString(1)+" " + result.getString(2) + " ";
 		}
 		return output;
 	}
@@ -250,16 +301,18 @@ public class KalenderDB {
 		return res;
 	}
 	
-	public int inviteUser(String user, String avtale) throws Exception{
+	public String inviteUser(String user, String avtale) throws Exception{
 		init();
+		System.out.println("AVTALEID : " + avtale + " USER: " + user);
 		
 		query = "INSERT INTO `ermed` (`epost`, `avtaleid`) \r\n" +
 				"VALUES(?, ?);";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
 		statement.setString(2, avtale);
-		int result = statement.executeUpdate();
-		return result;
+		statement.executeUpdate();
+		String output = "OK";
+		return output;	
 		
 	}
 
@@ -315,20 +368,17 @@ public class KalenderDB {
 		return output;	
 	}
 
-	public int sendNotification(String user, String appID, String message, String[] recepients) throws Exception {
+	public int sendNotification(String user, String appID, String message, String recepient) throws Exception {
 		init();
 		int result = -1;
-		for(int i=0; i<recepients.length;i++){
-			query = "INSERT INTO `christwg_fp`.`varsler` (`epost`, `varsel`, `fra`, `avtaleid`, `tidspunkt`) VALUES (?, ?, ?, ?, ?)\n";
-			PreparedStatement statement = con.prepareStatement(query);
-			statement.setString(1, recepients[i]);
-			statement.setString(2, message);
-			statement.setString(3, user);
-			statement.setString(4, appID);
-			statement.setString(5, LocalTime.now().toString());
-			
-			result = statement.executeUpdate();
-		}
+		query = "INSERT INTO `christwg_fp`.`varsler` (`epost`, `varsel`, `fra`, `avtaleid`, `tidspunkt`) VALUES (?, ?, ?, ?, ?)";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, recepient);
+		statement.setString(2, message);
+		statement.setString(3, user);
+		statement.setString(4, appID);
+		statement.setString(5, LocalTime.now().toString());
+		result = statement.executeUpdate();
 		return result;
 		
 	}
@@ -343,6 +393,22 @@ public class KalenderDB {
 		
 		result.next();
 		return result.getString(1) + " " + result.getString(2);
+		
+	}
+	
+	public String getRoomStr(String roomname) throws Exception{
+		init();
+		
+		query = "SELECT kapasitet FROM moterom WHERE romnavn = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, roomname);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;
 		
 	}
 
@@ -428,7 +494,23 @@ public class KalenderDB {
 		return result.getString(1) + " " + result.getString(2);
 	}
 	
+	public String getUsers() throws Exception {
+		init();
+		
+		query = "SELECT epost FROM bruker";
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+			System.out.println(result.getString(1));
+		}
+		return output;
+	}
 	
+	
+	// Hashing 
 	private String toSha(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		digest.update(text.getBytes("UTF-8"));
@@ -437,6 +519,7 @@ public class KalenderDB {
         return bytesToHex(bytes);
 	}
 	
+	// Bytes to hex
 	final protected static char[] hexArray = "0123456789abcdef".toCharArray();
 	private static String bytesToHex(byte[] bytes) {
 	    char[] hexChars = new char[bytes.length * 2];
@@ -446,6 +529,14 @@ public class KalenderDB {
 	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
 	    }
 	    return new String(hexChars);
+	}
+	
+	public String getLastID() throws SQLException {
+		query = "SELECT LAST_INSERT_ID();";
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		return result.getString(1);
 	}
 }
 

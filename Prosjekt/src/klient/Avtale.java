@@ -14,21 +14,44 @@ import javafx.beans.value.ObservableValue;
 public class Avtale {
 	
 	
-	String avtaleid;
+	private String avtaleid;
 	
 	public Avtale() {
 		
 	}
 	
-	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom) throws IOException{
+	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom, String avtaleid) throws IOException{
+		this.avtaleid = avtaleid;
 		setEier(eier);
-		//settOppVarsel(this);
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
-		//lagVarsel(this);
-		avtaleid = Klienten.lagAvtale(tid, rom);
-		System.out.println("avtaleid: " + avtaleid);
+	}
+	
+	public String getAvtaleid(){
+		return this.avtaleid;
+	}
+	
+	private Property<String> idProperty = new ObjectPropertyBase<String>(null) {
+
+		@Override
+		public Object getBean() {
+			return this;
+		}
+
+		@Override
+		public String getName() {
+			return "id";
+		}
+		
+	};
+	
+	public void setId(String id){
+		idProperty.setValue(id);
+	}
+	
+	public String getId() {
+		return idProperty.getValue();
 	}
 	
 	private Property<Bruker> eierProperty = new ObjectPropertyBase<Bruker>(null) {
@@ -45,10 +68,11 @@ public class Avtale {
 		
 	};
 	
-	public void setEier(Bruker eier) {
+	public void setEier(Bruker eier) throws IOException {
 		if (gruppeProperty.getValue() == null || eierProperty.getValue() == null) {
-			addDeltakere(eier);
 			eierProperty.setValue(eier);
+			addDeltakere(eier);
+			eier.addAvtale(this);
 		}
 		else {
 			System.out.println("Denne avtalen har en eier allerede");
@@ -79,11 +103,14 @@ public class Avtale {
 	};
 	
 	//Antar at det legges til én
-	public void addDeltakere(Bruker deltaker) {
+	public void addDeltakere(Bruker deltaker) throws IOException {
 		try {
 			for (Bruker bruker : gruppeProperty.getValue().getMedlemmer()) {
 				gruppeProperty.getValue().addMedlem(deltaker);
-				Klienten.leggTilAvtale(bruker.getEmail(), avtaleid);
+				if (! deltaker.equals(eierProperty.getValue())) {
+					Klienten.leggTilAvtale(bruker.getEmail(), avtaleid);
+					deltaker.addAvtale(this);
+				}
 			}
 		}
 		catch (NullPointerException e) {
@@ -190,15 +217,19 @@ public class Avtale {
 	
 	
 	//Antar at det ikke er noen her fra før av
-	public void setDeltakere(ArrayList<Bruker> deltakere) {
+	public void setDeltakere(ArrayList<Bruker> deltakere) throws IOException {
 		try {
 			for (int i = 0; i < deltakere.size(); i++) {
 				gruppeProperty.getValue().addMedlem(deltakere.get(i));
+				deltakere.get(i).addAvtale(this);
 			}
 		}
 		catch (NullPointerException e) {
 			Gruppe gruppa = new Gruppe(this, deltakere);
 			gruppeProperty.setValue(gruppa);
+			for (int i = 0; i < deltakere.size(); i++) {
+				deltakere.get(i).addAvtale(this);
+			}
 		}
 	}
 	
@@ -213,74 +244,6 @@ public class Avtale {
 		streng += "Tid: " + this.getTid().getStart() + " - " + this.getTid().getSlutt() + "\n";
 		return streng;
 	}
-	
-	public void settOppVarsel(Avtale avtale) {
-		
-		//Lager listeners for Møterom-klassen
-		ChangeListener<Møterom> rom = new ChangeListener<Møterom>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Møterom> observable,
-					Møterom oldValue, Møterom newValue) {
-				try {
-					if (! oldValue.equals(newValue)) {
-						String melding = "En avtale er endret: \nKlokken: " + avtale.getTid().getStart()
-								+ " - " + avtale.getTid().getSlutt() + "\nDato: " + avtale.getTid().getDato()
-								+ " \nAdmin: " + avtale.getAvtaleAdmin().getNavn() + 
-								" \nTidligere møterom: " + oldValue.getNavn() + "\nNytt møterom: " + avtale.getRom().getNavn();
-						for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-							Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
-							avtale.getDeltakere().get(i).giVarsel(avtVarsel);
-						}
-					}
-					
-				}
-				catch (NullPointerException e) {
-				}
-			}
-		};
-		romProperty.addListener(rom);
-		
-		
-		//Lager varsel for endring/oppretting av tidspunkt
-		ChangeListener<TidsIntervall> tid = new ChangeListener<TidsIntervall>() {
-
-			@Override
-			public void changed(ObservableValue<? extends TidsIntervall> observable,
-					TidsIntervall oldValue, TidsIntervall newValue) {
-				try {
-					if (! oldValue.equals(newValue)) {
-						//Hvis den nye eventen ikke er det samme som forrige
-						String melding = "En avtale er endret: \nTidligere klokken: " + oldValue.getStart()
-								+ " - " + oldValue.getSlutt() + "\nNytt tidspunkt: " + avtale.getTid().getStart()
-								+ " - " + avtale.getTid().getSlutt() + "\nDato: " + avtale.getTid().getDato()
-								+ " \nAdmin: " + avtale.getAvtaleAdmin().getNavn() + 
-								" \nMøterom: " + avtale.getRom().getNavn();
-						for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-							Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
-							avtale.getDeltakere().get(i).giVarsel(avtVarsel);
-						}
-					}
-					
-				}
-				catch (NullPointerException e) {
-				}
-			}
-		};
-		tidsProperty.addListener(tid);
-	}
-	
-	public void lagVarsel(Avtale avtale) {
-		String melding = "En avtale er opprettet: \nklokken: " + avtale.getTid().getStart()
-				+ " - " + avtale.getTid().getSlutt() + "\ndato: " + avtale.getTid().getDato()
-				+ " \nav: " + avtale.getAvtaleAdmin().getNavn() + 
-				" \nmøterom: " + avtale.getRom().getNavn();
-		for (int i = 1; i < avtale.getDeltakere().size(); i++) {
-			Varsel avtVarsel = new Varsel(melding, avtale.getDeltakere().get(i), avtale.getAvtaleAdmin(), false);
-			avtale.getDeltakere().get(i).giVarsel(avtVarsel);
-		}
-	}
-	
 	
 	
 }

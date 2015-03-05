@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -29,6 +30,7 @@ public class ny_avtale_controller {
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
+	private String[] ledigeBrukere;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -55,7 +57,7 @@ public class ny_avtale_controller {
     @FXML
     ChoiceBox<String> minuttTil = new ChoiceBox<String>();
     @FXML
-    TextField legg_til_gjester = new TextField();
+    ComboBox<String> legg_til_gjester = new ComboBox<String>();
     @FXML
     ListView<String> gjesteliste = new ListView<String>();
     @FXML
@@ -75,10 +77,13 @@ public class ny_avtale_controller {
     List<String> gjestelisten;
     ObservableList<String> gjestene;
 	
-	public void initialize() {
+	public void initialize() throws IOException {
 		sluttdato.setDisable(true);
+		
+		ledigeBrukere = Klienten.getAllUserEmails();
+		legg_til_gjester.getItems().addAll(ledigeBrukere);
+		
 		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0,
 					Boolean arg1, Boolean arg2) {
@@ -133,7 +138,6 @@ public class ny_avtale_controller {
     	gjestene = FXCollections.observableList(gjestelisten);
 		feilTekst.setVisible(false);
 		feilDato.setVisible(false);
-		System.out.println("LETS CREATE");
 		List<String> list = new ArrayList<String>();
 		ObservableList<String> timer = FXCollections.observableList(list);
 		for (int i = 0; i < 24; i++) {
@@ -275,15 +279,12 @@ public class ny_avtale_controller {
     public void showGjest(Bruker gjest) {
     	gjestene.add(gjest.getNavn());
     	this.gjesteliste.setItems(gjestene);
-    	
     }
     
     public void addGjest(ActionEvent event) throws IOException {
-    	
-    	//Må finne brukeren i databasen
-    	String brukernavn = Klienten.getBruker(legg_til_gjester.getText());
-    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getText());
-    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getText());
+    	String brukernavn = Klienten.getBruker(legg_til_gjester.getValue());
+    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getValue());
+    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getValue());
     	showGjest(gjest);
     	gjeste_liste.add(gjest);
     }
@@ -332,13 +333,24 @@ public class ny_avtale_controller {
 		System.out.println(dato);
 		Møterom rom =  new Møterom(100, valgt_rom.getText());
 		if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
-			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom);
+			System.out.println("GJESTENE: " + gjeste_liste);
+			String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom);
+			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
+			for (Bruker deltaker : gjeste_liste) {
+				deltaker.inviterTilNyAvtale(avtale);
+			}
+			getBruker().inviterTilNyAvtale(avtale);
+			for (Dag dag : KalenderController.dager) {
+				if (dag.getDato().equals(dato)) {
+					dag.addAvtale(avtale);
+				}
+			}
 		}
+		
 	}
 	
 	public Bruker getBruker() {
-		Bruker meg = new Bruker("Andreas Kvistad", "ahk9339@gmail.com");
-		return meg;
+		return Klienten.bruker;
 	}
 	
 
@@ -353,6 +365,9 @@ public class ny_avtale_controller {
 		}
 	}
 		
+	public void avbryt(){
+		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+	}
 		
 }
 

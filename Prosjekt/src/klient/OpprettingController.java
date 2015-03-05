@@ -26,6 +26,7 @@ public class OpprettingController {
 	@FXML// OPPRETT BRUKER - Gå til neste screen
 	private void nextPane(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		lagBruker(event);
+		Klienten.login(epost.getText(), passord.getText());
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 	}
 	

@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.net.ConnectException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -14,18 +16,37 @@ public class Klienten {
 	public static Socket socket;
 	public static DataOutputStream outToServer;
 	public static BufferedReader inFromServer;
+	public static Bruker bruker;
 	
 	
 	public Klienten() throws IOException {
 		System.out.println("hallo");
+		init();
+	}
+	
+	public static void init() throws UnknownHostException, IOException{
 		String ip = "localhost";
 		int port = 6789;
-		socket = new Socket(ip, port);
-		outToServer = new DataOutputStream(socket.getOutputStream());
-		inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		try {
+			socket = new Socket(ip, port);
+			outToServer = new DataOutputStream(socket.getOutputStream());
+			inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			System.out.println("Connected to server " + ip + ":" + port);
+		} catch(Exception ConnectException){
+			System.out.println("Kunne ikke koble til server");
+		}
+	}
+	
+	public static String hentAvtale(String avtaleid) throws IOException {
+		String toServer = "GET APPDETAILS " + avtaleid;
+		return sendTilServer(toServer);
 	}
 	
 	public static boolean login(String brukernavn, String passord) throws IOException, NoSuchAlgorithmException {	
+		
+		if(socket.isClosed()){
+			init();
+		}
 		
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		digest.update(passord.getBytes("UTF-8"));
@@ -40,6 +61,8 @@ public class Klienten {
 		
 		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
+			String navn = getBruker(brukernavn);
+			bruker = new Bruker(navn, brukernavn);
 			return true;
 		}
 		else {
@@ -47,17 +70,41 @@ public class Klienten {
 		}
 	}
 	
+	public static String getDeltakere(String avtaleid) throws IOException {
+		String toServer = "GET APPATTS " + avtaleid + " " + "1";
+		return sendTilServer(toServer);
+	}
+	
+	public static String getTidspunkt(String avtaleid) throws IOException {
+		String toServer = "GET APPTIME " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
+	public static String mineAvtaler(String brukernavn) throws IOException {
+		String toServer = "GET MYDAGAPPS ";
+		return sendTilServer(toServer);
+	}
+	
+	public static void logout() throws IOException{
+		try {
+			sendTilServer("LOGOUT");
+			socket.close();
+		} catch (Exception NullPointerException){
+			
+		}
+		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+		System.out.println("Logget ut");
+	}
+	
 	public static String sendTilServer(String message) throws IOException {
 		String modifiedSentence;
 		outToServer.writeBytes(message + "\r\n");
 		String output = "";
 		String tempString = inFromServer.readLine();
-		System.out.println("ER DET HER FOR F:" +tempString);
 		while(tempString.length() > 0) {
 			output += modifiedSentence = tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
-		System.out.println("SENDTIL; " + output);
 		return output;
 	}
 	
@@ -65,6 +112,26 @@ public class Klienten {
 		String toServer = "GET ROOM " + dato + " " + start + " " + slutt + " " + gjester_antall;
 		String rom = sendTilServer(toServer);
 		return rom;
+	}
+	
+	public static String getAvtaleRom(String avtaleid) throws IOException {
+		String toServer = "GET MYAVTALEROM " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
+	public static String inviterDeltaker(String deltaker, String avtaleid) throws IOException {
+		String toServer = "CREATE INVITE " + deltaker + " " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
+	public static String getInvitasjoner(Bruker bruker) throws IOException {
+		String toServer = "GET INVS ";
+		return sendTilServer(toServer);
+	}
+	
+	public static String getRomStr(String romnavn) throws IOException {
+		String toServer = "GET ROOMSTR " + romnavn;
+		return sendTilServer(toServer);
 	}
 	
 	public static ArrayList<Bruker> getAllUserDetails() throws IOException{
@@ -79,6 +146,10 @@ public class Klienten {
 		}
 		
 		return allUsers;
+	}
+	
+	public static String[] getAllUserEmails() throws IOException{
+		return  sendTilServer("GET USERS").split(" ");
 	}
 	
 	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
@@ -97,6 +168,9 @@ public class Klienten {
 	}
 
 	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException, NoSuchAlgorithmException {
+		if(socket.isClosed()){
+			init();
+		}
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		digest.update(passord.getBytes("UTF-8"));
 		byte[] passBytes = digest.digest();
@@ -112,5 +186,15 @@ public class Klienten {
 		
 		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passw;
 		sendTilServer(toServer);
+	}
+	
+	public static void sendVarsel(String id, String email, String melding) throws IOException {
+		String toServer = "CREATE NOTIFICATION "+id+" "+melding+" "+email;
+		sendTilServer(toServer);
+	}
+	
+	public static String getLastID() throws IOException {
+		String toServer = "GET LASTID";
+		return sendTilServer(toServer);
 	}
 }

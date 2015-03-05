@@ -94,12 +94,11 @@ public class KalenderProtocol {
 				output = kalenderdb.createApp(user, input[1], input[2], input[3], input[4]) + "";
 				break;
 			case "INVITE":
-				output = kalenderdb.inviteUser(input[1], input[2]) + "";
+				output = kalenderdb.inviteUser(input[1], input[2]);
 				break;
 			case "NOTIFICATION":
 				String message = findMessage(Arrays.copyOfRange(input, 2, input.length));
-				System.out.println((message.split(" ").length+3));
-				output = "" + kalenderdb.sendNotification(user, input[1], message, Arrays.copyOfRange(input, message.split(" ").length+3, input.length));
+				output = "" + kalenderdb.sendNotification(user, input[1], message,input[message.split(" ").length+3]);
 				break;
 			case "GROUP":
 				kalenderdb.createGroup(input[1], user, Arrays.copyOfRange(input, 2, input.length));
@@ -145,8 +144,17 @@ public class KalenderProtocol {
 			case "APPDETAILS":
 				output = kalenderdb.getAppDetails(input[1]);
 				break;
+			case "APPTIME":
+				output = kalenderdb.getAppTime(input[1]);
+				break;
 			case "MYAPPS":
 				output = kalenderdb.getMyApps(user);
+				break;
+			case "MYAVTALEROM":
+				output = kalenderdb.getMyAppRom(input[1]);
+				break;
+			case "MYDAGAPPS":
+				output = kalenderdb.getMyDagApps(user);
 				break;
 			case "APPATTS":
 				output = kalenderdb.getAppAttendees(input[1], input[2]);
@@ -163,11 +171,20 @@ public class KalenderProtocol {
 			case "ROOMDETAILS":
 				output = kalenderdb.getRoomDetails(input[1]);
 				break;
+			case "ROOMSTR":
+				output = kalenderdb.getRoomStr(input[1]);
+				break;
 			case "GROUP":
 				output = kalenderdb.getGroup(input[1]);
 				break;
 			case "USERFULLNAME":
 				output = kalenderdb.getUserDetails(input[1]);
+				break;
+			case "LASTID":
+				output = kalenderdb.getLastID();
+				break;
+			case "USERS":
+				output = kalenderdb.getUsers();
 				break;
 			}
 			
