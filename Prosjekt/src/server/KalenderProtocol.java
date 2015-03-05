@@ -146,6 +146,7 @@ public class KalenderProtocol {
 				break;
 			case "APPTIME":
 				output = kalenderdb.getAppTime(input[1]);
+				System.out.println("output: "+output);
 				break;
 			case "MYAPPS":
 				output = kalenderdb.getMyApps(user);
@@ -154,7 +155,7 @@ public class KalenderProtocol {
 				output = kalenderdb.getMyAppRom(input[1]);
 				break;
 			case "MYDAGAPPS":
-				output = kalenderdb.getMyDagApps(user);
+				output = kalenderdb.getMyDagApps(user, Integer.parseInt(input[1]));
 				break;
 			case "APPATTS":
 				output = kalenderdb.getAppAttendees(input[1], input[2]);
@@ -182,6 +183,10 @@ public class KalenderProtocol {
 				break;
 			case "LASTID":
 				output = kalenderdb.getLastID();
+				break;
+			case "USERS":
+				output = kalenderdb.getUsers();
+				break;
 			}
 			
 			if(output.trim().equals("")){

@@ -37,10 +37,12 @@
             <VBox prefHeight="301.0" prefWidth="309.0" spacing="10.0">
                <children>
                   <Label text="Legg til gjester" />
-                  <TextField fx:id="legg_til_gjester" onAction="#addGjest" prefHeight="31.0" prefWidth="208.0" promptText="Legg til e-postadresser.." />
+                  <ComboBox fx:id="legg_til_gjester" onAction="#addGjest" prefHeight="31.0" prefWidth="208.0" promptText="Legg til e-postadresser.." />
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="309.0">
                      <children>
+                     <!-- 
                         <Button fx:id="leggTil" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#addGjest" prefHeight="33.0" prefWidth="92.0" styleClass="button-Leggtil" text="Legg til" />
+                     -->
                      </children>
                   </HBox>
                   <Label text="Gjesteliste" />
@@ -80,6 +82,7 @@
       <Text fx:id="feilDato" fill="RED" layoutX="676.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-errormsg" text="Datoen må være etter startdato" />
       <HBox layoutX="710.0" layoutY="643.0" prefHeight="35.0" prefWidth="199.0">
          <children>
+         	<Button fx:id="avbryt_knapp" mnemonicParsing="false" onAction="#avbryt" text="Avbryt" />
             <Button fx:id="lagre_knapp" mnemonicParsing="false" onAction="#lagre" text="Lagre" />
             <Button fx:id="forkast_knapp" mnemonicParsing="false" onAction="#reset" text="Forkast" />
          </children>
