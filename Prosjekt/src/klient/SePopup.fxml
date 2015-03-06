@@ -16,7 +16,7 @@
       <TextField fx:id="status" editable="false" layoutX="219.0" layoutY="90.0" />
       <Text layoutX="19.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fra bruker:" />
       <Text layoutX="219.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:" />
-      <TextField fx:id="dato" editable="false" layoutX="126.0" layoutY="150.0" />
-      <Text fx:id="tidspunkt" layoutX="126.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Svart klokken:" />
+      <TextField fx:id="tidspunkt" editable="false" layoutX="126.0" layoutY="150.0" />
+      <Text layoutX="126.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Svart klokken:" />
    </children>
 </AnchorPane>

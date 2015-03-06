@@ -41,7 +41,10 @@ public class KalenderController {
 	private List<String> list;
 	public static String melding;
 	private ObservableList<String> items;
+	public static ArrayList<ArrayList<String>> notifikasjon_utenMelding;
 	public static ArrayList<String> utenMelding;
+	public static ArrayList<String> meldinger;
+	public static ArrayList<Varsel> oppdelte_notifikasjoner;
 	
 	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
@@ -52,7 +55,9 @@ public class KalenderController {
 	}
 	
 	private void flushView() throws Exception{
+		notifikasjon_utenMelding = new ArrayList<ArrayList<String>>();
 		dager = new ArrayList<Dag>();
+		meldinger = new ArrayList<String>();
 		list = new ArrayList<String>();
 		ruter.getChildren().clear();
 		getDays();
@@ -131,7 +136,7 @@ public class KalenderController {
 				else {
 					try {
 						System.out.println("POPPER");
-						pop();
+						pop(newValue);
 					} catch (Exception e) {
 						System.out.println("FEIL: " + e);
 					}
@@ -142,9 +147,18 @@ public class KalenderController {
 		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
 	}
 	
-	private void pop() throws Exception {
-		Popup pop = new Popup();
-		pop.start(new Stage());
+	private void pop(String notifikasjon_trykketPå) throws Exception {
+		String[] enhetene = notifikasjon_trykketPå.split(" ");
+		for (Varsel varselet : oppdelte_notifikasjoner) {
+			if (varselet.getAvtaleid().equals(enhetene[1])) {
+				Popup pop = new Popup();
+				pop.start(new Stage());
+				PopupController pc = new PopupController();
+				pc.initialize(varselet);
+				break;
+			}
+		}
+		
 	}
 	
 	private void showInvitasjoner() throws Exception {
@@ -163,24 +177,33 @@ public class KalenderController {
 	
 	private void showNotifications() throws Exception {
 		boolean meldingFerdig = false;
+		ArrayList<String> resten = new ArrayList<String>();
+		oppdelte_notifikasjoner = new ArrayList<Varsel>();
 		notifikasjon_liste = Klienten.getVarsel().split(" ");
-		utenMelding = new ArrayList<String>();
-		melding = "";
-		for (int i = 0; i < notifikasjon_liste.length; i++) {
-			String notifikasjon_del = notifikasjon_liste[i];
-			if (! notifikasjon_del.equals("!ENDMESS!") && ! meldingFerdig) {
-				melding += notifikasjon_del;
+		String meld = "";
+		for (String notifikasjon_oppdeling : notifikasjon_liste) {
+			if(! notifikasjon_oppdeling.equals("!ENDMESS!") && ! meldingFerdig) {
+				meld += notifikasjon_oppdeling + " ";
 			}
-			else if (notifikasjon_del.equals("!ENDMESS!")) {
+			else if(notifikasjon_oppdeling.equals("!ENDMESS!")) {
 				meldingFerdig = true;
-				System.out.println("MELDING, slutt");
-				list.add("Notifikasjon: " + notifikasjon_liste[i+1]);
 			}
-			else if (! notifikasjon_del.equals("!END!")){
-				utenMelding.add(notifikasjon_del);
+			else if (! notifikasjon_oppdeling.equals("!END!")) {
+				resten.add(notifikasjon_oppdeling);
 			}
+			else if (notifikasjon_oppdeling.equals("!END!")){
+				Varsel vars = new Varsel(meld, null, false, null, null);
+				vars.setBrukerSendtFra(resten.get(0));
+				vars.setAvtaleid(resten.get(1));
+				vars.setTidspunkt(resten.get(2));
+				list.add("Notifikasjon: " + resten.get(1));
+				oppdelte_notifikasjoner.add(vars);
+				resten = new ArrayList<String>();
+				meld = "";
+				meldingFerdig = false;
+			}
+			
 		}
-		
 	}
 	
 	private void setItems() {
