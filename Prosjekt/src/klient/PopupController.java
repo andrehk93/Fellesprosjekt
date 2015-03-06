@@ -15,6 +15,9 @@ public class PopupController {
 	private String email, avtaleid, tiden;
 	
 	public void initialize() throws IOException {
+		System.out.println("Hallo sir");
+		System.out.println("ALT UTENOM: " + KalenderController.utenMelding);
+		System.out.println("MLEDING: " + KalenderController.melding);
 		email = detaljer.get(0);
 		avtaleid = detaljer.get(1);
 		tiden = detaljer.get(2);

@@ -8,15 +8,15 @@
 
 <AnchorPane maxHeight="300.0" maxWidth="400.0" minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.PopupController">
    <children>
-      <TextArea fx:id="melding" layoutX="100.0" layoutY="213.0" prefHeight="64.0" prefWidth="200.0" />
+      <TextArea fx:id="melding" editable="false" layoutX="100.0" layoutY="213.0" prefHeight="64.0" prefWidth="200.0" />
       <Text layoutX="100.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Melding:" />
-      <TextField fx:id="avtaleNavn" layoutX="126.0" layoutY="31.0" />
+      <TextField fx:id="avtaleNavn" editable="false" layoutX="126.0" layoutY="31.0" />
       <Text layoutX="128.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avtale:" />
-      <TextField fx:id="fraBruker" layoutX="19.0" layoutY="90.0" />
-      <TextField fx:id="status" layoutX="219.0" layoutY="90.0" />
+      <TextField fx:id="fraBruker" editable="false" layoutX="19.0" layoutY="90.0" />
+      <TextField fx:id="status" editable="false" layoutX="219.0" layoutY="90.0" />
       <Text layoutX="19.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fra bruker:" />
       <Text layoutX="219.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:" />
-      <TextField fx:id="dato" layoutX="126.0" layoutY="150.0" />
+      <TextField fx:id="dato" editable="false" layoutX="126.0" layoutY="150.0" />
       <Text fx:id="tidspunkt" layoutX="126.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Svart klokken:" />
    </children>
 </AnchorPane>
