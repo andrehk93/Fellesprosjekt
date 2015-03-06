@@ -24,11 +24,11 @@
       <HBox layoutX="137.0" layoutY="186.0" prefHeight="39.0" prefWidth="727.0" spacing="30.0">
          <children>
             <DatePicker fx:id="startdato" onAction="#handleDato" prefHeight="35.0" prefWidth="154.0" />
-            <ChoiceBox fx:id="timeFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
-            <ChoiceBox fx:id="minuttFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="timeFra" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="minuttFra" prefHeight="25.0" prefWidth="50.0" />
             <Label text="-" />
-            <ChoiceBox fx:id="timeTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
-            <ChoiceBox fx:id="minuttTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="timeTil" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="minuttTil" prefHeight="25.0" prefWidth="50.0" />
             <DatePicker fx:id="sluttdato" onAction="#handleDato" prefHeight="35.0" prefWidth="160.0" />
          </children>
       </HBox>
