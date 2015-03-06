@@ -13,18 +13,14 @@ public class Varsel {
 		
 	}
 	
-	public Varsel(String melding, Bruker sendtTil, Bruker sendtFra, boolean lest, Avtale avtale) throws IOException {
+	public Varsel(String melding, String sendtFra, boolean lest, String avtaleid, String tidspunkt) throws IOException {
 		setMelding(melding);
 		setBrukerSendtFra(sendtFra);
-		setBrukerSendtTil(sendtTil);
 		setLest(lest);
-		sendVarsel(avtale.getAvtaleid());
+		setAvtaleid(avtaleid);
+		setTidspunkt(tidspunkt);
 	}
 	
-	private void sendVarsel(String id) throws IOException {
-		Klienten.sendVarsel(id, getBrukerSendtTil().getEmail(), getMelding());
-	}
-
 	private Property<Boolean> lestProperty = new SimpleBooleanProperty();
 	
 	public boolean getLest() {
@@ -42,49 +38,37 @@ public class Varsel {
 	}
 	
 	public void setMelding(String melding) {
-		meldingProperty.setValue(melding+" ENDOFMESSAGE");
+		meldingProperty.setValue(melding);
 	}
 	
-	private Property<Bruker> brukerTilProperty = new ObjectPropertyBase<Bruker>(null) {
-
-		@Override
-		public Object getBean() {
-			return this;
-		}
-
-		@Override
-		public String getName() {
-			return "BrukerTil";
-		}
-	};
+	private Property<String> brukerFraProperty = new SimpleStringProperty();
 	
-	public Bruker getBrukerSendtTil() {
-		return brukerTilProperty.getValue();
-	}
-	
-	public void setBrukerSendtTil(Bruker sendtTil) {
-		
-		brukerTilProperty.setValue(sendtTil);
-	}
-	
-	private Property<Bruker> brukerFraProperty = new ObjectPropertyBase<Bruker>(null) {
-
-		@Override
-		public Object getBean() {
-			return this;
-		}
-
-		@Override
-		public String getName() {
-			return "BrukerFra";
-		}
-	};
-	
-	public Bruker getBrukerSendtFra() {
+	public String getBrukerSendtFra() {
 		return brukerFraProperty.getValue();
 	}
 	
-	public void setBrukerSendtFra(Bruker sendtFra) {
-		brukerFraProperty.setValue(sendtFra);
+	public void setBrukerSendtFra(String fra) {
+		brukerFraProperty.setValue(fra);
 	}
+	
+	Property<String> tidProperty = new SimpleStringProperty();
+	
+	public void setTidspunkt(String tid) {
+		tidProperty.setValue(tid);
+	}
+	
+	Property<String> avtaleidProperty = new SimpleStringProperty();
+	
+	public void setAvtaleid(String avtaleid) {
+		avtaleidProperty.setValue(avtaleid);
+	}
+	
+	public String getAvtaleid()  {
+		return avtaleidProperty.getValue();
+	}
+	
+	public String getTid() {
+		return tidProperty.getValue();
+	}
+	
 }
