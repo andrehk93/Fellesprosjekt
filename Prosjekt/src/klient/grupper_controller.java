@@ -22,14 +22,10 @@ import javafx.scene.input.KeyEvent;
 
 public class grupper_controller {
 	
-	private ArrayList<String> medlemmer;					// Må endres til bruker når jeg før inn innhold i listen brukere
+	private ArrayList<Bruker> medlemmer;					// Må endres til bruker når jeg før inn innhold i listen brukere
 	private ArrayList<Bruker> brukere;
 	private String søk;
-	private ArrayList<String> splitList;
-	private ArrayList<String> søk_liste;
-	private ArrayList<String> søk_liste2;
-	private ArrayList<String> testliste;
-	private ArrayList<String> søkBruker_liste;
+	private ArrayList<Bruker> søkBruker_liste;
 	private Scene scene;
     public void setScene(Scene scene) { this.scene = scene; }
     
@@ -38,9 +34,9 @@ public class grupper_controller {
     @FXML
     TextField brukersøk = new TextField();
     @FXML
-    ListView<String> brukerliste = new ListView<>();
+    ListView<Bruker> brukerliste = new ListView<>();
     @FXML
-	ListView<String> gruppemedlemmer_liste = new ListView<>();
+	ListView<Bruker> gruppemedlemmer_liste = new ListView<>();
     @FXML
     Slider gruppemedlemmer_slider = new Slider();
     @FXML
@@ -54,43 +50,41 @@ public class grupper_controller {
     @FXML
     Button lagre_gruppe_knapp = new Button();
     
-    public void initialize() {
+    public void initialize() throws IOException {
     	addListner();
-		medlemmer = new ArrayList<String>();			// Må endres til bruker når jeg før inn innhold i listen brukere
+		medlemmer = new ArrayList<Bruker>();			// Må endres til bruker når jeg før inn innhold i listen brukere
 		brukere = new ArrayList<Bruker>();
-		testliste = new ArrayList<String>();			// Må endre alle testliste til brukere når jeg får listen fra databasen
-		søkBruker_liste = new ArrayList<String>();
-		splitList = new ArrayList<String>();
-		søk_liste = new ArrayList<String>();
-		søk_liste2 = new ArrayList<String>();
-		testlisteAdd();
-		brukerliste(testliste);
+		brukere = new ArrayList<Bruker>();			// Må endre alle brukere til brukere når jeg får listen fra databasen
+		søkBruker_liste = new ArrayList<Bruker>();
+		getUsers();
+//		brukereAdd();
+		brukerliste(brukere);
 		gruppemedlemmer_liste(medlemmer);
     }
 	
 	
-	public void testlisteAdd(){			//fjernes når testliste fjernes
-		testliste.add("Andreas");
-		testliste.add("Christoffer");
-		testliste.add("Lars");
-		testliste.add("Martin");
-		testliste.add("My");
-	}
+/*	public void brukereAdd(){			//fjernes når brukere fjernes
+		brukere.add("Andreas");
+		brukere.add("Christoffer");
+		brukere.add("Lars");
+		brukere.add("Martin");
+		brukere.add("My");
+	}*/
 
-	public void brukerliste(ArrayList<String> SøkBrukere){
-    	ObservableList<String> liste_brukere = FXCollections.observableList(SøkBrukere);
+	public void brukerliste(ArrayList<Bruker> SøkBrukere){
+    	ObservableList<Bruker> liste_brukere = FXCollections.observableList(SøkBrukere);
 		brukerliste.setItems(liste_brukere);
 	}
 	
-	public void gruppemedlemmer_liste(ArrayList<String> GruppeMedlemmer){
-    	ObservableList<String> liste_gruppeMedlemmer = FXCollections.observableList(GruppeMedlemmer);
+	public void gruppemedlemmer_liste(ArrayList<Bruker> GruppeMedlemmer){
+    	ObservableList<Bruker> liste_gruppeMedlemmer = FXCollections.observableList(GruppeMedlemmer);
 		gruppemedlemmer_liste.setItems(liste_gruppeMedlemmer);
 	}
 	
 	public void leggeTilIGruppe(){
 		brukerliste.getSelectionModel().getSelectedItem();
 		medlemmer.add(brukerliste.getSelectionModel().getSelectedItem());
-		testliste.remove(brukerliste.getSelectionModel().getSelectedItem());
+		brukere.remove(brukerliste.getSelectionModel().getSelectedItem());
 	}
 	
 	public void addListner(){
@@ -100,7 +94,7 @@ public class grupper_controller {
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				søk = newValue;
 				if (søkBruker_liste.isEmpty() && søk.length()<1){
-		    		brukerliste(testliste);
+		    		brukerliste(brukere);
 		    	} 
 		    	else{
 		            brukerliste(søkBruker_liste);
@@ -111,18 +105,14 @@ public class grupper_controller {
 				
 		    	søkBruker_liste.clear();
 		    	if (søk != null){
-		    		for (int i = 0; i < testliste.size(); i++){
-		    			søk_liste2 = splitList(testliste.get(i));
-	    				System.out.println(søk_liste2);
-				    	søk_liste = splitList(søk);
-	    				System.out.println(søk_liste);
-	    				if (søk.length() < testliste.get(i).length()){
-		    				for (int j = 0; j < søk.length(); j++){
-		    					if (søk_liste.get(j).equals(søk_liste2.get(j))){
-		    						if (!søkBruker_liste.contains(testliste.get(i))){
-		    							søkBruker_liste.add(testliste.get(i));
-		    						}
+		    		for (int i = 0; i < brukere.size(); i++){
+	    				if (søk.length() < brukere.get(i).getNavn().length()+1){
+	    					String j = brukere.get(i).getNavn().substring(0, søk.length());
+	    					if (søk.toLowerCase().equals(j.toLowerCase())){
+		    					if (!søkBruker_liste.contains(brukere.get(i))){
+		    						søkBruker_liste.add(brukere.get(i));
 		    					}
+		    					
 		    				}
 	    				}
 		    		}
@@ -134,13 +124,6 @@ public class grupper_controller {
 	}
     
 	
-	public ArrayList<String> splitList(String e){
-		splitList.clear();
-		for (int i = 0; i < e.length(); i++){
-			splitList.add(Character.toString(e.charAt(i)));
-		}
-		return splitList;
-	}
 	
     @FXML
     public void handleGruppesøk(KeyEvent event) throws IOException {
@@ -156,7 +139,7 @@ public class grupper_controller {
 		}
 
 		if (søkBruker_liste.isEmpty() && søk == null){
-    		brukerliste(testliste);
+    		brukerliste(brukere);
     	} 
     	else{
             brukerliste(søkBruker_liste);
@@ -174,7 +157,7 @@ public class grupper_controller {
 		}
 
 		if (søkBruker_liste.isEmpty() && søk == null){
-    		brukerliste(testliste);
+    		brukerliste(brukere);
     	} 
     	else{
             brukerliste(søkBruker_liste);
