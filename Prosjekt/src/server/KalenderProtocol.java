@@ -97,8 +97,8 @@ public class KalenderProtocol {
 				output = kalenderdb.inviteUser(input[1], input[2]);
 				break;
 			case "NOTIFICATION":
-				String message = findMessage(Arrays.copyOfRange(input, 2, input.length));
-				output = "" + kalenderdb.sendNotification(user, input[1], message,input[message.split(" ").length+3]);
+				String message = findMessage(Arrays.copyOfRange(input, 3, input.length));
+				output = "" + kalenderdb.sendNotification(user, input[1], message,input[2]);
 				break;
 			case "GROUP":
 				kalenderdb.createGroup(input[1], user, Arrays.copyOfRange(input, 2, input.length));

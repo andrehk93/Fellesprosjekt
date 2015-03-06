@@ -13,12 +13,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class Se_avtaleController {
 	
 	private String fratid, tiltid, dato, rom, admin;
 	@FXML private TextField fra, til, startdato, sluttdato;
+	@FXML private TextArea begrunnelse;
 	@FXML private ListView<String> deltaker_listeview;
 	@FXML private RadioButton skal, skal_ikke, ikke_svart;
 	private ObservableList<String> addDeltakere;
@@ -115,9 +117,11 @@ public class Se_avtaleController {
 	
 	public void bekreftEndringer(ActionEvent event) throws IOException {
 		if (skal.isSelected()) {
+			Klienten.sendVarsel(avtaleid, admin, begrunnelse.getText());
 			Klienten.changeStatus(avtaleid, "1");
 		}
 		else if (skal_ikke.isSelected()) {
+			Klienten.sendVarsel(avtaleid, admin, begrunnelse.getText());
 			Klienten.changeStatus(avtaleid, "0");
 		}
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
