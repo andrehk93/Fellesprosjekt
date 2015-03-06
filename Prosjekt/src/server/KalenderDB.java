@@ -160,6 +160,18 @@ public class KalenderDB {
 		return output;
 	}
 	
+	public void changeNotification(String user, String email, String avtaleid) throws Exception {
+		init();
+		
+		query = "UPDATE varsler SET lest='1' \n" + 
+				"WHERE fra=? and avtaleid=?;";
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, email);
+		statement.setString(2, avtaleid);
+		statement.executeUpdate();
+	}
+	
 	public String getMyApps(String user) throws Exception{
 		init();
 		
@@ -375,10 +387,9 @@ public class KalenderDB {
 	
 	public void changeStatus(String user, String avtale, String newStatus) throws Exception {
 		init();
-		System.out.println("USER: " + user + " AVTALE: " + avtale + " NEWSTATUS: " + newStatus);
 		
-		query = "UPDATE `christwg_fp`.`ermed` SET `oppmotestatus`=? \n" + 
-				"WHERE `epost`=? AND `avtaleid`=?;";
+		query = "UPDATE ermed SET oppmotestatus=? \n" + 
+				"WHERE epost=? AND avtaleid=?;";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, newStatus);
 		statement.setString(2, user);
@@ -391,7 +402,7 @@ public class KalenderDB {
 		
 		query = "select varsel,fra,avtaleid,tidspunkt\n" + 
 				"from varsler\n" + 
-				"where epost=?";
+				"where epost=? and lest='0'";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
 		ResultSet result = statement.executeQuery();

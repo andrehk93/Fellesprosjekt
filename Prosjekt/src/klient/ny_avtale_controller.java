@@ -337,6 +337,7 @@ public class ny_avtale_controller {
 				deltaker.inviterTilNyAvtale(avtale);
 			}
 			getBruker().inviterTilNyAvtale(avtale);
+			System.out.println("ENDREr status: ");
 			Klienten.changeStatus(avtaleid, "1");
 			for (Dag dag : KalenderController.dager) {
 				if (dag.getDato().equals(dato)) {

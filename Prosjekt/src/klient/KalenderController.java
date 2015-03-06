@@ -38,13 +38,14 @@ public class KalenderController {
 	private String[] avtale_liste;
 	private int filtverdi;
 	public static String[] enheter;
-	private List<String> list;
+	public static List<String> list;
 	public static String melding;
 	private ObservableList<String> items;
 	public static ArrayList<ArrayList<String>> notifikasjon_utenMelding;
 	public static ArrayList<String> utenMelding;
 	public static ArrayList<String> meldinger;
 	public static ArrayList<Varsel> oppdelte_notifikasjoner;
+	public static String valg;
 	
 	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
@@ -129,18 +130,24 @@ public class KalenderController {
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
-				enheter = newValue.split(" ");
-				if (enheter[0].equals("Invitasjon:")) {
-					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
-				}
-				else {
-					try {
-						System.out.println("POPPER");
-						pop(newValue);
-					} catch (Exception e) {
-						System.out.println("FEIL: " + e);
+				try {
+					enheter = newValue.split(" ");
+					if (enheter[0].equals("Invitasjon:")) {
+						ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+					}
+					else {
+						try {
+							System.out.println("POPPER");
+							pop(newValue);
+						} catch (Exception e) {
+							System.out.println("FEIL: " + e);
+						}
 					}
 				}
+				catch (NullPointerException e) {
+					
+				}
+			
 			}
 			
 		};
@@ -149,16 +156,9 @@ public class KalenderController {
 	
 	private void pop(String notifikasjon_trykketPå) throws Exception {
 		String[] enhetene = notifikasjon_trykketPå.split(" ");
-		for (Varsel varselet : oppdelte_notifikasjoner) {
-			if (varselet.getAvtaleid().equals(enhetene[1])) {
-				Popup pop = new Popup();
-				pop.start(new Stage());
-				PopupController pc = new PopupController();
-				pc.initialize(varselet);
-				break;
-			}
-		}
-		
+		valg = enhetene[1];
+		Popup pop = new Popup();
+		pop.start(new Stage());
 	}
 	
 	private void showInvitasjoner() throws Exception {

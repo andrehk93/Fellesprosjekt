@@ -77,6 +77,9 @@ public class KalenderProtocol {
 			case "STATUS":
 				kalenderdb.changeStatus(user, input[2], input[3]);
 				break;
+			case "NOTIFICATION":
+				kalenderdb.changeNotification(user, input[2], input[3]);
+				break;
 		}
 	}
 

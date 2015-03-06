@@ -46,6 +46,11 @@ public class Klienten {
 		tilkobling = truth;
 	}
 	
+	public static void setLest(String email, String avtaleid) throws IOException {
+		String toServer = "CHANGE NOTIFICATION " + email + " " + avtaleid;
+		sendTilServer(toServer);
+	}
+	
 	public boolean getTilkobling() {
 		return tilkobling;
 	}
