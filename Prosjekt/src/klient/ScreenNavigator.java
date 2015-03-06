@@ -6,7 +6,7 @@ import java.io.IOException;
 public class ScreenNavigator {
 
 	public static final String MAIN    = "main.fxml";
-	public static final String INNLOGGING = "Startside_Innlogging.fxml";
+	public static final String INNLOGGING = "Startside_innlogging.fxml";
 	public static final String OPPRETTING = "Oppretting.fxml";
 	public static final String AVTALE = "ny_avtale.fxml";
 	public static final String MANEDSVISNING = "Kalender_månedsvisning.fxml";
