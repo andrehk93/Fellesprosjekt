@@ -6,9 +6,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.grupper_controller">
    <children>
-      <TextField fx:id="gruppenavn" layoutX="119.0" layoutY="103.0" onKeyTyped="#handleKeyInput" promptText="Gruppenavn" />
+      <TextField fx:id="gruppenavn" layoutX="119.0" layoutY="103.0"  promptText="Gruppenavn" />
       <TextField fx:id="antall_gruppemedlemmer" layoutX="762.0" layoutY="582.0" prefHeight="31.0" prefWidth="88.0" promptText="10" />
       
       
@@ -29,8 +29,8 @@
             </VBox>
             <VBox alignment="CENTER" maxHeight="-Infinity" prefHeight="78.0" prefWidth="100.0" spacing="15.0">
                <children>
-                  <Button mnemonicParsing="false" text="Legg til -&gt;" />
-                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0" text="&lt;- Fjern" />
+                  <Button mnemonicParsing="false" onAction="#handleLeggTil"  text="Legg til -&gt;" />
+                  <Button mnemonicParsing="false" onAction="#handleFjern"  prefHeight="31.0" prefWidth="90.0" text="&lt;- Fjern" />
                </children>
             </VBox>
             <VBox maxHeight="-Infinity" prefHeight="409.0" prefWidth="332.0" spacing="5.0">
@@ -49,6 +49,7 @@
       <HBox layoutX="633.0" layoutY="632.0" prefHeight="39.0" prefWidth="276.0" spacing="20.0">
          <children>
             <Button fx:id="lagre_gruppe_knapp" mnemonicParsing="false" text="Lagre" />
+            <Button fx:id="avbryt_knapp" mnemonicParsing="false" onAction="#avbryt" text="Avbryt" />
             <Button fx:id="forkast_gruppe_knapp" mnemonicParsing="false" prefHeight="41.0" text="Forkast" />
          </children>
       </HBox>
