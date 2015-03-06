@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class KalenderController {
 	
@@ -32,13 +33,14 @@ public class KalenderController {
 	@FXML private Label manedLabel, brukernavn, arLabel;
 	@FXML private ListView<String> notifikasjoner;
 	@FXML private ChoiceBox<String> filtrering;
+	public static String[] notifikasjon_liste;
 	private int maned;
 	private int aar;
 	private String[] avtale_liste;
 	private int filtverdi;
 	public static String[] enheter;
 	
-	public void initialize() throws IOException{
+	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
 		setFiltVerdi(0);
@@ -46,11 +48,13 @@ public class KalenderController {
 		flushView();
 	}
 	
-	private void flushView() throws IOException{
+	private void flushView() throws Exception{
 		dager = new ArrayList<Dag>();
 		ruter.getChildren().clear();
 		getDays();
 		loadGrid();	
+		svarInvite();
+		showNotifications();
 		showInvitasjoner();
 		showBruker();
 	}
@@ -64,27 +68,36 @@ public class KalenderController {
 	ChangeListener<? super Number> filtChange = new ChangeListener<Number>() {
 		@Override
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-			try{
-				switch(filtrering.getItems().get((Integer) newValue)){
-				case "Alle":
-					setFiltVerdi(0);
+			switch(filtrering.getItems().get((Integer) newValue)){
+			case "Alle":
+				setFiltVerdi(0);
+				try {
 					flushView();
-					break;
-				case "Bare godtatt":
-					setFiltVerdi(1);
-					flushView();
-					break;
-				case "Ikke svart":
-					setFiltVerdi(2);
-					flushView();
-					break;
-				case "Avslag":
-					setFiltVerdi(3);
-					flushView();
-					break;
+				} catch (Exception e) {
 				}
+				break;
+			case "Bare godtatt":
+				setFiltVerdi(1);
+				try {
+					flushView();
+				} catch (Exception e) {
+				}
+				break;
+			case "Ikke svart":
+				setFiltVerdi(2);
+				try {
+					flushView();
+				} catch (Exception e) {
+				}
+				break;
+			case "Avslag":
+				setFiltVerdi(3);
+				try {
+					flushView();
+				} catch (Exception e) {
+				}
+				break;
 			}
-			catch (IOException e) {}
 		}
 	};
 	
@@ -92,7 +105,7 @@ public class KalenderController {
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
 	}
 	
-	public void refreshKalender(ActionEvent event) throws IOException {
+	public void refreshKalender(ActionEvent event) throws Exception {
 		flushView();
 	}
 	
@@ -106,16 +119,20 @@ public class KalenderController {
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
-				//RSVPController.setAvtale(Klienten.)
-				//ScreenNavigator.loadScreen(ScreenNavigator.RSVP);
+				enheter = newValue.split(" ");
+				if (enheter[0].equals("Invitasjon")) {
+					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+				}
+				else {
+					
+				}
 			}
 			
 		};
 		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
 	}
 	
-	
-	private void showInvitasjoner() throws IOException {
+	private void showInvitasjoner() throws Exception {
 		String[] notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < notifikasjonene.length; i++) {
@@ -123,7 +140,8 @@ public class KalenderController {
 				list.add("Ingen notifikasjoner");
 			}
 			else if (notifikasjonene[i].equals("\r\n")) {
-				
+				Popup pop = new Popup();
+				pop.start(new Stage());
 			}
 			else {
 				list.add("Invitasjon: " + notifikasjonene[i] + " (Dobbeltrykk)");
@@ -131,6 +149,35 @@ public class KalenderController {
 		}
 		ObservableList<String> items = FXCollections.observableList(list);
 		notifikasjoner.setItems(items);
+	}
+	
+	private void showNotifications() throws Exception {
+		boolean meldingFerdig = false;
+		notifikasjon_liste = Klienten.getVarsel().split(" ");
+		List<String> list = new ArrayList<String>();
+		ArrayList<String> utenMelding = new ArrayList<String>();
+		String svar = "";
+		for (String notifikasjon_del : notifikasjon_liste) {
+			if (! notifikasjon_del.equals("!ENDMESS!") && ! meldingFerdig) {
+				svar += notifikasjon_del;
+			}
+			else if (notifikasjon_del.equals("!ENDMESS!")) {
+				meldingFerdig = true;
+			}
+			else if (! notifikasjon_del.equals("!END!")){
+				utenMelding.add(notifikasjon_del);
+			}
+		}
+		
+		if (notifikasjoner.getItems().isEmpty()) {
+			ObservableList<String> items = FXCollections.observableList(list);
+			notifikasjoner.setItems(items);
+		}
+		else {
+			list.addAll(notifikasjoner.getItems());
+			ObservableList<String> items = FXCollections.observableList(list);
+			notifikasjoner.setItems(items);
+		}
 	}
 	
 	private void setMonth(int month){
@@ -216,7 +263,6 @@ public class KalenderController {
 	private void hentAvtaler() throws IOException {
 		try {
 			if (Klienten.avtaler.isEmpty()) {
-				
 				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 				for (int k = 0; k < avtale_liste.length; k++) {
 					if (k%2 != 0) {
@@ -294,7 +340,7 @@ public class KalenderController {
 	}
 	
 	@FXML
-	private void nextMonth(ActionEvent event) throws IOException {
+	private void nextMonth(ActionEvent event) throws Exception {
 		if(getMonth()+1>=13){
 			setMonth(1);
 			setYear(getYear()+1);
@@ -306,7 +352,7 @@ public class KalenderController {
 	}
 	
 	@FXML
-	private void previousMonth(ActionEvent event) throws IOException {
+	private void previousMonth(ActionEvent event) throws Exception {
 		if(getMonth()-1<=0){
 			setMonth(12);
 			setYear(getYear()-1);

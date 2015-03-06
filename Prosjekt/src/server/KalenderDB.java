@@ -398,7 +398,7 @@ public class KalenderDB {
 		
 		String output = "";
 		while(result.next()){
-			output += result.getString(1)+ " !?END?! " + result.getString(2) + " " + result.getString(3) + " " + result.getString(4);
+			output += result.getString(1) + "!ENDMESS! " + result.getString(2) + " " + result.getString(3) + " " + result.getString(4) + " !END! ";
 		}
 		return output;	
 	}

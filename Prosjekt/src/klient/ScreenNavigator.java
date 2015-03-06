@@ -28,6 +28,7 @@ public class ScreenNavigator {
 	public static void setMainController(MainController mainController) {
 		ScreenNavigator.mainController = mainController;
 	}
+	
 
 	/**
 	 * Loads the vista specified by the fxml file into the
