@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.controlsfx.control.CheckComboBox;
@@ -92,7 +93,8 @@ public class ny_avtale_controller {
 		sluttdato.setDisable(true);
 		
 		ledigeBrukere = Klienten.getAllUserEmails();
-		legg_til_gjester.getItems().addAll(ledigeBrukere);
+		legg_til_gjester.getItems().addAll(Arrays.copyOfRange(ledigeBrukere, 0, ledigeBrukere.length-1));
+		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
 		
 		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
 			@Override
@@ -370,6 +372,10 @@ public class ny_avtale_controller {
     
     @FXML
     public void addGjest(ActionEvent event) throws IOException {
+    	if(! Arrays.asList(ledigeBrukere).contains(legg_til_gjester.getValue())){
+    		System.out.println("Ugyldig bruker");
+    		return;
+    	}
     	String brukernavn = Klienten.getBruker(legg_til_gjester.getValue());
     	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getValue());
     	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getValue());
@@ -429,6 +435,7 @@ public class ny_avtale_controller {
 				deltaker.inviterTilNyAvtale(avtale);
 			}
 			getBruker().inviterTilNyAvtale(avtale);
+			System.out.println("ENDREr status: ");
 			Klienten.changeStatus(avtaleid, "1");
 			for (Dag dag : KalenderController.dager) {
 				if (dag.getDato().equals(dato)) {
@@ -459,6 +466,8 @@ public class ny_avtale_controller {
 	public void avbryt(){
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 	}
+	
+	
 		
 }
 
