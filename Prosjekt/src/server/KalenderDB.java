@@ -402,6 +402,24 @@ public class KalenderDB {
 		}
 		return output;	
 	}
+	
+	public String getStatus(String avtaleid, String email) throws Exception {
+		init();
+		
+		query = "select oppmotestatus\n" +
+				"from ermed\n" + 
+				"where avtaleid=? and epost=?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, avtaleid);
+		statement.setString(2, email);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()) {
+			output += result.getString(1);
+		}
+		return output;
+	}
 
 	public int sendNotification(String user, String appID, String message, String recepient) throws Exception {
 		init();

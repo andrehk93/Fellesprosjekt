@@ -177,6 +177,9 @@ public class KalenderProtocol {
 			case "GROUP":
 				output = kalenderdb.getGroup(input[1]);
 				break;
+			case "STATUS":
+				output = kalenderdb.getStatus(input[1], input[2]);
+				break;
 			case "USERFULLNAME":
 				output = kalenderdb.getUserDetails(input[1]);
 				break;

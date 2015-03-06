@@ -13,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -39,6 +38,10 @@ public class KalenderController {
 	private String[] avtale_liste;
 	private int filtverdi;
 	public static String[] enheter;
+	private List<String> list;
+	public static String melding;
+	private ObservableList<String> items;
+	public static ArrayList<String> utenMelding;
 	
 	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
@@ -50,12 +53,14 @@ public class KalenderController {
 	
 	private void flushView() throws Exception{
 		dager = new ArrayList<Dag>();
+		list = new ArrayList<String>();
 		ruter.getChildren().clear();
 		getDays();
 		loadGrid();	
 		svarInvite();
 		showNotifications();
 		showInvitasjoner();
+		setItems();
 		showBruker();
 	}
 	
@@ -120,11 +125,16 @@ public class KalenderController {
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
 				enheter = newValue.split(" ");
-				if (enheter[0].equals("Invitasjon")) {
+				if (enheter[0].equals("Invitasjon:")) {
 					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
 				}
 				else {
-					
+					try {
+						System.out.println("POPPER");
+						pop();
+					} catch (Exception e) {
+						System.out.println("FEIL: " + e);
+					}
 				}
 			}
 			
@@ -132,52 +142,50 @@ public class KalenderController {
 		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
 	}
 	
+	private void pop() throws Exception {
+		Popup pop = new Popup();
+		pop.start(new Stage());
+	}
+	
 	private void showInvitasjoner() throws Exception {
 		String[] notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
-		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < notifikasjonene.length; i++) {
 			if (notifikasjonene[i].trim().equals("NONE") || notifikasjonene[i].trim().equals("-1")) {
 				list.add("Ingen notifikasjoner");
 			}
 			else if (notifikasjonene[i].equals("\r\n")) {
-				Popup pop = new Popup();
-				pop.start(new Stage());
 			}
 			else {
 				list.add("Invitasjon: " + notifikasjonene[i] + " (Dobbeltrykk)");
 			}
 		}
-		ObservableList<String> items = FXCollections.observableList(list);
-		notifikasjoner.setItems(items);
 	}
 	
 	private void showNotifications() throws Exception {
 		boolean meldingFerdig = false;
 		notifikasjon_liste = Klienten.getVarsel().split(" ");
-		List<String> list = new ArrayList<String>();
-		ArrayList<String> utenMelding = new ArrayList<String>();
-		String svar = "";
-		for (String notifikasjon_del : notifikasjon_liste) {
+		utenMelding = new ArrayList<String>();
+		melding = "";
+		for (int i = 0; i < notifikasjon_liste.length; i++) {
+			String notifikasjon_del = notifikasjon_liste[i];
 			if (! notifikasjon_del.equals("!ENDMESS!") && ! meldingFerdig) {
-				svar += notifikasjon_del;
+				melding += notifikasjon_del;
 			}
 			else if (notifikasjon_del.equals("!ENDMESS!")) {
 				meldingFerdig = true;
+				System.out.println("MELDING, slutt");
+				list.add("Notifikasjon: " + notifikasjon_liste[i+1]);
 			}
 			else if (! notifikasjon_del.equals("!END!")){
 				utenMelding.add(notifikasjon_del);
 			}
 		}
 		
-		if (notifikasjoner.getItems().isEmpty()) {
-			ObservableList<String> items = FXCollections.observableList(list);
-			notifikasjoner.setItems(items);
-		}
-		else {
-			list.addAll(notifikasjoner.getItems());
-			ObservableList<String> items = FXCollections.observableList(list);
-			notifikasjoner.setItems(items);
-		}
+	}
+	
+	private void setItems() {
+		items = FXCollections.observableList(list);
+		notifikasjoner.setItems(items);
 	}
 	
 	private void setMonth(int month){

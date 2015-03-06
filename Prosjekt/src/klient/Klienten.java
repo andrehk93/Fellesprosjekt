@@ -153,6 +153,11 @@ public class Klienten {
 		sendTilServer(toServer);
 	}
 	
+	public static String getStatus(String avtaleid, String email) throws IOException {
+		String toServer = "GET STATUS " + avtaleid + " " + email;
+		return sendTilServer(toServer);
+	}
+	
 	public static String getRomStr(String romnavn) throws IOException {
 		String toServer = "GET ROOMSTR " + romnavn;
 		return sendTilServer(toServer);
