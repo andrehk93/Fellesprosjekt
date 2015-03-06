@@ -11,6 +11,7 @@ import org.controlsfx.control.CheckComboBox;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,6 +39,7 @@ public class ny_avtale_controller {
 	private int sluttT;
 	private int sluttM;
 	private LocalTime evigheten;
+	private ArrayList<String> repDays;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -82,7 +84,7 @@ public class ny_avtale_controller {
     @FXML
     Button lagre_knapp = new Button();
     @FXML
-    CheckComboBox repeatDays = new CheckComboBox();
+    CheckComboBox<String> repeatDays;
     List<String> gjestelisten;
     ObservableList<String> gjestene;
 	
@@ -98,16 +100,23 @@ public class ny_avtale_controller {
 					Boolean arg1, Boolean arg2) {
 				if (gjentakelse.isSelected()) {
 					sluttdato.setDisable(false);
+					repeatDays.disableProperty().set(false);
 				}
 				else {
 					sluttdato.setValue(null);
 					slutt = null;
 					sluttdato.setDisable(true);
+					repeatDays.disableProperty().set(true);
 				}
 			}
 			
 		};
 		gjentakelse.selectedProperty().addListener(aktiver);
+		
+		setUpCCB();
+		
+		
+		//layoutX="439.0" layoutY="261.0" prefWidth="150.0"
 		
 		ChangeListener<Boolean> allDay = new ChangeListener<Boolean>() {
 
@@ -191,11 +200,28 @@ public class ny_avtale_controller {
 		start = evigheten;
 		slutt = evigheten;
 		
-		
+		repDays = new ArrayList<String>();
 	}
     
     
-    public void showRom(ArrayList<String> rommene) {
+    private void setUpCCB() {
+		final ObservableList<String> strings = FXCollections.observableArrayList();
+		strings.add("Mandag");
+		strings.add("Tirsag");
+		strings.add("Onsdag");
+		strings.add("Torsdag");
+		strings.add("Fredag");
+		strings.add("Lørdag");
+		strings.add("Søndag");
+		System.out.println(strings);
+		repeatDays.getItems().addAll(strings);
+		repeatDays.getCheckModel().getCheckedItems().addListener(handleRepDay);
+		repeatDays.disableProperty().set(true);
+		
+	}
+
+
+	public void showRom(ArrayList<String> rommene) {
     	møteromliste.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
     	    @Override
     	    public void changed(ObservableValue<? extends String> observable,
@@ -317,6 +343,15 @@ public class ny_avtale_controller {
 			}
 		}
 	};
+	
+	ListChangeListener<? super String> handleRepDay = new ListChangeListener<String>() {
+		@Override
+		public void onChanged(ListChangeListener.Change<? extends String> c) {
+			repDays.clear();
+			repDays.addAll(repeatDays.getCheckModel().getCheckedItems());
+			System.out.println(repDays);
+		}
+	};
     
     public boolean sjekkTid(LocalTime start, LocalTime slutt) {
     	if (start == evigheten || slutt == evigheten) {
@@ -360,7 +395,6 @@ public class ny_avtale_controller {
     	//Må spørre database om ledig(e) rom, midlertidig metode:
     	showRom(rommene);
     }
-    
     
     @FXML
 	public void handleKeyInput(KeyEvent event) {

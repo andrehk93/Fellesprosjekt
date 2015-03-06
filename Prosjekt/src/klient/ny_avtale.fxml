@@ -89,30 +89,6 @@
             <Button fx:id="forkast_knapp" mnemonicParsing="false" onAction="#reset" text="Forkast" />
          </children>
       </HBox>
-      <CheckComboBox fx:id="repeatDays" layoutX="439.0" layoutY="261.0" prefWidth="150.0">
-      	<items>
-      		<FXCollections fx:factory="observableArrayList">
-      			<String fx:value="Mandag"/>
-      		</FXCollections>
-      		<FXCollections fx:factory="observableArrayList">
-      			<String fx:value="Tirsdag"/>
-      		</FXCollections>
-      		<FXCollections fx:factory="observableArrayList">
-      			<String fx:value="Onsdag"/>
-      		</FXCollections>
-      		<FXCollections fx:factory="observableArrayList">
-      			<String fx:value="Torsdag"/>
-      		</FXCollections>
-      		<FXCollections fx:factory="observableArrayList">
-      			<String fx:value="Fredag"/>
-      		</FXCollections>
-      		<FXCollections fx:factory="observableArrayList">
-      			<String fx:value="Lørdag"/>
-      		</FXCollections>
-      		<FXCollections fx:factory="observableArrayList">
-      			<String fx:value="Søndag"/>
-      		</FXCollections>
-      	</items>
-	</CheckComboBox>
+      <CheckComboBox fx:id="repeatDays" layoutX="439.0" layoutY="261.0" prefWidth="150.0"/>
    </children>
 </AnchorPane>
