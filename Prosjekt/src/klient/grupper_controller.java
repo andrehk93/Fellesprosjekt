@@ -69,14 +69,14 @@ public class grupper_controller {
     }
 	
 	
-	public void testlisteAdd(){
+	public void testlisteAdd(){			//fjernes når testliste fjernes
 		testliste.add("Andreas");
 		testliste.add("Christoffer");
 		testliste.add("Lars");
 		testliste.add("Martin");
 		testliste.add("My");
 	}
-//-------------------------------------------------------------------------------------------------------------------------------------	
+
 	public void brukerliste(ArrayList<String> SøkBrukere){
     	ObservableList<String> liste_brukere = FXCollections.observableList(SøkBrukere);
 		brukerliste.setItems(liste_brukere);
@@ -190,7 +190,10 @@ public class grupper_controller {
     	brukerliste(søkBruker_liste);
     }
     
-    
+    @FXML
+	public void avbryt(){
+		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+	}
     
     
 }

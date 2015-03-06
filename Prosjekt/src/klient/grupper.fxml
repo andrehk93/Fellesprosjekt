@@ -49,6 +49,7 @@
       <HBox layoutX="633.0" layoutY="632.0" prefHeight="39.0" prefWidth="276.0" spacing="20.0">
          <children>
             <Button fx:id="lagre_gruppe_knapp" mnemonicParsing="false" text="Lagre" />
+            <Button fx:id="avbryt_knapp" mnemonicParsing="false" onAction="#avbryt" text="Avbryt" />
             <Button fx:id="forkast_gruppe_knapp" mnemonicParsing="false" prefHeight="41.0" text="Forkast" />
          </children>
       </HBox>
