@@ -5,6 +5,8 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.collections.FXCollections ?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
    <children>
@@ -24,11 +26,11 @@
       <HBox layoutX="137.0" layoutY="186.0" prefHeight="39.0" prefWidth="727.0" spacing="30.0">
          <children>
             <DatePicker fx:id="startdato" onAction="#handleDato" prefHeight="35.0" prefWidth="154.0" />
-            <ChoiceBox fx:id="timeFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
-            <ChoiceBox fx:id="minuttFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="timeFra" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="minuttFra" prefHeight="25.0" prefWidth="50.0" />
             <Label text="-" />
-            <ChoiceBox fx:id="timeTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
-            <ChoiceBox fx:id="minuttTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="timeTil" prefHeight="25.0" prefWidth="50.0" />
+            <ChoiceBox fx:id="minuttTil" prefHeight="25.0" prefWidth="50.0" />
             <DatePicker fx:id="sluttdato" onAction="#handleDato" prefHeight="35.0" prefWidth="160.0" />
          </children>
       </HBox>
@@ -85,6 +87,6 @@
             <Button fx:id="forkast_knapp" mnemonicParsing="false" onAction="#reset" text="Forkast" />
          </children>
       </HBox>
-
+      <CheckComboBox fx:id="repeatDays" layoutX="439.0" layoutY="261.0" prefWidth="150.0"/>
    </children>
 </AnchorPane>

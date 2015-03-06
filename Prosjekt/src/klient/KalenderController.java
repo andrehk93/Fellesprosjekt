@@ -306,7 +306,7 @@ public class KalenderController {
 			else {
 				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 			}
-			}
+		}
 		catch (NullPointerException e) {
 		}
 		
@@ -397,10 +397,5 @@ public class KalenderController {
 	@FXML
 	private void logout() throws IOException{
 		Klienten.logout();
-	}
-	
-	@FXML
-	private void changeFiltrering(ActionEvent e) {
-		
 	}
 }
