@@ -525,6 +525,7 @@ public class KalenderDB {
 		statement.setString(1, email);
 		ResultSet result = statement.executeQuery();
 		result.next();
+		System.out.println(result.getString(1) + " " + result.getString(2) + " " + result.getString(3));
 		
 		return result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
 	}

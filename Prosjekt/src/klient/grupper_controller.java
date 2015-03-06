@@ -169,7 +169,6 @@ public class grupper_controller {
     
     public void getUsers() throws IOException{
     	brukere = Klienten.getAllUserDetails();
-    	brukerliste.setItems((ObservableList) brukere);
     	brukerliste(søkBruker_liste);
     }
     
