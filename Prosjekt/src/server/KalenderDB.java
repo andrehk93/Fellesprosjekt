@@ -157,7 +157,6 @@ public class KalenderDB {
 		while(result.next()){
 			output += result.getString(1)+" ";
 		}
-		System.out.println("Svaret: " + output);
 		return output;
 	}
 	
@@ -219,7 +218,6 @@ public class KalenderDB {
 						"group by avtaleid)";
 				break;
 		}
-		System.out.println(query);
 		
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);

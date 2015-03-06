@@ -146,7 +146,6 @@ public class KalenderProtocol {
 				break;
 			case "APPTIME":
 				output = kalenderdb.getAppTime(input[1]);
-				System.out.println("output: "+output);
 				break;
 			case "MYAPPS":
 				output = kalenderdb.getMyApps(user);

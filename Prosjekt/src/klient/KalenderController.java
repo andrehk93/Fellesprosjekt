@@ -263,7 +263,7 @@ public class KalenderController {
 	private void hentAvtaler() throws IOException {
 		try {
 			if (Klienten.avtaler.isEmpty()) {
-				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), filtverdi).split(" ");
+				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 				for (int k = 0; k < avtale_liste.length; k++) {
 					if (k%2 != 0) {
 						String dato = avtale_liste[k];
@@ -273,11 +273,10 @@ public class KalenderController {
 				}
 			}
 			else {
-				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), filtverdi).split(" ");
+				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 			}
-		}
+			}
 		catch (NullPointerException e) {
-			
 		}
 		
 	}
@@ -288,9 +287,7 @@ public class KalenderController {
 	private void createAvtale(String dato, String avtaleid) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
-		System.out.println("romnavn: "+romnavn);
 		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
-		System.out.println("kap :" +kapasitet);
 		Møterom rom = new Møterom(kapasitet, romnavn);
 		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),

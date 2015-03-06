@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.net.ConnectException;
 import java.security.MessageDigest;
@@ -17,12 +18,12 @@ public class Klienten {
 	public static DataOutputStream outToServer;
 	public static BufferedReader inFromServer;
 	public static Bruker bruker;
+	private static boolean tilkobling;
 	public static ArrayList<Avtale> avtaler;
 	
 	
 	public Klienten() throws IOException {
 		avtaler = new ArrayList<Avtale>();
-		System.out.println("hallo");
 		init();
 	}
 	
@@ -34,9 +35,19 @@ public class Klienten {
 			outToServer = new DataOutputStream(socket.getOutputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			System.out.println("Connected to server " + ip + ":" + port);
+			setTilkobling(true);
 		} catch(Exception ConnectException){
 			System.out.println("Kunne ikke koble til server");
+			setTilkobling(false);
 		}
+	}
+	
+	public static void setTilkobling(boolean truth) {
+		tilkobling = truth;
+	}
+	
+	public boolean getTilkobling() {
+		return tilkobling;
 	}
 	
 	public static String hentAvtale(String avtaleid) throws IOException {
@@ -100,7 +111,13 @@ public class Klienten {
 	
 	public static String sendTilServer(String message) throws IOException {
 		String modifiedSentence;
-		outToServer.writeBytes(message + "\r\n");
+		try {
+			outToServer.writeBytes(message + "\r\n");
+		}
+		catch (SocketException e) {
+			setTilkobling(false);
+			ScreenNavigator.loadScreen(ScreenNavigator.TILKOBLING_ERROR);
+		}
 		String output = "";
 		String tempString = inFromServer.readLine();
 		while(tempString.length() > 0) {
