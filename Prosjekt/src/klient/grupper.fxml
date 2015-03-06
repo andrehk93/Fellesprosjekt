@@ -22,7 +22,7 @@
             <VBox prefHeight="301.0" prefWidth="309.0" spacing="5.0">
                <children>
                   <Label text="Søk etter brukere" />
-                  <TextField fx:id="brukersøk" maxWidth="-Infinity" prefHeight="31.0" prefWidth="300.0" onKeyPressed="#handleGruppesøk" promptText="Søk..." />
+                  <TextField fx:id="brukersøk" maxWidth="-Infinity" prefHeight="31.0" prefWidth="300.0" promptText="Søk..." />
                   <Label text="Brukere" />
                   <ListView fx:id="brukerliste" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="336.0" prefWidth="300.0" />
                </children>
