@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.controlsfx.control.CheckComboBox;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -79,6 +81,8 @@ public class ny_avtale_controller {
     Button forkast_knapp = new Button();
     @FXML
     Button lagre_knapp = new Button();
+    @FXML
+    CheckComboBox repeatDays = new CheckComboBox();
     List<String> gjestelisten;
     ObservableList<String> gjestene;
 	
@@ -316,14 +320,11 @@ public class ny_avtale_controller {
     
     public boolean sjekkTid(LocalTime start, LocalTime slutt) {
     	if (start == evigheten || slutt == evigheten) {
-    		System.out.println("EVIGHET!!");
     		return true;
     	}
     	else if(start.isBefore(slutt)){
-    		System.out.println("GREIT!!");
     		return true;
     	}
-    	System.out.println("SHIT NO!!!");
     	return false;
     }
     

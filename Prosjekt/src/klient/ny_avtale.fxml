@@ -5,6 +5,8 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.collections.FXCollections ?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
    <children>
@@ -87,6 +89,30 @@
             <Button fx:id="forkast_knapp" mnemonicParsing="false" onAction="#reset" text="Forkast" />
          </children>
       </HBox>
-
+      <CheckComboBox fx:id="repeatDays" layoutX="439.0" layoutY="261.0" prefWidth="150.0">
+      	<items>
+      		<FXCollections fx:factory="observableArrayList">
+      			<String fx:value="Mandag"/>
+      		</FXCollections>
+      		<FXCollections fx:factory="observableArrayList">
+      			<String fx:value="Tirsdag"/>
+      		</FXCollections>
+      		<FXCollections fx:factory="observableArrayList">
+      			<String fx:value="Onsdag"/>
+      		</FXCollections>
+      		<FXCollections fx:factory="observableArrayList">
+      			<String fx:value="Torsdag"/>
+      		</FXCollections>
+      		<FXCollections fx:factory="observableArrayList">
+      			<String fx:value="Fredag"/>
+      		</FXCollections>
+      		<FXCollections fx:factory="observableArrayList">
+      			<String fx:value="Lørdag"/>
+      		</FXCollections>
+      		<FXCollections fx:factory="observableArrayList">
+      			<String fx:value="Søndag"/>
+      		</FXCollections>
+      	</items>
+	</CheckComboBox>
    </children>
 </AnchorPane>
