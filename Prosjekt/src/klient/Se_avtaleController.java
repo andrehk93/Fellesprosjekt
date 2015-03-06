@@ -8,7 +8,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -16,15 +18,17 @@ import javafx.scene.control.TextField;
 public class Se_avtaleController {
 	
 	private String fratid, tiltid, dato, rom, admin;
-	@FXML private TextField fra, til, startdato;
+	@FXML private TextField fra, til, startdato, sluttdato;
 	@FXML private ListView<String> deltaker_listeview;
 	@FXML private RadioButton skal, skal_ikke, ikke_svart;
 	private ObservableList<String> addDeltakere;
+	private String avtaleid;
+	@FXML private Button bekreft;
 	
 	public void setAvtale(String avtale, String avtaleid) throws IOException {
 		String[] detaljer = avtale.trim().split(" ");
 		String deltakerne = Klienten.getDeltakere(avtaleid);
-		System.out.println(deltakerne);
+		this.avtaleid = avtaleid;
 		String[] deltakere = deltakerne.trim().split(" ");
 		fratid = detaljer[0];
 		tiltid = detaljer[1];
@@ -33,19 +37,26 @@ public class Se_avtaleController {
 		admin = detaljer[4];
 		List<String> deltaker_liste = new ArrayList<String>();
 		for (String deltaker : deltakere) {
-			deltaker_liste.add(deltaker);
+			if (deltaker.trim().equals("NONE")) {
+				deltaker_liste.add("Ingen deltakere");
+			}
+			else {
+				deltaker_liste.add(deltaker);
+			}
 		}
 		addDeltakere = FXCollections.observableList(deltaker_liste);
 	}
 	
 	public void initialize() throws IOException {
 		String[] enhet = KalenderController.enheter;
-		setAvtale(Klienten.hentAvtale(enhet[1]), enhet[1]);
+		String avtale = Klienten.hentAvtale(enhet[1]);
+		setAvtale(avtale, enhet[1]);
 		addListeners();
 		deltaker_listeview.setItems(addDeltakere);
 		fra.setText(fratid);
 		til.setText(tiltid);
 		startdato.setText(dato);
+		sluttdato.setDisable(true);
 	}
 	
 	public boolean skal() {
@@ -100,6 +111,16 @@ public class Se_avtaleController {
 		skal.selectedProperty().addListener(select_skal);
 		skal_ikke.selectedProperty().addListener(select_skal_ikke);
 		ikke_svart.selectedProperty().addListener(select_ikke_svart);
+	}
+	
+	public void bekreftEndringer(ActionEvent event) throws IOException {
+		if (skal.isSelected()) {
+			Klienten.changeStatus(avtaleid, "1");
+		}
+		else if (skal_ikke.isSelected()) {
+			Klienten.changeStatus(avtaleid, "0");
+		}
+		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 	}
 	
 

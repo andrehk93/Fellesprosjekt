@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 public class Main extends Application {
 	
 	Klienten klienten;
+	String startside;
 	
 	@Override
 	public void start(Stage stage) throws Exception{
@@ -48,15 +49,27 @@ public class Main extends Application {
 		MainController mainController = loader.getController();
 		
 		ScreenNavigator.setMainController(mainController);
-		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
-		
+		if(klienten.getTilkobling()){
+			ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+		}
+		else {
+			ScreenNavigator.loadScreen(ScreenNavigator.TILKOBLING_ERROR);
+		}
+
 		return mainPane;
+	}
+	
+	public void setStart(String start) {
+		this.startside = start;
+	}
+	
+	public String getStart() {
+		return this.startside;
 	}
 	
 	private Scene createScene(Pane mainPane){
 		Scene scene = new Scene(mainPane);
 		scene.getStylesheets().setAll(getClass().getResource("application.css").toExternalForm());
-		
 		return scene;
 	}
 	

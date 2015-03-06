@@ -157,7 +157,6 @@ public class KalenderDB {
 		while(result.next()){
 			output += result.getString(1)+" ";
 		}
-		System.out.println("Svaret: " + output);
 		return output;
 	}
 	
@@ -219,7 +218,6 @@ public class KalenderDB {
 						"group by avtaleid)";
 				break;
 		}
-		System.out.println(query);
 		
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
@@ -266,7 +264,7 @@ public class KalenderDB {
 	public String getInvitations(String user) throws Exception{
 		init();
 		
-		query = "SELECT avtaleid FROM ermed WHERE epost = ?";
+		query = "SELECT avtaleid FROM ermed WHERE epost = ? and oppmotestatus is null";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);
 		ResultSet result = statement.executeQuery();
@@ -377,6 +375,7 @@ public class KalenderDB {
 	
 	public void changeStatus(String user, String avtale, String newStatus) throws Exception {
 		init();
+		System.out.println("USER: " + user + " AVTALE: " + avtale + " NEWSTATUS: " + newStatus);
 		
 		query = "UPDATE `christwg_fp`.`ermed` SET `oppmotestatus`=? \n" + 
 				"WHERE `epost`=? AND `avtaleid`=?;";
