@@ -25,9 +25,11 @@ public class grupper_controller {
 	
 	private ArrayList<Bruker> medlemmer;					
 	private ArrayList<Bruker> brukere;
+	private Gruppe gruppe;
 	private String søk;
 	private ArrayList<Bruker> søkBruker_liste;
 	private Scene scene;
+	private String gruppeNavn;
     public void setScene(Scene scene) { this.scene = scene; }
     
     @FXML
@@ -65,8 +67,8 @@ public class grupper_controller {
     }
 	
     @FXML
-	public void handleGruppenavn(){
-		
+	public void getGruppenavn(){
+    	gruppeNavn = gruppenavn.getText();
 	}
     
 
@@ -179,9 +181,16 @@ public class grupper_controller {
     
     
     @FXML
+	public void lagre(){
+    	gruppeNavn = gruppenavn.getText();
+		System.out.println(gruppeNavn);
+	}
+    
+    @FXML
 	public void avbryt(){
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 	}
+   
     
     
 }

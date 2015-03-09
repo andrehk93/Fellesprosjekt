@@ -8,17 +8,28 @@ import javafx.beans.property.Property;
 
 public class Gruppe {
 	
+	private String gruppenavn;
+	
 	public Gruppe() {
 		
 	}
 	
 	public Gruppe(Avtale avtale, ArrayList<Bruker> medlemmer) {
+		setGruppenavn("Hei");
 		setAvtale(avtale);
 		setMedlemmer(medlemmer);
 	}
 	
 	public void setMedlemmer(ArrayList<Bruker> medlemmer) {
 		medlemListeProperty.setValue(medlemmer);
+	}
+	
+	public void setGruppenavn(String navn){
+		this.gruppenavn = navn;
+	}
+	
+	public String getGruppenavn(){
+		return this.gruppenavn;
 	}
 	
 	private Property<ArrayList<Bruker>> medlemListeProperty = new ObjectPropertyBase<ArrayList<Bruker>>(null) {
