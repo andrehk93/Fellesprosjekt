@@ -21,7 +21,7 @@
       </Label>
       <Line endX="655.0" layoutX="275.0" layoutY="100.0" opacity="0.33" startX="-215.0" stroke="#aeadad" />
       <Line endX="640.0" layoutX="285.0" layoutY="135.0" opacity="0.72" startX="-75.0" stroke="#aeadad" />
-      <HBox layoutX="221.0" layoutY="101.0" prefHeight="34.0" prefWidth="504.0" spacing="45.0" styleClass="label-days">
+      <HBox layoutX="221.0" layoutY="101.0" prefHeight="34.0" prefWidth="504.0" spacing="45.0" styleClass="label-normal-objects">
          <children>
             <Text fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Mandag" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tirsdag" />
@@ -32,7 +32,7 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Søndag" />
          </children>
       </HBox>
-      <GridPane fx:id="ruter" gridLinesVisible="true" layoutX="210.0" layoutY="155.0" opacity="0.34" prefHeight="471.0" prefWidth="716.0">
+      <GridPane fx:id="ruter" gridLinesVisible="true" layoutX="210.0" layoutY="155.0" opacity="0.34" prefHeight="471.0" prefWidth="716.0" styleClass="label-normal-objects">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -74,9 +74,9 @@
       </HBox>
       <HBox layoutX="633.0" layoutY="48.0" prefHeight="35.0" prefWidth="291.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="57.0" text="Dag" />
-            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="55.0" text="Uke" />
-            <Button mnemonicParsing="false" text="Måned">
+            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="Dag" />
+            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" styleClass="specialButton" text="Uke" />
+            <Button mnemonicParsing="false" styleClass="specialButton" text="Måned">
                <effect>
                   <ColorAdjust contrast="-0.25" />
                </effect></Button>
@@ -98,7 +98,7 @@
           <!-- NY AVTALE - KNAPP -->
             <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" styleClass="specialButton" text="Ny avtale" />
             <Button fx:id="grupper" mnemonicParsing="false" onAction="#grupperView" styleClass="specialButton" text="Grupper" />
-            <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0" styleClass="label-normal-objects">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
                      <font>
@@ -108,7 +108,7 @@
                   <ListView fx:id="notifikasjoner" prefHeight="211.0" prefWidth="169.0" />
                </children>
                <children>
-                  <Button mnemonicParsing="false" onAction="#logout" text="Logg ut" />
+                  <Button mnemonicParsing="false" onAction="#logout" styleClass="normalButton" text="Logg ut" />
                </children>
             </VBox>
          </children>
@@ -116,6 +116,6 @@
       <Label fx:id="manedLabel" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
       <Label fx:id="arLabel" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
       <Button fx:id="refresh" layoutX="50.0" layoutY="626.0" mnemonicParsing="false" onAction="#refreshKalender" styleClass="normalButton" text="Last inn igjen" />
-      <ChoiceBox fx:id="filtrering" layoutX="746.0" layoutY="642.0" prefWidth="150.0"/>
+      <ChoiceBox fx:id="filtrering" layoutX="746.0" layoutY="600.0" prefWidth="150.0" styleClass="label-normal-objects"/>
    </children>
 </AnchorPane>
