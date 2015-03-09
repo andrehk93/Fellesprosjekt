@@ -45,14 +45,14 @@
                   <Label text="Sluttdato" />
                </children>
             </HBox>
-            <HBox prefHeight="39.0" prefWidth="700.0" spacing="30.0">
+            <HBox prefHeight="39.0" prefWidth="700.0" spacing="30.0" styleClass="label-normal-objects">
                <children>
                   <DatePicker fx:id="startdato" onAction="#handleDato" prefHeight="35.0" prefWidth="154.0" />
-                  <ChoiceBox fx:id="timeFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
-                  <ChoiceBox fx:id="minuttFra" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
+                  <ChoiceBox fx:id="timeFra" prefHeight="25.0" prefWidth="50.0" />
+                  <ChoiceBox fx:id="minuttFra" prefHeight="25.0" prefWidth="50.0" />
                   <Label text="-" />
-                  <ChoiceBox fx:id="timeTil" onMouseExited="#handleTid" prefHeight="25.0" prefWidth="50.0" />
-                  <ChoiceBox fx:id="minuttTil" onMouseExited="#handleTid" prefHeight="53.0" prefWidth="50.0" />
+                  <ChoiceBox fx:id="timeTil" prefHeight="25.0" prefWidth="50.0" />
+                  <ChoiceBox fx:id="minuttTil" prefHeight="53.0" prefWidth="50.0" />
                   <DatePicker fx:id="sluttdato" onAction="#handleDato" prefHeight="44.0" prefWidth="160.0" />
                </children>
             </HBox>
@@ -67,7 +67,7 @@
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER_LEFT" layoutX="112.0" layoutY="161.0" prefHeight="39.0" prefWidth="672.0" spacing="40.0">
+      <HBox alignment="CENTER_LEFT" layoutX="112.0" layoutY="161.0" prefHeight="39.0" prefWidth="672.0" spacing="40.0" styleClass="label-normal-objects">
          <children>
             <TextField fx:id="avtalenavn" onKeyTyped="#handleKeyInput" prefHeight="39.0" prefWidth="254.0" promptText="Tittel på avtale" />
             <CheckBox fx:id="hele_dagen" mnemonicParsing="false" prefHeight="27.0" prefWidth="131.0" text="Hele dagen">
@@ -80,9 +80,10 @@
                   <Font name="Segoe UI Light" size="18.0" />
                </font>
             </CheckBox>
+            <CheckComboBox fx:id="repeatDays" layoutX="439.0" layoutY="261.0" prefWidth="150.0"/>
          </children>
       </HBox>
-      <TabPane id="#MyTabPane" layoutX="112.0" layoutY="326.0" prefHeight="318.0" prefWidth="471.0" styleClass=".tab-pane *.tab-header-background" stylesheets="@application.css" tabClosingPolicy="UNAVAILABLE">
+      <TabPane id="#MyTabPane" layoutX="112.0" layoutY="326.0" prefHeight="318.0" prefWidth="471.0" styleClass="label-normal-objects" stylesheets="@application.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab id="#MyTabPane" closable="false" text="Legg til deltakere">
             <content>
@@ -149,13 +150,12 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </TabPane>
-      <VBox layoutX="664.0" layoutY="463.0" prefHeight="169.0" prefWidth="216.0" spacing="10.0">
+      <VBox layoutX="664.0" layoutY="463.0" prefHeight="169.0" prefWidth="216.0" spacing="10.0" styleClass="label-normal-objects">
          <children>
             <Button fx:id="forkast_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#reset" prefHeight="46.0" prefWidth="135.0" styleClass="normalButton" text="Forkast" />
             <Button fx:id="lagre_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#lagre" prefHeight="46.0" prefWidth="134.0" styleClass="specialButton" text="Lagre" />
          	<Button fx:id="avbryt_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#avbryt" prefHeight="46.0" prefWidth="130.0" styleClass="normalButton" text="Avbryt" />
          </children>
-      <CheckComboBox fx:id="repeatDays" layoutX="439.0" layoutY="261.0" prefWidth="150.0"/>
       </VBox>
       <GridPane layoutX="664.0" layoutY="326.0" prefHeight="105.0" prefWidth="216.0">
         <columnConstraints>

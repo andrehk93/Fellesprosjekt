@@ -10,7 +10,7 @@
 
 <VBox prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: ;" styleClass="label-header" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.MainController">
   <children>
-    <Label id="#header" maxWidth="1.7976931348623157E308" style="-fx-background-color: #4986E7" styleClass="header" text="Fellesprosjekt - Gruppe 4" textFill="WHITE" VBox.vgrow="NEVER">
+    <Label id="#header" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="60.0" prefHeight="0.0" prefWidth="300.0" style="-fx-background-color: #4986E7" styleClass="header" text="Fellesprosjekt - Gruppe 4" textFill="WHITE" VBox.vgrow="NEVER">
          <font>
             <Font name="Segoe UI Light Italic" size="20.0" />
          </font>

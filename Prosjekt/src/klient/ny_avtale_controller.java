@@ -442,6 +442,7 @@ public class ny_avtale_controller {
 					dag.addAvtale(avtale);
 				}
 			}
+			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 		}
 		
 	}
