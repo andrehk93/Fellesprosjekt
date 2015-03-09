@@ -34,6 +34,7 @@ public class ny_avtale_controller {
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
+	private LocalDate tilDato;
 	private String[] ledigeBrukere;
 	private int startT;
 	private int startM;
@@ -41,6 +42,7 @@ public class ny_avtale_controller {
 	private int sluttM;
 	private LocalTime evigheten;
 	private ArrayList<String> repDays;
+	private ArrayList<LocalDate> repDates;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -219,7 +221,6 @@ public class ny_avtale_controller {
 		repeatDays.getItems().addAll(strings);
 		repeatDays.getCheckModel().getCheckedItems().addListener(handleRepDay);
 		repeatDays.disableProperty().set(true);
-		
 	}
 
 
@@ -282,6 +283,16 @@ public class ny_avtale_controller {
     		return false;
     	}
     	return false;
+    }
+    
+    private ArrayList<LocalDate> findDates() {
+    	LocalDate i = dato;
+    	repDates = new ArrayList<LocalDate>();
+    	repDates.add(i);
+    	while(i.isBefore(tilDato)) {
+    		
+    	}
+    	return null;
     }
     
     @FXML
@@ -354,6 +365,7 @@ public class ny_avtale_controller {
 			System.out.println(repDays);
 		}
 	};
+
     
     public boolean sjekkTid(LocalTime start, LocalTime slutt) {
     	if (start == evigheten || slutt == evigheten) {
@@ -427,19 +439,21 @@ public class ny_avtale_controller {
 		System.out.println(slutt);
 		System.out.println(dato);
 		Møterom rom =  new Møterom(100, valgt_rom.getText());
-		if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
-			System.out.println("GJESTENE: " + gjeste_liste);
-			String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom);
-			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
-			for (Bruker deltaker : gjeste_liste) {
-				deltaker.inviterTilNyAvtale(avtale);
-			}
-			getBruker().inviterTilNyAvtale(avtale);
-			System.out.println("ENDREr status: ");
-			Klienten.changeStatus(avtaleid, "1");
-			for (Dag dag : KalenderController.dager) {
-				if (dag.getDato().equals(dato)) {
-					dag.addAvtale(avtale);
+		for(LocalDate datoen : repDates){
+			if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
+				System.out.println("GJESTENE: " + gjeste_liste);
+				String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom);
+				Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
+				for (Bruker deltaker : gjeste_liste) {
+					deltaker.inviterTilNyAvtale(avtale);
+				}
+				getBruker().inviterTilNyAvtale(avtale);
+				System.out.println("ENDREr status: ");
+				Klienten.changeStatus(avtaleid, "1");
+				for (Dag dag : KalenderController.dager) {
+					if (dag.getDato().equals(dato)) {
+						dag.addAvtale(avtale);
+					}
 				}
 			}
 		}
