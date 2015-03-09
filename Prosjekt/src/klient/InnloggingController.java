@@ -47,7 +47,7 @@ public class InnloggingController {//implements Initializable
 		if(event.getCode() == KeyCode.ENTER){
 			checkInput();
 			if (Klienten.login(brukernavn.getText(), passord.getText())){
-				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+				ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
 			}
 		}
 	}

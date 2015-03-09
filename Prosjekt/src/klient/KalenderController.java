@@ -366,6 +366,11 @@ public class KalenderController {
 	}
 	
 	@FXML
+	private void nextPaneWeekView(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
+	}
+	
+	@FXML
 	private void nextPaneMakeAppointment(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
 	}
