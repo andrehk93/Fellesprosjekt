@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -22,7 +23,7 @@ import javafx.scene.input.KeyEvent;
 
 public class grupper_controller {
 	
-	private ArrayList<Bruker> medlemmer;					// Må endres til bruker når jeg før inn innhold i listen brukere
+	private ArrayList<Bruker> medlemmer;					
 	private ArrayList<Bruker> brukere;
 	private String søk;
 	private ArrayList<Bruker> søkBruker_liste;
@@ -41,6 +42,8 @@ public class grupper_controller {
     Slider gruppemedlemmer_slider = new Slider();
     @FXML
     TextField antall_gruppemedlemmer = new TextField();
+    @FXML 
+    Label legg_til_lbl = new Label();
     @FXML
     Button legg_til_knapp = new Button();
     @FXML
@@ -52,24 +55,17 @@ public class grupper_controller {
     
     public void initialize() throws IOException {
     	addListner();
-		medlemmer = new ArrayList<Bruker>();			// Må endres til bruker når jeg før inn innhold i listen brukere
+		medlemmer = new ArrayList<Bruker>();			
 		brukere = new ArrayList<Bruker>();
-		brukere = new ArrayList<Bruker>();			// Må endre alle brukere til brukere når jeg får listen fra databasen
+		brukere = new ArrayList<Bruker>();			
 		søkBruker_liste = new ArrayList<Bruker>();
 		getUsers();
-//		brukereAdd();
 		brukerliste(brukere);
 		gruppemedlemmer_liste(medlemmer);
     }
 	
 	
-/*	public void brukereAdd(){			//fjernes når brukere fjernes
-		brukere.add("Andreas");
-		brukere.add("Christoffer");
-		brukere.add("Lars");
-		brukere.add("Martin");
-		brukere.add("My");
-	}*/
+    
 
 	public void brukerliste(ArrayList<Bruker> SøkBrukere){
     	ObservableList<Bruker> liste_brukere = FXCollections.observableList(SøkBrukere);
@@ -132,12 +128,18 @@ public class grupper_controller {
     
     @FXML
     private void handleLeggTil(ActionEvent event) throws IOException, NoSuchAlgorithmException {
-		if (brukerliste.getSelectionModel().getSelectedItem() != null && søkBruker_liste.isEmpty() && søk == null){
+    	if (medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem())){
+    		legg_til_lbl.setText("Brukeren er allerede i gruppen");
+		}else {
+			legg_til_lbl.setText("");
+		}
+    	
+    	if (brukerliste.getSelectionModel().getSelectedItem() != null && søkBruker_liste.isEmpty() && søk == null && !medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem())){;
 	    	brukerliste.getSelectionModel().getSelectedItem();
 			medlemmer.add(brukerliste.getSelectionModel().getSelectedItem());
 			søkBruker_liste.remove(brukerliste.getSelectionModel().getSelectedItem());
 		}
-
+		
 		if (søkBruker_liste.isEmpty() && søk == null){
     		brukerliste(brukere);
     	} 
@@ -171,6 +173,7 @@ public class grupper_controller {
     	brukere = Klienten.getAllUserDetails();
     	brukerliste(søkBruker_liste);
     }
+    
     
     @FXML
 	public void avbryt(){
