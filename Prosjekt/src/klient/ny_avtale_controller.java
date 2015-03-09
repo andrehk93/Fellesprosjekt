@@ -488,6 +488,7 @@ public class ny_avtale_controller {
 					}
 				}
 			}
+			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 		}
 		
 	}

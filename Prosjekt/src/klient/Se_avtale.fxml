@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -9,61 +11,46 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.Se_avtaleController">
    <children>
-      <Label layoutX="319.0" layoutY="30.0" prefHeight="43.0" prefWidth="350.0" styleClass="label-header" text="Avtale Informasjon" />
-      <Text layoutX="22.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Oppmøtestatus">
-         <font>
-            <Font name="Segoe UI Semilight" size="18.0" />
-         </font>
-      </Text>
-      <VBox layoutX="33.0" layoutY="249.0" prefHeight="116.0" prefWidth="505.0">
+      <Label layoutX="331.0" layoutY="58.0" prefHeight="62.0" prefWidth="339.0" styleClass="label-header" text="Avtale Informasjon" />
+      <VBox layoutX="78.0" layoutY="259.0" prefHeight="99.0" prefWidth="469.0">
          <children>
-            <HBox prefHeight="161.0" prefWidth="469.0" spacing="10.0">
+            <HBox prefHeight="115.0" prefWidth="507.0" spacing="10.0" stylesheets="@application.css">
                <children>
-                  <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                  <VBox alignment="CENTER_RIGHT" prefHeight="99.0" prefWidth="82.0" spacing="20.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-name-bold" text="Startdato" wrappingWidth="86.208984375">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-name-bold" text="Startdato " wrappingWidth="77.208984375">
                            <font>
-                              <Font name="Segoe UI Semilight" size="18.0" />
+                              <Font name="Segoe UI Light" size="18.0" />
                            </font>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fra" wrappingWidth="25.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fra" wrappingWidth="34.0">
                            <font>
-                              <Font name="Segoe UI Semilight" size="18.0" />
+                              <Font name="Segoe UI Light" size="18.0" />
                            </font>
                         </Text>
                      </children>
                   </VBox>
-                  <VBox prefHeight="111.0" prefWidth="110.0" spacing="15.0" styleClass="label-name">
+                  <VBox alignment="CENTER" prefHeight="111.0" prefWidth="110.0" spacing="15.0" styleClass="label-name">
                      <children>
                         <TextField fx:id="startdato" editable="false" />
                         <TextField fx:id="fra" editable="false" />
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                  <VBox alignment="CENTER_RIGHT" prefHeight="92.0" prefWidth="100.0" spacing="25.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sluttdato" wrappingWidth="76.0">
                            <font>
-                              <Font name="Segoe UI Semilight" size="18.0" />
+                              <Font name="Segoe UI Light" size="18.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Til" wrappingWidth="28.0">
                            <font>
-                              <Font name="Segoe UI Semilight" size="18.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="26.0">
-                           <font>
-                              <Font name="Segoe UI Semilight" size="18.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="76.0">
-                           <font>
-                              <Font name="Segoe UI Semilight" size="18.0" />
+                              <Font name="Segoe UI Light" size="18.0" />
                            </font>
                         </Text>
                      </children>
                   </VBox>
-                  <VBox prefHeight="123.0" prefWidth="110.0" spacing="15.0" styleClass="label-name">
+                  <VBox alignment="CENTER" prefHeight="123.0" prefWidth="110.0" spacing="15.0" styleClass="label-name">
                      <children>
                         <TextField fx:id="sluttdato" editable="false" />
                         <TextField fx:id="til" editable="false" />
@@ -73,35 +60,64 @@
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="605.0" layoutY="180.0" prefHeight="213.0" prefWidth="339.0" spacing="15.0">
+      <VBox layoutX="603.0" layoutY="195.0" prefHeight="310.0" prefWidth="326.0" spacing="15.0" styleClass="label-normal-objects">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deltakere">
                <font>
-                  <Font name="Segoe UI Semilight" size="18.0" />
+                  <Font name="Segoe UI Light" size="18.0" />
                </font>
             </Text>
-            <ListView fx:id="deltaker_listeview" prefHeight="200.0" prefWidth="210.0" styleClass="label-name" />
+            <ListView fx:id="deltaker_listeview" prefHeight="265.0" prefWidth="326.0" styleClass="label-name" />
          </children>
       </VBox>
-      <TextField editable="false" layoutX="144.0" layoutY="180.0" prefHeight="31.0" prefWidth="243.0" styleClass="label-name" />
-      <Text layoutX="78.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-name-bold" text="Tittel" wrappingWidth="52.0">
+      <TextField editable="false" layoutX="169.0" layoutY="189.0" prefHeight="39.0" prefWidth="339.0" styleClass="label-name" />
+      <Text layoutX="109.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tittel" wrappingWidth="52.0">
          <font>
-            <Font name="Segoe UI Semilight" size="18.0" />
+            <Font name="Segoe UI Light" size="18.0" />
          </font>
       </Text>
-      <Button layoutX="782.0" layoutY="583.0" mnemonicParsing="false" text="Bekreft" fx:id="bekreft" onAction="#bekreftEndringer" />
-      <HBox layoutX="174.0" layoutY="409.0" prefHeight="35.0" prefWidth="272.0" spacing="25.0" styleClass="label-name">
+      <Button fx:id="bekreft" layoutX="676.0" layoutY="534.0" mnemonicParsing="false" onAction="#bekreftEndringer" prefHeight="46.0" prefWidth="159.0" styleClass="specialButton" text="Bekreft" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4986e7" height="7.0" layoutX="79.0" layoutY="132.0" opacity="0.72" strokeType="INSIDE" strokeWidth="0.0" width="850.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#d9d9d900" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Rectangle>
+      <VBox layoutX="109.0" layoutY="427.0" prefHeight="186.0" prefWidth="444.0" spacing="15.0">
          <children>
-            <RadioButton fx:id="ikke_svart" mnemonicParsing="false" onAction="#ikke_svart" styleClass="label-name" text="Ikke svart" />
-            <RadioButton fx:id="skal" mnemonicParsing="false" onAction="#skal" text="Skal" />
-            <RadioButton fx:id="skal_ikke" mnemonicParsing="false" onAction="#skal_ikke" text="Skal ikke" />
+            <HBox prefHeight="39.0" prefWidth="455.0" spacing="25.0" styleClass="label-normal-objects">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Oppmøtestatus: ">
+                     <font>
+                        <Font name="Segoe UI Light" size="18.0" />
+                     </font>
+                  </Text>
+                  <RadioButton fx:id="ikke_svart" mnemonicParsing="false" onAction="#ikke_svart" styleClass="label-name" text="Ikke svart" />
+                  <RadioButton fx:id="skal" mnemonicParsing="false" onAction="#skal" text="Skal" />
+                  <RadioButton fx:id="skal_ikke" mnemonicParsing="false" onAction="#skal_ikke" text="Skal ikke" />
+               </children>
+            </HBox>
+            <HBox prefHeight="112.0" prefWidth="444.0" spacing="15.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="109.0" styleClass="label-name-bold" text="Begrunnelse" />
+                  <TextArea fx:id="begrunnelse" prefHeight="86.0" prefWidth="339.0" />
+               </children>
+            </HBox>
          </children>
-      </HBox>
-      <HBox layoutX="47.0" layoutY="458.0" prefHeight="100.0" prefWidth="457.0" spacing="15.0">
-         <children>
-            <Label styleClass="label-name-bold" text="Begrunnelse" />
-            <TextArea fx:id="begrunnelse" prefHeight="86.0" prefWidth="339.0" />
-         </children>
-      </HBox>
+      </VBox>
+      <Rectangle arcHeight="2.0" arcWidth="5.0" fill="#4986e7" height="3.0" layoutX="97.0" layoutY="397.0" opacity="0.02" strokeType="INSIDE" strokeWidth="0.0" width="469.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#d9d9d900" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Rectangle>
    </children>
 </AnchorPane>
