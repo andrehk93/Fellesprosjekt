@@ -388,12 +388,13 @@ public class KalenderDB {
 	public void changeStatus(String user, String avtale, String newStatus) throws Exception {
 		init();
 		
-		query = "UPDATE ermed SET oppmotestatus=? \n" + 
+		query = "UPDATE ermed SET oppmotestatus=?\n" + 
 				"WHERE epost=? AND avtaleid=?;";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, newStatus);
 		statement.setString(2, user);
 		statement.setString(3, avtale);
+		System.out.println("BRUKER: " + user + " Avtale: " + avtale + " Status: " + newStatus);
 		statement.executeUpdate();
 	}
 
