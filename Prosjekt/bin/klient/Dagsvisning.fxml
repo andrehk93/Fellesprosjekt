@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.DagsvisningController">
+   <children>
+      <AnchorPane layoutX="4.0" layoutY="10.0" prefHeight="700.0" prefWidth="1006.0" stylesheets="@application.css">
+         <children>
+            <VBox alignment="TOP_CENTER" layoutX="28.0" layoutY="165.0" prefHeight="471.0" prefWidth="169.0" spacing="20.0" stylesheets="@application.css">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-normal-objects" text="Innlogget som">
+                     <font>
+                        <Font name="Segoe UI Light" size="18.0" />
+                     </font>
+                  </Text>
+                  <Label styleClass="label-normal-objects" text="brukernavn">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" styleClass="specialButton" text="Ny avtale" />
+                  <Button mnemonicParsing="false" onAction="#nextPaneEditGroups" prefHeight="46.0" prefWidth="107.0" styleClass="specialButton" text="Grupper" />
+                  <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
+                           <font>
+                              <Font name="Segoe UI Light" size="15.0" />
+                           </font>
+                        </Text>
+                        <ListView prefHeight="211.0" prefWidth="169.0" />
+                     </children>
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#nextPaneLogOut" styleClass="normalButton" text="Logg ut" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <HBox layoutX="636.0" layoutY="53.0" prefHeight="46.0" prefWidth="300.0" styleClass="specialButton">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Dag" textFill="WHITE">
+                     <effect>
+                        <ColorAdjust contrast="0.03" saturation="-0.3" />
+                     </effect>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#nextPaneWeekView" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Uke" />
+                  <Button mnemonicParsing="false" onAction="#nextPaneMonthView" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Måned" />
+               </children>
+            </HBox>
+            <HBox layoutX="230.0" layoutY="53.0" prefHeight="46.0" prefWidth="118.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="61.0" styleClass="specialButton" text="&lt;">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="59.0" styleClass="specialButton" text="&gt;">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox layoutX="237.0" layoutY="111.0" prefHeight="34.0" prefWidth="686.0" spacing="250.0" styleClass="label-days">
+               <children>
+                  <HBox prefHeight="34.0" prefWidth="71.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Uke" wrappingWidth="33.205078125">
+                           <font>
+                              <Font name="Segoe UI Light" size="18.0" />
+                           </font>
+                        </Text>
+                        <Label prefHeight="27.0" prefWidth="42.0" text="(nr)" />
+                     </children>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </HBox>
+                  <Label text="(dato)" />
+                  <Label text="(ukedag)" />
+               </children>
+            </HBox>
+            <Line endX="640.0" layoutX="295.0" layoutY="145.0" opacity="0.72" startX="-75.0" stroke="#aeadad" />
+            <Line endX="655.0" layoutX="285.0" layoutY="110.0" opacity="0.33" startX="-215.0" stroke="#aeadad" />
+            <Label layoutX="50.0" layoutY="45.0" styleClass="label-header" text="Kalender" textFill="#476cd0">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+            <GridPane gridLinesVisible="true" layoutX="220.0" layoutY="165.0" opacity="0.34" prefHeight="471.0" prefWidth="716.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="08:00">
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="09:00" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="10:00" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="11:00" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Text>
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <padding>
+                  <Insets top="1.0" />
+               </padding>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
