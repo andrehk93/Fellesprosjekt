@@ -165,6 +165,9 @@ public class Bruker {
 	public void addListeners() {
 	}
 	
+	public String toString(){
+		return getNavn() + " (" + getEmail() + ")";
+	}
 	
 	
 }

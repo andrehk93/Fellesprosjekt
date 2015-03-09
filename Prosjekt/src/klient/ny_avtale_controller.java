@@ -31,7 +31,8 @@ public class ny_avtale_controller {
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
-	private String[] ledigeBrukere;
+	private String[] ledigeBrukerEmailer;
+	private ArrayList<Bruker> ledigeBrukere;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -58,7 +59,7 @@ public class ny_avtale_controller {
     @FXML
     ChoiceBox<String> minuttTil = new ChoiceBox<String>();
     @FXML
-    ComboBox<String> legg_til_gjester = new ComboBox<String>();
+    ComboBox<Bruker> legg_til_gjester = new ComboBox<Bruker>();
     @FXML
     ListView<String> gjesteliste = new ListView<String>();
     @FXML
@@ -81,8 +82,16 @@ public class ny_avtale_controller {
 	public void initialize() throws IOException {
 		sluttdato.setDisable(true);
 		
-		ledigeBrukere = Klienten.getAllUserEmails();
-		legg_til_gjester.getItems().addAll(Arrays.copyOfRange(ledigeBrukere, 0, ledigeBrukere.length-1));
+		ledigeBrukerEmailer = Klienten.getAllUserEmails();
+		ledigeBrukere = new ArrayList<Bruker>();
+		
+		for(String email : ledigeBrukerEmailer){
+			if(email != null || email != ""){
+				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email));
+			}
+		}
+		
+		legg_til_gjester.getItems().addAll(ledigeBrukere);
 		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
 		
 		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
@@ -285,9 +294,9 @@ public class ny_avtale_controller {
     		System.out.println("Ugyldig bruker");
     		return;
     	}
-    	String brukernavn = Klienten.getBruker(legg_til_gjester.getValue());
+    	String brukernavn = Klienten.getBruker(legg_til_gjester.getValue().getEmail());
     	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getValue());
-    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getValue());
+    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getValue().getEmail());
     	showGjest(gjest);
     	gjeste_liste.add(gjest);
     }
