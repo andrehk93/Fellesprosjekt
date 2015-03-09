@@ -116,6 +116,6 @@
       <Label fx:id="manedLabel" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
       <Label fx:id="arLabel" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
       <Button fx:id="refresh" layoutX="50.0" layoutY="626.0" mnemonicParsing="false" onAction="#refreshKalender" styleClass="normalButton" text="Last inn igjen" />
-      <ChoiceBox fx:id="filtrering" onInputMethodTextChanged="#changeFiltrering" layoutX="746.0" layoutY="642.0" prefWidth="150.0"/>
+      <ChoiceBox fx:id="filtrering" layoutX="746.0" layoutY="642.0" prefWidth="150.0"/>
    </children>
 </AnchorPane>
