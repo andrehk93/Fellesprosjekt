@@ -11,22 +11,22 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.DagsvisningController">
    <children>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css">
+      <AnchorPane layoutX="4.0" layoutY="10.0" prefHeight="700.0" prefWidth="1006.0" stylesheets="@application.css">
          <children>
-            <VBox alignment="TOP_CENTER" layoutX="28.0" layoutY="165.0" prefHeight="471.0" prefWidth="169.0" spacing="20.0">
+            <VBox alignment="TOP_CENTER" layoutX="28.0" layoutY="165.0" prefHeight="471.0" prefWidth="169.0" spacing="20.0" stylesheets="@application.css">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-normal-objects" text="Innlogget som">
                      <font>
-                        <Font name="Segoe UI Light" size="15.0" />
+                        <Font name="Segoe UI Light" size="18.0" />
                      </font>
                   </Text>
-                  <Label styleClass="label-name" text="brukernavn">
+                  <Label styleClass="label-normal-objects" text="brukernavn">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" text="Ny avtale" />
-                  <Button mnemonicParsing="false" onAction="#nextPaneEditGroups" text="Grupper" />
+                  <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" styleClass="specialButton" text="Ny avtale" />
+                  <Button mnemonicParsing="false" onAction="#nextPaneEditGroups" prefHeight="46.0" prefWidth="107.0" styleClass="specialButton" text="Grupper" />
                   <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
@@ -36,33 +36,31 @@
                         </Text>
                         <ListView prefHeight="211.0" prefWidth="169.0" />
                      </children>
-                     <Button mnemonicParsing="false" onAction="#nextPaneLogOut" text="Logg ut" />
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#nextPaneLogOut" styleClass="normalButton" text="Logg ut" />
+                     </children>
                   </VBox>
                </children>
             </VBox>
-            <HBox layoutX="643.0" layoutY="58.0" prefHeight="35.0" prefWidth="291.0">
+            <HBox layoutX="636.0" layoutY="53.0" prefHeight="46.0" prefWidth="300.0" styleClass="specialButton">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="57.0" text="Dag">
-                     <styleClass>
-                        <String fx:value="button-pressed" />
-                        <String fx:value="button-pressed" />
-                     </styleClass>
+                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Dag" textFill="WHITE">
                      <effect>
-                        <ColorAdjust contrast="-0.25" />
+                        <ColorAdjust contrast="0.03" saturation="-0.3" />
                      </effect>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#nextPaneWeekView" prefHeight="20.0" prefWidth="55.0" text="Uke" />
-                  <Button mnemonicParsing="false" onAction="#nextPaneMonthView" text="Måned" />
+                  <Button mnemonicParsing="false" onAction="#nextPaneWeekView" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Uke" />
+                  <Button mnemonicParsing="false" onAction="#nextPaneMonthView" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Måned" />
                </children>
             </HBox>
-            <HBox layoutX="231.0" layoutY="58.0" prefHeight="35.0" prefWidth="110.0">
+            <HBox layoutX="230.0" layoutY="53.0" prefHeight="46.0" prefWidth="118.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="38.0" text="&lt;">
+                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="61.0" styleClass="specialButton" text="&lt;">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="73.0" text="&gt;">
+                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="59.0" styleClass="specialButton" text="&gt;">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>

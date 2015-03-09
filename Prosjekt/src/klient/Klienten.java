@@ -46,6 +46,11 @@ public class Klienten {
 		tilkobling = truth;
 	}
 	
+	public static void setLest(String email, String avtaleid) throws IOException {
+		String toServer = "CHANGE NOTIFICATION " + email + " " + avtaleid;
+		sendTilServer(toServer);
+	}
+	
 	public boolean getTilkobling() {
 		return tilkobling;
 	}
@@ -151,6 +156,11 @@ public class Klienten {
 	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
 		String toServer = "CHANGE STATUS " + avtaleid + " " + newStatus;
 		sendTilServer(toServer);
+	}
+	
+	public static String getStatus(String avtaleid, String email) throws IOException {
+		String toServer = "GET STATUS " + avtaleid + " " + email;
+		return sendTilServer(toServer);
 	}
 	
 	public static String getRomStr(String romnavn) throws IOException {

@@ -59,13 +59,13 @@
       <HBox layoutX="221.0" layoutY="48.0" prefHeight="35.0" prefWidth="110.0">
          <children>
          <!-- Forrige måned-knapp -->
-            <Button fx:id="forrigeManed" mnemonicParsing="false" onAction="#previousMonth" prefHeight="32.0" prefWidth="38.0" text="&lt;">
+            <Button fx:id="forrigeManed" mnemonicParsing="false" onAction="#previousMonth" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&lt;">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
             <!-- Neste måned-knapp -->
-            <Button fx:id="nesteManed" mnemonicParsing="false" onAction="#nextMonth" prefHeight="32.0" prefWidth="73.0" text="&gt;">
+            <Button fx:id="nesteManed" mnemonicParsing="false" onAction="#nextMonth" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&gt;">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
@@ -96,8 +96,8 @@
             </Label>
             
           <!-- NY AVTALE - KNAPP -->
-            <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" text="Ny avtale" />
-            <Button fx:id="grupper" mnemonicParsing="false" onAction="#grupperView" text="Grupper" />
+            <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" styleClass="specialButton" text="Ny avtale" />
+            <Button fx:id="grupper" mnemonicParsing="false" onAction="#grupperView" styleClass="specialButton" text="Grupper" />
             <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
@@ -115,7 +115,7 @@
       </VBox>
       <Label fx:id="manedLabel" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
       <Label fx:id="arLabel" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
-      <Button fx:id="refresh" layoutX="50.0" layoutY="626.0" mnemonicParsing="false" onAction="#refreshKalender" text="Last inn igjen" />
-      <ChoiceBox fx:id="filtrering" onInputMethodTextChanged="#changeFiltrering" layoutX="746.0" layoutY="642.0" prefWidth="150.0"/>
+      <Button fx:id="refresh" layoutX="50.0" layoutY="626.0" mnemonicParsing="false" onAction="#refreshKalender" styleClass="normalButton" text="Last inn igjen" />
+      <ChoiceBox fx:id="filtrering" layoutX="746.0" layoutY="642.0" prefWidth="150.0"/>
    </children>
 </AnchorPane>
