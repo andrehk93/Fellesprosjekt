@@ -1,6 +1,7 @@
 package klient;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -93,6 +94,7 @@ public class ny_avtale_controller {
 	
 	public void initialize() throws IOException {
 		sluttdato.setDisable(true);
+		System.out.println(DayOfWeek.TUESDAY.getValue()-DayOfWeek.THURSDAY.getValue());
 		
 		ledigeBrukere = Klienten.getAllUserEmails();
 		legg_til_gjester.getItems().addAll(Arrays.copyOfRange(ledigeBrukere, 0, ledigeBrukere.length-1));
@@ -211,13 +213,12 @@ public class ny_avtale_controller {
     private void setUpCCB() {
 		final ObservableList<String> strings = FXCollections.observableArrayList();
 		strings.add("Mandag");
-		strings.add("Tirsag");
+		strings.add("Tirsdag");
 		strings.add("Onsdag");
 		strings.add("Torsdag");
 		strings.add("Fredag");
 		strings.add("Lørdag");
 		strings.add("Søndag");
-		System.out.println(strings);
 		repeatDays.getItems().addAll(strings);
 		repeatDays.getCheckModel().getCheckedItems().addListener(handleRepDay);
 		repeatDays.disableProperty().set(true);
@@ -250,6 +251,7 @@ public class ny_avtale_controller {
 					LocalDate arg1, LocalDate arg2) {
 				if (sjekkDato(startdato.getValue(), sluttdato.getValue())) {
 					dato = startdato.getValue();
+					findDates();
 				}
 				else {
 					
@@ -266,6 +268,7 @@ public class ny_avtale_controller {
     			if (startdato.getValue().isBefore(sluttdato.getValue())) {
     				feilDato.setVisible(false);
     				dato = start;
+    				tilDato = slutt;
     				return true;
     			}
     			else {
@@ -285,14 +288,43 @@ public class ny_avtale_controller {
     	return false;
     }
     
-    private ArrayList<LocalDate> findDates() {
-    	LocalDate i = dato;
-    	repDates = new ArrayList<LocalDate>();
-    	repDates.add(i);
-    	while(i.isBefore(tilDato)) {
-    		
+    private DayOfWeek findWeekDay(String dag) {
+    	switch(dag){
+    	case "Mandag":
+    		return DayOfWeek.MONDAY;
+    	case "Tirsdag":
+    		return DayOfWeek.TUESDAY;
+    	case "Onsdag":
+    		return DayOfWeek.WEDNESDAY;
+    	case "Torsdag":
+    		return DayOfWeek.THURSDAY;
+    	case "Fredag":
+    		return DayOfWeek.FRIDAY;
+    	case "Lørdag":
+    		return DayOfWeek.SATURDAY;
+    	case "Søndag":
+    		return DayOfWeek.SUNDAY;
     	}
     	return null;
+    }
+    
+    private void findDates() {
+    	LocalDate i = dato;
+    	System.out.println("HEI PÅ DEG!!! YO!!");
+    	repDates = new ArrayList<LocalDate>();
+    	repDates.add(startdato.getValue());
+    	while(i.isBefore(tilDato) || i.equals(tilDato)) {
+    		for(String day : repDays){
+    			DayOfWeek dag = findWeekDay(day);
+    			System.out.println(dag);
+    			int diff = i.getDayOfWeek().getValue()-dag.getValue();
+    			if(diff<=0){
+    				diff += 7;
+    			}
+    			i = i.plusDays(diff);
+    			repDates.add(i);
+    		}
+    	}
     }
     
     @FXML
@@ -362,7 +394,7 @@ public class ny_avtale_controller {
 		public void onChanged(ListChangeListener.Change<? extends String> c) {
 			repDays.clear();
 			repDays.addAll(repeatDays.getCheckModel().getCheckedItems());
-			System.out.println(repDays);
+			findDates();
 		}
 	};
 
@@ -442,8 +474,8 @@ public class ny_avtale_controller {
 		for(LocalDate datoen : repDates){
 			if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
 				System.out.println("GJESTENE: " + gjeste_liste);
-				String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom);
-				Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
+				String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, datoen), rom);
+				Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, datoen), rom, avtaleid);
 				for (Bruker deltaker : gjeste_liste) {
 					deltaker.inviterTilNyAvtale(avtale);
 				}
@@ -451,7 +483,7 @@ public class ny_avtale_controller {
 				System.out.println("ENDREr status: ");
 				Klienten.changeStatus(avtaleid, "1");
 				for (Dag dag : KalenderController.dager) {
-					if (dag.getDato().equals(dato)) {
+					if (dag.getDato().equals(datoen)) {
 						dag.addAvtale(avtale);
 					}
 				}
