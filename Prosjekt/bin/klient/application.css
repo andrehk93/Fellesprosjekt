@@ -1,0 +1,117 @@
+/**
+ * name.css
+ *   Place in the same source directory as Main.java
+ *   Ensure that your build system copies this file to your build output directory.
+ */
+ 
+ /**.root {
+ 	-fx-background-image: url("subtlewhite.jpg")
+ }*/
+ 
+
+/**
+.root{
+	-fx-background-color: #FFFFFF;
+	-fx-background-image: url("subtlewhite.jpg")
+	}*/
+
+.root{ 
+  -fx-background-color: white;/**url(./images/mintbackground.jpg) no-repeat center center fixed;*/ 
+  -fx-background-size: cover;
+}
+	
+.header {
+    -fx-background-color: #4986E7 ;
+    -fx-text-fill: white;
+    -fx-padding: 19px ;
+
+}
+
+.text-field, .label {
+    -fx-font-size: 18px;
+    -fx-font-family: "Segoe UI Light";
+}
+ 
+.label-errormsg {
+	-fx-font-size: 15px;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: red;
+    
+}
+
+.label-normal-objects {
+	-fx-font-size: 12px;
+    -fx-font-family: "Segoe UI Light";
+    /**-fx-text-fill: black;*/
+    
+}
+
+
+.label-header {
+    -fx-font-size: 32pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-opacity: 2;
+}
+
+
+.specialButton{
+	-fx-base: #4986E7;
+    -fx-text-fill: white;
+    -fx-font-size: 19px;
+}
+
+.normalButton{
+	-fx-base: #FFFFFF;
+	-fx-text-fill:#4a4a4a ;
+	-fx-font-size: 19px;
+	
+}
+
+.arrowButtons{
+	-fx-base: #4986E7;
+	-fx-font-size: 15px;
+	-fx-text-fill:white ;
+	
+}
+
+.button {
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-font-family: "Segoe UI Semilight";
+    -fx-alignment: center;
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+
+}
+/**----------TABS------------------------ */
+
+#MyTabPane.tab {
+    -fx-background-color: blue;
+}
+#MyTabPane.tab:selected {
+    -fx-background-color: red;
+}
+
+#MyTabPane.tab-content-area {
+    -fx-background-color: cyan;
+}
+
+#MyTabPane .tab *.tab-label {
+    -fx-text-fill: white;
+}
+
+.tab-pane *.tab-header-background {
+	-fx-background-color: -fx-outer-border, -fx-inner-border, derive(-fx-color, -20%);
+	-fx-effect: innershadow(two-pass-box , rgba(0,0,0,0.6) , 4, 0.0 , 0 , 0);
+}
+
+
+
+/**.table-view {
+    -fx-base: #1d1d1d;
+    -fx-control-inner-background: #1d1d1d;
+    -fx-background-color: #1d1d1d;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+} */
