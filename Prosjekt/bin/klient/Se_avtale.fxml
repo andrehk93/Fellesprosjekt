@@ -70,7 +70,7 @@
             <ListView fx:id="deltaker_listeview" prefHeight="265.0" prefWidth="326.0" styleClass="label-name" />
          </children>
       </VBox>
-      <TextField editable="false" layoutX="169.0" layoutY="189.0" prefHeight="39.0" prefWidth="339.0" styleClass="label-name" />
+      <TextField fx:id="tittel" editable="false" layoutX="169.0" layoutY="189.0" prefHeight="39.0" prefWidth="339.0" styleClass="label-name" />
       <Text layoutX="109.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tittel" wrappingWidth="52.0">
          <font>
             <Font name="Segoe UI Light" size="18.0" />
@@ -104,7 +104,7 @@
             <HBox prefHeight="112.0" prefWidth="444.0" spacing="15.0">
                <children>
                   <Label prefHeight="27.0" prefWidth="109.0" styleClass="label-name-bold" text="Begrunnelse" />
-                  <TextArea fx:id="begrunnelse" prefHeight="86.0" prefWidth="339.0" />
+                  <TextArea fx:id="begrunnelse" prefHeight="86.0" prefWidth="339.0" styleClass="label-normal-objects"/>
                </children>
             </HBox>
          </children>

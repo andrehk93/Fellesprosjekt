@@ -184,9 +184,9 @@ public class Klienten {
 		return  sendTilServer("GET USERS").split(" ");
 	}
 	
-	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
+	public static String lagAvtale(TidsIntervall tid, Møterom rom, String avtalenavn) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
-	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
+	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn() + " " + avtalenavn + " ENDOFMESSAGE";
 		return sendTilServer(toServer);
 	}
 	
@@ -218,6 +218,11 @@ public class Klienten {
 		
 		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passw;
 		sendTilServer(toServer);
+	}
+	
+	public static String getAppNavn(String avtaleid) throws IOException {
+		String toServer = "GET APPNAME " + avtaleid;
+		return sendTilServer(toServer);
 	}
 	
 	public static void sendVarsel(String id, String email, String melding) throws IOException {

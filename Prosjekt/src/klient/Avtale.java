@@ -11,6 +11,7 @@ public class Avtale {
 	
 	
 	private String avtaleid;
+	private String avtalenavn;
 	
 	public Avtale() {
 		
@@ -18,14 +19,23 @@ public class Avtale {
 	
 	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom, String avtaleid) throws IOException{
 		this.avtaleid = avtaleid;
+		getAvtaleNavn();
 		setEier(eier);
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
 	}
 	
-	public String getAvtaleid(){
-		return this.avtaleid;
+	public String getAvtaleid() {
+		return avtaleid;
+	}
+	
+	public void setAvtaleNavn() throws IOException {
+		avtalenavn = Klienten.getAppNavn(avtaleid);
+	}
+	
+	public String getAvtaleNavn() {
+		return avtalenavn;
 	}
 	
 	private Property<String> idProperty = new ObjectPropertyBase<String>(null) {
@@ -65,7 +75,7 @@ public class Avtale {
 	};
 	
 	public void setEier(Bruker eier) throws IOException {
-		if (gruppeProperty.getValue() == null || eierProperty.getValue() == null) {
+		if (deltakerProperty.getValue() == null || eierProperty.getValue() == null) {
 			eierProperty.setValue(eier);
 			addDeltakere(eier);
 			eier.addAvtale(this);
@@ -101,8 +111,8 @@ public class Avtale {
 	//Antar at det legges til én
 	public void addDeltakere(Bruker deltaker) throws IOException {
 		try {
-			for (Bruker bruker : gruppeProperty.getValue().getMedlemmer()) {
-				gruppeProperty.getValue().addMedlem(deltaker);
+			for (Bruker bruker : deltakerProperty.getValue()) {
+				deltakerProperty.getValue().add(deltaker);
 				if (! deltaker.equals(eierProperty.getValue())) {
 					Klienten.leggTilAvtale(bruker.getEmail(), avtaleid);
 					deltaker.addAvtale(this);
@@ -130,7 +140,7 @@ public class Avtale {
 		eierProperty.setValue(eier);
 	}
 	
-	private Property<Gruppe> gruppeProperty = new ObjectPropertyBase<Gruppe>(null) {
+	private Property<ArrayList<Bruker>> deltakerProperty = new ObjectPropertyBase<ArrayList<Bruker>>(null) {
 
 		@Override
 		public Object getBean() {
@@ -139,7 +149,7 @@ public class Avtale {
 
 		@Override
 		public String getName() {
-			return "gruppe";
+			return "deltakere";
 		}
 		
 	};
@@ -157,14 +167,6 @@ public class Avtale {
 		}
 		
 	};
-	
-	public Gruppe getGruppe() {
-		return gruppeProperty.getValue();
-	}
-	
-	public void setGruppe(Gruppe gruppe) {
-		gruppeProperty.setValue(gruppe);
-	}
 	
 	public Møterom getRom() {
 		return romProperty.getValue();
@@ -190,13 +192,10 @@ public class Avtale {
 	
 	public ArrayList<Bruker> getDeltakere() {
 		try {
-			return gruppeProperty.getValue().getMedlemmer();
+			return deltakerProperty.getValue();
 		}
 		catch (NullPointerException e) {
-			System.out.println("LOL tom liste");
-			ArrayList<Bruker> nan = new ArrayList<Bruker>();
-			nan.add(new Bruker("Andreas", "ahk9339@gmail.com"));
-			return nan;
+			return null;
 		}
 	}
 	
@@ -204,7 +203,8 @@ public class Avtale {
 	// Antar at det fjernes én om gangen
 	public void removeDeltakere(Bruker deltaker) {
 		try {
-			gruppeProperty.getValue().removeMedlem(deltaker);
+			deltakerProperty.getValue().remove(deltaker);
+			//SKAL FJERNE BRUKER FRA AVTALEN I DATABASEN HER
 		}
 		catch (NullPointerException e) {
 		}
@@ -216,13 +216,12 @@ public class Avtale {
 	public void setDeltakere(ArrayList<Bruker> deltakere) throws IOException {
 		try {
 			for (int i = 0; i < deltakere.size(); i++) {
-				gruppeProperty.getValue().addMedlem(deltakere.get(i));
+				deltakerProperty.getValue().add(deltakere.get(i));
 				deltakere.get(i).addAvtale(this);
 			}
 		}
 		catch (NullPointerException e) {
-			Gruppe gruppa = new Gruppe(this, deltakere);
-			gruppeProperty.setValue(gruppa);
+			deltakerProperty.setValue(deltakere);
 			for (int i = 0; i < deltakere.size(); i++) {
 				deltakere.get(i).addAvtale(this);
 			}
@@ -230,15 +229,7 @@ public class Avtale {
 	}
 	
 	public String toString() {
-		String streng = "";
-		streng += "Admin: " + this.getAvtaleAdmin().getNavn() + "\n";
-		streng += "Deltakere: \n\n";
-		for (int i = 0; i < this.getDeltakere().size(); i++) {
-			streng += this.getDeltakere().get(i).getNavn() + "\n";
-		}
-		streng += "\nRom: " + this.getRom().getNavn() + "\n";
-		streng += "Tid: " + this.getTid().getStart() + " - " + this.getTid().getSlutt() + "\n";
-		streng += "Dato: "+ this.getTid().getDato().toString();
+		String streng = avtaleid;
 		return streng;
 	}
 	
