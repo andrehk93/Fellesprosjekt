@@ -115,7 +115,6 @@ public class Klienten {
 	}
 	
 	public static String sendTilServer(String message) throws IOException {
-		String modifiedSentence;
 		try {
 			outToServer.writeBytes(message + "\r\n");
 		}
@@ -126,7 +125,7 @@ public class Klienten {
 		String output = "";
 		String tempString = inFromServer.readLine();
 		while(tempString.length() > 0) {
-			output += modifiedSentence = tempString + "\r\n";
+			output += tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
 		return output;
@@ -144,7 +143,7 @@ public class Klienten {
 	}
 	
 	public static String inviterDeltaker(String deltaker, String avtaleid) throws IOException {
-		String toServer = "CREATE INVITE " + deltaker + " " + avtaleid;
+		String toServer = "CREATE INVITE " + deltaker.trim() + " " + avtaleid.trim();
 		return sendTilServer(toServer);
 	}
 	
@@ -154,7 +153,7 @@ public class Klienten {
 	}
 	
 	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
-		String toServer = "CHANGE STATUS " + avtaleid + " " + newStatus;
+		String toServer = "CHANGE STATUS " + avtaleid.trim() + " " + newStatus;
 		sendTilServer(toServer);
 	}
 	

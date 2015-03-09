@@ -26,6 +26,7 @@ public class KalenderThread extends Thread {
             
             while ((inputLine = in.readLine()) != null) {
             	try {
+            		System.out.println("IN THE MEANTIME: " + inputLine);
             		outputLine = kp.processInput(inputLine) + "\r\n";
             	} catch(Exception ArrayIndexOutOfBoudsException){
         			outputLine = "ABSOLUTT RAR INPUT \r\n";
