@@ -173,7 +173,7 @@ public class Klienten {
 		for(String email : users){
 			toServer = "GET USERDETAILS "+email;
 			String[] userDetails = sendTilServer(toServer).split(" ");
-			Bruker user = new Bruker(userDetails[1]+" "+userDetails[2], userDetails[0]);
+			Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2]);
 			allUsers.add(user);
 		}
 		

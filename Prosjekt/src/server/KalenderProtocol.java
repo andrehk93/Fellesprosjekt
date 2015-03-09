@@ -192,6 +192,9 @@ public class KalenderProtocol {
 			case "USERS":
 				output = kalenderdb.getUsers();
 				break;
+			case "USERDETAILS":
+				output = kalenderdb.getUserDetails(input[1]);
+				System.out.println(output);
 			}
 			
 			if(output.trim().equals("")){
