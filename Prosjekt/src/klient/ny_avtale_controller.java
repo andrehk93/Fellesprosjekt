@@ -34,7 +34,8 @@ public class ny_avtale_controller {
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
-	private String[] ledigeBrukere;
+	private String[] ledigeBrukerEmailer;
+	private ArrayList<Bruker> ledigeBrukere;
 	private int startT;
 	private int startM;
 	private int sluttT;
@@ -67,7 +68,7 @@ public class ny_avtale_controller {
     @FXML
     ChoiceBox<String> minuttTil = new ChoiceBox<String>();
     @FXML
-    ComboBox<String> legg_til_gjester = new ComboBox<String>();
+    ComboBox<Bruker> legg_til_gjester = new ComboBox<Bruker>();
     @FXML
     ListView<String> gjesteliste = new ListView<String>();
     @FXML
@@ -92,8 +93,16 @@ public class ny_avtale_controller {
 	public void initialize() throws IOException {
 		sluttdato.setDisable(true);
 		
-		ledigeBrukere = Klienten.getAllUserEmails();
-		legg_til_gjester.getItems().addAll(Arrays.copyOfRange(ledigeBrukere, 0, ledigeBrukere.length-1));
+		ledigeBrukerEmailer = Klienten.getAllUserEmails();
+		ledigeBrukere = new ArrayList<Bruker>();
+		
+		for(String email : ledigeBrukerEmailer){
+			if(email != null || email != ""){
+				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email));
+			}
+		}
+		
+		legg_til_gjester.getItems().addAll(ledigeBrukere);
 		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
 		
 		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
@@ -372,15 +381,24 @@ public class ny_avtale_controller {
     
     @FXML
     public void addGjest(ActionEvent event) throws IOException {
-    	if(! Arrays.asList(ledigeBrukere).contains(legg_til_gjester.getValue())){
+    	if(!(FxUtil.getComboBoxValue(legg_til_gjester) instanceof Bruker && !FxUtil.getComboBoxValue(legg_til_gjester).equals("-1"))){
     		System.out.println("Ugyldig bruker");
     		return;
     	}
-    	String brukernavn = Klienten.getBruker(legg_til_gjester.getValue());
-    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getValue());
-    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getValue());
-    	showGjest(gjest);
-    	gjeste_liste.add(gjest);
+    	Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
+    	for(Bruker gjest : gjeste_liste){
+    		if(gjest.getEmail() == selectedUser.getEmail()){
+    			System.out.println("Brukeren er allerede invitert");
+    			return;
+    		}
+    	}
+    	if(!Arrays.asList(gjeste_liste).contains(selectedUser)){
+	    	String brukernavn = selectedUser.getNavn();
+	    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  selectedUser);
+	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail());
+	    	showGjest(gjest);
+	    	gjeste_liste.add(gjest);
+    	}
     }
     
     @FXML
