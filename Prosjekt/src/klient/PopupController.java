@@ -16,7 +16,7 @@ public class PopupController {
 	@FXML private TextField status;
 	@FXML private TextArea melding;
 	@FXML private CheckBox lest;
-	private String email, tid, meldingen, avtaleid;
+	private String email, tid, meldingen, avtaleid, avtaleNavnet;
 	
 	public PopupController() {
 	}
@@ -33,9 +33,10 @@ public class PopupController {
 		email = varsel.getBrukerSendtFra();
 		tid = varsel.getTid();
 		avtaleid = varsel.getAvtaleid();
+		avtaleNavnet = Klienten.getAppNavn(avtaleid);
 		System.out.println("SPECS" + " " + meldingen + " " + email + " " + tid + " " + avtaleid);
 		fraBruker.setText(email);
-		avtaleNavn.setText(avtaleid);
+		avtaleNavn.setText(avtaleid + ": " + avtaleNavnet);
 		tidspunkt.setText(tid);
 		melding.setText(meldingen);
 		if (Klienten.getStatus(varsel.getAvtaleid(), varsel.getBrukerSendtFra()).trim().equals("1")) {
