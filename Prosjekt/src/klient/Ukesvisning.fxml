@@ -50,12 +50,12 @@
       </HBox>
       <HBox layoutX="231.0" layoutY="58.0" prefHeight="35.0" prefWidth="110.0">
          <children>
-            <Button fx:id="forrigeUke" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&lt;">
+            <Button fx:id="forrigeUke" onAction="#prevWeek" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&lt;">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="nesteUke" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&gt;">
+            <Button fx:id="nesteUke" onAction="#nextWeek" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&gt;">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>

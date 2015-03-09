@@ -238,6 +238,7 @@ public class Avtale {
 		}
 		streng += "\nRom: " + this.getRom().getNavn() + "\n";
 		streng += "Tid: " + this.getTid().getStart() + " - " + this.getTid().getSlutt() + "\n";
+		streng += "Dato: "+ this.getTid().getDato().toString();
 		return streng;
 	}
 	
