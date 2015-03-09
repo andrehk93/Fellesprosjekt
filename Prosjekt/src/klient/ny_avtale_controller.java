@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.controlsfx.control.CheckComboBox;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +35,12 @@ public class ny_avtale_controller {
 	private LocalTime slutt;
 	private LocalDate dato;
 	private String[] ledigeBrukere;
+	private int startT;
+	private int startM;
+	private int sluttT;
+	private int sluttM;
+	private LocalTime evigheten;
+	private ArrayList<String> repDays;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -75,6 +84,8 @@ public class ny_avtale_controller {
     Button forkast_knapp = new Button();
     @FXML
     Button lagre_knapp = new Button();
+    @FXML
+    CheckComboBox<String> repeatDays;
     List<String> gjestelisten;
     ObservableList<String> gjestene;
 	
@@ -91,16 +102,23 @@ public class ny_avtale_controller {
 					Boolean arg1, Boolean arg2) {
 				if (gjentakelse.isSelected()) {
 					sluttdato.setDisable(false);
+					repeatDays.disableProperty().set(false);
 				}
 				else {
 					sluttdato.setValue(null);
 					slutt = null;
 					sluttdato.setDisable(true);
+					repeatDays.disableProperty().set(true);
 				}
 			}
 			
 		};
 		gjentakelse.selectedProperty().addListener(aktiver);
+		
+		setUpCCB();
+		
+		
+		//layoutX="439.0" layoutY="261.0" prefWidth="150.0"
 		
 		ChangeListener<Boolean> allDay = new ChangeListener<Boolean>() {
 
@@ -132,8 +150,6 @@ public class ny_avtale_controller {
 			
 		};
 		hele_dagen.selectedProperty().addListener(allDay);
-		
-		
 		
 		gjeste_liste = new ArrayList<Bruker>();
 		gjestelisten = new ArrayList<String>();
@@ -170,10 +186,44 @@ public class ny_avtale_controller {
 		}
 		minuttFra.setItems(minutter);
 		minuttTil.setItems(minutter);
+		timeFra.setValue("00");
+		timeTil.setValue("00");
+		minuttFra.setValue("00");
+		minuttTil.setValue("00");
+		timeFra.getSelectionModel().selectedIndexProperty().addListener(handleFraTime);
+		timeTil.getSelectionModel().selectedIndexProperty().addListener(handleTilTime);
+		minuttFra.getSelectionModel().selectedIndexProperty().addListener(handleFraMinutt);
+		minuttTil.getSelectionModel().selectedIndexProperty().addListener(handleTilMinutt);
+		startT = 999;
+		startM = 999;
+		sluttT = 999;
+		sluttM = 999;
+		evigheten = LocalTime.of(00, 00);
+		start = evigheten;
+		slutt = evigheten;
+		
+		repDays = new ArrayList<String>();
 	}
     
     
-    public void showRom(ArrayList<String> rommene) {
+    private void setUpCCB() {
+		final ObservableList<String> strings = FXCollections.observableArrayList();
+		strings.add("Mandag");
+		strings.add("Tirsag");
+		strings.add("Onsdag");
+		strings.add("Torsdag");
+		strings.add("Fredag");
+		strings.add("Lørdag");
+		strings.add("Søndag");
+		System.out.println(strings);
+		repeatDays.getItems().addAll(strings);
+		repeatDays.getCheckModel().getCheckedItems().addListener(handleRepDay);
+		repeatDays.disableProperty().set(true);
+		
+	}
+
+
+	public void showRom(ArrayList<String> rommene) {
     	møteromliste.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
     	    @Override
     	    public void changed(ObservableValue<? extends String> observable,
@@ -185,10 +235,12 @@ public class ny_avtale_controller {
     	møteromliste.setItems(rom);
     }
     
+    @FXML
     public void reset() {
     	ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
     }
     
+    @FXML
     public void handleDato() {
     	ChangeListener<LocalDate> datoEndring = new ChangeListener<LocalDate>() {
 
@@ -232,47 +284,85 @@ public class ny_avtale_controller {
     	return false;
     }
     
-    //Holder kontroll på tidene og at de er etter hverandre
-    public void handleTid() {
-    	ChangeListener<String> tider = new ChangeListener<String>() {
-
-			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
-				try {
-					slutt = LocalTime.of(Integer.parseInt(timeTil.getValue().toString()),
-							Integer.parseInt(minuttTil.getValue().toString()));
-			    	start = LocalTime.of(Integer.parseInt(timeFra.getValue().toString()),
-			    			Integer.parseInt(minuttFra.getValue().toString()));
-					if (sjekkTid(start, slutt)) {
-						feilTekst.setVisible(false);
-					}
-					else {
-						feilTekst.setVisible(true);
-					}
-				}
-				catch (NullPointerException e) {
+    @FXML
+    ChangeListener<? super Number> handleFraTime = new ChangeListener<Number>() {
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			try {
+				startT = Integer.parseInt(timeFra.getItems().get((Integer) newValue));
+				if(startM!=999){
+					start = LocalTime.of(startT, startM);
+					feilTekst.setVisible(!sjekkTid(start, slutt));
 				}
 			}
-    	};
-    	minuttTil.valueProperty().addListener(tider);
-    	minuttFra.valueProperty().addListener(tider);
-    	timeTil.valueProperty().addListener(tider);
-    	timeFra.valueProperty().addListener(tider);
-    }
+			catch (NullPointerException e) {
+			}
+		}
+	};
+	
+	ChangeListener<? super Number> handleTilTime = new ChangeListener<Number>() {
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			try {
+				
+				sluttT = Integer.parseInt(timeTil.getItems().get((Integer) newValue));
+				if(sluttM!=999){
+					slutt = LocalTime.of(sluttT, sluttM);
+					feilTekst.setVisible(!sjekkTid(start, slutt));
+				}
+			}
+			catch (NullPointerException e) {
+			}
+		}
+	};
+	
+	ChangeListener<? super Number> handleFraMinutt = new ChangeListener<Number>() {
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			try {
+				startM = Integer.parseInt(minuttFra.getItems().get((Integer) newValue));
+				if(startT!=999){
+					start = LocalTime.of(startT, startM);
+					feilTekst.setVisible(!sjekkTid(start, slutt));
+				}
+			}
+			catch (NullPointerException e) {
+			}
+		}
+	};
+	
+	ChangeListener<? super Number> handleTilMinutt = new ChangeListener<Number>() {
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			try {
+				sluttM = Integer.parseInt(minuttTil.getItems().get((Integer) newValue));
+				if(sluttT!=999){
+					slutt = LocalTime.of(sluttT, sluttM);
+					feilTekst.setVisible(!sjekkTid(start, slutt));
+				}
+			}
+			catch (NullPointerException e) {
+			}
+		}
+	};
+	
+	ListChangeListener<? super String> handleRepDay = new ListChangeListener<String>() {
+		@Override
+		public void onChanged(ListChangeListener.Change<? extends String> c) {
+			repDays.clear();
+			repDays.addAll(repeatDays.getCheckModel().getCheckedItems());
+			System.out.println(repDays);
+		}
+	};
     
     public boolean sjekkTid(LocalTime start, LocalTime slutt) {
-    	if (start.isBefore(slutt)) {
+    	if (start == evigheten || slutt == evigheten) {
     		return true;
     	}
-    	else {
-    		timeTil.setValue(timeFra.getValue());
-    		minuttTil.setValue(minuttFra.getValue());
-    		slutt = LocalTime.of(Integer.parseInt(timeTil.getValue().toString()),
-    				Integer.parseInt(minuttTil.getValue().toString()));
-    		return false;
-    		
+    	else if(start.isBefore(slutt)){
+    		return true;
     	}
+    	return false;
     }
     
     public void showGjest(Bruker gjest) {
@@ -280,6 +370,7 @@ public class ny_avtale_controller {
     	this.gjesteliste.setItems(gjestene);
     }
     
+    @FXML
     public void addGjest(ActionEvent event) throws IOException {
     	if(! Arrays.asList(ledigeBrukere).contains(legg_til_gjester.getValue())){
     		System.out.println("Ugyldig bruker");
@@ -292,6 +383,7 @@ public class ny_avtale_controller {
     	gjeste_liste.add(gjest);
     }
     
+    @FXML
     public void finnRom(ActionEvent event) throws IOException {
     	String rom = "";
     	if (hele_dagen.isSelected()) {
@@ -310,8 +402,7 @@ public class ny_avtale_controller {
     	showRom(rommene);
     }
     
-    
-
+    @FXML
 	public void handleKeyInput(KeyEvent event) {
 		ChangeListener<String> avtaleListener = new ChangeListener<String>() {
 
@@ -330,6 +421,7 @@ public class ny_avtale_controller {
 		avtalenavn.textProperty().addListener(avtaleListener);
 	}
 	
+    @FXML
 	public void lagre(ActionEvent event) throws IOException {
 		System.out.println(start);
 		System.out.println(slutt);
@@ -343,6 +435,7 @@ public class ny_avtale_controller {
 				deltaker.inviterTilNyAvtale(avtale);
 			}
 			getBruker().inviterTilNyAvtale(avtale);
+			System.out.println("ENDREr status: ");
 			Klienten.changeStatus(avtaleid, "1");
 			for (Dag dag : KalenderController.dager) {
 				if (dag.getDato().equals(dato)) {
@@ -368,7 +461,8 @@ public class ny_avtale_controller {
 			return true;
 		}
 	}
-		
+	
+	@FXML
 	public void avbryt(){
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 	}

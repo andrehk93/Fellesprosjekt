@@ -77,6 +77,9 @@ public class KalenderProtocol {
 			case "STATUS":
 				kalenderdb.changeStatus(user, input[2], input[3]);
 				break;
+			case "NOTIFICATION":
+				kalenderdb.changeNotification(user, input[2], input[3]);
+				break;
 		}
 	}
 
@@ -177,6 +180,9 @@ public class KalenderProtocol {
 			case "GROUP":
 				output = kalenderdb.getGroup(input[1]);
 				break;
+			case "STATUS":
+				output = kalenderdb.getStatus(input[1], input[2]);
+				break;
 			case "USERFULLNAME":
 				output = kalenderdb.getUserDetails(input[1]);
 				break;
@@ -186,6 +192,9 @@ public class KalenderProtocol {
 			case "USERS":
 				output = kalenderdb.getUsers();
 				break;
+			case "USERDETAILS":
+				output = kalenderdb.getUserDetails(input[1]);
+				System.out.println(output);
 			}
 			
 			if(output.trim().equals("")){

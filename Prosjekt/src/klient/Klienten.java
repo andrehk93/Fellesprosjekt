@@ -46,6 +46,11 @@ public class Klienten {
 		tilkobling = truth;
 	}
 	
+	public static void setLest(String email, String avtaleid) throws IOException {
+		String toServer = "CHANGE NOTIFICATION " + email + " " + avtaleid;
+		sendTilServer(toServer);
+	}
+	
 	public boolean getTilkobling() {
 		return tilkobling;
 	}
@@ -153,6 +158,11 @@ public class Klienten {
 		sendTilServer(toServer);
 	}
 	
+	public static String getStatus(String avtaleid, String email) throws IOException {
+		String toServer = "GET STATUS " + avtaleid + " " + email;
+		return sendTilServer(toServer);
+	}
+	
 	public static String getRomStr(String romnavn) throws IOException {
 		String toServer = "GET ROOMSTR " + romnavn;
 		return sendTilServer(toServer);
@@ -165,7 +175,7 @@ public class Klienten {
 		for(String email : users){
 			toServer = "GET USERDETAILS "+email;
 			String[] userDetails = sendTilServer(toServer).split(" ");
-			Bruker user = new Bruker(userDetails[1]+" "+userDetails[2], userDetails[0]);
+			Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2]);
 			allUsers.add(user);
 		}
 		

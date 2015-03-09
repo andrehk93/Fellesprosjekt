@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:controller="klient.InnloggingController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.InnloggingController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="57.0" prefHeight="74.0" prefWidth="567.0" styleClass="label-header" text="KAN IKKE KOBLE TIL SERVER" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="40.0" />
          </font>
       </Label>
-      <Button fx:id="retryButton" layoutX="238.0" layoutY="200.0" mnemonicParsing="false" text="Prøv igjen" onAction="#retryCon" />
+      <Button fx:id="retryButton" layoutX="238.0" layoutY="200.0" mnemonicParsing="false" onAction="#retryCon" styleClass="normalButton" text="Prøv igjen" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4986e7" height="6.0" layoutX="46.0" layoutY="128.0" opacity="0.72" strokeType="INSIDE" strokeWidth="0.0" width="508.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#d9d9d900" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Rectangle>
    </children>
 </AnchorPane>

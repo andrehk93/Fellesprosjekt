@@ -41,7 +41,6 @@ public class Main extends Application {
 	
 	private Pane loadMainPane() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
-		
 		Pane mainPane = (Pane) loader.load(
 				getClass().getResourceAsStream(
 						ScreenNavigator.MAIN

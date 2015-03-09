@@ -137,9 +137,6 @@ public class Bruker {
 			}
 			if (! duplikat) {
 				varselListeProperty.getValue().add(avtVarsel);
-				System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
-						" har fått et varsel: \n" + avtVarsel.getMelding() +
-						"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
 			}
 			else {
 				System.out.println("Varselet er der fra før av.");
@@ -149,9 +146,6 @@ public class Bruker {
 			ArrayList<Varsel> varselet = new ArrayList<Varsel>();
 			varselet.add(avtVarsel);
 			varselListeProperty.setValue(varselet);
-			System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
-					" har fått et varsel: \n" + avtVarsel.getMelding() +
-					"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
 		}
 		
 	}
@@ -165,6 +159,9 @@ public class Bruker {
 	public void addListeners() {
 	}
 	
+	public String toString(){
+		return getNavn() + " (" + getEmail().trim() + ")";
+	}
 	
 	
 }
