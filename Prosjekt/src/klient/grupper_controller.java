@@ -64,7 +64,10 @@ public class grupper_controller {
 		gruppemedlemmer_liste(medlemmer);
     }
 	
-	
+    @FXML
+	public void handleGruppenavn(){
+		
+	}
     
 
 	public void brukerliste(ArrayList<Bruker> SøkBrukere){
