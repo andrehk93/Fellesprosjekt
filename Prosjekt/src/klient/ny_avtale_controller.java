@@ -7,15 +7,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
+
 import org.controlsfx.control.CheckComboBox;
 
+import com.sun.javafx.css.StyleCache.Key;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -25,11 +36,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 
 public class ny_avtale_controller {
 	
-	private ArrayList<Møterom> alle_møterom;
+	Property<Number> ant_gjester = new SimpleIntegerProperty();
 	private ArrayList<Bruker> gjeste_liste;
 	private LocalTime start;
 	private LocalTime slutt;
@@ -69,7 +84,7 @@ public class ny_avtale_controller {
     @FXML
     ComboBox<String> legg_til_gjester = new ComboBox<String>();
     @FXML
-    ListView<String> gjesteliste = new ListView<String>();
+    ListView<HBox> gjesteliste = new ListView<HBox>();
     @FXML
     Button søk_møterom = new Button();
     @FXML
@@ -86,16 +101,52 @@ public class ny_avtale_controller {
     Button lagre_knapp = new Button();
     @FXML
     CheckComboBox<String> repeatDays;
-    List<String> gjestelisten;
-    ObservableList<String> gjestene;
+    List<HBox> gjestelisten;
+    ObservableList<HBox> gjestene;
 	
 	public void initialize() throws IOException {
-		sluttdato.setDisable(true);
+		gjeste_liste = new ArrayList<Bruker>();
+		antall_gjester.setDisable(false);
+		antall_gjester.setEditable(true);
+		ant_gjester.setValue(0);
+		ChangeListener<Number> antall = new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> arg0,
+					Number arg1, Number arg2) {
+				if (ant_gjester.getValue().intValue() < gjestene.size()) {
+					ant_gjester.setValue(gjestene.size());
+				}
+				antall_gjester.setText(ant_gjester.getValue().toString());
+			}
+			
+		};
 		
+		ChangeListener<String> tekstStr = new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> arg0,
+					String arg1, String arg2) {
+				try {
+					int str = Integer.parseInt(antall_gjester.getText());
+					if (str < gjestene.size()) {
+						antall_gjester.setText(gjestene.size()+"");
+						antall_gjester.end();
+					}
+				}
+				catch (Exception e) {
+					antall_gjester.setText(gjestene.size()+"");
+					antall_gjester.end();
+				}
+			}
+			
+		};
+		antall_gjester.textProperty().addListener(tekstStr);
+		ant_gjester.addListener(antall);
+		sluttdato.setDisable(true);
 		ledigeBrukere = Klienten.getAllUserEmails();
 		legg_til_gjester.getItems().addAll(Arrays.copyOfRange(ledigeBrukere, 0, ledigeBrukere.length-1));
 		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
-		
 		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0,
@@ -152,7 +203,7 @@ public class ny_avtale_controller {
 		hele_dagen.selectedProperty().addListener(allDay);
 		
 		gjeste_liste = new ArrayList<Bruker>();
-		gjestelisten = new ArrayList<String>();
+		gjestelisten = new ArrayList<HBox>();
     	gjestene = FXCollections.observableList(gjestelisten);
 		feilTekst.setVisible(false);
 		feilDato.setVisible(false);
@@ -297,6 +348,8 @@ public class ny_avtale_controller {
 			}
 			catch (NullPointerException e) {
 			}
+			catch (ArrayIndexOutOfBoundsException a) {
+			}
 		}
 	};
 	
@@ -313,6 +366,8 @@ public class ny_avtale_controller {
 			}
 			catch (NullPointerException e) {
 			}
+			catch (ArrayIndexOutOfBoundsException a) {
+			}
 		}
 	};
 	
@@ -328,6 +383,8 @@ public class ny_avtale_controller {
 			}
 			catch (NullPointerException e) {
 			}
+			catch (ArrayIndexOutOfBoundsException a) {
+			}
 		}
 	};
 	
@@ -342,6 +399,8 @@ public class ny_avtale_controller {
 				}
 			}
 			catch (NullPointerException e) {
+			}
+			catch (ArrayIndexOutOfBoundsException a) {
 			}
 		}
 	};
@@ -365,41 +424,78 @@ public class ny_avtale_controller {
     	return false;
     }
     
-    public void showGjest(Bruker gjest) {
-    	gjestene.add(gjest.getNavn());
+    public void showGjest(HBox boks) {
+    	gjestene.add(boks);
     	this.gjesteliste.setItems(gjestene);
+    	ant_gjester.setValue(ant_gjester.getValue().intValue()+1);
+    }
+    
+    public void removeGjest(HBox boks) {
+    	for (Bruker bruker : gjeste_liste) {
+    		Text te = (Text) boks.getChildren().get(0);
+    		if (bruker.getNavn().equals(te.getText())) {
+    			gjeste_liste.remove(bruker);
+    			System.out.println("HERVED FJERNET");
+    		}
+    		else {
+    			System.out.println(boks.getChildren().get(0).toString());
+    		}
+    	}
+    	gjestene.remove(boks);
+    	this.gjesteliste.setItems(gjestene);
+    	ant_gjester.setValue(ant_gjester.getValue().intValue()-1);
+    	antall_gjester.setText(ant_gjester.getValue().intValue() + "");
     }
     
     @FXML
     public void addGjest(ActionEvent event) throws IOException {
+    	HBox boks = new HBox();
+    	Button kryss = new Button();
+    	kryss.setText("x");
+    	kryss.setOpacity(0.8);
+    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				removeGjest(boks);
+			}
+    		
+    	});
     	if(! Arrays.asList(ledigeBrukere).contains(legg_til_gjester.getValue())){
     		System.out.println("Ugyldig bruker");
     		return;
     	}
     	String brukernavn = Klienten.getBruker(legg_til_gjester.getValue());
     	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getValue());
-    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getValue());
-    	showGjest(gjest);
-    	gjeste_liste.add(gjest);
+    	Bruker bruker = new Bruker(brukernavn, legg_til_gjester.getValue());
+    	gjeste_liste.add(bruker);
+    	boks.getChildren().add(new Text(brukernavn));
+    	boks.getChildren().add(kryss);
+    	showGjest(boks);
     }
     
     @FXML
     public void finnRom(ActionEvent event) throws IOException {
     	String rom = "";
-    	if (hele_dagen.isSelected()) {
-    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", gjeste_liste.size() + "");
+    	try {
+	    	if (hele_dagen.isSelected()) {
+	    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", Integer.parseInt(antall_gjester.getText()) + "");
+	    	}
+	    	else {
+	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), Integer.parseInt(antall_gjester.getText()) + "");
+	    	}
+	    	System.out.println("ROMMENE: " + rom);
+	    	ArrayList<String> rommene = new ArrayList<String>();
+	    	String[] rom_listen = rom.split(" ");
+	    	for (int i = 0; i < rom_listen.length; i++) {
+	    		rommene.add(rom_listen[i]);
+			}
+	    	//Må spørre database om ledig(e) rom, midlertidig metode:
+	    	showRom(rommene);
     	}
-    	else {
-    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
+    	catch (NullPointerException e) {
+    		System.out.println("Må fylle ut avgjørende felter");
     	}
-    	System.out.println("ROMMENE: " + rom);
-    	ArrayList<String> rommene = new ArrayList<String>();
-    	String[] rom_listen = rom.split(" ");
-    	for (int i = 0; i < rom_listen.length; i++) {
-    		rommene.add(rom_listen[i]);
-		}
-    	//Må spørre database om ledig(e) rom, midlertidig metode:
-    	showRom(rommene);
     }
     
     @FXML
@@ -427,9 +523,9 @@ public class ny_avtale_controller {
 		System.out.println(slutt);
 		System.out.println(dato);
 		Møterom rom =  new Møterom(100, valgt_rom.getText());
-		if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
+		if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null ) {
 			System.out.println("GJESTENE: " + gjeste_liste);
-			String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom);
+			String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom, avtalenavn.getText());
 			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
 			for (Bruker deltaker : gjeste_liste) {
 				deltaker.inviterTilNyAvtale(avtale);

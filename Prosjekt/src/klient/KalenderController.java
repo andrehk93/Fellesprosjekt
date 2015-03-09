@@ -46,6 +46,7 @@ public class KalenderController {
 	public static ArrayList<String> meldinger;
 	public static ArrayList<Varsel> oppdelte_notifikasjoner;
 	public static String valg;
+	private boolean ingenInvitasjoner = false;
 	
 	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
@@ -64,8 +65,8 @@ public class KalenderController {
 		getDays();
 		loadGrid();	
 		svarInvite();
-		showNotifications();
 		showInvitasjoner();
+		showNotifications();
 		setItems();
 		showBruker();
 	}
@@ -165,7 +166,7 @@ public class KalenderController {
 		String[] notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
 		for (int i = 0; i < notifikasjonene.length; i++) {
 			if (notifikasjonene[i].trim().equals("NONE") || notifikasjonene[i].trim().equals("-1")) {
-				list.add("Ingen notifikasjoner");
+				ingenInvitasjoner = true;
 			}
 			else if (notifikasjonene[i].equals("\r\n")) {
 			}
@@ -181,28 +182,36 @@ public class KalenderController {
 		oppdelte_notifikasjoner = new ArrayList<Varsel>();
 		notifikasjon_liste = Klienten.getVarsel().split(" ");
 		String meld = "";
-		for (String notifikasjon_oppdeling : notifikasjon_liste) {
-			if(! notifikasjon_oppdeling.equals("!ENDMESS!") && ! meldingFerdig) {
-				meld += notifikasjon_oppdeling + " ";
+		System.out.println("NOTS: " +notifikasjon_liste[0].toString());
+		if (! notifikasjon_liste[0].trim().toString().equals("NONE")) {
+			for (String notifikasjon_oppdeling : notifikasjon_liste) {
+				if(! notifikasjon_oppdeling.equals("!ENDMESS!") && ! meldingFerdig) {
+					meld += notifikasjon_oppdeling + " ";
+				}
+				else if(notifikasjon_oppdeling.equals("!ENDMESS!")) {
+					meldingFerdig = true;
+				}
+				else if (! notifikasjon_oppdeling.equals("!END!")) {
+					resten.add(notifikasjon_oppdeling);
+				}
+				else if (notifikasjon_oppdeling.equals("!END!")){
+					Varsel vars = new Varsel(meld, null, false, null, null);
+					vars.setBrukerSendtFra(resten.get(0));
+					vars.setAvtaleid(resten.get(1));
+					vars.setTidspunkt(resten.get(2));
+					list.add("Notifikasjon: " + resten.get(1));
+					oppdelte_notifikasjoner.add(vars);
+					resten = new ArrayList<String>();
+					meld = "";
+					meldingFerdig = false;
+				}
+				
 			}
-			else if(notifikasjon_oppdeling.equals("!ENDMESS!")) {
-				meldingFerdig = true;
+		}
+		else {
+			if (ingenInvitasjoner) {
+				list.add("Ingen notifikasjoner");
 			}
-			else if (! notifikasjon_oppdeling.equals("!END!")) {
-				resten.add(notifikasjon_oppdeling);
-			}
-			else if (notifikasjon_oppdeling.equals("!END!")){
-				Varsel vars = new Varsel(meld, null, false, null, null);
-				vars.setBrukerSendtFra(resten.get(0));
-				vars.setAvtaleid(resten.get(1));
-				vars.setTidspunkt(resten.get(2));
-				list.add("Notifikasjon: " + resten.get(1));
-				oppdelte_notifikasjoner.add(vars);
-				resten = new ArrayList<String>();
-				meld = "";
-				meldingFerdig = false;
-			}
-			
 		}
 	}
 	

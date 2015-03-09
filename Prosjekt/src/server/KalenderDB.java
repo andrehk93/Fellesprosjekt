@@ -75,6 +75,27 @@ public class KalenderDB {
 		return false;
 	}
 	
+	public String getAppNavn(String avtaleid) throws Exception {
+		init();
+		
+		query = "select beskrivelse \n" + 
+				"from avtale \n" + 
+				"where avtaleid=" + avtaleid;
+		
+		System.out.println("QUERY : " + query);
+		PreparedStatement statement = con.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		String output = result.getString(1);
+		System.out.println("outp: " + output);
+		if (output == null) {
+			return "Ingen beskrivelse";
+		}
+		else {
+			return output;
+		}
+	}
+	
 	public String getAvailableUsers(String date, String from, String to) throws Exception{
 		init();
 		
@@ -327,17 +348,18 @@ public class KalenderDB {
 		return result;
 	}
 	
-	public String createApp(String user, String date, String from, String to, String room) throws Exception{
+	public String createApp(String user, String date, String from, String to, String room, String avtalenavn) throws Exception{
 		init();
 		
-		query = "INSERT INTO `avtale` (`fra`, `til`, `dato`, `romnavn`, `avtaleadmin`) \r\n" +
-				"VALUES(?, ?, ?, ?, ?);";
+		query = "INSERT INTO `avtale` (`fra`, `til`, `dato`, `romnavn`, `avtaleadmin`, `beskrivelse`) \r\n" +
+				"VALUES(?, ?, ?, ?, ?, ?);";
 		PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, from);
 		statement.setString(2, to);
 		statement.setString(3, date);
 		statement.setString(4, room);
 		statement.setString(5, user);
+		statement.setString(6, avtalenavn);
 		statement.executeUpdate();
 		query = "SELECT LAST_INSERT_ID();";
 		statement = con.prepareStatement(query);
