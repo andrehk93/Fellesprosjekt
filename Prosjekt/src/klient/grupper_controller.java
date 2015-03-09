@@ -27,7 +27,6 @@ public class grupper_controller {
 	private ArrayList<Bruker> brukere;
 	private Gruppe gruppe;
 	private String søk;
-	private ArrayList<Bruker> søkBruker_liste;
 	private Scene scene;
 	private String gruppeNavn;
     public void setScene(Scene scene) { this.scene = scene; }
@@ -41,9 +40,7 @@ public class grupper_controller {
     @FXML
 	ListView<Bruker> gruppemedlemmer_liste = new ListView<>();
     @FXML
-    Slider gruppemedlemmer_slider = new Slider();
-    @FXML
-    TextField antall_gruppemedlemmer = new TextField();
+    Label antall_gruppemedlemmer = new Label();
     @FXML 
     Label legg_til_lbl = new Label();
     @FXML
@@ -60,7 +57,8 @@ public class grupper_controller {
 		medlemmer = new ArrayList<Bruker>();			
 		brukere = new ArrayList<Bruker>();
 		brukere = new ArrayList<Bruker>();			
-		søkBruker_liste = new ArrayList<Bruker>();
+		brukere = new ArrayList<Bruker>();
+		antall_gruppemedlemmer.setText(""+medlemmer.size());
 		getUsers();
 		brukerliste(brukere);
 		gruppemedlemmer_liste(medlemmer);
@@ -94,24 +92,24 @@ public class grupper_controller {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				søk = newValue;
-				if (søkBruker_liste.isEmpty() && søk.length()<1){
-		    		brukerliste(brukere);
+				if (brukere.isEmpty() && søk != ""){
+					brukerliste(brukere);
 		    	} 
 		    	else{
-		            brukerliste(søkBruker_liste);
+		            brukerliste(brukere);
 		    	}
 				if (!medlemmer.isEmpty()){
 					gruppemedlemmer_liste(medlemmer);
 				}
 				
-		    	søkBruker_liste.clear();
-		    	if (søk != null){
+		    	brukere.clear();
+		    	if (søk != ""){
 		    		for (int i = 0; i < brukere.size(); i++){
 	    				if (søk.length() < brukere.get(i).getNavn().length()+1){
 	    					String j = brukere.get(i).getNavn().substring(0, søk.length());
 	    					if (søk.toLowerCase().equals(j.toLowerCase())){
-		    					if (!søkBruker_liste.contains(brukere.get(i))){
-		    						søkBruker_liste.add(brukere.get(i));
+		    					if (!brukere.contains(brukere.get(i))){
+		    						brukere.add(brukere.get(i));
 		    					}
 		    					
 		    				}
@@ -133,58 +131,82 @@ public class grupper_controller {
     
     @FXML
     private void handleLeggTil(ActionEvent event) throws IOException, NoSuchAlgorithmException {
+    	if (!brukere.contains(brukerliste.getSelectionModel().getSelectedItem())){
+    		
+    	}
     	if (medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem())){
     		legg_til_lbl.setText("Brukeren er allerede i gruppen");
 		}else {
 			legg_til_lbl.setText("");
 		}
     	
-    	if (brukerliste.getSelectionModel().getSelectedItem() != null && søkBruker_liste.isEmpty() && søk == null && !medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem())){;
+    	if (brukerliste.getSelectionModel().getSelectedItem() != null && brukere.isEmpty() && søk == "" && !medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem())){;
 	    	brukerliste.getSelectionModel().getSelectedItem();
 			medlemmer.add(brukerliste.getSelectionModel().getSelectedItem());
-			søkBruker_liste.remove(brukerliste.getSelectionModel().getSelectedItem());
+			brukere.remove(brukerliste.getSelectionModel().getSelectedItem());
+			brukerliste(brukere);
 		}
 		
-		if (søkBruker_liste.isEmpty() && søk == null){
+		if (brukere.isEmpty() && søk == "" && !medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem()) && !brukerliste.getSelectionModel().getSelectedItem().equals(null)){
     		brukerliste(brukere);
-    	} 
-    	else{
-            brukerliste(søkBruker_liste);
+    		brukerliste.getSelectionModel().getSelectedItem();
+			medlemmer.add(brukerliste.getSelectionModel().getSelectedItem());
+			brukere.remove(brukerliste.getSelectionModel().getSelectedItem());
+    	} else if (brukere.isEmpty()){
+    		brukerliste.getSelectionModel().getSelectedItem();
+			medlemmer.add(brukerliste.getSelectionModel().getSelectedItem());
+			brukere.remove(brukerliste.getSelectionModel().getSelectedItem());
+    	}
+    	else if (!medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem()) && brukere.contains(brukerliste.getSelectionModel().getSelectedItem())){
+            brukerliste(brukere);
+            brukerliste.getSelectionModel().getSelectedItem();
+			medlemmer.add(brukerliste.getSelectionModel().getSelectedItem());
+			brukere.remove(brukerliste.getSelectionModel().getSelectedItem());
     	}
 		gruppemedlemmer_liste(medlemmer);
+		antall_gruppemedlemmer.setText(""+medlemmer.size());
 
 	}
     
     @FXML
     private void handleFjern(ActionEvent event) throws IOException, NoSuchAlgorithmException {
-		if (gruppemedlemmer_liste.getSelectionModel().getSelectedItem() != null && søkBruker_liste.isEmpty() && søk == null){
-			gruppemedlemmer_liste.getSelectionModel().getSelectedItem();
-			søkBruker_liste.add(gruppemedlemmer_liste.getSelectionModel().getSelectedItem());
-			medlemmer.remove(gruppemedlemmer_liste.getSelectionModel().getSelectedItem());
-		}
-
-		if (søkBruker_liste.isEmpty() && søk == null){
-    		brukerliste(brukere);
-    	} 
-    	else{
-            brukerliste(søkBruker_liste);
+    	if (!medlemmer.contains(gruppemedlemmer_liste.getSelectionModel().getSelectedItem())){
+    		
     	}
+		 if (medlemmer.contains(gruppemedlemmer_liste.getSelectionModel().getSelectedItem())){
+			gruppemedlemmer_liste.getSelectionModel().getSelectedItem();
+			brukere.add(gruppemedlemmer_liste.getSelectionModel().getSelectedItem());
+			medlemmer.remove(gruppemedlemmer_liste.getSelectionModel().getSelectedItem());
+			brukerliste(brukere);
+		} else if(medlemmer.size() == 1 ){
+    		gruppemedlemmer_liste.getSelectionModel().getSelectedItem();
+			brukere.add(medlemmer.get(0));
+			medlemmer.remove(medlemmer.get(0));  
+		}	else {
+            brukerliste(brukere);
+    	} 
 		gruppemedlemmer_liste(medlemmer);
+		antall_gruppemedlemmer.setText(""+medlemmer.size());
 		
 	}
     
     
     public void getUsers() throws IOException{
     	brukere = Klienten.getAllUserDetails();
-    	brukerliste(søkBruker_liste);
+    	brukerliste(brukere);
     }
     
     
     @FXML
-	public void lagre(){
+	public void lagre(){											// Kan ikke bli ferdig med før grupper-klassen er endret
     	gruppeNavn = gruppenavn.getText();
 		System.out.println(gruppeNavn);
 	}
+    
+    @FXML
+    public void forkast(){
+    	ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);  // Må endres etter grupper-klasse fix
+    }
     
     @FXML
 	public void avbryt(){

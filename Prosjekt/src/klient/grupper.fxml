@@ -2,7 +2,6 @@
 
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -26,7 +25,7 @@
                   <Label text="Søk etter brukere" />
                   <TextField fx:id="brukersøk" maxWidth="-Infinity" prefHeight="31.0" prefWidth="300.0" promptText="Søk..." />
                   <Label text="Brukere" />
-                  <ListView fx:id="brukerliste" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="277.0" prefWidth="300.0" styleClass="label-normal-objects"/>
+                  <ListView fx:id="brukerliste" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="277.0" prefWidth="300.0" styleClass="label-normal-objects" />
                </children>
                <HBox.margin>
                   <Insets />
@@ -46,14 +45,14 @@
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="305.0" prefWidth="292.0">
                      <children>
 
-                        <ListView fx:id="gruppemedlemmer_liste" maxHeight="-Infinity" prefHeight="303.0" prefWidth="272.0" styleClass="label-normal-objects"/>
+                        <ListView fx:id="gruppemedlemmer_liste" maxHeight="-Infinity" prefHeight="303.0" prefWidth="272.0" styleClass="label-normal-objects" />
 
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="293.0" spacing="20.0">
                      <children>     
                         <Label text="Antall medlemmer:" />
-                        <TextField fx:id="antall_gruppemedlemmer" prefHeight="39.0" prefWidth="95.0" promptText="10" />
+                        <Label fx:id="antall_gruppemedlemmer" />
 
                      </children>
                   </HBox>
@@ -64,7 +63,7 @@
       <HBox layoutX="620.0" layoutY="620.0" prefHeight="46.0" prefWidth="400.0" spacing="15.0">
          <children>
             <Button fx:id="lagre_gruppe_knapp" mnemonicParsing="false" onAction="#lagre" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Lagre" />
-            <Button fx:id="avbryt_knapp" mnemonicParsing="false" onAction="#avbryt" text="Avbryt" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton"/>
+            <Button fx:id="avbryt_knapp" mnemonicParsing="false" onAction="#avbryt" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Avbryt" />
             <Button fx:id="forkast_gruppe_knapp" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Forkast" />
          </children>
       </HBox>
