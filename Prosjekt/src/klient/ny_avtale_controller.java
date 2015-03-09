@@ -44,6 +44,8 @@ public class ny_avtale_controller {
 	private LocalTime evigheten;
 	private ArrayList<String> repDays;
 	private ArrayList<LocalDate> repDates;
+	private ArrayList<String> repRooms;
+	private boolean isrep;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -93,6 +95,7 @@ public class ny_avtale_controller {
     ObservableList<String> gjestene;
 	
 	public void initialize() throws IOException {
+		isrep = false;
 		sluttdato.setDisable(true);
 		System.out.println(DayOfWeek.TUESDAY.getValue()-DayOfWeek.THURSDAY.getValue());
 		
@@ -107,12 +110,14 @@ public class ny_avtale_controller {
 				if (gjentakelse.isSelected()) {
 					sluttdato.setDisable(false);
 					repeatDays.disableProperty().set(false);
+					isrep = true;
 				}
 				else {
 					sluttdato.setValue(null);
 					slutt = null;
 					sluttdato.setDisable(true);
 					repeatDays.disableProperty().set(true);
+					isrep = false;
 				}
 			}
 			
@@ -312,12 +317,19 @@ public class ny_avtale_controller {
     	LocalDate i = dato;
     	System.out.println("HEI PÅ DEG!!! YO!!");
     	repDates = new ArrayList<LocalDate>();
-    	repDates.add(startdato.getValue());
-    	while(i.isBefore(tilDato) || i.equals(tilDato)) {
+    	repDates.add(i);
+    	for(String day : repDays){
+    		if(findWeekDay(day).getValue()-i.getDayOfWeek().getValue()>0){
+    			int diff = findWeekDay(day).getValue()-i.getDayOfWeek().getValue();
+    			i = i.plusDays(diff);
+    			repDates.add(i);
+    		}
+    	}
+    	while(i.isBefore(tilDato)) {
     		for(String day : repDays){
     			DayOfWeek dag = findWeekDay(day);
     			System.out.println(dag);
-    			int diff = i.getDayOfWeek().getValue()-dag.getValue();
+    			int diff = dag.getValue()-i.getDayOfWeek().getValue();
     			if(diff<=0){
     				diff += 7;
     			}
@@ -433,10 +445,31 @@ public class ny_avtale_controller {
     	if (hele_dagen.isSelected()) {
     		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", gjeste_liste.size() + "");
     	}
+    	else if (isrep){
+    		repRooms = new ArrayList<String>();
+    		for(LocalDate date : repDates){
+    			String[] besteRom = Klienten.getRom(date.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "").split(" ");
+    			repRooms.add(besteRom[0]);
+    		}
+    		ArrayList<String> beskjed = new ArrayList<String>();
+    		beskjed.add("Beste rom har blitt automatisk valgt");
+    		showRom(beskjed);
+    		return;
+    	}
     	else {
     		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
     	}
     	System.out.println("ROMMENE: " + rom);
+    	ArrayList<String> rommene = new ArrayList<String>();
+    	String[] rom_listen = rom.split(" ");
+    	for (int i = 0; i < rom_listen.length; i++) {
+    		rommene.add(rom_listen[i]);
+		}
+    	//Må spørre database om ledig(e) rom, midlertidig metode:
+    	showRom(rommene);
+    }
+    
+    private void bookRepRom(String rom){
     	ArrayList<String> rommene = new ArrayList<String>();
     	String[] rom_listen = rom.split(" ");
     	for (int i = 0; i < rom_listen.length; i++) {
@@ -474,6 +507,10 @@ public class ny_avtale_controller {
 		for(LocalDate datoen : repDates){
 			if (! feilTekst.isVisible() && ! feilDato.isVisible()) {
 				System.out.println("GJESTENE: " + gjeste_liste);
+				if(isrep){
+					int i = repDates.indexOf(datoen);
+					rom = new Møterom(100, repRooms.get(i));
+				}
 				String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, datoen), rom);
 				Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, datoen), rom, avtaleid);
 				for (Bruker deltaker : gjeste_liste) {
