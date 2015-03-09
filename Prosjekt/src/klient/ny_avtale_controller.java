@@ -290,15 +290,24 @@ public class ny_avtale_controller {
     }
     
     public void addGjest(ActionEvent event) throws IOException {
-    	if(! Arrays.asList(ledigeBrukere).contains(legg_til_gjester.getValue())){
+    	if(!(FxUtil.getComboBoxValue(legg_til_gjester) instanceof Bruker && !FxUtil.getComboBoxValue(legg_til_gjester).equals("-1"))){
     		System.out.println("Ugyldig bruker");
     		return;
     	}
-    	String brukernavn = Klienten.getBruker(legg_til_gjester.getValue().getEmail());
-    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  legg_til_gjester.getValue());
-    	Bruker gjest = new Bruker(brukernavn, legg_til_gjester.getValue().getEmail());
-    	showGjest(gjest);
-    	gjeste_liste.add(gjest);
+    	Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
+    	for(Bruker gjest : gjeste_liste){
+    		if(gjest.getEmail() == selectedUser.getEmail()){
+    			System.out.println("Brukeren er allerede invitert");
+    			return;
+    		}
+    	}
+    	if(!Arrays.asList(gjeste_liste).contains(selectedUser)){
+	    	String brukernavn = selectedUser.getNavn();
+	    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  selectedUser);
+	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail());
+	    	showGjest(gjest);
+	    	gjeste_liste.add(gjest);
+    	}
     }
     
     public void finnRom(ActionEvent event) throws IOException {
