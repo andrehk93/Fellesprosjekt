@@ -43,6 +43,10 @@ public class KalenderProtocol {
 					changeHandler(input);
 				case("INVITE"):
 					return createHandler(input);
+				case("ADD"):
+					return addHandler(input);
+				case("REMOVE"):
+					return removeHandler(input);
 				case("LOGOUT"):
 					state = WAITING;
 					return "Bye.";
@@ -212,5 +216,30 @@ public class KalenderProtocol {
 				output = "INCORRECT INPUT";
 			}
 			return output;
+	}
+	
+	private String addHandler(String[] input) throws Exception{
+		KalenderDB kalenderdb = new KalenderDB();
+		String output = "-1";
+		switch(input[1]){
+			case "GROUPMEMBER":
+				kalenderdb.addGroupMember(input[2], Arrays.copyOfRange(input, 3, input.length));
+				output = "OK";
+				break;
+		}
+		return output;
+	}
+	
+	private String removeHandler(String[] input) throws Exception{
+		KalenderDB kalenderdb = new KalenderDB();
+		String output = "-1";
+		
+		switch(input[1]){
+			case "GROUPMEMBER":
+				kalenderdb.removeGroupMember(input[2], input[3]);
+				output = "OK";
+		}
+		
+		return output;
 	}
 }
