@@ -93,7 +93,6 @@ public class UkesvisningController {
 		System.out.println(gridPos);
 		double ySize = app.getTid().getWeekSize();
 		int day = app.getTid().getDato().getDayOfWeek().getValue();
-		int rowSpan = app.getTid().getDuration().getHour()+1;
 		double margin = app.getTid().getMargin();
 		Rectangle box = new Rectangle(colWidth,ySize);
 		box.setFill(Color.BLUE);
