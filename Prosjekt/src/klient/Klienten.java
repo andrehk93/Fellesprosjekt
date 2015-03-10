@@ -87,8 +87,13 @@ public class Klienten {
 		}
 	}
 	
-	public static String getDeltakere(String avtaleid) throws IOException {
-		String toServer = "GET APPATTS " + avtaleid + " " + "1";
+	public static String getDeltakere(String avtaleid, String status) throws IOException {
+		String toServer = "GET APPATTS " + avtaleid + " " + status;
+		return sendTilServer(toServer);
+	}
+	
+	public static String getAlleInviterte(String avtaleid) throws IOException {
+		String toServer = "GET ALLAPPATTS " + avtaleid;
 		return sendTilServer(toServer);
 	}
 	
@@ -227,7 +232,6 @@ public class Klienten {
 	
 	public static void sendVarsel(String id, String email, String melding) throws IOException {
 		String toServer = "CREATE NOTIFICATION " + id + " "+ email + " " + melding + " ENDOFMESSAGE";
-		System.out.println("TO SERVER: " + toServer);
 		sendTilServer(toServer);
 	}
 	

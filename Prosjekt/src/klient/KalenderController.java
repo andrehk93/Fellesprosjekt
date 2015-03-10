@@ -122,6 +122,7 @@ public class KalenderController {
 	}
 	
 	private void showBruker() {
+		System.out.println("navnet: " + Klienten.bruker.getNavn());
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
 	
@@ -138,7 +139,6 @@ public class KalenderController {
 					}
 					else {
 						try {
-							System.out.println("POPPER");
 							pop(newValue);
 						} catch (Exception e) {
 							System.out.println("FEIL: " + e);
@@ -172,6 +172,7 @@ public class KalenderController {
 			}
 			else {
 				list.add("Invitasjon: " + notifikasjonene[i] + " (Dobbeltrykk)");
+				ingenInvitasjoner = false;
 			}
 		}
 	}
@@ -182,7 +183,6 @@ public class KalenderController {
 		oppdelte_notifikasjoner = new ArrayList<Varsel>();
 		notifikasjon_liste = Klienten.getVarsel().split(" ");
 		String meld = "";
-		System.out.println("NOTS: " +notifikasjon_liste[0].toString());
 		if (! notifikasjon_liste[0].trim().toString().equals("NONE")) {
 			for (String notifikasjon_oppdeling : notifikasjon_liste) {
 				if(! notifikasjon_oppdeling.equals("!ENDMESS!") && ! meldingFerdig) {
@@ -199,11 +199,12 @@ public class KalenderController {
 					vars.setBrukerSendtFra(resten.get(0));
 					vars.setAvtaleid(resten.get(1));
 					vars.setTidspunkt(resten.get(2));
-					list.add("Notifikasjon: " + resten.get(1));
+					list.add("Notifikasjon: " + vars);
 					oppdelte_notifikasjoner.add(vars);
 					resten = new ArrayList<String>();
 					meld = "";
 					meldingFerdig = false;
+					ingenInvitasjoner = false;
 				}
 				
 			}
@@ -334,7 +335,7 @@ public class KalenderController {
 				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
 				Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid).split(" ");
+		String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {

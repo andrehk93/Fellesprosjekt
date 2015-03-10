@@ -166,6 +166,9 @@ public class KalenderProtocol {
 			case "APPATTS":
 				output = kalenderdb.getAppAttendees(input[1], input[2]);
 				break;
+			case "ALLAPPATTS":
+				output = kalenderdb.getAllAppAttendees(input[1]);
+				break;
 			case "INVS":
 				output = kalenderdb.getInvitations(user);
 				break;
@@ -188,7 +191,7 @@ public class KalenderProtocol {
 				output = kalenderdb.getStatus(input[1], input[2]);
 				break;
 			case "USERFULLNAME":
-				output = kalenderdb.getUserDetails(input[1]);
+				output = kalenderdb.getUserFullname(input[1]);
 				break;
 			case "LASTID":
 				output = kalenderdb.getLastID();
