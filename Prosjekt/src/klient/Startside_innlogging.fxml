@@ -21,6 +21,7 @@
 				<RowConstraints maxHeight="40.0" minHeight="39.0" prefHeight="39.0" />
 				<RowConstraints maxHeight="40.0" minHeight="39.0" prefHeight="39.0" vgrow="SOMETIMES" />
 				<RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
@@ -35,20 +36,18 @@
       				<Font name="Segoe UI Light" size="40.0" />
       			</font>
       		</Label>
-            <VBox prefHeight="118.0" prefWidth="158.0" spacing="10.0" GridPane.rowIndex="3">
-               <children>
-      		
-      		<!-- BUTTON - LOGG INN  ******************-->
-      				<Button fx:id="logginn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="33.0" prefWidth="343.0" styleClass="specialButton " text="Logg inn">
-      					<font>
-      						<Font name="Garamond" size="18.0" />
-      					</font>
-      				</Button>
-               </children>
+            <VBox prefHeight="118.0" prefWidth="158.0" spacing="10.0" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets top="30.0" />
                </GridPane.margin>
             </VBox>
+		
+      		<!-- BUTTON - LOGG INN  ******************-->
+				<Button fx:id="logginn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="33.0" prefWidth="343.0" styleClass="specialButton " text="Logg inn" GridPane.rowIndex="3">
+					<font>
+						<Font name="Garamond" size="18.0" />
+					</font>
+				</Button>
 			</children>
 			<padding>
 				<Insets left="20.0" right="20.0" />
