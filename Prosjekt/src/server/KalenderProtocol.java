@@ -2,6 +2,8 @@ package server;
 
 import java.util.Arrays;
 
+import server.KalenderDB;
+
 public class KalenderProtocol {
 	private static final int WAITING = 0;
 	private static final int LOGGEDIN = 1;
