@@ -34,17 +34,19 @@ public class PopupController {
 		tid = varsel.getTid();
 		avtaleid = varsel.getAvtaleid();
 		avtaleNavnet = Klienten.getAppNavn(avtaleid);
-		System.out.println("SPECS" + " " + meldingen + " " + email + " " + tid + " " + avtaleid);
 		fraBruker.setText(email);
-		avtaleNavn.setText(avtaleid + ": " + avtaleNavnet);
+		if (avtaleNavnet.trim().equals("NONE")) {
+			avtaleNavn.setText(avtaleid + ": Ingen beskrivelse");
+		}
+		else {
+			avtaleNavn.setText(avtaleid + ": " + avtaleNavnet);
+		}
 		tidspunkt.setText(tid);
 		melding.setText(meldingen);
 		if (Klienten.getStatus(varsel.getAvtaleid(), varsel.getBrukerSendtFra()).trim().equals("1")) {
 			status.setText("Attending");
-			System.out.println("ATTENDER");
 		}
 		else {
-			System.out.println("IKKE ATTENDER :(");
 			status.setText("Not attending");
 		}
 	}

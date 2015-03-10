@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
@@ -130,5 +129,6 @@
 			</HBox>
 			<Label layoutX="138.0" layoutY="611.0" stylesheets="@application.css"
 				text="Antall gjester" />
+		</Rectangle>
 	</children>
 </AnchorPane>

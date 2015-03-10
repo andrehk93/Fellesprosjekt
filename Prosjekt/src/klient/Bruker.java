@@ -14,6 +14,8 @@ public class Bruker {
 	}
 	
 	public Bruker(String navn, String email){
+		System.out.println("NAVNET : " + navn);
+		System.out.println("EMAIL: " + email);
 		setNavn(navn);
 		setEmail(email);
 		addListeners();

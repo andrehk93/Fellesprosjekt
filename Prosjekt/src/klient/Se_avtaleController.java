@@ -15,36 +15,64 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 public class Se_avtaleController {
 	
 	private String fratid, tiltid, dato, rom, admin, avtalenavn;
 	@FXML private TextField fra, til, startdato, sluttdato, tittel;
 	@FXML private TextArea begrunnelse;
-	@FXML private ListView<String> deltaker_listeview;
+	@FXML private ListView<HBox> deltaker_listeview;
 	@FXML private RadioButton skal, skal_ikke, ikke_svart;
-	private ObservableList<String> addDeltakere;
+	private ObservableList<HBox> addDeltakere;
 	private String avtaleid;
 	@FXML private Button bekreft;
 	
 	public void setAvtale(String avtale, String avtaleid) throws IOException {
 		String[] detaljer = avtale.trim().split(" ");
-		String deltakerne = Klienten.getDeltakere(avtaleid);
 		this.avtaleid = avtaleid;
-		String[] deltakere = deltakerne.trim().split(" ");
 		fratid = detaljer[0];
 		tiltid = detaljer[1];
 		dato = detaljer[2];
 		rom = detaljer[3];
 		admin = detaljer[4];
 		avtalenavn = Klienten.getAppNavn(avtaleid);
-		List<String> deltaker_liste = new ArrayList<String>();
-		for (String deltaker : deltakere) {
+		String deltakerne = Klienten.getDeltakere(avtaleid, "1");
+		String[] deltakere_attender = deltakerne.trim().split(" ");
+		List<HBox> deltaker_liste = new ArrayList<HBox>();
+		for (String deltaker : deltakere_attender) {
+			HBox boks = new HBox();
+			boks.setStyle("-fx-background-color:#44cc44");
 			if (deltaker.trim().equals("NONE")) {
-				deltaker_liste.add("Ingen deltakere");
 			}
 			else {
-				deltaker_liste.add(deltaker);
+				boks.getChildren().add(new Text(deltaker));
+				deltaker_liste.add(boks);
+			}
+		}
+		String deltakerne_ikkeAttender = Klienten.getDeltakere(avtaleid, "0");
+		String[] deltakere_ikkeAttender = deltakerne_ikkeAttender.trim().split(" ");
+		for (String deltaker : deltakere_ikkeAttender) {
+			HBox boks = new HBox();
+			boks.setStyle("-fx-background-color:#cc4444");
+			if (deltaker.trim().equals("NONE")) {
+			}
+			else {
+				boks.getChildren().add(new Text(deltaker));
+				deltaker_liste.add(boks);
+			}
+		}
+		String deltakerne_ikkeSvart = Klienten.getDeltakere(avtaleid, null);
+		String[] deltakere_ikkeSvart = deltakerne_ikkeSvart.trim().split(" ");
+		for (String deltaker : deltakere_ikkeSvart) {
+			HBox boks = new HBox();
+			boks.setStyle("-fx-background-color:yellow");
+			if (deltaker.trim().equals("NONE")) {
+			}
+			else {
+				boks.getChildren().add(new Text(deltaker));
+				deltaker_liste.add(boks);
 			}
 		}
 		addDeltakere = FXCollections.observableList(deltaker_liste);
@@ -60,7 +88,12 @@ public class Se_avtaleController {
 		til.setText(tiltid);
 		startdato.setText(dato);
 		sluttdato.setDisable(true);
-		tittel.setText(avtalenavn);
+		if (avtalenavn.trim().equals("NONE")) {
+			tittel.setText(avtaleid + ": Ingen beskrivelse");
+		}
+		else {
+			tittel.setText(avtaleid + ": " + avtalenavn);
+		}
 	}
 	
 	public boolean skal() {

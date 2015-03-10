@@ -70,4 +70,8 @@ public class Varsel {
 		return tidProperty.getValue();
 	}
 	
+	public String toString() {
+		return avtaleidProperty.getValue();
+	}
+	
 }

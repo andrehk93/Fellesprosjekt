@@ -87,8 +87,13 @@ public class Klienten {
 		}
 	}
 	
-	public static String getDeltakere(String avtaleid) throws IOException {
-		String toServer = "GET APPATTS " + avtaleid + " " + "1";
+	public static String getDeltakere(String avtaleid, String status) throws IOException {
+		String toServer = "GET APPATTS " + avtaleid + " " + status;
+		return sendTilServer(toServer);
+	}
+	
+	public static String getAlleInviterte(String avtaleid) throws IOException {
+		String toServer = "GET ALLAPPATTS " + avtaleid;
 		return sendTilServer(toServer);
 	}
 	
@@ -227,7 +232,6 @@ public class Klienten {
 	
 	public static void sendVarsel(String id, String email, String melding) throws IOException {
 		String toServer = "CREATE NOTIFICATION " + id + " "+ email + " " + melding + " ENDOFMESSAGE";
-		System.out.println("TO SERVER: " + toServer);
 		sendTilServer(toServer);
 	}
 	
@@ -239,5 +243,23 @@ public class Klienten {
 	public static String getLastID() throws IOException {
 		String toServer = "GET LASTID";
 		return sendTilServer(toServer);
+	}
+	
+	public static ArrayList<Bruker> getGroupMembers(int gruppeid) throws IOException{
+		String toServer = "GET GROUP " + gruppeid;
+		String[] members = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> memberList= new ArrayList<Bruker>();
+		for(String email : members){
+			memberList.add(new Bruker(Klienten.getBruker(email), email));
+		}
+		return memberList;
+	}
+	
+	public static void addGruppe(String name, ArrayList<Bruker> members) throws IOException{
+		String toServer = "CREATE GROUP " + name;
+		for(Bruker member : members){
+			toServer += " " + member.getEmail();
+		}
+		sendTilServer(toServer);
 	}
 }
