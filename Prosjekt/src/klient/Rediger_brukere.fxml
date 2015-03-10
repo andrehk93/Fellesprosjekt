@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Rediger_bruker.fxml">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.Rediger_brukerController">
    <children>
       <Label layoutX="301.0" layoutY="14.0" prefHeight="85.0" prefWidth="398.0" styleClass="label-header" text="Redigering av brukere" />
       <HBox layoutX="123.0" layoutY="149.0" prefHeight="339.0" prefWidth="785.0" spacing="20.0" styleClass="label-normal-objects">
@@ -43,7 +43,7 @@
       </HBox>
       <VBox alignment="CENTER" layoutX="739.0" layoutY="522.0" prefHeight="135.0" prefWidth="227.0" spacing="15.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#opprettingView" styleClass="specialButton" text="Opprett ny konto" />
+            <Button mnemonicParsing="false" styleClass="specialButton" text="Opprett ny konto" /> <!-- onAction="#opprettingView" -->
             <Button mnemonicParsing="false" onAction="#monthView" prefHeight="46.0" prefWidth="166.0" styleClass="normalButton" text="Tilbake" />
          </children>
       </VBox>

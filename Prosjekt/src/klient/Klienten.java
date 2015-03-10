@@ -19,6 +19,7 @@ public class Klienten {
 	public static Bruker bruker;
 	private static boolean tilkobling;
 	public static ArrayList<Avtale> avtaler;
+	private static String valgtAvtale;
 	
 	
 	public Klienten() throws IOException {
@@ -261,5 +262,13 @@ public class Klienten {
 			toServer += " " + member.getEmail();
 		}
 		sendTilServer(toServer);
+	}
+
+	public static void setValgtAvtale(String avtale) {
+		valgtAvtale = avtale;
+	}
+	
+	public static String getValgtAvtale() {
+		return valgtAvtale;
 	}
 }

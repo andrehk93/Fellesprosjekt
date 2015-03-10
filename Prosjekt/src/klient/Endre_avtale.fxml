@@ -5,10 +5,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.shapes.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.*?>
 
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="klient.Endre_avtaleController">
 	<children>
 		<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4986e7"
 			height="5.0" layoutX="84.0" layoutY="124.0" opacity="0.72"

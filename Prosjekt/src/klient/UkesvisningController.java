@@ -8,6 +8,8 @@ import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -39,9 +41,12 @@ public class UkesvisningController {
 	private int weekNumber;
 	private static ArrayList<Dag> dager;
 	private static final double colWidth = 92;
+	private ArrayList<StackPane> bokser;
+	private String avtale;
 
 	
 	public void initialize() throws IOException {
+		bokser = new ArrayList<StackPane>();
 		scroll.setVvalue(scroll.getVmin());
 		firstDayOfWeek = LocalDate.now().minusDays(LocalDate.now().getDayOfWeek().getValue()-1);
 		loadStuff();
@@ -55,6 +60,7 @@ public class UkesvisningController {
 		for(int i=1;i<7;i++){
 			dager.add(new Dag(firstDayOfWeek.plusDays(i)));
 		}
+		flushView();
 		ruter.setGridLinesVisible(true);
 		loadGrid();
 	}
@@ -66,6 +72,12 @@ public class UkesvisningController {
 		setTimeLabels();
 		for(Avtale app : ukeAvtaler){
 			setRects(app);
+		}
+	}
+	
+	private void flushView(){
+		for(StackPane panes : bokser){
+			ruter.getChildren().remove(panes);
 		}
 	}
 	
@@ -100,16 +112,46 @@ public class UkesvisningController {
 	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
 	    text.setFill(Color.WHITE);
 	    text.setStroke(Color.WHITE); 
+	    setUpBox(box,app);
 		stack.getChildren().addAll(box,text);
 		stack.setMinSize(0, 0);
 		StackPane.setAlignment(box, Pos.TOP_LEFT);
 		StackPane.setAlignment(text, Pos.TOP_LEFT);
 		StackPane.setMargin(box, new Insets(margin,0,0,0));
 		StackPane.setMargin(text, new Insets(margin,0,0,0));
+		bokser.add(stack);
 		ruter.add(stack, day, gridPos);
 		GridPane.setValignment(stack, VPos.TOP);
 		
 	}
+
+	private void setUpBox(Rectangle box, Avtale app) {
+		box.setOnMouseEntered(new EventHandler<Event>() {
+		    public void handle(Event event) {
+		        box.setFill(Color.LIGHTBLUE);
+		    }
+		});
+		
+		box.setOnMouseExited(new EventHandler<Event>() {
+			public void handle(Event event) {
+				box.setFill(Color.BLUE);
+			}
+		});
+		
+		box.setOnMouseClicked(new EventHandler<Event>() {
+			public void handle(Event event) {
+				avtale = app.getAvtaleid();
+				if(app.getAvtaleAdmin().equals(Klienten.bruker)){
+					Klienten.setValgtAvtale(avtale);
+					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
+				}
+				else{
+					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+				}
+			}
+		});
+	}
+
 	
 	private void hentAvtaler() throws IOException {
 		try {

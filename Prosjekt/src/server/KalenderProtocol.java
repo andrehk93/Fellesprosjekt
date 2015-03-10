@@ -14,7 +14,7 @@ public class KalenderProtocol {
 
 	public String processInput(String rawInput) throws Exception{
 		if(rawInput != null){
-			System.out.println(rawInput);
+			//System.out.println(rawInput);
 			String[] input = rawInput.split(" ");
 			
 			KalenderDB kalenderdb = new KalenderDB();
