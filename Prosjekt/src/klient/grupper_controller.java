@@ -3,9 +3,6 @@ package klient;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -101,7 +98,7 @@ public class grupper_controller {
 				søkBrukere = newArrayList();
 		    	if (søk != ""){
 		    		for (int i = 0; i < brukere.size(); i++){
-		    			if (søk.length() < brukere.get(i).getNavn().length()){
+		    			if (søk.length() < brukere.get(i).getNavn().length()+1){
 		    				String j = brukere.get(i).getNavn().substring(0, søk.length());
 		    				if (søk.toLowerCase().equals(j.toLowerCase())){
 			    				if (!søkBrukere.contains(brukere.get(i)) && !medlemmer.contains(brukere.get(i))){
@@ -187,9 +184,11 @@ public class grupper_controller {
 	public void lagre(){											// Kan ikke bli ferdig med før grupper-klassen er endret
     	gruppeNavn = gruppenavn.getText();
 		System.out.println(gruppeNavn);
-		if (medlemmer.size() <1){
-			legg_til_lbl.setText("*Du kan ikke lage en gruppe uten medlemmer.");
+		if (medlemmer.size() <2){
+			legg_til_lbl.setText("*Du kan ikke lage en gruppe med mindre enn to personer.");
 		}
+		gruppe.setNavn(gruppeNavn);
+		Gruppe.setMedlemmer(medlemmer);
 	}
     
     @FXML
