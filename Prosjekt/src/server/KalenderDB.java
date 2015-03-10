@@ -53,9 +53,9 @@ public class KalenderDB {
 		return output;
 	}
 	
-	public Boolean login(String email, String password) throws Exception {
+	public int login(String email, String password) throws Exception {
 		init();
-		String query = "SELECT epost, passord, salt FROM `bruker` WHERE epost = ?";
+		String query = "SELECT epost, passord, salt, rettigheter FROM `bruker` WHERE epost = ?";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, email);
 		ResultSet result = statement.executeQuery();
@@ -63,16 +63,17 @@ public class KalenderDB {
 		result.next();
 		String servPass = result.getString(2);
 		String salt = result.getString(3);
+		int rights = Integer.parseInt(result.getString(4));
 		
 		String temp_pass = salt + password;
         
         String userPass =  toSha(temp_pass);
 		
 		if(userPass.equals(servPass)){
-			return true;
+			return rights;
 		}
 		
-		return false;
+		return -1;
 	}
 	
 	public String getAppNavn(String avtaleid) throws Exception {
@@ -294,6 +295,24 @@ public class KalenderDB {
 		return output;
 	}
 	
+	public String getAllAppAttendees(String avtaleid) throws Exception  {
+		init();
+		
+		query = "SELECT epost \n" + 
+				"FROM ermed \n" + 
+				"WHERE avtaleid = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, avtaleid);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		return output;
+	}
+	
 	public String getInvitations(String user) throws Exception{
 		init();
 		
@@ -371,7 +390,6 @@ public class KalenderDB {
 	
 	public String inviteUser(String user, String avtale) throws Exception{
 		init();
-		System.out.println("AVTALEID : " + avtale + " USER: " + user);
 		
 		query = "INSERT INTO `ermed` (`epost`, `avtaleid`) \r\n" +
 				"VALUES(?, ?);";
@@ -416,7 +434,6 @@ public class KalenderDB {
 		statement.setString(1, newStatus);
 		statement.setString(2, user);
 		statement.setString(3, avtale);
-		System.out.println("BRUKER: " + user + " Avtale: " + avtale + " Status: " + newStatus);
 		statement.executeUpdate();
 	}
 
@@ -532,7 +549,6 @@ public class KalenderDB {
 		String gruppeId= result.getString(1);
 		
 		String[] bruker = {user};
-		System.out.println(users.length);
 		
 		addGroupMember(gruppeId,bruker);
 		addGroupMember(gruppeId,users);
@@ -577,9 +593,20 @@ public class KalenderDB {
 		statement.setString(1, email);
 		ResultSet result = statement.executeQuery();
 		result.next();
-		System.out.println(result.getString(1) + " " + result.getString(2) + " " + result.getString(3));
 		
 		return result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
+	}
+	
+	public String getUserFullname(String email) throws Exception{
+		init();
+		
+		query = "SELECT fornavn, etternavn FROM bruker WHERE epost = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, email);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		
+		return result.getString(1) + " " + result.getString(2);
 	}
 	
 	public String getUsers() throws Exception {
@@ -592,7 +619,6 @@ public class KalenderDB {
 		String output = "";
 		while(result.next()){
 			output += result.getString(1)+" ";
-			System.out.println(result.getString(1));
 		}
 		return output;
 	}

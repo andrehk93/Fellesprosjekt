@@ -2,7 +2,6 @@
 
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -12,7 +11,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.grupper_controller">
    <children>
 
-      <TextField fx:id="gruppenavn" layoutX="120.0" layoutY="121.0" onKeyTyped="#handleGruppenavn" promptText="Gruppenavn" />     
+      <TextField fx:id="gruppenavn" layoutX="120.0" layoutY="121.0" promptText="Gruppenavn" />     
 
       
       <Label layoutX="412.0" layoutY="14.0" prefHeight="64.0" prefWidth="143.0" styleClass="label-header" text="Gruppe">
@@ -26,7 +25,7 @@
                   <Label text="Søk etter brukere" />
                   <TextField fx:id="brukersøk" maxWidth="-Infinity" prefHeight="31.0" prefWidth="300.0" promptText="Søk..." />
                   <Label text="Brukere" />
-                  <ListView fx:id="brukerliste" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="277.0" prefWidth="300.0" styleClass="label-normal-objects"/>
+                  <ListView fx:id="brukerliste" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="277.0" prefWidth="300.0" styleClass="label-normal-objects" />
                </children>
                <HBox.margin>
                   <Insets />
@@ -46,14 +45,14 @@
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="305.0" prefWidth="292.0">
                      <children>
 
-                        <ListView fx:id="gruppemedlemmer_liste" maxHeight="-Infinity" prefHeight="303.0" prefWidth="272.0" styleClass="label-normal-objects"/>
+                        <ListView fx:id="gruppemedlemmer_liste" maxHeight="-Infinity" prefHeight="303.0" prefWidth="272.0" styleClass="label-normal-objects" />
 
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="293.0" spacing="20.0">
                      <children>     
                         <Label text="Antall medlemmer:" />
-                        <TextField fx:id="antall_gruppemedlemmer" prefHeight="39.0" prefWidth="95.0" promptText="10" />
+                        <Label fx:id="antall_gruppemedlemmer" />
 
                      </children>
                   </HBox>
@@ -63,13 +62,13 @@
       </HBox>
       <HBox layoutX="620.0" layoutY="620.0" prefHeight="46.0" prefWidth="400.0" spacing="15.0">
          <children>
-            <Button fx:id="lagre_gruppe_knapp" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Lagre" />
-            <Button fx:id="avbryt_knapp" mnemonicParsing="false" onAction="#avbryt" text="Avbryt" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton"/>
+            <Button fx:id="lagre_gruppe_knapp" mnemonicParsing="false" onAction="#lagre" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Lagre" />
+            <Button fx:id="avbryt_knapp" mnemonicParsing="false" onAction="#avbryt" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Avbryt" />
             <Button fx:id="forkast_gruppe_knapp" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Forkast" />
          </children>
       </HBox>
 
-      <Label fx:id="legg_til_lbl" layoutX="119.0" layoutY="569.0" prefHeight="27.0" prefWidth="318.0" textFill="#f20000" />
+      <Label fx:id="legg_til_lbl" layoutX="119.0" layoutY="569.0" prefHeight="27.0" prefWidth="400.0" textFill="#f20000" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4986e7" height="5.0" layoutX="89.0" layoutY="91.0" opacity="0.72" strokeType="INSIDE" strokeWidth="0.0" width="835.0">
          <stroke>
             <LinearGradient endX="1.0" endY="1.0">

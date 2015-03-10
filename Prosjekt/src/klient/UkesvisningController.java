@@ -143,7 +143,7 @@ public class UkesvisningController {
 				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
 				Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid).split(" ");
+		String[] deltakere = Klienten.getDeltakere(avtaleid,"0").split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {

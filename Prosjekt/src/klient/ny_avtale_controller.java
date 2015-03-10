@@ -13,7 +13,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
 import org.controlsfx.control.CheckComboBox;
 
 import com.sun.javafx.css.StyleCache.Key;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+//import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
