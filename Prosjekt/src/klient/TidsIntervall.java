@@ -94,13 +94,17 @@ public class TidsIntervall {
 	public double getWeekSize(){
 		LocalTime dur = getDuration();
 		double hours = dur.getHour();
-		double minutes = dur.getMinute()/60;
+		double minutes = ((double)dur.getMinute())/60;
 		double duration = hours+minutes;
-		return duration*30.0;
+		System.out.println(duration*50);
+		return duration*50;
 	}
 	
 	public LocalTime getDuration(){
-		return this.getSlutt().minusHours(this.getStart().getHour()).minusMinutes(this.getStart().getMinute());
+		LocalTime tid = this.getSlutt();
+		tid = tid.minusHours(this.getStart().getHour());
+		tid = tid.minusMinutes(this.getStart().getMinute());
+		return tid;
 	}
 	
 	//sjekker om DET GITTE tidsintervallobjektet er i DETTE (this) objektet (f.eks 10:20 - 11:20):
@@ -120,6 +124,12 @@ public class TidsIntervall {
 		else {
 			return false;
 		}
+	}
+
+	public double getMargin() {
+		double mints = (double) this.getStart().getMinute();
+		mints = mints/2;
+		return mints;
 	}
 	
 	

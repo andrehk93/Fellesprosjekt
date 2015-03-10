@@ -40,22 +40,22 @@
       </VBox>
       <HBox layoutX="633.0" layoutY="48.0" prefHeight="35.0" prefWidth="291.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="Dag" />
+            <Button onAction="#nextPaneDayView" mnemonicParsing="false" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="Dag" />
             <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" styleClass="specialButton" text="Uke">
             <effect>
                   <ColorAdjust contrast="-0.25" />
                </effect></Button>
-            <Button mnemonicParsing="false" styleClass="specialButton" text="Måned" /> 
+            <Button onAction="#nextPaneMonthView" mnemonicParsing="false" styleClass="specialButton" text="Måned" /> 
          </children>
       </HBox>
       <HBox layoutX="231.0" layoutY="58.0" prefHeight="35.0" prefWidth="110.0">
          <children>
-            <Button fx:id="forrigeUke" onAction="#prevWeek" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&lt;">
+            <Button fx:id="forrigeUke" mnemonicParsing="false" onAction="#prevWeek" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&lt;">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="nesteUke" onAction="#nextWeek" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&gt;">
+            <Button fx:id="nesteUke" mnemonicParsing="false" onAction="#nextWeek" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="&gt;">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
@@ -93,39 +93,12 @@
             <Insets left="5.0" />
          </padding>
       </HBox>
-      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="220.0" layoutY="165.0" prefHeight="471.0" prefWidth="720.0" vvalue="0.5" styleClass="label-normal-objects">
+      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="220.0" layoutY="165.0" prefHeight="471.0" prefWidth="720.0" styleClass="label-normal-objects" vvalue="0.5">
          <content>
-            <GridPane fx:id="ruter" gridLinesVisible="true" opacity="0.34" prefHeight="1200.0" prefWidth="716.0" styleClass="label-normal-objects" >
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="08:00" GridPane.rowIndex="8">
-                     <GridPane.margin>
-                        <Insets left="7.0" />
-                     </GridPane.margin>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="09:00" GridPane.rowIndex="9">
-                     <GridPane.margin>
-                        <Insets left="7.0" />
-                     </GridPane.margin>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="10:00" GridPane.rowIndex="10">
-                     <GridPane.margin>
-                        <Insets left="7.0" />
-                     </GridPane.margin>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="11:00" GridPane.rowIndex="11">
-                     <GridPane.margin>
-                        <Insets left="7.0" />
-                     </GridPane.margin>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="12:00" GridPane.rowIndex="12">
-                     <GridPane.margin>
-                        <Insets left="7.0" />
-                     </GridPane.margin>
-                  </Text>
-               </children>
+            <GridPane fx:id="ruter" gridLinesVisible="true" opacity="0.34" prefHeight="1200.0" prefWidth="716.0" styleClass="label-normal-objects">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="97.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

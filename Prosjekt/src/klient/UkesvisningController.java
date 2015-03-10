@@ -9,13 +9,20 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class UkesvisningController {
@@ -27,10 +34,12 @@ public class UkesvisningController {
 	@FXML private Button forrigeUke;
 	
 	private String[] avtaleListe;
+	private ArrayList<Avtale> ukeAvtaler;
 	private LocalDate firstDayOfWeek;
 	private int weekNumber;
 	private static ArrayList<Dag> dager;
-	private static final double colWidth = 97;
+	private static final double colWidth = 92;
+
 	
 	public void initialize() throws IOException {
 		scroll.setVvalue(scroll.getVmin());
@@ -46,33 +55,66 @@ public class UkesvisningController {
 		for(int i=1;i<7;i++){
 			dager.add(new Dag(firstDayOfWeek.plusDays(i)));
 		}
+		ruter.setGridLinesVisible(true);
 		loadGrid();
 	}
 	
 	private void loadGrid() throws IOException {
 		hentAvtaler();
-		System.out.println("1");
-		for(Avtale app : Klienten.avtaler){
-			System.out.println("2");
+		setUkeAvtaler();
+		System.out.println(ukeAvtaler);
+		setTimeLabels();
+		for(Avtale app : ukeAvtaler){
 			setRects(app);
 		}
 	}
 	
+	private void setUkeAvtaler(){
+		ukeAvtaler = new ArrayList<Avtale>();
+		for(Avtale app : Klienten.avtaler){
+			if(!app.getTid().getDato().isBefore(firstDayOfWeek) && !app.getTid().getDato().isAfter(firstDayOfWeek.plusWeeks(1).minusDays(1))){
+				ukeAvtaler.add(app);
+			}
+		}
+	}
+	
+	private void setTimeLabels(){
+		String string = "";
+		for(int i=0;i<24;i++){
+			string = "0"+String.valueOf(i)+":00";
+			Label label = new Label(string.substring(string.length()-5));
+			ruter.add(label, 0, i);
+		}
+	}
+	
 	private void setRects(Avtale app) throws IOException{
+		StackPane stack = new StackPane();
 		int gridPos = app.getTid().getWeekGridPos();
+		System.out.println(gridPos);
 		double ySize = app.getTid().getWeekSize();
 		int day = app.getTid().getDato().getDayOfWeek().getValue();
 		int rowSpan = app.getTid().getDuration().getHour()+1;
+		double margin = app.getTid().getMargin();
 		Rectangle box = new Rectangle(colWidth,ySize);
 		box.setFill(Color.BLUE);
-		ruter.add(box, day, gridPos);
-		ruter.setRowSpan(box, rowSpan);
+		Text text = new Text(app.getAvtaleid());
+	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
+	    text.setFill(Color.WHITE);
+	    text.setStroke(Color.WHITE); 
+		stack.getChildren().addAll(box,text);
+		stack.setMinSize(0, 0);
+		StackPane.setAlignment(box, Pos.TOP_LEFT);
+		StackPane.setAlignment(text, Pos.TOP_LEFT);
+		StackPane.setMargin(box, new Insets(margin,0,0,0));
+		StackPane.setMargin(text, new Insets(margin,0,0,0));
+		ruter.add(stack, day, gridPos);
+		GridPane.setValignment(stack, VPos.TOP);
+		
 	}
 	
 	private void hentAvtaler() throws IOException {
 		try {
 			if (Klienten.avtaler.isEmpty()) {
-				System.out.println("4");
 				avtaleListe = Klienten.mineAvtaler(Klienten.bruker.getEmail(), 0).split(" "); //Husk filtrering!!!
 				for (int k = 0; k < avtaleListe.length; k++) {
 					if (k%2 != 0) {
@@ -83,7 +125,6 @@ public class UkesvisningController {
 				}
 			}
 			else {
-				System.out.println("7");
 				avtaleListe = Klienten.mineAvtaler(Klienten.bruker.getEmail(), 0).split(" ");
 			}
 		}
@@ -106,21 +147,17 @@ public class UkesvisningController {
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
-					System.out.println("BREAK");
 					break;
 				}
 				else {
 					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost);
 					deltaker_liste.add(deltaker);
-					System.out.println("deltaker"+deltaker);
 				}
 			}
 		}
 		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
 		Klienten.avtaler.add(avtale);
-		System.out.println("Jepp: "+avtale);
 		Dag dagen = new Dag(tid.getDato());
-		System.out.println(dagen);
 		dagen.addAvtale(avtale);
 	}
 	
