@@ -25,11 +25,12 @@ public class KalenderThread extends Thread {
             KalenderProtocol kp = new KalenderProtocol();
             
             while ((inputLine = in.readLine()) != null) {
-            	try {
+            	//try {
             		outputLine = kp.processInput(inputLine) + "\r\n";
+            		/*
             	} catch(Exception ArrayIndexOutOfBoudsException){
         			outputLine = "ABSOLUTT RAR INPUT \r\n";
-        		}
+        		}*/
             	System.out.println("INPUT: " + inputLine);
                 System.out.println("OUTPUT: " + outputLine);
                 out.println(outputLine);

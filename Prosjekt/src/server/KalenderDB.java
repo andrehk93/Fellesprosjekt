@@ -63,7 +63,12 @@ public class KalenderDB {
 		result.next();
 		String servPass = result.getString(2);
 		String salt = result.getString(3);
-		int rights = Integer.parseInt(result.getString(4));
+		int rights = 0;
+		String temp_rights = result.getString(4);
+		System.out.println(temp_rights);
+		if(temp_rights != null && ! temp_rights.equals("") && ! temp_rights.equals("NULL")){
+			rights = Integer.parseInt(result.getString(4));
+		} 
 		
 		String temp_pass = salt + password;
         
