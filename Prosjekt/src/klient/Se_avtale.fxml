@@ -104,7 +104,7 @@
             <HBox prefHeight="112.0" prefWidth="444.0" spacing="15.0">
                <children>
                   <Label prefHeight="27.0" prefWidth="109.0" styleClass="label-name-bold" text="Begrunnelse" />
-                  <TextArea fx:id="begrunnelse" prefHeight="86.0" prefWidth="339.0" styleClass="label-normal-objects"/>
+                  <TextArea fx:id="begrunnelse" prefHeight="86.0" prefWidth="339.0" styleClass="label-normal-objects" />
                </children>
             </HBox>
          </children>
@@ -119,5 +119,8 @@
             </LinearGradient>
          </stroke>
       </Rectangle>
+      <Text layoutX="603.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: yellow;" text="Ikke svart" styleClass="label-normal-objects" />
+      <Text layoutX="740.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #44cc44;" text="Deltar" styleClass="label-normal-objects" />
+      <Text layoutX="835.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Deltar ikke" styleClass="label-normal-objects" />
    </children>
 </AnchorPane>
