@@ -4,9 +4,7 @@ package klient;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 
 import javafx.event.ActionEvent;
@@ -32,7 +30,7 @@ public class InnloggingController {//implements Initializable
 	public DataOutputStream outToServer;
 	public BufferedReader inFromServer;
 	private static String modifiedSentence;
-
+	
 	public void initialize() {
 	}
 

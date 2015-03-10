@@ -12,8 +12,7 @@ public class Gruppe {
 		
 	}
 	
-	public Gruppe(Avtale avtale, ArrayList<Bruker> medlemmer) {
-		setAvtale(avtale);
+	public Gruppe(ArrayList<Bruker> medlemmer) {
 		setMedlemmer(medlemmer);
 	}
 	
@@ -31,20 +30,6 @@ public class Gruppe {
 		@Override
 		public String getName() {
 			return "Medlemliste";
-		}
-		
-	};
-	
-	private Property<Avtale> avtaleProperty = new ObjectPropertyBase<Avtale>(null) {
-
-		@Override
-		public Object getBean() {
-			return this;
-		}
-
-		@Override
-		public String getName() {
-			return "Avtale";
 		}
 		
 	};
@@ -70,7 +55,6 @@ public class Gruppe {
 			}
 			else {
 				medlemListeProperty.getValue().add(medlem);
-				medlem.addAvtale(avtaleProperty.getValue());
 			}
 		}
 		catch (NullPointerException e) {
@@ -78,7 +62,6 @@ public class Gruppe {
 			medlemmet.add(medlem);
 			medlemListeProperty.setValue(medlemmet);
 		}
-		medlem.addAvtale(avtaleProperty.getValue());
 	}
 	
 	public void removeMedlem(Bruker medlem) {
@@ -91,7 +74,6 @@ public class Gruppe {
 			}
 			if (duplikat) {
 				medlemListeProperty.getValue().remove(medlem);
-				medlem.deleteAvtale(avtaleProperty.getValue());
 			}
 			else {
 				System.out.println("Brukeren er ikke medlem av gruppen");
@@ -102,12 +84,4 @@ public class Gruppe {
 		}
 	}
 	
-	public Avtale getAvtale() {
-		return avtaleProperty.getValue();
-	}
-	
-	public void setAvtale(Avtale avtale) {
-		avtaleProperty.setValue(avtale);
-	}
-
 }

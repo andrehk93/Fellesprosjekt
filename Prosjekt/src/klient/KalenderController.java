@@ -13,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -39,6 +38,15 @@ public class KalenderController {
 	private String[] avtale_liste;
 	private int filtverdi;
 	public static String[] enheter;
+	public static List<String> list;
+	public static String melding;
+	private ObservableList<String> items;
+	public static ArrayList<ArrayList<String>> notifikasjon_utenMelding;
+	public static ArrayList<String> utenMelding;
+	public static ArrayList<String> meldinger;
+	public static ArrayList<Varsel> oppdelte_notifikasjoner;
+	public static String valg;
+	private boolean ingenInvitasjoner = false;
 	
 	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
@@ -49,13 +57,17 @@ public class KalenderController {
 	}
 	
 	private void flushView() throws Exception{
+		notifikasjon_utenMelding = new ArrayList<ArrayList<String>>();
 		dager = new ArrayList<Dag>();
+		meldinger = new ArrayList<String>();
+		list = new ArrayList<String>();
 		ruter.getChildren().clear();
 		getDays();
 		loadGrid();	
 		svarInvite();
-		showNotifications();
 		showInvitasjoner();
+		showNotifications();
+		setItems();
 		showBruker();
 	}
 	
@@ -115,6 +127,7 @@ public class KalenderController {
 	}
 	
 	private void showBruker() {
+		System.out.println("navnet: " + Klienten.bruker.getNavn());
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
 	
@@ -124,65 +137,93 @@ public class KalenderController {
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
-				enheter = newValue.split(" ");
-				if (enheter[0].equals("Invitasjon")) {
-					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+				try {
+					enheter = newValue.split(" ");
+					if (enheter[0].equals("Invitasjon:")) {
+						ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+					}
+					else {
+						try {
+							pop(newValue);
+						} catch (Exception e) {
+							System.out.println("FEIL: " + e);
+						}
+					}
 				}
-				else {
+				catch (NullPointerException e) {
 					
 				}
+			
 			}
 			
 		};
 		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
 	}
 	
+	private void pop(String notifikasjon_trykketPå) throws Exception {
+		String[] enhetene = notifikasjon_trykketPå.split(" ");
+		valg = enhetene[1];
+		Popup pop = new Popup();
+		pop.start(new Stage());
+	}
+	
 	private void showInvitasjoner() throws Exception {
 		String[] notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
-		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < notifikasjonene.length; i++) {
 			if (notifikasjonene[i].trim().equals("NONE") || notifikasjonene[i].trim().equals("-1")) {
-				list.add("Ingen notifikasjoner");
+				ingenInvitasjoner = true;
 			}
 			else if (notifikasjonene[i].equals("\r\n")) {
-				Popup pop = new Popup();
-				pop.start(new Stage());
 			}
 			else {
 				list.add("Invitasjon: " + notifikasjonene[i] + " (Dobbeltrykk)");
+				ingenInvitasjoner = false;
 			}
 		}
-		ObservableList<String> items = FXCollections.observableList(list);
-		notifikasjoner.setItems(items);
 	}
 	
 	private void showNotifications() throws Exception {
 		boolean meldingFerdig = false;
+		ArrayList<String> resten = new ArrayList<String>();
+		oppdelte_notifikasjoner = new ArrayList<Varsel>();
 		notifikasjon_liste = Klienten.getVarsel().split(" ");
-		List<String> list = new ArrayList<String>();
-		ArrayList<String> utenMelding = new ArrayList<String>();
-		String svar = "";
-		for (String notifikasjon_del : notifikasjon_liste) {
-			if (! notifikasjon_del.equals("!ENDMESS!") && ! meldingFerdig) {
-				svar += notifikasjon_del;
+		String meld = "";
+		if (! notifikasjon_liste[0].trim().toString().equals("NONE")) {
+			for (String notifikasjon_oppdeling : notifikasjon_liste) {
+				if(! notifikasjon_oppdeling.equals("!ENDMESS!") && ! meldingFerdig) {
+					meld += notifikasjon_oppdeling + " ";
+				}
+				else if(notifikasjon_oppdeling.equals("!ENDMESS!")) {
+					meldingFerdig = true;
+				}
+				else if (! notifikasjon_oppdeling.equals("!END!")) {
+					resten.add(notifikasjon_oppdeling);
+				}
+				else if (notifikasjon_oppdeling.equals("!END!")){
+					Varsel vars = new Varsel(meld, null, false, null, null);
+					vars.setBrukerSendtFra(resten.get(0));
+					vars.setAvtaleid(resten.get(1));
+					vars.setTidspunkt(resten.get(2));
+					list.add("Notifikasjon: " + vars);
+					oppdelte_notifikasjoner.add(vars);
+					resten = new ArrayList<String>();
+					meld = "";
+					meldingFerdig = false;
+					ingenInvitasjoner = false;
+				}
+				
 			}
-			else if (notifikasjon_del.equals("!ENDMESS!")) {
-				meldingFerdig = true;
-			}
-			else if (! notifikasjon_del.equals("!END!")){
-				utenMelding.add(notifikasjon_del);
-			}
-		}
-		
-		if (notifikasjoner.getItems().isEmpty()) {
-			ObservableList<String> items = FXCollections.observableList(list);
-			notifikasjoner.setItems(items);
 		}
 		else {
-			list.addAll(notifikasjoner.getItems());
-			ObservableList<String> items = FXCollections.observableList(list);
-			notifikasjoner.setItems(items);
+			if (ingenInvitasjoner) {
+				list.add("Ingen notifikasjoner");
+			}
 		}
+	}
+	
+	private void setItems() {
+		items = FXCollections.observableList(list);
+		notifikasjoner.setItems(items);
 	}
 	
 	private void setMonth(int month){
@@ -280,7 +321,7 @@ public class KalenderController {
 			else {
 				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 			}
-			}
+		}
 		catch (NullPointerException e) {
 		}
 		
@@ -299,7 +340,7 @@ public class KalenderController {
 				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
 				Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid).split(" ");
+		String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
@@ -371,10 +412,5 @@ public class KalenderController {
 	@FXML
 	private void logout() throws IOException{
 		Klienten.logout();
-	}
-	
-	@FXML
-	private void changeFiltrering(ActionEvent e) {
-		
 	}
 }

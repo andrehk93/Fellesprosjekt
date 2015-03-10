@@ -77,6 +77,9 @@ public class KalenderProtocol {
 			case "STATUS":
 				kalenderdb.changeStatus(user, input[2], input[3]);
 				break;
+			case "NOTIFICATION":
+				kalenderdb.changeNotification(user, input[2], input[3]);
+				break;
 		}
 	}
 
@@ -91,7 +94,8 @@ public class KalenderProtocol {
 				
 			case "APP":
 									// DATO, FRA, TIL, ROM
-				output = kalenderdb.createApp(user, input[1], input[2], input[3], input[4]) + "";
+				String beskrivelse = findMessage(Arrays.copyOfRange(input, 5, input.length));
+				output = kalenderdb.createApp(user, input[1], input[2], input[3], input[4], beskrivelse) + "";
 				break;
 			case "INVITE":
 				output = kalenderdb.inviteUser(input[1], input[2]);
@@ -144,6 +148,9 @@ public class KalenderProtocol {
 			case "APPDETAILS":
 				output = kalenderdb.getAppDetails(input[1]);
 				break;
+			case "APPNAME":
+				output = kalenderdb.getAppNavn(input[1]);
+				break;
 			case "APPTIME":
 				output = kalenderdb.getAppTime(input[1]);
 				break;
@@ -158,6 +165,9 @@ public class KalenderProtocol {
 				break;
 			case "APPATTS":
 				output = kalenderdb.getAppAttendees(input[1], input[2]);
+				break;
+			case "ALLAPPATTS":
+				output = kalenderdb.getAllAppAttendees(input[1]);
 				break;
 			case "INVS":
 				output = kalenderdb.getInvitations(user);
@@ -177,8 +187,11 @@ public class KalenderProtocol {
 			case "GROUP":
 				output = kalenderdb.getGroup(input[1]);
 				break;
+			case "STATUS":
+				output = kalenderdb.getStatus(input[1], input[2]);
+				break;
 			case "USERFULLNAME":
-				output = kalenderdb.getUserDetails(input[1]);
+				output = kalenderdb.getUserFullname(input[1]);
 				break;
 			case "LASTID":
 				output = kalenderdb.getLastID();
@@ -186,6 +199,9 @@ public class KalenderProtocol {
 			case "USERS":
 				output = kalenderdb.getUsers();
 				break;
+			case "USERDETAILS":
+				output = kalenderdb.getUserDetails(input[1]);
+				System.out.println(output);
 			}
 			
 			if(output.trim().equals("")){

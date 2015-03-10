@@ -1,15 +1,11 @@
 package klient;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
 public class Bruker {
 	
@@ -18,6 +14,8 @@ public class Bruker {
 	}
 	
 	public Bruker(String navn, String email){
+		System.out.println("NAVNET : " + navn);
+		System.out.println("EMAIL: " + email);
 		setNavn(navn);
 		setEmail(email);
 		addListeners();
@@ -137,9 +135,6 @@ public class Bruker {
 			}
 			if (! duplikat) {
 				varselListeProperty.getValue().add(avtVarsel);
-				System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
-						" har fått et varsel: \n" + avtVarsel.getMelding() +
-						"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
 			}
 			else {
 				System.out.println("Varselet er der fra før av.");
@@ -149,9 +144,6 @@ public class Bruker {
 			ArrayList<Varsel> varselet = new ArrayList<Varsel>();
 			varselet.add(avtVarsel);
 			varselListeProperty.setValue(varselet);
-			System.out.println("\n" + avtVarsel.getBrukerSendtTil().getNavn() + 
-					" har fått et varsel: \n" + avtVarsel.getMelding() +
-					"\nSignatur: " + avtVarsel.getBrukerSendtFra().getNavn() + "\n");
 		}
 		
 	}
@@ -165,6 +157,9 @@ public class Bruker {
 	public void addListeners() {
 	}
 	
+	public String toString(){
+		return getNavn() + " (" + getEmail().trim() + ")";
+	}
 	
 	
 }

@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.net.ConnectException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -44,6 +43,11 @@ public class Klienten {
 	
 	public static void setTilkobling(boolean truth) {
 		tilkobling = truth;
+	}
+	
+	public static void setLest(String email, String avtaleid) throws IOException {
+		String toServer = "CHANGE NOTIFICATION " + email + " " + avtaleid;
+		sendTilServer(toServer);
 	}
 	
 	public boolean getTilkobling() {
@@ -83,8 +87,13 @@ public class Klienten {
 		}
 	}
 	
-	public static String getDeltakere(String avtaleid) throws IOException {
-		String toServer = "GET APPATTS " + avtaleid + " " + "1";
+	public static String getDeltakere(String avtaleid, String status) throws IOException {
+		String toServer = "GET APPATTS " + avtaleid + " " + status;
+		return sendTilServer(toServer);
+	}
+	
+	public static String getAlleInviterte(String avtaleid) throws IOException {
+		String toServer = "GET ALLAPPATTS " + avtaleid;
 		return sendTilServer(toServer);
 	}
 	
@@ -110,7 +119,6 @@ public class Klienten {
 	}
 	
 	public static String sendTilServer(String message) throws IOException {
-		String modifiedSentence;
 		try {
 			outToServer.writeBytes(message + "\r\n");
 		}
@@ -121,7 +129,7 @@ public class Klienten {
 		String output = "";
 		String tempString = inFromServer.readLine();
 		while(tempString.length() > 0) {
-			output += modifiedSentence = tempString + "\r\n";
+			output += tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
 		return output;
@@ -139,7 +147,7 @@ public class Klienten {
 	}
 	
 	public static String inviterDeltaker(String deltaker, String avtaleid) throws IOException {
-		String toServer = "CREATE INVITE " + deltaker + " " + avtaleid;
+		String toServer = "CREATE INVITE " + deltaker.trim() + " " + avtaleid.trim();
 		return sendTilServer(toServer);
 	}
 	
@@ -149,8 +157,13 @@ public class Klienten {
 	}
 	
 	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
-		String toServer = "CHANGE STATUS " + avtaleid + " " + newStatus;
+		String toServer = "CHANGE STATUS " + avtaleid.trim() + " " + newStatus;
 		sendTilServer(toServer);
+	}
+	
+	public static String getStatus(String avtaleid, String email) throws IOException {
+		String toServer = "GET STATUS " + avtaleid + " " + email;
+		return sendTilServer(toServer);
 	}
 	
 	public static String getRomStr(String romnavn) throws IOException {
@@ -165,7 +178,7 @@ public class Klienten {
 		for(String email : users){
 			toServer = "GET USERDETAILS "+email;
 			String[] userDetails = sendTilServer(toServer).split(" ");
-			Bruker user = new Bruker(userDetails[1]+" "+userDetails[2], userDetails[0]);
+			Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2]);
 			allUsers.add(user);
 		}
 		
@@ -176,9 +189,9 @@ public class Klienten {
 		return  sendTilServer("GET USERS").split(" ");
 	}
 	
-	public static String lagAvtale(TidsIntervall tid, Møterom rom) throws IOException {
+	public static String lagAvtale(TidsIntervall tid, Møterom rom, String avtalenavn) throws IOException {
 		String toServer = "CREATE APP " + tid.getDato().toString() + " "
-	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn();
+	+ tid.getStart().toString() + " " + tid.getSlutt().toString() + " " + rom.getNavn() + " " + avtalenavn + " ENDOFMESSAGE";
 		return sendTilServer(toServer);
 	}
 	
@@ -212,9 +225,13 @@ public class Klienten {
 		sendTilServer(toServer);
 	}
 	
+	public static String getAppNavn(String avtaleid) throws IOException {
+		String toServer = "GET APPNAME " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
 	public static void sendVarsel(String id, String email, String melding) throws IOException {
 		String toServer = "CREATE NOTIFICATION " + id + " "+ email + " " + melding + " ENDOFMESSAGE";
-		System.out.println("TO SERVER: " + toServer);
 		sendTilServer(toServer);
 	}
 	
