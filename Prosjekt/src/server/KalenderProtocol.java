@@ -8,6 +8,7 @@ public class KalenderProtocol {
 	
 	private int state = WAITING;
 	private String user;
+	private int rights;
 
 	public String processInput(String rawInput) throws Exception{
 		if(rawInput != null){
@@ -19,19 +20,15 @@ public class KalenderProtocol {
 			if(state == WAITING){
 				switch(input[0].toUpperCase()){
 					case "LOGIN":
-						if(kalenderdb.login(input[1], input[2])){
+						int loginResult = kalenderdb.login(input[1], input[2]);
+						if(loginResult >= 0){
 							state = LOGGEDIN;
 							user = input[1];
+							rights = loginResult;
 							return "OK";
 						} else {
 							return "NOK";
 						}
-					case "CREATE":
-						if(input[1] == "USER"){
-							createHandler(Arrays.copyOfRange(input, 1, input.length));
-							return "OK";
-						}
-						break;
 					default:
 						return "PERMISSION DENIED";
 				}
@@ -46,6 +43,10 @@ public class KalenderProtocol {
 					changeHandler(input);
 				case("INVITE"):
 					return createHandler(input);
+				case("ADD"):
+					return addHandler(input);
+				case("REMOVE"):
+					return removeHandler(input);
 				case("LOGOUT"):
 					state = WAITING;
 					return "Bye.";
@@ -89,7 +90,11 @@ public class KalenderProtocol {
 		switch(input[0].toUpperCase()){
 			case "USER":
 									// EPOST, FORNAVN, ETTERNAVN, PASSORD
-				output = kalenderdb.createUser(input[1], input[2], input[3], input[4]) + "";
+				if(rights > 0){
+					output = kalenderdb.createUser(input[1], input[2], input[3], input[4]) + "";
+				} else {
+					output = "PERMISSION DENIED";
+				}
 				break;
 				
 			case "APP":
@@ -202,6 +207,7 @@ public class KalenderProtocol {
 			case "USERDETAILS":
 				output = kalenderdb.getUserDetails(input[1]);
 				System.out.println(output);
+				break;
 			}
 			
 			if(output.trim().equals("")){
@@ -210,5 +216,30 @@ public class KalenderProtocol {
 				output = "INCORRECT INPUT";
 			}
 			return output;
+	}
+	
+	private String addHandler(String[] input) throws Exception{
+		KalenderDB kalenderdb = new KalenderDB();
+		String output = "-1";
+		switch(input[1]){
+			case "GROUPMEMBER":
+				kalenderdb.addGroupMember(input[2], Arrays.copyOfRange(input, 3, input.length));
+				output = "OK";
+				break;
+		}
+		return output;
+	}
+	
+	private String removeHandler(String[] input) throws Exception{
+		KalenderDB kalenderdb = new KalenderDB();
+		String output = "-1";
+		
+		switch(input[1]){
+			case "GROUPMEMBER":
+				kalenderdb.removeGroupMember(input[2], input[3]);
+				output = "OK";
+		}
+		
+		return output;
 	}
 }
