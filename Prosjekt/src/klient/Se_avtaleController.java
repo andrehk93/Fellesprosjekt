@@ -18,8 +18,8 @@ import javafx.scene.control.TextField;
 
 public class Se_avtaleController {
 	
-	private String fratid, tiltid, dato, rom, admin;
-	@FXML private TextField fra, til, startdato, sluttdato;
+	private String fratid, tiltid, dato, rom, admin, avtalenavn;
+	@FXML private TextField fra, til, startdato, sluttdato, tittel;
 	@FXML private TextArea begrunnelse;
 	@FXML private ListView<String> deltaker_listeview;
 	@FXML private RadioButton skal, skal_ikke, ikke_svart;
@@ -37,6 +37,7 @@ public class Se_avtaleController {
 		dato = detaljer[2];
 		rom = detaljer[3];
 		admin = detaljer[4];
+		avtalenavn = Klienten.getAppNavn(avtaleid);
 		List<String> deltaker_liste = new ArrayList<String>();
 		for (String deltaker : deltakere) {
 			if (deltaker.trim().equals("NONE")) {
@@ -59,6 +60,7 @@ public class Se_avtaleController {
 		til.setText(tiltid);
 		startdato.setText(dato);
 		sluttdato.setDisable(true);
+		tittel.setText(avtalenavn);
 	}
 	
 	public boolean skal() {
