@@ -15,9 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
@@ -99,32 +97,20 @@ public class grupper_controller {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				søk = newValue;
-				if (søkBrukere.isEmpty() && søk != ""){
-					brukerliste(søkBrukere);
-
-		    	} 
-		    	else{
-		            brukerliste(søkBrukere);
-		            
-		            System.out.println(søkBrukere);
-		    	}
-				if (!medlemmer.isEmpty()){
-					gruppemedlemmer_liste(medlemmer);
-				}
 				
 				søkBrukere = newArrayList();
 		    	if (søk != ""){
 		    		for (int i = 0; i < brukere.size(); i++){
-	    				String j = brukere.get(i).getNavn().substring(0, søk.length());
-	    				if (søk.toLowerCase().equals(j.toLowerCase())){
-		    				if (!søkBrukere.contains(brukere.get(i)) && !medlemmer.contains(brukere.get(i))){
-		    					søkBrukere.add(brukere.get(i));
-		    				}
-		    					
+		    			if (søk.length() < brukere.get(i).getNavn().length()){
+		    				String j = brukere.get(i).getNavn().substring(0, søk.length());
+		    				if (søk.toLowerCase().equals(j.toLowerCase())){
+			    				if (!søkBrukere.contains(brukere.get(i)) && !medlemmer.contains(brukere.get(i))){
+			    					søkBrukere.add(brukere.get(i));
+			    				}
+			    					
+			    			}
 		    			}
-	    				
 		    		}
-		    		System.out.println(søkBrukere);
 		    		brukerliste(søkBrukere);
 		    	}
 		    	else {
@@ -147,18 +133,11 @@ public class grupper_controller {
     	if (!søkBrukere.contains(brukerliste.getSelectionModel().getSelectedItem())){
     		
     	}
-    	if (medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem())){
-    		legg_til_lbl.setText("Brukeren er allerede i gruppen");
-		}else {
-			legg_til_lbl.setText("");
-		}
     	
     	if (brukerliste.getSelectionModel().getSelectedItem() != null && søkBrukere.isEmpty() && søk == "" && !medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem())){;
     		leggeTilIGruppe();
 			brukerliste(søkBrukere);
-		}
-		
-		if (søkBrukere.isEmpty() && søk == "" && !medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem()) && !brukerliste.getSelectionModel().getSelectedItem().equals(null)){
+		}if (søkBrukere.isEmpty() && søk == "" && !medlemmer.contains(brukerliste.getSelectionModel().getSelectedItem()) && !brukerliste.getSelectionModel().getSelectedItem().equals(null)){
 			leggeTilIGruppe();
     	} else if (søkBrukere.isEmpty()){
     		leggeTilIGruppe();
@@ -208,6 +187,9 @@ public class grupper_controller {
 	public void lagre(){											// Kan ikke bli ferdig med før grupper-klassen er endret
     	gruppeNavn = gruppenavn.getText();
 		System.out.println(gruppeNavn);
+		if (medlemmer.size() <1){
+			legg_til_lbl.setText("*Du kan ikke lage en gruppe uten medlemmer.");
+		}
 	}
     
     @FXML
