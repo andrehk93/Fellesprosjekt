@@ -54,7 +54,7 @@ public class Gruppe {
 		return medlemListeProperty;
 	}
 	
-/*	public void addMedlem(Bruker medlem) throws IOException {
+	public void addMedlem(Bruker medlem) throws IOException {
 		boolean duplikat = false;
 		try {
 			for (int i = 0; i < medlemListeProperty.getValue().size(); i++) {
@@ -95,5 +95,5 @@ public class Gruppe {
 			System.out.println("Det er ingen medlemmer i gruppen");
 		}
 	}
-*/	
+	
 }

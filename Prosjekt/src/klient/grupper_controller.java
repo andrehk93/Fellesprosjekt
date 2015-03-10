@@ -187,8 +187,8 @@ public class grupper_controller {
 		if (medlemmer.size() <2){
 			legg_til_lbl.setText("*Du kan ikke lage en gruppe med mindre enn to personer.");
 		}
-		gruppe.setNavn(gruppeNavn);
-		Gruppe.setMedlemmer(medlemmer);
+//		gruppe.setNavn(gruppeNavn);
+//		gruppe.setMedlemmer(medlemmer);
 	}
     
     @FXML

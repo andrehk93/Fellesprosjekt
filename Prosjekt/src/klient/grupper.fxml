@@ -68,7 +68,7 @@
          </children>
       </HBox>
 
-      <Label fx:id="legg_til_lbl" layoutX="119.0" layoutY="569.0" prefHeight="27.0" prefWidth="318.0" textFill="#f20000" />
+      <Label fx:id="legg_til_lbl" layoutX="119.0" layoutY="569.0" prefHeight="27.0" prefWidth="400.0" textFill="#f20000" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4986e7" height="5.0" layoutX="89.0" layoutY="91.0" opacity="0.72" strokeType="INSIDE" strokeWidth="0.0" width="835.0">
          <stroke>
             <LinearGradient endX="1.0" endY="1.0">
@@ -83,4 +83,3 @@
 
    </children>
 </AnchorPane>
- 	
