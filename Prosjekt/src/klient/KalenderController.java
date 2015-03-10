@@ -101,8 +101,13 @@ public class KalenderController {
 		}
 	};
 	
+// GÅ TIL EN NY SCREEN*****************
 	public void grupperView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
+	}
+	
+	public void redigerBrukerView(ActionEvent event){
+		ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
 	}
 	
 	public void refreshKalender(ActionEvent event) throws Exception {

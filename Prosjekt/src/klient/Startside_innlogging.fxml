@@ -44,13 +44,6 @@
       						<Font name="Garamond" size="18.0" />
       					</font>
       				</Button>
-            		
-            		<!-- BUTTON - OPPRETT BRUKER  ******************-->
-            			<Button fx:id="opprettbruker" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nextPane" prefHeight="33.0" prefWidth="294.0" styleClass=" normalButton" text="Opprett bruker" wrapText="true">
-            					<font>
-            						<Font name="Segoe UI Semilight" size="18.0" />
-            					</font>
-            				</Button>
                </children>
                <GridPane.margin>
                   <Insets top="30.0" />
