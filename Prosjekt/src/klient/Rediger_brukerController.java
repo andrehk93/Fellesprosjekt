@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 public class Rediger_brukerController {
 
 	@FXML// GÅ TIL BRUKEROPPRETTING KNAPPEN
-	private void OpprettingView(ActionEvent event)  {
+	private void opprettingView(ActionEvent event)  {
 		ScreenNavigator.loadScreen(ScreenNavigator.OPPRETTING);
 	}
 	@FXML
