@@ -244,4 +244,14 @@ public class Klienten {
 		String toServer = "GET LASTID";
 		return sendTilServer(toServer);
 	}
+	
+	public static ArrayList<Bruker> getGroupMembers(int gruppeid) throws IOException{
+		String toServer = "GET GROUP " + gruppeid;
+		String[] members = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> memberList= new ArrayList<Bruker>();
+		for(String email : members){
+			memberList.add(new Bruker(Klienten.getBruker(email), email));
+		}
+		return memberList;
+	}
 }

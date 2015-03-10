@@ -53,9 +53,9 @@ public class KalenderDB {
 		return output;
 	}
 	
-	public Boolean login(String email, String password) throws Exception {
+	public int login(String email, String password) throws Exception {
 		init();
-		String query = "SELECT epost, passord, salt FROM `bruker` WHERE epost = ?";
+		String query = "SELECT epost, passord, salt, rettigheter FROM `bruker` WHERE epost = ?";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, email);
 		ResultSet result = statement.executeQuery();
@@ -63,16 +63,17 @@ public class KalenderDB {
 		result.next();
 		String servPass = result.getString(2);
 		String salt = result.getString(3);
+		int rights = Integer.parseInt(result.getString(4));
 		
 		String temp_pass = salt + password;
         
         String userPass =  toSha(temp_pass);
 		
 		if(userPass.equals(servPass)){
-			return true;
+			return rights;
 		}
 		
-		return false;
+		return -1;
 	}
 	
 	public String getAppNavn(String avtaleid) throws Exception {

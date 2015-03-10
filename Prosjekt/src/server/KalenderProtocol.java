@@ -8,6 +8,7 @@ public class KalenderProtocol {
 	
 	private int state = WAITING;
 	private String user;
+	private int rights;
 
 	public String processInput(String rawInput) throws Exception{
 		if(rawInput != null){
@@ -19,19 +20,15 @@ public class KalenderProtocol {
 			if(state == WAITING){
 				switch(input[0].toUpperCase()){
 					case "LOGIN":
-						if(kalenderdb.login(input[1], input[2])){
+						int loginResult = kalenderdb.login(input[1], input[2]);
+						if(loginResult >= 0){
 							state = LOGGEDIN;
 							user = input[1];
+							rights = loginResult;
 							return "OK";
 						} else {
 							return "NOK";
 						}
-					case "CREATE":
-						if(input[1] == "USER"){
-							createHandler(Arrays.copyOfRange(input, 1, input.length));
-							return "OK";
-						}
-						break;
 					default:
 						return "PERMISSION DENIED";
 				}
@@ -89,7 +86,11 @@ public class KalenderProtocol {
 		switch(input[0].toUpperCase()){
 			case "USER":
 									// EPOST, FORNAVN, ETTERNAVN, PASSORD
-				output = kalenderdb.createUser(input[1], input[2], input[3], input[4]) + "";
+				if(rights > 0){
+					output = kalenderdb.createUser(input[1], input[2], input[3], input[4]) + "";
+				} else {
+					output = "PERMISSION DENIED";
+				}
 				break;
 				
 			case "APP":
@@ -202,6 +203,7 @@ public class KalenderProtocol {
 			case "USERDETAILS":
 				output = kalenderdb.getUserDetails(input[1]);
 				System.out.println(output);
+				break;
 			}
 			
 			if(output.trim().equals("")){
