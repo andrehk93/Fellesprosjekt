@@ -181,7 +181,7 @@ public class grupper_controller {
     }
     
     @FXML
-	public void lagre(){											// Kan ikke bli ferdig med før grupper-klassen er endret
+	public void lagre(){											// Kan ikke bli ferdig med før gruppe-klassen er endret slik at man kan opprette grupper i DB
     	gruppeNavn = gruppenavn.getText();
 		System.out.println(gruppeNavn);
 		if (medlemmer.size() <2){
@@ -193,7 +193,7 @@ public class grupper_controller {
     
     @FXML
     public void forkast(){
-    	ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);  // Må endres etter grupper-klasse fix
+    	ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);  // Må endres etter gruppe-klassen er ordnet slik at man kan slette grupper
     }
     
     @FXML
