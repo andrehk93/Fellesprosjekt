@@ -20,8 +20,8 @@ import javafx.scene.text.Text;
 
 public class Se_avtaleController {
 	
-	private String fratid, tiltid, dato, rom, admin, avtalenavn;
-	@FXML private TextField fra, til, startdato, sluttdato, tittel;
+	private String fratid, tiltid, dato, rommet, admin, avtalenavn;
+	@FXML private TextField fra, til, startdato, tittel, rom;
 	@FXML private TextArea begrunnelse;
 	@FXML private ListView<HBox> deltaker_listeview;
 	@FXML private RadioButton skal, skal_ikke, ikke_svart;
@@ -35,7 +35,7 @@ public class Se_avtaleController {
 		fratid = detaljer[0];
 		tiltid = detaljer[1];
 		dato = detaljer[2];
-		rom = detaljer[3];
+		rommet = detaljer[3];
 		admin = detaljer[4];
 		avtalenavn = Klienten.getAppNavn(avtaleid);
 		String deltakerne = Klienten.getDeltakere(avtaleid, "1");
@@ -86,8 +86,8 @@ public class Se_avtaleController {
 		deltaker_listeview.setItems(addDeltakere);
 		fra.setText(fratid);
 		til.setText(tiltid);
+		rom.setText(rommet);
 		startdato.setText(dato);
-		sluttdato.setDisable(true);
 		if (avtalenavn.trim().equals("NONE")) {
 			tittel.setText(avtaleid + ": Ingen beskrivelse");
 		}

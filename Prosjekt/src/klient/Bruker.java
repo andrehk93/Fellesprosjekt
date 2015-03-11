@@ -14,20 +14,12 @@ public class Bruker {
 		
 	}
 	
-	public Bruker(String navn, String email){
-		System.out.println("NAVNET : " + navn);
-		System.out.println("EMAIL: " + email);
-		setNavn(navn);
-		setEmail(email);
-		setRights(0);
-		addListeners();
-	}
 	
 	public Bruker(String navn, String email, Number rights){
-		System.out.println("NAVNET : " + navn);
-		System.out.println("EMAIL: " + email);
-		setNavn(navn);
-		setEmail(email);
+		System.out.println("NAVNET : " + navn.trim());
+		System.out.println("EMAIL: " + email.trim());
+		setNavn(navn.trim());
+		setEmail(email.trim());
 		setRights(rights);
 		addListeners();
 	}
