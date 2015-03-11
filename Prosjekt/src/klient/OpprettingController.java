@@ -33,7 +33,7 @@ public class OpprettingController {
     
     @FXML
     void previousPane(ActionEvent event) {
-        ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+        ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
     }
 	@FXML// OPPRETT BRUKER - Gå til neste screen
 	private void nextPane(ActionEvent event) throws IOException, NoSuchAlgorithmException {

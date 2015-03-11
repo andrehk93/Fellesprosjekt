@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.Rediger_brukerController">
    <children>
       <Label layoutX="301.0" layoutY="14.0" prefHeight="85.0" prefWidth="398.0" styleClass="label-header" text="Redigering av brukere" />
@@ -16,15 +15,15 @@
             <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="297.0" spacing="10.0" styleClass="label-normal-objects">
                <children>
                   <Label prefHeight="32.0" prefWidth="270.0" text="Oversikt over eksisterende brukere" />
-                  <ListView prefHeight="296.0" prefWidth="321.0" styleClass="label-normal-objects" />
+                  <ListView fx:id="eksisterendeBrukere" prefHeight="296.0" prefWidth="321.0" styleClass="label-normal-objects" />
                </children>
             </VBox>
             <HBox alignment="CENTER" prefHeight="323.0" prefWidth="101.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="319.0" prefWidth="138.0" spacing="15.0" styleClass="specialButton">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="&gt;&gt;" />
-                        <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" styleClass="specialButton" text="&lt;&lt;" />
+                        <Button fx:id="add" mnemonicParsing="false" onAction="#leggTilBruker" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="&gt;&gt;" />
+                        <Button fx:id="remove" mnemonicParsing="false" onAction="#fjernBruker" prefHeight="46.0" prefWidth="63.0" styleClass="specialButton" text="&lt;&lt;" />
                      </children>
                   </VBox>
                </children>
@@ -32,8 +31,8 @@
             <VBox alignment="TOP_CENTER" prefHeight="323.0" prefWidth="293.0" spacing="10.0">
                <children>
                   <Label prefHeight="27.0" prefWidth="123.0" text="Valgte brukere " />
-                  <ListView prefHeight="224.0" prefWidth="293.0" styleClass="label-normal-objects" />
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Slett" />
+                  <ListView fx:id="slettListe" prefHeight="224.0" prefWidth="293.0" styleClass="label-normal-objects" />
+                  <Button fx:id="slett" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#slettBrukere" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Slett" />
                </children>
             </VBox>
          </children>
