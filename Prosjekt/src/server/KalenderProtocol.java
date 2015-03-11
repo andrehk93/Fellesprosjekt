@@ -231,6 +231,8 @@ public class KalenderProtocol {
 					rights = Integer.parseInt(output);
 				}
 				break;
+			case "GROUPS":
+				output = kalenderdb.group().getGroups(input[1]);
 			}
 			
 			if(output.trim().equals("")){

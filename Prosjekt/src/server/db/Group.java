@@ -101,7 +101,30 @@ public class Group {
 		while(result.next()){
 			output += result.getString(1)+" ";
 		}
-		return output;
+		if(output.length() > 1){
+			return output.substring(0, output.length()-1);
+		} else {
+			return "";
+		}
+	}
+	
+	// GROUPS
+	public String getGroups(String user) throws Exception {
+		query = "SELECT gruppeid WHERE epost = ?";
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		if(output.length() > 1){
+			return output.substring(0, output.length()-1);
+		} else {
+			return "";
+		}
 	}
 	
 }
