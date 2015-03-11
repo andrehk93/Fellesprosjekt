@@ -117,8 +117,8 @@ public class UkesvisningController {
 		stack.setMinSize(0, 0);
 		StackPane.setAlignment(box, Pos.TOP_LEFT);
 		StackPane.setAlignment(text, Pos.TOP_LEFT);
-		StackPane.setMargin(box, new Insets(margin,0,0,0));
-		StackPane.setMargin(text, new Insets(margin,0,0,0));
+		StackPane.setMargin(box, new Insets(margin,0,0,1));
+		StackPane.setMargin(text, new Insets(margin,0,0,1));
 		bokser.add(stack);
 		ruter.add(stack, day, gridPos);
 		GridPane.setValignment(stack, VPos.TOP);
@@ -146,7 +146,7 @@ public class UkesvisningController {
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{
-					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+					//ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
 				}
 			}
 		});
