@@ -129,7 +129,7 @@ public class Klienten {
 		}
 		String output = "";
 		String tempString = inFromServer.readLine();
-		while(tempString.length() > 0) {
+		while(tempString != null && tempString.length() > 0) {
 			output += tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
