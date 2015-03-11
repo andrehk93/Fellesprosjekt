@@ -60,7 +60,7 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 	
-	public static boolean login(String brukernavn, String passord) throws IOException, NoSuchAlgorithmException {	
+	public static String login(String brukernavn, String passord) throws IOException, NoSuchAlgorithmException {	
 		
 		if(socket.isClosed()){
 			init();
@@ -81,11 +81,8 @@ public class Klienten {
 		if (svar.trim().equals("OK")) {
 			String navn = getBruker(brukernavn);
 			bruker = new Bruker(navn, brukernavn);
-			return true;
 		}
-		else {
-			return false;
-		}
+		return svar.trim();
 	}
 	
 	public static String getDeltakere(String avtaleid, String status) throws IOException {
