@@ -186,7 +186,7 @@ public class UkesvisningController {
 				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
 				Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid,"0").split(" ");
+		String[] deltakere = Klienten.getAlleInviterte(avtaleid).split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
@@ -202,6 +202,7 @@ public class UkesvisningController {
 		Klienten.avtaler.add(avtale);
 		Dag dagen = new Dag(tid.getDato());
 		dagen.addAvtale(avtale);
+		System.out.println("Deltakere for "+avtaleid+": "+deltaker_liste);
 	}
 	
 	private Dag getDag(LocalDate dato) {

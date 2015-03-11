@@ -61,11 +61,8 @@ public class Endre_avtaleController {
 	private int sluttT;
 	private int sluttM;
 	private LocalTime evigheten;
-	private ArrayList<String> repDays;
-	private ArrayList<LocalDate> repDates;
-	private ArrayList<String> repRooms;
-	private boolean isrep;
 	private Avtale avtalen;
+	private boolean fystegongen;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -76,15 +73,11 @@ public class Endre_avtaleController {
 	@FXML
 	Text feilDato = new Text();
 	@FXML
-	CheckBox gjentakelse = new CheckBox();
-	@FXML
     TextField avtalenavn = new TextField();
 	@FXML
     Text feilTekst = new Text();
     @FXML
     DatePicker startdato = new DatePicker();
-    @FXML
-    DatePicker sluttdato = new DatePicker();
     @FXML
     ChoiceBox<String> timeFra = new ChoiceBox<String>();
     @FXML
@@ -112,8 +105,6 @@ public class Endre_avtaleController {
     @FXML
     Button lagre_knapp = new Button();
     @FXML
-    CheckComboBox<String> repeatDays;
-    @FXML
     RadioButton radioSkal = new RadioButton();
     @FXML
     RadioButton radioVetIkke = new RadioButton();
@@ -125,11 +116,10 @@ public class Endre_avtaleController {
     private Bruker valg;
 	
 	public void initialize() throws IOException {
-		insertAppDetails();
-		repDates = new ArrayList<LocalDate>();
-		isrep = false;
-		sluttdato.setDisable(true);
 		gjeste_liste = new ArrayList<Bruker>();
+		gjestelisten = new ArrayList<HBox>();
+    	gjestene = FXCollections.observableList(gjestelisten);
+		insertAppDetails();
 		antall_gjester.setDisable(false);
 		antall_gjester.setEditable(true);
 		ant_gjester.setValue(0);
@@ -177,28 +167,7 @@ public class Endre_avtaleController {
 		};
 		antall_gjester.textProperty().addListener(tekstStr);
 		ant_gjester.addListener(antall);
-		sluttdato.setDisable(true);
 		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
-		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0,
-					Boolean arg1, Boolean arg2) {
-				if (gjentakelse.isSelected()) {
-					sluttdato.setDisable(false);
-					repeatDays.disableProperty().set(false);
-					isrep = true;
-				}
-				else {
-					sluttdato.setValue(null);
-					slutt = null;
-					sluttdato.setDisable(true);
-					repeatDays.disableProperty().set(true);
-					isrep = false;
-				}
-			}
-			
-		};
-		gjentakelse.selectedProperty().addListener(aktiver);
 		ChangeListener<Bruker> valgt_bruker = new ChangeListener<Bruker>() {
 
 			@Override
@@ -209,8 +178,6 @@ public class Endre_avtaleController {
 			
 		};
 		legg_til_gjester.getSelectionModel().selectedItemProperty().addListener(valgt_bruker);
-		
-		setUpCCB();
 		
 		
 		//layoutX="439.0" layoutY="261.0" prefWidth="150.0"
@@ -231,23 +198,19 @@ public class Endre_avtaleController {
 					minuttTil.setValue(null);
 					start = LocalTime.of(0, 0);
 					slutt = LocalTime.of(23, 59);
-					sluttdato.setValue(null);
-					sluttdato.setDisable(true);
 				}
 				else {
 					timeFra.setDisable(false);
 					timeTil.setDisable(false);
 					minuttFra.setDisable(false);
 					minuttTil.setDisable(false);
-					sluttdato.setDisable(false);
 				}
 			}
 			
 		};
 		hele_dagen.selectedProperty().addListener(allDay);
 		
-		gjestelisten = new ArrayList<HBox>();
-    	gjestene = FXCollections.observableList(gjestelisten);
+		
 		feilTekst.setVisible(false);
 		feilDato.setVisible(false);
 		List<String> list = new ArrayList<String>();
@@ -303,26 +266,25 @@ public class Endre_avtaleController {
 		}
 		avtalenavn.setText(avtalen.getAvtaleNavn());
 		startdato.setValue(avtalen.getTid().getDato());
-		timeFra.setValue(String.valueOf(avtalen.getTid().getStart().getHour()));
-		timeTil.setValue(String.valueOf(avtalen.getTid().getSlutt().getHour()));
-		minuttFra.setValue(String.valueOf(avtalen.getTid().getStart().getMinute()));
-		minuttTil.setValue(String.valueOf(avtalen.getTid().getSlutt().getMinute()));
-	}
-
-
-	private void setUpCCB() {
-		final ObservableList<String> strings = FXCollections.observableArrayList();
-		strings.add("Mandag");
-		strings.add("Tirsdag");
-		strings.add("Onsdag");
-		strings.add("Torsdag");
-		strings.add("Fredag");
-		strings.add("Lørdag");
-		strings.add("Søndag");
-		repeatDays.getItems().addAll(strings);
-		repeatDays.getCheckModel().getCheckedItems().addListener(handleRepDay);
-		repeatDays.disableProperty().set(true);
-	}
+		timeFra.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getStart().getHour())));
+		timeTil.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getSlutt().getHour())));
+		minuttFra.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getStart().getMinute())));
+		minuttTil.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getSlutt().getMinute())));
+		valgt_rom.setText(avtalen.getRom().getNavn());
+		valg = new Bruker();
+		for(Bruker b : avtalen.getDeltakere()){
+			addGjestenEgentlig(b);
+			gjeste_liste.add(b);
+		}
+		valg = null;
+    }
+    
+    private String timeStringFormat(String s){
+    	if(s.length()==1){
+    		return "0"+s;
+    	}
+    	return s;
+    }
 
 
 	public void showRom(ArrayList<String> rommene) {
@@ -349,43 +311,15 @@ public class Endre_avtaleController {
 			@Override
 			public void changed(ObservableValue<? extends LocalDate> arg0,
 					LocalDate arg1, LocalDate arg2) {
-				if (sjekkDato(startdato.getValue(), sluttdato.getValue())) {
-					dato = startdato.getValue();
-					findDates();
+				if(arg2.isBefore(LocalDate.now())){
+					feilDato.setVisible(true);
 				}
-				else {
-					repDates.add(startdato.getValue());
+				else{
+					feilDato.setVisible(false);
 				}
 			}
     	};
     	startdato.valueProperty().addListener(datoEndring);
-    	sluttdato.valueProperty().addListener(datoEndring);
-    }
-    
-    public boolean sjekkDato(LocalDate start, LocalDate slutt) {
-    	try {
-    		if (gjentakelse.isSelected()) {
-    			if (startdato.getValue().isBefore(sluttdato.getValue())) {
-    				feilDato.setVisible(false);
-    				dato = start;
-    				tilDato = slutt;
-    				return true;
-    			}
-    			else {
-    				sluttdato.setValue(startdato.getValue());
-    				feilDato.setVisible(true);
-    				return false;
-    			}
-    		}
-    		else {
-    			dato = start;
-    			return false;
-    		}
-    	}
-    	catch (NullPointerException e) {
-    		feilDato.setVisible(false);
-    		return false;
-    	}
     }
     
     private DayOfWeek findWeekDay(String dag) {
@@ -406,32 +340,6 @@ public class Endre_avtaleController {
     		return DayOfWeek.SUNDAY;
     	}
     	return null;
-    }
-    
-    private void findDates() {
-    	LocalDate i = dato;
-    	System.out.println("HEI PÅ DEG!!! YO!!");
-    	repDates = new ArrayList<LocalDate>();
-    	repDates.add(i);
-    	for(String day : repDays){
-    		if(findWeekDay(day).getValue()-i.getDayOfWeek().getValue()>0){
-    			int diff = findWeekDay(day).getValue()-i.getDayOfWeek().getValue();
-    			i = i.plusDays(diff);
-    			repDates.add(i);
-    		}
-    	}
-    	while(i.isBefore(tilDato)) {
-    		for(String day : repDays){
-    			DayOfWeek dag = findWeekDay(day);
-    			System.out.println(dag);
-    			int diff = dag.getValue()-i.getDayOfWeek().getValue();
-    			if(diff<=0){
-    				diff += 7;
-    			}
-    			i = i.plusDays(diff);
-    			repDates.add(i);
-    		}
-    	}
     }
     
     @FXML
@@ -503,17 +411,7 @@ public class Endre_avtaleController {
 			}
 		}
 	};
-	
-	ListChangeListener<? super String> handleRepDay = new ListChangeListener<String>() {
-		@Override
-		public void onChanged(ListChangeListener.Change<? extends String> c) {
-			repDays.clear();
-			repDays.addAll(repeatDays.getCheckModel().getCheckedItems());
-			findDates();
-		}
-	};
 
-    
     public boolean sjekkTid(LocalTime start, LocalTime slutt) {
     	if (start == evigheten || slutt == evigheten) {
     		return true;
@@ -554,8 +452,12 @@ public class Endre_avtaleController {
     
     @FXML
     private void addGjesten(ActionEvent event) {
+    	Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
+    	addGjestenEgentlig(selectedUser);
+    }
+    
+    private void addGjestenEgentlig(Bruker selectedUser){
     	if (valg != null) {
-    		Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
         	for(Bruker gjest : gjeste_liste){
         		if(gjest.getEmail() == selectedUser.getEmail()){
         			System.out.println("Brukeren er allerede invitert");
@@ -593,26 +495,13 @@ public class Endre_avtaleController {
 	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), Integer.parseInt(antall_gjester.getText()) + "");
 	    	}
 	    	System.out.println("ROMMENE: " + rom);
-	    	if (isrep){
-	    		repRooms = new ArrayList<String>();
-	    		for(LocalDate date : repDates){
-	    			String[] besteRom = Klienten.getRom(date.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "").split(" ");
-	    			repRooms.add(besteRom[0]);
-	    		}
-	    		ArrayList<String> beskjed = new ArrayList<String>();
-	    		beskjed.add("Beste rom har blitt automatisk valgt");
-	    		showRom(beskjed);
-	    		return;
-	    	}
-	    	else {
-	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
-	    		ArrayList<String> rommene = new ArrayList<String>();
-		    	String[] rom_listen = rom.split(" ");
-		    	for (int i = 0; i < rom_listen.length; i++) {
-		    		rommene.add(rom_listen[i]);
-				}
-		    	showRom(rommene);
-	    	}
+	    	rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
+	    	ArrayList<String> rommene = new ArrayList<String>();
+		    String[] rom_listen = rom.split(" ");
+		    for (int i = 0; i < rom_listen.length; i++) {
+		    	rommene.add(rom_listen[i]);
+			}
+		    showRom(rommene);
     	}
     	catch (NullPointerException e) {
     		System.out.println("Må fylle ut avgjørende felter");
@@ -662,31 +551,22 @@ public class Endre_avtaleController {
 		System.out.println(slutt);
 		System.out.println(dato);
 		Møterom rom =  new Møterom(100, valgt_rom.getText());
-		if (startdato.getValue() != null && repDates.isEmpty()) {
-			repDates.add(startdato.getValue());
-		}
-		for (LocalDate datoen : repDates) {
-			if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
-				System.out.println("GJESTENE: " + gjeste_liste);
-				if (isrep) {
-					int i = repDates.indexOf(datoen);
-					rom = new Møterom(100, repRooms.get(i));
-				}
-				String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, datoen), rom, avtalenavn.getText());
-				Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, datoen), rom, avtaleid);
-				for (Bruker deltaker : gjeste_liste) {
-					deltaker.inviterTilNyAvtale(avtale);
-				}
-				getBruker().inviterTilNyAvtale(avtale);
-				System.out.println("ENDREr status: ");
-				Klienten.changeStatus(avtaleid, "1");
-				for (Dag dag : KalenderController.dager) {
-					if (dag.getDato().equals(datoen)) {
-						dag.addAvtale(avtale);
-					}
-				}
-				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+		if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
+			System.out.println("GJESTENE: " + gjeste_liste);
+			String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom, avtalenavn.getText());
+			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
+			for (Bruker deltaker : gjeste_liste) {
+				deltaker.inviterTilNyAvtale(avtale);
 			}
+			getBruker().inviterTilNyAvtale(avtale);
+			System.out.println("ENDREr status: ");
+			Klienten.changeStatus(avtaleid, "1");
+			for (Dag dag : KalenderController.dager) {
+				if (dag.getDato().equals(dato)) {
+					dag.addAvtale(avtale);
+				}
+			}
+			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 		}
 	}
 	
