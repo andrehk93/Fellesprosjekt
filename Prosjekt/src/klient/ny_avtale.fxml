@@ -99,6 +99,7 @@
                                           <Insets top="7.0" />
                                        </HBox.margin>
                                     </ComboBox>
+                                    <Button fx:id="addGjestBtn" onAction="#addGjesten" Text="Legg til"/>
                                  </children>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />

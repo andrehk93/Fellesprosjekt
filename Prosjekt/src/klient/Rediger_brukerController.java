@@ -30,6 +30,7 @@ public class Rediger_brukerController {
 	
 	private ObservableList<Bruker> slettItems;
 	private List<Bruker> slettBrukere;
+	private ObservableList<Bruker> items;
 	
 	
 	
@@ -39,7 +40,7 @@ public class Rediger_brukerController {
 		brukere = new ArrayList<Bruker>();
 		brukere = Klienten.getAllUserDetails();
 		System.out.println("BRUKERNE: " + brukere);
-		ObservableList<Bruker> items = FXCollections.observableList(brukere);
+		items = FXCollections.observableList(brukere);
 		eksisterendeBrukere.setItems(items);
 		ChangeListener<Bruker> currentValg = new ChangeListener<Bruker>() {
 
@@ -95,8 +96,20 @@ public class Rediger_brukerController {
 	}
 	
 	@FXML
-	private void slettBrukere(ActionEvent event) {
-		
+	private void slettBrukere(ActionEvent event) throws IOException {
+		if (! slettBrukere.isEmpty()) {
+			for (Bruker bruker : slettBrukere) {
+				Klienten.deleteUser(bruker);
+			}
+			for (int i = 0; i < slettBrukere.size(); i++) {
+				brukere.remove(slettBrukere.get(i));
+				slettBrukere.remove(i);
+			}
+			slettItems = FXCollections.observableList(slettBrukere);
+			items = FXCollections.observableList(brukere);
+			slettListe.setItems(slettItems);
+			eksisterendeBrukere.setItems(items);
+		}
 	}
 
 }
