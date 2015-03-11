@@ -81,6 +81,11 @@ public class KalenderProtocol {
 			case "NOTIFICATION":
 				kalenderdb.changeNotification(user, input[2], input[3]);
 				break;
+			case "RIGHTS":
+				if(rights > 0){
+					kalenderdb.changeRights(input[2], input[3]);
+				}
+				break;
 		}
 	}
 
@@ -207,6 +212,18 @@ public class KalenderProtocol {
 			case "USERDETAILS":
 				output = kalenderdb.getUserDetails(input[1]);
 				System.out.println(output);
+				break;
+			case "RIGHTS":
+				if(input.length > 1 && rights > 0){
+					output = kalenderdb.getRights(input[1]);
+				} else if(input.length == 1){
+					output = kalenderdb.getRights(user);
+				} else {
+					output = "PERMISSION DENIED";
+				}
+				if(rights != Integer.parseInt(output)){
+					rights = Integer.parseInt(output);
+				}
 				break;
 			}
 			
