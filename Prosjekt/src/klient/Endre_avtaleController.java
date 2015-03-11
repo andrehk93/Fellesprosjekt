@@ -151,7 +151,7 @@ public class Endre_avtaleController {
 		
 		for(String email : ledigeBrukerEmailer){
 			if(email != null || email != ""){
-				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email));
+				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email,0));
 			}
 		}
 		
@@ -280,22 +280,17 @@ public class Endre_avtaleController {
 		}
 		minuttFra.setItems(minutter);
 		minuttTil.setItems(minutter);
-		timeFra.setValue("00");
-		timeTil.setValue("00");
-		minuttFra.setValue("00");
-		minuttTil.setValue("00");
 		timeFra.getSelectionModel().selectedIndexProperty().addListener(handleFraTime);
 		timeTil.getSelectionModel().selectedIndexProperty().addListener(handleTilTime);
 		minuttFra.getSelectionModel().selectedIndexProperty().addListener(handleFraMinutt);
 		minuttTil.getSelectionModel().selectedIndexProperty().addListener(handleTilMinutt);
-		startT = 999;
-		startM = 999;
-		sluttT = 999;
-		sluttM = 999;
+		startT = Integer.parseInt(timeFra.getValue());
+		startM = Integer.parseInt(minuttFra.getValue());
+		sluttT = Integer.parseInt(timeTil.getValue());
+		sluttM = Integer.parseInt(minuttTil.getValue());
 		evigheten = LocalTime.of(00, 00);
-		start = evigheten;
-		slutt = evigheten;
-		repDays = new ArrayList<String>();
+		start = LocalTime.of(startT, startM);
+		slutt = LocalTime.of(sluttT, sluttM);
 	}
     
     
@@ -580,7 +575,7 @@ public class Endre_avtaleController {
 	    		
 	    	});
 	    	String brukernavn = selectedUser.getNavn();
-	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail());
+	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail(),0);
 	    	boks.getChildren().add(new Text(brukernavn));
 	    	showGjest(boks);
 	    	gjeste_liste.add(gjest);
