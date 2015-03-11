@@ -15,6 +15,7 @@ import org.controlsfx.control.CheckComboBox;
 import com.sun.javafx.css.StyleCache.Key;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
+
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -48,6 +49,7 @@ public class ny_avtale_controller {
 	
 	Property<Number> ant_gjester = new SimpleIntegerProperty();
 	private ArrayList<Bruker> gjeste_liste;
+	private ArrayList<Gruppe> gruppe_liste;
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
@@ -111,15 +113,31 @@ public class ny_avtale_controller {
     @FXML
     CheckComboBox<String> repeatDays;
     List<HBox> gjestelisten;
+    List<HBox> gruppelisten;
+    
     ObservableList<HBox> gjestene;
+    ObservableList<HBox> gruppene;
+    
+    @FXML
+    ListView<HBox> gruppeliste;
+    
+    @FXML
+    Button addGruppeBtn;
+    
+    @FXML
+    ComboBox<Gruppe> legg_til_gruppe;
     
     private Bruker valg;
+    private Gruppe valgGruppe;
+    private String ledigeGrupperId;
 	
 	public void initialize() throws IOException {
 		repDates = new ArrayList<LocalDate>();
 		isrep = false;
 		sluttdato.setDisable(true);
 		gjeste_liste = new ArrayList<Bruker>();
+		gruppe_liste = new ArrayList<Gruppe>();
+		gruppelisten = new ArrayList<HBox>();
 		antall_gjester.setDisable(false);
 		antall_gjester.setEditable(true);
 		ant_gjester.setValue(0);
@@ -145,7 +163,11 @@ public class ny_avtale_controller {
 			}
 		}
 		
+		ledigeGrupperId = Klienten.getGroups();
+		lagGrupper();
+		
 		legg_til_gjester.getItems().addAll(ledigeBrukere);
+		legg_til_gruppe.getItems().addAll(gruppe_liste);
 		ChangeListener<String> tekstStr = new ChangeListener<String>() {
 
 			@Override
@@ -169,6 +191,7 @@ public class ny_avtale_controller {
 		ant_gjester.addListener(antall);
 		sluttdato.setDisable(true);
 		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
+		FxUtil.autoCompleteComboBox(legg_til_gruppe, FxUtil.AutoCompleteMode.CONTAINING);
 		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0,
@@ -199,6 +222,17 @@ public class ny_avtale_controller {
 			
 		};
 		legg_til_gjester.getSelectionModel().selectedItemProperty().addListener(valgt_bruker);
+		
+		ChangeListener<Gruppe> valgt_gruppe = new ChangeListener<Gruppe>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Gruppe> arg0,
+					Gruppe arg1, Gruppe arg2) {
+				valgGruppe = arg2;
+			}
+			
+		};
+		legg_til_gruppe.getSelectionModel().selectedItemProperty().addListener(valgt_gruppe);
 		
 		setUpCCB();
 		
@@ -238,6 +272,7 @@ public class ny_avtale_controller {
 		
 		gjestelisten = new ArrayList<HBox>();
     	gjestene = FXCollections.observableList(gjestelisten);
+    	gruppene = FXCollections.observableList(gruppelisten);
 		feilTekst.setVisible(false);
 		feilDato.setVisible(false);
 		List<String> list = new ArrayList<String>();
@@ -514,7 +549,7 @@ public class ny_avtale_controller {
     		Text te = (Text) boks.getChildren().get(0);
     		if (bruker.getNavn().equals(te.getText())) {
     			gjeste_liste.remove(bruker);
-    			System.out.println("HERVED FJERNET");
+    			legg_til_gjester.getItems().add(bruker);
     		}
     		else {
     			System.out.println(boks.getChildren().get(0).toString());
@@ -526,9 +561,25 @@ public class ny_avtale_controller {
     	antall_gjester.setText(ant_gjester.getValue().intValue() + "");
     }
     
-    @FXML
-    public void addGjest(ActionEvent event) throws IOException {
-    	
+    public void addGjest(Bruker bruker) throws IOException {
+    	HBox boks = new HBox();
+    	Button kryss = new Button();
+    	kryss.setText("x");
+    	kryss.setOpacity(0.8);
+    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				removeGjest(boks);
+			}
+    		
+    	});
+    	String brukernavn = bruker.getNavn();
+    	boks.getChildren().add(new Text(brukernavn));
+    	boks.getChildren().add(boks);
+    	showGjest(boks);
+    	gjeste_liste.add(bruker);
+    	legg_til_gjester.getItems().remove(bruker);
     }
     
     @FXML
@@ -554,10 +605,11 @@ public class ny_avtale_controller {
 	    		
 	    	});
 	    	String brukernavn = selectedUser.getNavn();
-	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail(), 0);
 	    	boks.getChildren().add(new Text(brukernavn));
+	    	boks.getChildren().add(kryss);
 	    	showGjest(boks);
-	    	gjeste_liste.add(gjest);
+	    	gjeste_liste.add(selectedUser);
+	    	legg_til_gjester.getItems().remove(selectedUser);
     	}
     }
     
@@ -671,6 +723,66 @@ public class ny_avtale_controller {
 	
 	public Bruker getBruker() {
 		return Klienten.bruker;
+	}
+	
+	public void removeGruppe(HBox boks) {
+		
+	}
+	
+	@FXML
+	private void addGruppen() throws IOException {
+		if (valgGruppe != null) {
+    		Gruppe selectedGruppe = FxUtil.getComboBoxValue(legg_til_gruppe);
+    		System.out.println("SELECTED: " + selectedGruppe);
+        	for(Gruppe gruppe : gruppe_liste){
+        		System.out.println("LISTA SJÆL: " + gruppe_liste);
+        		if(gruppe.getNavn() == selectedGruppe.getNavn()){
+        			System.out.println("Gruppen er allerede invitert");
+        			return;
+        		}
+        	}
+	    	HBox boks = new HBox();
+	    	Button kryss = new Button();
+	    	kryss.setText("x");
+	    	kryss.setOpacity(0.8);
+	    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+	
+				@Override
+				public void handle(ActionEvent event) {
+					removeGruppe(boks);
+				}
+	    		
+	    	});
+	    	String gruppenavn = selectedGruppe.getNavn();
+	    	boks.getChildren().add(new Text(gruppenavn));
+	    	boks.getChildren().add(kryss);
+	    	showGrupper(boks, selectedGruppe);
+	    	gruppe_liste.add(selectedGruppe);
+	    	legg_til_gruppe.getItems().remove(selectedGruppe);
+    	}
+	}
+	
+	private void lagGrupper() throws NumberFormatException, IOException {
+		String[] gruppeId = ledigeGrupperId.split(" ");
+		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
+		if (gruppeId != null) {
+			for (String id : gruppeId) {
+				String gruppenavn = Klienten.getGroupName(id);
+				brukere = Klienten.getGroupMembers(id.trim());
+				Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
+				gruppe_liste.add(gruppe);
+			}
+		}
+	}
+	
+	private void showGrupper(HBox boks, Gruppe gruppe) throws IOException {
+		gruppene.add(boks);
+		gruppeliste.setItems(gruppene);
+    	for (Bruker bruker : gruppe.getMedlemmer()) {
+    		if (! gjeste_liste.contains(bruker))  {
+    			addGjest(bruker);
+    		}
+    	}
 	}
 	
 

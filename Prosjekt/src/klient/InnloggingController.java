@@ -41,8 +41,11 @@ public class InnloggingController {//implements Initializable
 		String svar = Klienten.login(brukernavn.getText(), passord.getText());
 		if (svar.equals("OK")) {
 			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
-		} else if(svar.equals("NOSUCHUSER")){
-			msg.setText("Brukernavnet eksisterer ikke");
+		} else if(svar.equals("NO SUCH USER")){
+			msg.setText("Brukernavnet eksisterer ikke!");
+		}
+		else {
+			msg.setText("Feil passord!");
 		}
 	}
 
@@ -53,8 +56,11 @@ public class InnloggingController {//implements Initializable
 			String svar = Klienten.login(brukernavn.getText(), passord.getText()); 
 			if (svar.equals("OK")){
 				ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
-			} else if(svar.equals("NOSUCHUSER")){
-				msg.setText("Brukernavnet eksisterer ikke");
+			} else if(svar.equals("NO SUCH USER")){
+				msg.setText("Brukernavnet eksisterer ikke!");
+			}
+			else {
+				msg.setText("Feil passord!");
 			}
 		}
 	}

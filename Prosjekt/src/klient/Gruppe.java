@@ -96,4 +96,8 @@ public class Gruppe {
 		}
 	}
 	
+	public String toString() {
+		return gruppenavn;
+	}
+	
 }

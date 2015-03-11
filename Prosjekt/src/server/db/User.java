@@ -175,7 +175,7 @@ import java.sql.Connection;
 			while(result.next()){
 				output += result.getString(1)+" ";
 			}
-			return output;
+			return output.substring(0, output.length()-1);
 		}
 		
 		// RIGHTS

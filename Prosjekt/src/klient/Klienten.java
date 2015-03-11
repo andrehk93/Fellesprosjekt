@@ -80,7 +80,6 @@ public class Klienten {
 		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
 			String navn = getBruker(brukernavn);
-			bruker = new Bruker(navn, brukernavn);
 			bruker = new Bruker(navn, brukernavn, Integer.parseInt(getRights().trim()));
 		}
 		return svar.trim();
@@ -250,7 +249,7 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 	
-	public static ArrayList<Bruker> getGroupMembers(int gruppeid) throws IOException{
+	public static ArrayList<Bruker> getGroupMembers(String gruppeid) throws IOException{
 		String toServer = "GET GROUP " + gruppeid;
 		String[] members = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> memberList= new ArrayList<Bruker>();
@@ -301,6 +300,16 @@ public class Klienten {
 	
 	public static String getRights() throws NumberFormatException, IOException{
 		String toServer = "GET RIGHTS";
+		return sendTilServer(toServer);
+	}
+	
+	public static String getGroups() throws IOException {
+		String toServer = "GET GROUPS " + bruker.getEmail().trim();
+		return sendTilServer(toServer);
+	}
+	
+	public static String getGroupName(String gruppeid) throws IOException {
+		String toServer = "GET GROUPNAME " + gruppeid;
 		return sendTilServer(toServer);
 	}
 }
