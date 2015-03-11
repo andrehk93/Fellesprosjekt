@@ -80,7 +80,7 @@ public class Klienten {
 		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
 			String navn = getBruker(brukernavn);
-			bruker = new Bruker(navn, brukernavn);
+			bruker = new Bruker(navn, brukernavn, Integer.parseInt(getRights().trim()));
 			return true;
 		}
 		else {
@@ -177,12 +177,13 @@ public class Klienten {
 		String[] users = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
-			toServer = "GET USERDETAILS "+email;
-			String[] userDetails = sendTilServer(toServer).split(" ");
-			Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2]);
-			allUsers.add(user);
+			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+				toServer = "GET USERDETAILS "+email;
+				String[] userDetails = sendTilServer(toServer).split(" ");
+				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2], 0);
+				allUsers.add(user);
+			}
 		}
-		
 		return allUsers;
 	}
 	
@@ -201,8 +202,13 @@ public class Klienten {
 	}
 	
 	public static String getBruker(String email) throws IOException {
-		String toServer = "GET USERFULLNAME " + email;
-		return sendTilServer(toServer);
+		if (email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+			String toServer = "GET USERFULLNAME " + email;
+			return sendTilServer(toServer);
+		}
+		else {
+			return "no Name";
+		}
 	}
 
 	public static void createUser(String email, String fornavn, String etternavn, String passord) throws IOException, NoSuchAlgorithmException {
@@ -251,7 +257,7 @@ public class Klienten {
 		String[] members = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> memberList= new ArrayList<Bruker>();
 		for(String email : members){
-			memberList.add(new Bruker(Klienten.getBruker(email), email));
+			memberList.add(new Bruker(Klienten.getBruker(email), email, 0));
 		}
 		return memberList;
 	}

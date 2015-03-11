@@ -141,7 +141,7 @@ public class ny_avtale_controller {
 		
 		for(String email : ledigeBrukerEmailer){
 			if(email != null || email != ""){
-				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email));
+				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email, 0));
 			}
 		}
 		
@@ -554,7 +554,7 @@ public class ny_avtale_controller {
 	    		
 	    	});
 	    	String brukernavn = selectedUser.getNavn();
-	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail());
+	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail(), 0);
 	    	boks.getChildren().add(new Text(brukernavn));
 	    	showGjest(boks);
 	    	gjeste_liste.add(gjest);
