@@ -32,6 +32,7 @@ public class KalenderController {
 	@FXML private Label manedLabel, brukernavn, arLabel;
 	@FXML private ListView<String> notifikasjoner;
 	@FXML private ChoiceBox<String> filtrering;
+	@FXML private Button brukerredigering;
 	public static String[] notifikasjon_liste;
 	private int maned;
 	private int aar;
@@ -54,6 +55,7 @@ public class KalenderController {
 		setFiltVerdi(0);
 		setUpFiltrering();
 		flushView();
+		brukerredigering.setVisible((Integer.parseInt(Klienten.getRights().trim()) > 0));
 	}
 	
 	private void flushView() throws Exception{
@@ -176,7 +178,7 @@ public class KalenderController {
 			else if (notifikasjonene[i].equals("\r\n")) {
 			}
 			else {
-				list.add("Invitasjon: " + notifikasjonene[i] + " (Dobbeltrykk)");
+				list.add("Invitasjon: " + notifikasjonene[i] + " (Trykk her)");
 				ingenInvitasjoner = false;
 			}
 		}
@@ -186,10 +188,12 @@ public class KalenderController {
 		boolean meldingFerdig = false;
 		ArrayList<String> resten = new ArrayList<String>();
 		oppdelte_notifikasjoner = new ArrayList<Varsel>();
-		notifikasjon_liste = Klienten.getVarsel().split(" ");
+		String streng1 = Klienten.getVarsel();
+		notifikasjon_liste = streng1.split(" ");
 		String meld = "";
 		if (! notifikasjon_liste[0].trim().toString().equals("NONE")) {
 			for (String notifikasjon_oppdeling : notifikasjon_liste) {
+				System.out.println("Legger til:");
 				if(! notifikasjon_oppdeling.equals("!ENDMESS!") && ! meldingFerdig) {
 					meld += notifikasjon_oppdeling + " ";
 				}
@@ -418,4 +422,6 @@ public class KalenderController {
 	private void logout() throws IOException{
 		Klienten.logout();
 	}
+	
+	
 }

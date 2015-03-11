@@ -31,12 +31,14 @@ public class KalenderThread extends Thread {
             	} catch(Exception ArrayIndexOutOfBoudsException){
         			outputLine = "ABSOLUTT RAR INPUT \r\n";
         		}*/
-            	//System.out.println("INPUT: " + inputLine);
-                //System.out.println("OUTPUT: " + outputLine);
-                out.println(outputLine);
-                
-                if (outputLine.equals("Bye.\r\n"))
-                    break;
+            	System.out.println("INPUT: " + inputLine);
+	            System.out.println("OUTPUT: " + outputLine);
+	            if (! outputLine.trim().equals("-1 ")) {
+	              	out.println(outputLine);
+	            }
+	            if (outputLine.equals("Bye.\r\n")) {
+	                break;
+	            }
             }
             socket.close();
         } catch (IOException e) {

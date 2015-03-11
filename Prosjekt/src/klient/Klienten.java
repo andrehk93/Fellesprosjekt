@@ -271,4 +271,33 @@ public class Klienten {
 	public static String getValgtAvtale() {
 		return valgtAvtale;
 	}
+	
+	public static void addGroupMembers(ArrayList<Bruker> users) throws IOException {
+		String toServer = "ADD GROUPMEMBER";
+		for(Bruker user: users){
+			toServer += " " + user.getEmail();
+		}
+		sendTilServer(toServer);
+	}
+	
+	public static void removeGroupMember(Bruker user) throws IOException{
+		String toServer = "REMOVE GROUPMEMBER " + user.getEmail();
+		sendTilServer(toServer);
+	}
+	
+	public static void changeRights(Bruker user, int right) throws IOException {
+		String toServer = "CHANGE RIGHTS " + user.getEmail() + " " + right;
+		sendTilServer(toServer);
+	}
+	
+	public static void deleteUser(Bruker user) throws IOException {
+		String toServer = "DELETE USER " + user.getEmail();
+		sendTilServer(toServer);
+	}
+	
+	public static String getRights() throws NumberFormatException, IOException{
+		String toServer = "GET RIGHTS";
+		return sendTilServer(toServer);
+	}
 }
+
