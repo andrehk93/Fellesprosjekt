@@ -55,7 +55,8 @@ public class KalenderController {
 		setFiltVerdi(0);
 		setUpFiltrering();
 		flushView();
-		brukerredigering.setVisible((Integer.parseInt(Klienten.getRights().trim()) > 0));
+		System.out.println("admin?: " + Klienten.getRights());
+		brukerredigering.setVisible(Klienten.bruker.getRighs().intValue()>0);
 	}
 	
 	private void flushView() throws Exception{
@@ -66,11 +67,11 @@ public class KalenderController {
 		ruter.getChildren().clear();
 		getDays();
 		loadGrid();	
+		showBruker();
 		svarInvite();
 		showInvitasjoner();
 		showNotifications();
 		setItems();
-		showBruker();
 	}
 	
 	private void setUpFiltrering(){
@@ -350,9 +351,12 @@ public class KalenderController {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
 					break;
 				}
-				else {
-					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost);
+				else if (! epost.equals(Klienten.bruker.getEmail())){
+					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
 					deltaker_liste.add(deltaker);
+				}
+				else {
+					deltaker_liste.add(Klienten.bruker);
 				}
 			}
 		}

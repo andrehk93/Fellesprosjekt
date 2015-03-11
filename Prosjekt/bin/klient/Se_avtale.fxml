@@ -18,12 +18,12 @@
                <children>
                   <VBox alignment="CENTER_RIGHT" prefHeight="99.0" prefWidth="82.0" spacing="20.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-name-bold" text="Startdato " wrappingWidth="77.208984375">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-name-bold" text="Fra" wrappingWidth="37.208984375">
                            <font>
                               <Font name="Segoe UI Light" size="18.0" />
                            </font>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fra" wrappingWidth="34.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Til" wrappingWidth="34.0">
                            <font>
                               <Font name="Segoe UI Light" size="18.0" />
                            </font>
@@ -32,18 +32,18 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="111.0" prefWidth="110.0" spacing="15.0" styleClass="label-name">
                      <children>
-                        <TextField fx:id="startdato" editable="false" />
                         <TextField fx:id="fra" editable="false" />
+                        <TextField fx:id="til" editable="false" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_RIGHT" prefHeight="92.0" prefWidth="100.0" spacing="25.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sluttdato" wrappingWidth="76.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dato" wrappingWidth="37.0">
                            <font>
                               <Font name="Segoe UI Light" size="18.0" />
                            </font>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Til" wrappingWidth="28.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rom" wrappingWidth="37.0">
                            <font>
                               <Font name="Segoe UI Light" size="18.0" />
                            </font>
@@ -52,8 +52,8 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="123.0" prefWidth="110.0" spacing="15.0" styleClass="label-name">
                      <children>
-                        <TextField fx:id="sluttdato" editable="false" />
-                        <TextField fx:id="til" editable="false" />
+                        <TextField fx:id="startdato" editable="false" />
+                        <TextField fx:id="rom" editable="false" />
                      </children>
                   </VBox>
                </children>
@@ -119,8 +119,8 @@
             </LinearGradient>
          </stroke>
       </Rectangle>
-      <Text layoutX="603.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: yellow;" text="Ikke svart" styleClass="label-normal-objects" />
-      <Text layoutX="740.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #44cc44;" text="Deltar" styleClass="label-normal-objects" />
-      <Text layoutX="835.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Deltar ikke" styleClass="label-normal-objects" />
+      <Text layoutX="603.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: yellow;" styleClass="label-normal-objects" text="Ikke svart" />
+      <Text layoutX="740.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #44cc44;" styleClass="label-normal-objects" text="Deltar" />
+      <Text layoutX="835.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" styleClass="label-normal-objects" text="Deltar ikke" />
    </children>
 </AnchorPane>

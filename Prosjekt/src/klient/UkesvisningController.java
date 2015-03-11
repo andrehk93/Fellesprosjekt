@@ -191,7 +191,7 @@ public class UkesvisningController {
 					break;
 				}
 				else {
-					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost);
+					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
 					deltaker_liste.add(deltaker);
 				}
 			}
