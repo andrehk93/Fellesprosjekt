@@ -128,8 +128,9 @@ public class Klienten {
 			ScreenNavigator.loadScreen(ScreenNavigator.TILKOBLING_ERROR);
 		}
 		String output = "";
-		String tempString = inFromServer.readLine();
-		while(tempString != null && tempString.length() > 0) {
+		String tempString = "";
+		tempString = inFromServer.readLine();
+		while(tempString != null && tempString.length() > 0 && tempString != "") {
 			output += tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}

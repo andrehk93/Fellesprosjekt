@@ -9,11 +9,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- <?import org.controlsfx.control.CheckComboBox?> -->
+<?import org.controlsfx.control.CheckComboBox?>
 
 <?import javafx.collections.FXCollections ?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.Endre_avtaleController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4986e7" height="5.0" layoutX="84.0" layoutY="124.0" opacity="0.72" strokeType="INSIDE" strokeWidth="0.0" width="835.0">
          <stroke>
@@ -44,7 +44,6 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </HBox>
-                  <Label text="Sluttdato" />
                </children>
             </HBox>
             <HBox prefHeight="39.0" prefWidth="700.0" spacing="30.0" styleClass="label-normal-objects">
@@ -55,13 +54,11 @@
                   <Label text="-" />
                   <ChoiceBox fx:id="timeTil" prefHeight="25.0" prefWidth="50.0" />
                   <ChoiceBox fx:id="minuttTil" prefHeight="53.0" prefWidth="50.0" />
-                  <DatePicker fx:id="sluttdato" onAction="#handleDato" prefHeight="44.0" prefWidth="160.0" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
                   <Text fx:id="feilTekst" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-errormsg" text="Tiden må være etter fra-tidspunkt!" />
-                  <Text fx:id="feilDato" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-errormsg" text="Datoen må være etter startdato!" />
                </children>
                <padding>
                   <Insets left="250.0" />
@@ -73,11 +70,6 @@
          <children>
             <TextField fx:id="avtalenavn" onKeyTyped="#handleKeyInput" prefHeight="39.0" prefWidth="254.0" promptText="Tittel på avtale" />
             <CheckBox fx:id="hele_dagen" mnemonicParsing="false" prefHeight="27.0" prefWidth="131.0" text="Hele dagen">
-               <font>
-                  <Font name="Segoe UI Light" size="18.0" />
-               </font>
-            </CheckBox>
-            <CheckBox fx:id="gjentakelse" mnemonicParsing="false" prefHeight="27.0" prefWidth="130.0" text="Gjentakelse">
                <font>
                   <Font name="Segoe UI Light" size="18.0" />
                </font>

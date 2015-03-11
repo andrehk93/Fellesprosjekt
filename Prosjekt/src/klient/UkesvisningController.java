@@ -66,7 +66,9 @@ public class UkesvisningController {
 	}
 	
 	private void loadGrid() throws IOException {
-		hentAvtaler();
+		if(Klienten.avtaler.isEmpty()){
+			hentAvtaler();
+		}
 		setUkeAvtaler();
 		System.out.println(ukeAvtaler);
 		setTimeLabels();
