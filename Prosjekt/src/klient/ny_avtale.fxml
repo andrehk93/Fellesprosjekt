@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import org.controlsfx.control.CheckComboBox?>
+<!-- <?import org.controlsfx.control.CheckComboBox?> -->
 <?import javafx.collections.FXCollections ?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
