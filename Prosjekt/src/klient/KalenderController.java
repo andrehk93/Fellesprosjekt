@@ -32,6 +32,7 @@ public class KalenderController {
 	@FXML private Label manedLabel, brukernavn, arLabel;
 	@FXML private ListView<String> notifikasjoner;
 	@FXML private ChoiceBox<String> filtrering;
+	@FXML private Button brukerredigering;
 	public static String[] notifikasjon_liste;
 	private int maned;
 	private int aar;
@@ -54,6 +55,7 @@ public class KalenderController {
 		setFiltVerdi(0);
 		setUpFiltrering();
 		flushView();
+		brukerredigering.setVisible((Integer.parseInt(Klienten.getRights().trim()) > 0));
 	}
 	
 	private void flushView() throws Exception{
@@ -413,4 +415,6 @@ public class KalenderController {
 	private void logout() throws IOException{
 		Klienten.logout();
 	}
+	
+	
 }

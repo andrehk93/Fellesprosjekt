@@ -657,5 +657,29 @@ public class KalenderDB {
 		result.next();
 		return result.getString(1);
 	}
+	
+	public String getRights(String user) throws Exception {
+		init();
+		query = "SELECT rettigheter FROM bruker WHERE epost = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		String rights = "0";
+		String temp_rights = result.getString(1);
+		if(temp_rights != null && !temp_rights.equals("") && !temp_rights.equals("NULL")){
+			rights = temp_rights;
+		}
+		return rights;
+	}
+	
+	public void changeRights(String user, String rights) throws Exception{
+		init();
+		query = "UPDATE bruker SET rettigheter = ? WHERE epost = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, rights);
+		statement.setString(2, user);
+		statement.executeUpdate();
+	}
 }
 

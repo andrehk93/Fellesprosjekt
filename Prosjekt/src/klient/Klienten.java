@@ -262,4 +262,9 @@ public class Klienten {
 		}
 		sendTilServer(toServer);
 	}
+	
+	public static String getRights() throws NumberFormatException, IOException{
+		String toServer = "GET RIGHTS";
+		return sendTilServer(toServer);
+	}
 }
