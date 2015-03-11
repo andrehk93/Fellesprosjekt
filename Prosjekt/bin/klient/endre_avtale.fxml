@@ -9,6 +9,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.CheckComboBox?>
+
 <?import javafx.collections.FXCollections ?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.ny_avtale_controller">
@@ -24,7 +25,7 @@
          </stroke></Rectangle>
       
       
-      <Label layoutX="415.0" layoutY="58.0" prefHeight="62.0" prefWidth="172.0" styleClass="label-header" text="Ny avtale">
+      <Label layoutX="379.0" layoutY="62.0" prefHeight="62.0" prefWidth="245.0" styleClass="label-header" text="Endre avtale">
          <font>
             <Font name="System Bold" size="39.0" />
          </font></Label>
@@ -80,7 +81,7 @@
                   <Font name="Segoe UI Light" size="18.0" />
                </font>
             </CheckBox>
-            <CheckComboBox fx:id="repeatDays" layoutX="439.0" layoutY="261.0" prefWidth="150.0"/>
+            <CheckComboBox fx:id="repeatDays" layoutX="439.0" layoutY="261.0" prefWidth="150.0" />
          </children>
       </HBox>
       <TabPane id="#MyTabPane" layoutX="112.0" layoutY="326.0" prefHeight="318.0" prefWidth="471.0" styleClass="label-normal-objects" stylesheets="@application.css" tabClosingPolicy="UNAVAILABLE">
@@ -122,7 +123,7 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="295.0" spacing="22.0">
                                  <children>
-                                    <Label prefHeight="46.0" prefWidth="299.0" text="Finn møterom med riktig kapasitet" />
+                                    <Label prefHeight="46.0" prefWidth="299.0" text="Finn nytt møterom" />
                                     <Button fx:id="søk_møterom" mnemonicParsing="false" onAction="#finnRom" prefHeight="46.0" prefWidth="99.0" styleClass="specialButton" text="Søk" />
                                  </children>
                                  <padding>
@@ -152,7 +153,7 @@
       </TabPane>
       <VBox layoutX="664.0" layoutY="463.0" prefHeight="169.0" prefWidth="216.0" spacing="10.0" styleClass="label-normal-objects">
          <children>
-            <Button fx:id="forkast_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#reset" prefHeight="46.0" prefWidth="135.0" styleClass="normalButton" text="Forkast" />
+            <Button fx:id="forkast_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#reset" prefHeight="46.0" prefWidth="135.0" styleClass="normalButton" text="Slett" />
             <Button fx:id="lagre_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#lagre" prefHeight="46.0" prefWidth="134.0" styleClass="specialButton" text="Lagre" />
          	<Button fx:id="avbryt_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#avbryt" prefHeight="46.0" prefWidth="130.0" styleClass="normalButton" text="Avbryt" />
          </children>

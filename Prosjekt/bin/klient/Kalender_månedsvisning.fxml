@@ -98,11 +98,7 @@
           <!-- NY AVTALE - KNAPP -->
             <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" styleClass="specialButton" text="Ny avtale" />
             <Button fx:id="grupper" mnemonicParsing="false" onAction="#grupperView" styleClass="specialButton" text="Grupper" />
-<<<<<<< HEAD
-            <Button mnemonicParsing="false" onAction="#redigerBrukerView" styleClass="specialButton" text="Brukerredigering" />
-=======
             <Button mnemonicParsing="false" fx:id="brukerredigering" onAction="#redigerBrukerView" styleClass="specialButton" text="Brukerredigering" />
->>>>>>> refs/remotes/origin/master
             <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0" styleClass="label-normal-objects">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
