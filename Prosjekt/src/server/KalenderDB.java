@@ -681,5 +681,13 @@ public class KalenderDB {
 		statement.setString(2, user);
 		statement.executeUpdate();
 	}
+	
+	public void deleteUser(String user) throws Exception {
+		init();
+		query = "DELETE FROM bruker WHERE epost = ?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		statement.executeUpdate();
+	}
 }
 

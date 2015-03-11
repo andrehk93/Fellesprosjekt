@@ -2,11 +2,15 @@ package klient;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 public class Rediger_brukerController {
+	
+	
+	ArrayList<Bruker> userList = new ArrayList<Bruker>();
 
 	@FXML// GÅ TIL BRUKEROPPRETTING KNAPPEN
 	private void opprettingView(ActionEvent event)  {
@@ -15,6 +19,6 @@ public class Rediger_brukerController {
 	@FXML
 	private void monthView(ActionEvent event)  {
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
-	}
+	}	
 
 }

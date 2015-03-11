@@ -47,6 +47,8 @@ public class KalenderProtocol {
 					return addHandler(input);
 				case("REMOVE"):
 					return removeHandler(input);
+				case("DELETE"):
+					return deleteHandler(input);
 				case("LOGOUT"):
 					state = WAITING;
 					return "Bye.";
@@ -244,6 +246,11 @@ public class KalenderProtocol {
 				output = "OK";
 				break;
 		}
+		if(output.trim().equals("")){
+			output = "NONE";
+		} else if(output.equals("-1")){
+			output = "INCORRECT INPUT";
+		}
 		return output;
 	}
 	
@@ -256,7 +263,31 @@ public class KalenderProtocol {
 				kalenderdb.removeGroupMember(input[2], input[3]);
 				output = "OK";
 		}
+		if(output.trim().equals("")){
+			output = "NONE";
+		} else if(output.equals("-1")){
+			output = "INCORRECT INPUT";
+		}
+		return output;
+	}
+	
+	private String deleteHandler(String[] input) throws Exception{
+		KalenderDB kalenderdb = new KalenderDB();
+		String output = "-1";
 		
+		switch(input[1]){
+			case "USER":
+				if(rights > 0){
+					kalenderdb.deleteUser(input[2]);
+					output = "OK";
+				}
+				break;
+		}
+		if(output.trim().equals("")){
+			output = "NONE";
+		} else if(output.equals("-1")){
+			output = "INCORRECT INPUT";
+		}
 		return output;
 	}
 }

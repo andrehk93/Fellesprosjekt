@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Bruker {
@@ -18,6 +19,7 @@ public class Bruker {
 		System.out.println("EMAIL: " + email);
 		setNavn(navn);
 		setEmail(email);
+		setRights(0);
 		addListeners();
 	}
 	
@@ -51,6 +53,7 @@ public class Bruker {
 	
 	private Property<String> nameProperty = new SimpleStringProperty();
 	private Property<String> emailProperty = new SimpleStringProperty();
+	private Property<Number> rightsProperty = new SimpleIntegerProperty();
 	
 	public String getNavn(){
 		return nameProperty.getValue();
@@ -74,6 +77,14 @@ public class Bruker {
 	
 	public ArrayList<Avtale> getAvtaler() {
 		return avtaleListeProperty.getValue();
+	}
+	
+	public Number getRighs(){
+		return rightsProperty.getValue();
+	}
+	
+	public void setRights(Number rights){
+		rightsProperty.setValue(rights);
 	}
 	
 	
