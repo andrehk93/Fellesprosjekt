@@ -23,6 +23,15 @@ public class Bruker {
 		addListeners();
 	}
 	
+	public Bruker(String navn, String email, Number rights){
+		System.out.println("NAVNET : " + navn);
+		System.out.println("EMAIL: " + email);
+		setNavn(navn);
+		setEmail(email);
+		setRights(rights);
+		addListeners();
+	}
+	
 	private Property<ArrayList<Avtale>> avtaleListeProperty = new ObjectPropertyBase<ArrayList<Avtale>>(null) {
 
 		@Override
