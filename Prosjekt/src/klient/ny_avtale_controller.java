@@ -69,6 +69,8 @@ public class ny_avtale_controller {
 	@FXML
 	Button leggTil = new Button();
 	@FXML
+	Button addGjestBtn;
+	@FXML
 	Text feilDato = new Text();
 	@FXML
 	CheckBox gjentakelse = new CheckBox();
@@ -110,8 +112,11 @@ public class ny_avtale_controller {
     CheckComboBox<String> repeatDays;
     List<HBox> gjestelisten;
     ObservableList<HBox> gjestene;
+    
+    private Bruker valg;
 	
 	public void initialize() throws IOException {
+		repDates = new ArrayList<LocalDate>();
 		isrep = false;
 		sluttdato.setDisable(true);
 		gjeste_liste = new ArrayList<Bruker>();
@@ -184,6 +189,16 @@ public class ny_avtale_controller {
 			
 		};
 		gjentakelse.selectedProperty().addListener(aktiver);
+		ChangeListener<Bruker> valgt_bruker = new ChangeListener<Bruker>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Bruker> arg0,
+					Bruker arg1, Bruker arg2) {
+				valg = arg2;
+			}
+			
+		};
+		legg_til_gjester.getSelectionModel().selectedItemProperty().addListener(valgt_bruker);
 		
 		setUpCCB();
 		
@@ -221,7 +236,6 @@ public class ny_avtale_controller {
 		};
 		hele_dagen.selectedProperty().addListener(allDay);
 		
-		gjeste_liste = new ArrayList<Bruker>();
 		gjestelisten = new ArrayList<HBox>();
     	gjestene = FXCollections.observableList(gjestelisten);
 		feilTekst.setVisible(false);
@@ -271,7 +285,6 @@ public class ny_avtale_controller {
 		evigheten = LocalTime.of(00, 00);
 		start = evigheten;
 		slutt = evigheten;
-		
 		repDays = new ArrayList<String>();
 	}
     
@@ -320,7 +333,7 @@ public class ny_avtale_controller {
 					findDates();
 				}
 				else {
-					
+					repDates.add(startdato.getValue());
 				}
 			}
     	};
@@ -345,13 +358,13 @@ public class ny_avtale_controller {
     		}
     		else {
     			dato = start;
+    			return false;
     		}
     	}
     	catch (NullPointerException e) {
     		feilDato.setVisible(false);
     		return false;
     	}
-    	return false;
     }
     
     private DayOfWeek findWeekDay(String dag) {
@@ -515,34 +528,32 @@ public class ny_avtale_controller {
     
     @FXML
     public void addGjest(ActionEvent event) throws IOException {
-    	if(!(FxUtil.getComboBoxValue(legg_til_gjester) instanceof Bruker && !FxUtil.getComboBoxValue(legg_til_gjester).equals("-1"))){
-    	}
-    	if(! Arrays.asList(ledigeBrukere).contains(legg_til_gjester.getValue())){
-    		System.out.println("Ugyldig bruker");
-    		return;
-    	}
-    	Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
-    	for(Bruker gjest : gjeste_liste){
-    		if(gjest.getEmail() == selectedUser.getEmail()){
-    			System.out.println("Brukeren er allerede invitert");
-    			return;
-    		}
-    	}
-    	if(!Arrays.asList(gjeste_liste).contains(selectedUser)){
-    		HBox boks = new HBox();
-        	Button kryss = new Button();
-        	kryss.setText("x");
-        	kryss.setOpacity(0.8);
-        	kryss.setOnAction(new EventHandler<ActionEvent>() {
-
-    			@Override
-    			public void handle(ActionEvent event) {
-    				removeGjest(boks);
-    			}
-        		
-        	});
+    	
+    }
+    
+    @FXML
+    private void addGjesten(ActionEvent event) {
+    	if (valg != null) {
+    		Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
+        	for(Bruker gjest : gjeste_liste){
+        		if(gjest.getEmail() == selectedUser.getEmail()){
+        			System.out.println("Brukeren er allerede invitert");
+        			return;
+        		}
+        	}
+	    	HBox boks = new HBox();
+	    	Button kryss = new Button();
+	    	kryss.setText("x");
+	    	kryss.setOpacity(0.8);
+	    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+	
+				@Override
+				public void handle(ActionEvent event) {
+					removeGjest(boks);
+				}
+	    		
+	    	});
 	    	String brukernavn = selectedUser.getNavn();
-	    	System.out.println("Brukernavn: " + brukernavn + "EPOST: " +  selectedUser);
 	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail());
 	    	boks.getChildren().add(new Text(brukernavn));
 	    	showGjest(boks);
@@ -630,6 +641,9 @@ public class ny_avtale_controller {
 		System.out.println(slutt);
 		System.out.println(dato);
 		Møterom rom =  new Møterom(100, valgt_rom.getText());
+		if (startdato.getValue() != null && repDates.isEmpty()) {
+			repDates.add(startdato.getValue());
+		}
 		for (LocalDate datoen : repDates) {
 			if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
 				System.out.println("GJESTENE: " + gjeste_liste);

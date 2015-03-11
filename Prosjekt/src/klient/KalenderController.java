@@ -178,7 +178,7 @@ public class KalenderController {
 			else if (notifikasjonene[i].equals("\r\n")) {
 			}
 			else {
-				list.add("Invitasjon: " + notifikasjonene[i] + " (Trykk her)");
+				list.add("Invitasjon: " + notifikasjonene[i].trim() + " (Trykk her)");
 				ingenInvitasjoner = false;
 			}
 		}
