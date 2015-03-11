@@ -5,6 +5,12 @@ import javafx.fxml.FXML;
 
 public class DagsvisningController {
 	
+	
+	
+	public void initialize() {
+		
+	}
+	
 	@FXML
 	private void nextPaneMonthView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);

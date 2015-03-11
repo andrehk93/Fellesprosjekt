@@ -5,14 +5,14 @@
  */
  
  /**.root {
- 	-fx-background-image: url("subtlewhite.jpg")
+ 	-fx-background-image: url("subtlewhite.jpg");
  }*/
  
 
 /**
 .root{
 	-fx-background-color: #FFFFFF;
-	-fx-background-image: url("subtlewhite.jpg")
+	-fx-background-image: url("subtlewhite.jpg");
 	}*/
 
 .root{ 

@@ -87,6 +87,26 @@ public class TidsIntervall {
 		return datoProperty;
 	}
 	
+	public int getWeekGridPos(){
+		return this.getStart().getHour();
+	}
+	
+	public double getWeekSize(){
+		LocalTime dur = getDuration();
+		double hours = dur.getHour();
+		double minutes = ((double)dur.getMinute())/60;
+		double duration = hours+minutes;
+		System.out.println(duration*50);
+		return duration*50;
+	}
+	
+	public LocalTime getDuration(){
+		LocalTime tid = this.getSlutt();
+		tid = tid.minusHours(this.getStart().getHour());
+		tid = tid.minusMinutes(this.getStart().getMinute());
+		return tid;
+	}
+	
 	//sjekker om DET GITTE tidsintervallobjektet er i DETTE (this) objektet (f.eks 10:20 - 11:20):
 	
 	public boolean isIn(TidsIntervall gittTid) {
@@ -104,6 +124,12 @@ public class TidsIntervall {
 		else {
 			return false;
 		}
+	}
+
+	public double getMargin() {
+		double mints = (double) this.getStart().getMinute();
+		mints = mints/2;
+		return mints;
 	}
 	
 	

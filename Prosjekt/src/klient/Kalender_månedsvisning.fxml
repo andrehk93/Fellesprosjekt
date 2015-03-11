@@ -74,8 +74,8 @@
       </HBox>
       <HBox layoutX="633.0" layoutY="48.0" prefHeight="35.0" prefWidth="291.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="Dag" />
-            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" styleClass="specialButton" text="Uke" />
+            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="Dag" onAction="#nextPaneDayView" />
+            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" styleClass="specialButton" text="Uke" onAction="#nextPaneWeekView"/>
             <Button mnemonicParsing="false" styleClass="specialButton" text="Måned">
                <effect>
                   <ColorAdjust contrast="-0.25" />

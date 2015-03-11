@@ -26,28 +26,19 @@ public class KalenderThread extends Thread {
             
             while ((inputLine = in.readLine()) != null) {
             	//try {
-            	if (inputLine.trim().length() > 2) {
-            		outputLine = kp.processInput(inputLine);
-            		if (outputLine.endsWith(" ")) {
-            			outputLine = outputLine.substring(0, outputLine.length()-1);
-            		}
-            		outputLine += "\r\n";
-
-            				/*
+            		outputLine = kp.processInput(inputLine) + "\r\n";
+            		/*
             	} catch(Exception ArrayIndexOutOfBoudsException){
         			outputLine = "ABSOLUTT RAR INPUT \r\n";
         		}*/
-	            	System.out.println("INPUT: " + inputLine);
-	                System.out.println("OUTPUT: " + outputLine);
-	                if (! outputLine.trim().equals("-1 ")) {
-	                	out.println(outputLine);
-	                }
-	                if (outputLine.equals("Bye.\r\n")) {
-	                    break;
-	                }
-            	}
-                
-                
+            	System.out.println("INPUT: " + inputLine);
+	            System.out.println("OUTPUT: " + outputLine);
+	            if (! outputLine.trim().equals("-1 ")) {
+	              	out.println(outputLine);
+	            }
+	            if (outputLine.equals("Bye.\r\n")) {
+	                break;
+	            }
             }
             socket.close();
         } catch (IOException e) {

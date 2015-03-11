@@ -2,6 +2,8 @@ package server;
 
 import java.util.Arrays;
 
+import server.KalenderDB;
+
 public class KalenderProtocol {
 	private static final int WAITING = 0;
 	private static final int LOGGEDIN = 1;
@@ -12,7 +14,7 @@ public class KalenderProtocol {
 
 	public String processInput(String rawInput) throws Exception{
 		if(rawInput != null){
-			System.out.println(rawInput);
+			//System.out.println(rawInput);
 			String[] input = rawInput.split(" ");
 			
 			KalenderDB kalenderdb = new KalenderDB();

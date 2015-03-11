@@ -19,6 +19,7 @@ public class Klienten {
 	public static Bruker bruker;
 	private static boolean tilkobling;
 	public static ArrayList<Avtale> avtaler;
+	private static String valgtAvtale;
 	
 	
 	public Klienten() throws IOException {
@@ -176,13 +177,10 @@ public class Klienten {
 		String[] users = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
-			if (email.trim().length() > 0 || ! email.equals("\n")) {
-				System.out.println("emailen som hentes:" + email + "slutt" + " Trimmet:" + email.trim() + "slutt");
-				toServer = "GET USERDETAILS "+email;
-				String[] userDetails = sendTilServer(toServer).split(" ");
-				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2]);
-				allUsers.add(user);
-			}
+			toServer = "GET USERDETAILS "+email;
+			String[] userDetails = sendTilServer(toServer).split(" ");
+			Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2]);
+			allUsers.add(user);
 		}
 		
 		return allUsers;
@@ -258,12 +256,20 @@ public class Klienten {
 		return memberList;
 	}
 	
-	public static void addGruppe(String name, ArrayList<Bruker> members) throws IOException {
+	public static void addGruppe(String name, ArrayList<Bruker> members) throws IOException{
 		String toServer = "CREATE GROUP " + name;
 		for(Bruker member : members){
 			toServer += " " + member.getEmail();
 		}
 		sendTilServer(toServer);
+	}
+
+	public static void setValgtAvtale(String avtale) {
+		valgtAvtale = avtale;
+	}
+	
+	public static String getValgtAvtale() {
+		return valgtAvtale;
 	}
 	
 	public static void addGroupMembers(ArrayList<Bruker> users) throws IOException {
@@ -294,3 +300,4 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 }
+

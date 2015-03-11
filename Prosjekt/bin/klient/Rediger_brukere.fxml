@@ -42,7 +42,7 @@
       </HBox>
       <VBox alignment="CENTER" layoutX="739.0" layoutY="522.0" prefHeight="135.0" prefWidth="227.0" spacing="15.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#opprettingView" styleClass="specialButton" text="Opprett ny konto" />
+            <Button mnemonicParsing="false" styleClass="specialButton" text="Opprett ny konto" /> <!-- onAction="#opprettingView" -->
             <Button mnemonicParsing="false" onAction="#monthView" prefHeight="46.0" prefWidth="166.0" styleClass="normalButton" text="Tilbake" />
          </children>
       </VBox>
