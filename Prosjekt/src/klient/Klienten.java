@@ -128,7 +128,7 @@ public class Klienten {
 		}
 		String output = "";
 		String tempString = inFromServer.readLine();
-		while(tempString.length() > 0) {
+		while(tempString != null && tempString.length() > 0) {
 			output += tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
@@ -176,10 +176,13 @@ public class Klienten {
 		String[] users = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
-			toServer = "GET USERDETAILS "+email;
-			String[] userDetails = sendTilServer(toServer).split(" ");
-			Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2]);
-			allUsers.add(user);
+			if (email.trim().length() > 0 || ! email.equals("\n")) {
+				System.out.println("emailen som hentes:" + email + "slutt" + " Trimmet:" + email.trim() + "slutt");
+				toServer = "GET USERDETAILS "+email;
+				String[] userDetails = sendTilServer(toServer).split(" ");
+				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2]);
+				allUsers.add(user);
+			}
 		}
 		
 		return allUsers;
