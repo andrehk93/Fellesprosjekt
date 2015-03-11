@@ -233,6 +233,10 @@ public class KalenderProtocol {
 				break;
 			case "GROUPS":
 				output = kalenderdb.group().getGroups(input[1]);
+				break;
+			case "GROUPNAME":
+				output = kalenderdb.group().getGroupName(input[1]);
+				break;
 			}
 			
 			if(output.trim().equals("")){
