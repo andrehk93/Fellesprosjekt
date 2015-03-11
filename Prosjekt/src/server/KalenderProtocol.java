@@ -28,8 +28,10 @@ public class KalenderProtocol {
 							user = input[1];
 							rights = loginResult;
 							return "OK";
-						} else {
+						} else if(loginResult == -1){
 							return "NOK";
+						} else if(loginResult == -2){
+							return "NO SUCH USER";
 						}
 					default:
 						return "PERMISSION DENIED";

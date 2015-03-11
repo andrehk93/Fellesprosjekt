@@ -38,8 +38,11 @@ public class InnloggingController {//implements Initializable
 	@FXML// LOGG INN KNAPPEN
 	private void handleButtonAction(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		checkInput();
-		if (Klienten.login(brukernavn.getText(), passord.getText())) {
+		String svar = Klienten.login(brukernavn.getText(), passord.getText());
+		if (svar.equals("OK")) {
 			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+		} else if(svar.equals("NOSUCHUSER")){
+			msg.setText("Brukernavnet eksisterer ikke");
 		}
 	}
 
@@ -47,8 +50,11 @@ public class InnloggingController {//implements Initializable
 	private void enterKeyPress(KeyEvent event) throws NoSuchAlgorithmException, IOException{
 		if(event.getCode() == KeyCode.ENTER){
 			checkInput();
-			if (Klienten.login(brukernavn.getText(), passord.getText())){
+			String svar = Klienten.login(brukernavn.getText(), passord.getText()); 
+			if (svar.equals("OK")){
 				ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
+			} else if(svar.equals("NOSUCHUSER")){
+				msg.setText("Brukernavnet eksisterer ikke");
 			}
 		}
 	}
