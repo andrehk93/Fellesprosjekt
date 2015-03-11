@@ -22,7 +22,7 @@ public class KalenderProtocol {
 			if(state == WAITING){
 				switch(input[0].toUpperCase()){
 					case "LOGIN":
-						int loginResult = kalenderdb.login(input[1], input[2]);
+						int loginResult = kalenderdb.user().login(input[1], input[2]);
 						if(loginResult >= 0){
 							state = LOGGEDIN;
 							user = input[1];
@@ -65,29 +65,29 @@ public class KalenderProtocol {
 		KalenderDB kalenderdb = new KalenderDB();
 		switch(input[1].toUpperCase()){
 			case "EMAIL":
-				kalenderdb.changeEmail(user, input[2]);
+				kalenderdb.user().changeEmail(user, input[2]);
 				break;
 			case "STARTTIME":
-				kalenderdb.changeApp(input[2],input[3],"fra");
+				kalenderdb.appointment().changeApp(input[2],input[3],"fra");
 				break;
 			case "ENDTIME":
-				kalenderdb.changeApp(input[2], input[3], "til");
+				kalenderdb.appointment().changeApp(input[2], input[3], "til");
 				break;
 			case "DATE":
-				kalenderdb.changeApp(input[2], input[3], "dato");
+				kalenderdb.appointment().changeApp(input[2], input[3], "dato");
 				break;
 			case "ROOM":
-				kalenderdb.changeApp(input[2], input[3], "romnavn");
+				kalenderdb.appointment().changeApp(input[2], input[3], "romnavn");
 				break;
 			case "STATUS":
-				kalenderdb.changeStatus(user, input[2], input[3]);
+				kalenderdb.invitations().changeStatus(user, input[2], input[3]);
 				break;
 			case "NOTIFICATION":
-				kalenderdb.changeNotification(user, input[2], input[3]);
+				kalenderdb.notification().changeNotification(user, input[2], input[3]);
 				break;
 			case "RIGHTS":
 				if(rights > 0){
-					kalenderdb.changeRights(input[2], input[3]);
+					kalenderdb.user().changeRights(input[2], input[3]);
 				}
 				break;
 		}
@@ -100,7 +100,7 @@ public class KalenderProtocol {
 			case "USER":
 									// EPOST, FORNAVN, ETTERNAVN, PASSORD
 				if(rights > 0){
-					output = kalenderdb.createUser(input[1], input[2], input[3], input[4]) + "";
+					output = kalenderdb.user().createUser(input[1], input[2], input[3], input[4]) + "";
 				} else {
 					output = "PERMISSION DENIED";
 				}
@@ -109,17 +109,17 @@ public class KalenderProtocol {
 			case "APP":
 									// DATO, FRA, TIL, ROM
 				String beskrivelse = findMessage(Arrays.copyOfRange(input, 5, input.length));
-				output = kalenderdb.createApp(user, input[1], input[2], input[3], input[4], beskrivelse) + "";
+				output = kalenderdb.appointment().createApp(user, input[1], input[2], input[3], input[4], beskrivelse) + "";
 				break;
 			case "INVITE":
-				output = kalenderdb.inviteUser(input[1], input[2]);
+				output = kalenderdb.invitations().inviteUser(input[1], input[2]);
 				break;
 			case "NOTIFICATION":
 				String message = findMessage(Arrays.copyOfRange(input, 3, input.length));
-				output = "" + kalenderdb.sendNotification(user, input[1], message,input[2]);
+				output = "" + kalenderdb.notification().sendNotification(user, input[1], message,input[2]);
 				break;
 			case "GROUP":
-				kalenderdb.createGroup(input[1], user, Arrays.copyOfRange(input, 2, input.length));
+				kalenderdb.group().createGroup(input[1], user, Arrays.copyOfRange(input, 2, input.length));
 				output = "";
 				break;
 		}
@@ -149,79 +149,79 @@ public class KalenderProtocol {
 		String output = "-1";
 		switch(input[0].toUpperCase()){
 			case "ROOM":
-				output = kalenderdb.getRoom(input[1], input[2], input[3], Integer.parseInt(input[4]));
+				output = kalenderdb.meetingroom().getRoom(input[1], input[2], input[3], Integer.parseInt(input[4]));
 				break;
 			case "AVAILABLE":
 				if(input[1].equals("USERS")){
-					output = kalenderdb.getAvailableUsers(input[2], input[3], input[4]);
+					output = kalenderdb.user().getAvailableUsers(input[2], input[3], input[4]);
 				}
 				break;
 			case "APPS":
-				output = kalenderdb.getDayApps(input[1]);
+				output = kalenderdb.appointment().getDayApps(input[1]);
 				break;
 			case "APPDETAILS":
-				output = kalenderdb.getAppDetails(input[1]);
+				output = kalenderdb.appointment().getAppDetails(input[1]);
 				break;
 			case "APPNAME":
-				output = kalenderdb.getAppNavn(input[1]);
+				output = kalenderdb.appointment().getAppNavn(input[1]);
 				break;
 			case "APPTIME":
-				output = kalenderdb.getAppTime(input[1]);
+				output = kalenderdb.appointment().getAppTime(input[1]);
 				break;
 			case "MYAPPS":
-				output = kalenderdb.getMyApps(user);
+				output = kalenderdb.appointment().getMyApps(user);
 				break;
 			case "MYAVTALEROM":
-				output = kalenderdb.getMyAppRom(input[1]);
+				output = kalenderdb.appointment().getMyAppRom(input[1]);
 				break;
 			case "MYDAGAPPS":
-				output = kalenderdb.getMyDagApps(user, Integer.parseInt(input[1]));
+				output = kalenderdb.appointment().getMyDagApps(user, Integer.parseInt(input[1]));
 				break;
 			case "APPATTS":
-				output = kalenderdb.getAppAttendees(input[1], input[2]);
+				output = kalenderdb.appointment().getAppAttendees(input[1], input[2]);
 				break;
 			case "ALLAPPATTS":
-				output = kalenderdb.getAllAppAttendees(input[1]);
+				output = kalenderdb.appointment().getAllAppAttendees(input[1]);
 				break;
 			case "INVS":
-				output = kalenderdb.getInvitations(user);
+				output = kalenderdb.invitations().getInvitations(user);
 				break;
 			case "INVDETAILS":
-				output = kalenderdb.getInvDetails(user, input[1]);
+				output = kalenderdb.invitations().getInvDetails(user, input[1]);
 				break;
 			case "NOTIFICATIONS":
-				output = kalenderdb.getNotifications(user);
+				output = kalenderdb.notification().getNotifications(user);
 				break;
 			case "ROOMDETAILS":
-				output = kalenderdb.getRoomDetails(input[1]);
+				output = kalenderdb.meetingroom().getRoomDetails(input[1]);
 				break;
 			case "ROOMSTR":
-				output = kalenderdb.getRoomStr(input[1]);
+				output = kalenderdb.meetingroom().getRoomStr(input[1]);
 				break;
 			case "GROUP":
-				output = kalenderdb.getGroup(input[1]);
+				output = kalenderdb.group().getGroup(input[1]);
 				break;
 			case "STATUS":
-				output = kalenderdb.getStatus(input[1], input[2]);
+				output = kalenderdb.invitations().getStatus(input[1], input[2]);
 				break;
 			case "USERFULLNAME":
-				output = kalenderdb.getUserFullname(input[1]);
+				output = kalenderdb.user().getUserFullname(input[1]);
 				break;
 			case "LASTID":
 				output = kalenderdb.getLastID();
 				break;
 			case "USERS":
-				output = kalenderdb.getUsers();
+				output = kalenderdb.user().getUsers();
 				break;
 			case "USERDETAILS":
-				output = kalenderdb.getUserDetails(input[1]);
+				output = kalenderdb.user().getUserDetails(input[1]);
 				System.out.println(output);
 				break;
 			case "RIGHTS":
 				if(input.length > 1 && rights > 0){
-					output = kalenderdb.getRights(input[1]);
+					output = kalenderdb.user().getRights(input[1]);
 				} else if(input.length == 1){
-					output = kalenderdb.getRights(user);
+					output = kalenderdb.user().getRights(user);
 				} else {
 					output = "PERMISSION DENIED";
 				}
@@ -244,7 +244,7 @@ public class KalenderProtocol {
 		String output = "-1";
 		switch(input[1]){
 			case "GROUPMEMBER":
-				kalenderdb.addGroupMember(input[2], Arrays.copyOfRange(input, 3, input.length));
+				kalenderdb.group().addGroupMember(input[2], Arrays.copyOfRange(input, 3, input.length));
 				output = "OK";
 				break;
 		}
@@ -262,7 +262,7 @@ public class KalenderProtocol {
 		
 		switch(input[1]){
 			case "GROUPMEMBER":
-				kalenderdb.removeGroupMember(input[2], input[3]);
+				kalenderdb.group().removeGroupMember(input[2], input[3]);
 				output = "OK";
 		}
 		if(output.trim().equals("")){
@@ -280,7 +280,7 @@ public class KalenderProtocol {
 		switch(input[1]){
 			case "USER":
 				if(rights > 0){
-					kalenderdb.deleteUser(input[2]);
+					kalenderdb.user().deleteUser(input[2]);
 					output = "OK";
 				}
 				break;
