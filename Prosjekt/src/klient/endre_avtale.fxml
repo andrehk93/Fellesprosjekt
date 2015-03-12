@@ -167,7 +167,7 @@
       </TabPane>
       <VBox layoutX="664.0" layoutY="463.0" prefHeight="169.0" prefWidth="216.0" spacing="10.0" styleClass="label-normal-objects">
          <children>
-            <Button fx:id="forkast_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#reset" prefHeight="46.0" prefWidth="135.0" styleClass="normalButton" text="Forkast" />
+            <Button fx:id="slett_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#slett" prefHeight="46.0" prefWidth="135.0" styleClass="normalButton" text="Slett" />
             <Button fx:id="lagre_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#lagre" prefHeight="46.0" prefWidth="134.0" styleClass="specialButton" text="Lagre" />
          	<Button fx:id="avbryt_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#avbryt" prefHeight="46.0" prefWidth="130.0" styleClass="normalButton" text="Avbryt" />
          </children>

@@ -331,5 +331,10 @@ public class Klienten {
 	public static boolean getChanged() {
 		return changed;
 	}
+
+	public static void deleteAvtale(String avtaleid) throws IOException {
+		String toServer = "DELETE APP "+avtaleid;
+		sendTilServer(toServer);
+	}
 }
 

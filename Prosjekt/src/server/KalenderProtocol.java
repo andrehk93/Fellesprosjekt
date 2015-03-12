@@ -294,6 +294,9 @@ public class KalenderProtocol {
 					output = "OK";
 				}
 				break;
+			case "APP":
+				kalenderdb.appointment().deleteApp(input[2]);
+				output = "OK";
 		}
 		if(output.trim().equals("")){
 			output = "NONE";

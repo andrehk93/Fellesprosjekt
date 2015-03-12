@@ -100,7 +100,7 @@ public class Endre_avtaleController {
     @FXML
     TextField valgt_rom = new TextField();
     @FXML
-    Button forkast_knapp = new Button();
+    Button slett_knapp = new Button();
     @FXML
     Button lagre_knapp = new Button();
     @FXML
@@ -312,8 +312,9 @@ public class Endre_avtaleController {
     }
     
     @FXML
-    public void reset() {
-    	ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
+    public void slett() throws IOException {
+    	Klienten.deleteAvtale(avtalen.getAvtaleid());
+    	ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
     }
     
     @FXML

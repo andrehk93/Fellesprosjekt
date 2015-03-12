@@ -2,8 +2,9 @@ package server.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.sql.Connection;
+import java.sql.SQLException;
+
 import com.mysql.jdbc.Statement;
 
 public class Appointment {
@@ -59,6 +60,15 @@ public class Appointment {
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, newTime);
 		statement.setString(2, appID);
+		statement.executeUpdate();
+	}
+	
+// DELETE ============================================================
+	
+	public void deleteApp(String appID) throws SQLException {
+		query = "DELETE FROM `christwg_fp`.`avtale` WHERE `avtaleid`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, appID);
 		statement.executeUpdate();
 	}
 	
@@ -261,6 +271,9 @@ public class Appointment {
 		}
 		return output;
 	}
+
+
+	
 	
 	
 }
