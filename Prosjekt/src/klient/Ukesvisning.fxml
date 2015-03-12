@@ -23,8 +23,8 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" text="Ny avtale" />
-            <Button mnemonicParsing="false" onAction="#nextPaneEditGroups" text="Grupper" />
+            <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" styleClass="specialButton" text="Ny avtale" />
+            <Button mnemonicParsing="false" onAction="#nextPaneEditGroups" styleClass="specialButton" text="Grupper" />
             <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
@@ -35,7 +35,7 @@
                   <ListView prefHeight="211.0" prefWidth="169.0" />
                </children>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#nextPaneLogOut" text="Logg ut" />
+            <Button mnemonicParsing="false" onAction="#nextPaneLogOut" styleClass="normalButton" text="Logg ut" />
          </children>
       </VBox>
       <HBox layoutX="643.0" layoutY="58.0" prefHeight="35.0" prefWidth="291.0">
@@ -45,11 +45,11 @@
                   <String fx:value="button-pressed" />
                   <String fx:value="button-pressed" />
                </styleClass></Button>
-            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="55.0" text="Uke">
+            <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="55.0" styleClass="specialButton" text="Uke">
                <effect>
                   <ColorAdjust contrast="-0.25" />
                </effect></Button>
-            <Button mnemonicParsing="false" onAction="#nextPaneMonthView" text="Måned" />
+            <Button mnemonicParsing="false" onAction="#nextPaneMonthView" styleClass="specialButton" text="Måned" />
          </children>
       </HBox>
       <HBox layoutX="231.0" layoutY="58.0" prefHeight="35.0" prefWidth="110.0">

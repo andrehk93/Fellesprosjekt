@@ -22,11 +22,6 @@ public class Main extends Application {
 			klienten = new Klienten();
 			stage.setScene(createScene ( loadMainPane()));
 			stage.show();
-//			Parent root = FXMLLoader.load(getClass().getResource("../klient/Startside_innlogging.FXML"));
-//			Scene scene = new Scene(root,1000, 700);
-//			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//			primaryStage.setScene(scene);
-//			primaryStage.show();
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
 				public void handle(WindowEvent we){
 					try {
