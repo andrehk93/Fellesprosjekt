@@ -18,6 +18,7 @@ public class ScreenNavigator {
 	public static final String TILKOBLING_ERROR = "ConnectionError.fxml";
 	public static final String BRUKERREDIGERING = "Rediger_brukere.fxml";
 	
+	private static String current;
 	/** The main application layout controller. */
 	private static MainController mainController;
 
@@ -50,6 +51,7 @@ public class ScreenNavigator {
 	 */
 	public static void loadScreen(String fxml) {
 		try {
+			current = fxml;
 			mainController.setScreen(
 					FXMLLoader.load(
 							ScreenNavigator.class.getResource(fxml))
@@ -57,6 +59,10 @@ public class ScreenNavigator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String getLoadScreen() {
+		return current;
 	}
 
 }

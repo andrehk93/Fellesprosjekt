@@ -54,7 +54,15 @@ public class PopupController {
 	public void ferdig(ActionEvent event) throws IOException {
 		if (lest.isSelected()) {
 			Klienten.setLest(email, avtaleid);
-			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+			if (ScreenNavigator.getLoadScreen().equals("Ukesvisning.fxml")) {
+				ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
+			}
+			else if (ScreenNavigator.getLoadScreen().equals("Kalender_månedsvisning.fxml")) {
+				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+			}
+			else {
+				ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
+			}
 		}
 		else {
 			
