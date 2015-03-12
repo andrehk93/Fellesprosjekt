@@ -253,7 +253,7 @@ public class Endre_avtaleController {
 	}
     
     
-    private void insertAppDetails() {
+    private void insertAppDetails() throws IOException {
 		for(Avtale app : Klienten.avtaler){
 			if(Klienten.getValgtAvtale().equals(app.getAvtaleid())){
 				avtalen = app;
@@ -279,9 +279,19 @@ public class Endre_avtaleController {
 		}
 		valg = null;
 		antall_gjester.setText(String.valueOf((int)gjeste_liste.size()/2));
+		setOppmote();
     }
     
-    private String timeStringFormat(String s){
+    private void setOppmote() throws IOException {
+		for(Bruker b : gjeste_liste){
+			String oppmote = Klienten.getStatus(avtalen.getAvtaleid(), b.getEmail());
+			
+		}
+		
+	}
+
+
+	private String timeStringFormat(String s){
     	if(s.length()==1){
     		return "0"+s;
     	}
@@ -589,6 +599,7 @@ public class Endre_avtaleController {
 				if(ny){
 					nye_gjester.add(b);
 					b.inviterTilNyAvtale(avtalen);
+					avtalen.addDeltakere(b);
 				}
 			}
 			boolean fjernet;

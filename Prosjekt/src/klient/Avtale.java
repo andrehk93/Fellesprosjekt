@@ -3,6 +3,7 @@ package klient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.Property;
@@ -115,13 +116,14 @@ public class Avtale {
 	//Antar at det legges til én
 	public void addDeltakere(Bruker deltaker) throws IOException {
 		try {
-			for (Bruker bruker : deltakerProperty.getValue()) {
+			deltakerProperty.getValue().add(deltaker);
+			/*for (Bruker bruker : deltakerProperty.getValue()) {
 				deltakerProperty.getValue().add(deltaker);
 				if (! deltaker.equals(eierProperty.getValue())) {
 					Klienten.leggTilAvtale(bruker.getEmail(), avtaleid);
 					deltaker.addAvtale(this);
 				}
-			}
+			}*/
 		}
 		catch (NullPointerException e) {
 			
