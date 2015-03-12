@@ -81,6 +81,9 @@ public class KalenderProtocol {
 			case "ROOM":
 				kalenderdb.appointment().changeApp(input[2], input[3], "romnavn");
 				break;
+			case "APPNAME":
+				String beskrivelse = findMessage(Arrays.copyOfRange(input, 3, input.length));
+				kalenderdb.appointment().changeApp(input[2], beskrivelse, "beskrivelse");
 			case "STATUS":
 				kalenderdb.invitations().changeStatus(user, input[2], input[3]);
 				break;
@@ -217,7 +220,6 @@ public class KalenderProtocol {
 				break;
 			case "USERDETAILS":
 				output = kalenderdb.user().getUserDetails(input[1]);
-				System.out.println(output);
 				break;
 			case "RIGHTS":
 				if(input.length > 1 && rights > 0){

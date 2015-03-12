@@ -176,9 +176,11 @@ public class UkesvisningController {
 	}
 	
 	private void loadGrid() throws IOException {
-		//hentAvtaler();
+		if(Klienten.avtaler.isEmpty() || Klienten.getChanged()){
+			hentAvtaler();
+			Klienten.setChanged(false);
+		}
 		setUkeAvtaler();
-		System.out.println("AVTALENE: " + ukeAvtaler);
 		setTimeLabels();
 		for(Avtale app : ukeAvtaler){
 			setRects(app);
@@ -213,7 +215,6 @@ public class UkesvisningController {
 	private void setRects(Avtale app) throws IOException{
 		StackPane stack = new StackPane();
 		int gridPos = app.getTid().getWeekGridPos();
-		System.out.println(gridPos);
 		double ySize = app.getTid().getWeekSize();
 		int day = app.getTid().getDato().getDayOfWeek().getValue();
 		double margin = app.getTid().getMargin();
@@ -228,8 +229,8 @@ public class UkesvisningController {
 		stack.setMinSize(0, 0);
 		StackPane.setAlignment(box, Pos.TOP_LEFT);
 		StackPane.setAlignment(text, Pos.TOP_LEFT);
-		StackPane.setMargin(box, new Insets(margin,0,0,1));
-		StackPane.setMargin(text, new Insets(margin,0,0,1));
+		StackPane.setMargin(box, new Insets(margin+1,0,0,1));
+		StackPane.setMargin(text, new Insets(margin+1,0,0,1));
 		bokser.add(stack);
 		ruter.add(stack, day, gridPos);
 		GridPane.setValignment(stack, VPos.TOP);
@@ -254,6 +255,7 @@ public class UkesvisningController {
 				avtale = app.getAvtaleid();
 				if(app.getAvtaleAdmin().equals(Klienten.bruker)){
 					Klienten.setValgtAvtale(avtale);
+					ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{
@@ -299,7 +301,7 @@ public class UkesvisningController {
 				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
 				Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid,"0").split(" ");
+		String[] deltakere = Klienten.getAlleInviterte(avtaleid).split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
@@ -312,6 +314,7 @@ public class UkesvisningController {
 			}
 		}
 		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		avtale.setAvtaleNavn(Klienten.getAppNavn(avtaleid));
 		Klienten.avtaler.add(avtale);
 		Dag dagen = new Dag(tid.getDato());
 		dagen.addAvtale(avtale);
@@ -338,11 +341,13 @@ public class UkesvisningController {
 	
 	@FXML
 	private void nextPaneMakeAppointment(ActionEvent event) {
+		ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
 	}
 	
 	@FXML
 	private void nextPaneEditGroups(ActionEvent event) {
+		ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
 	}
 	

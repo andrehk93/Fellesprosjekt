@@ -17,6 +17,7 @@ public class ScreenNavigator {
 	public static final String ENDRE_AVTALE = "endre_avtale.fxml";
 	public static final String TILKOBLING_ERROR = "ConnectionError.fxml";
 	public static final String BRUKERREDIGERING = "Rediger_brukere.fxml";
+	public static String lastScreen;
 	
 	private static String current;
 	/** The main application layout controller. */

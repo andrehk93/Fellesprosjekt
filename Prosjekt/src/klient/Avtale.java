@@ -34,6 +34,10 @@ public class Avtale {
 		avtalenavn = Klienten.getAppNavn(avtaleid);
 	}
 	
+	public void setAvtaleNavn(String navn) throws IOException {
+		avtalenavn = navn;
+	}
+	
 	public String getAvtaleNavn() {
 		return avtalenavn;
 	}

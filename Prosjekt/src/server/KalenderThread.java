@@ -27,14 +27,14 @@ public class KalenderThread extends Thread {
             while ((inputLine = in.readLine()) != null) {
             	//try {
             	if (inputLine.trim().length() > 2) {
-            		System.out.println("PREPUT: " + inputLine);
+            		//System.out.println("PREPUT: " + inputLine);
             		outputLine = kp.processInput(inputLine) + "\r\n";
             		/*
 	            	} catch(Exception ArrayIndexOutOfBoudsException){
 	        			outputLine = "ABSOLUTT RAR INPUT \r\n";
 	        		}*/
-	            	System.out.println("INPUT: " + inputLine);
-		            System.out.println("OUTPUT: " + outputLine);
+	            	//System.out.println("INPUT: " + inputLine);
+		            //System.out.println("OUTPUT: " + outputLine);
 		            if (! outputLine.trim().equals("-1 ")) {
 		              	out.println(outputLine);
 		            }

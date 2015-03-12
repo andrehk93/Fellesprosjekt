@@ -96,7 +96,6 @@ public class TidsIntervall {
 		double hours = dur.getHour();
 		double minutes = ((double)dur.getMinute())/60;
 		double duration = hours+minutes;
-		System.out.println(duration*50);
 		return duration*50;
 	}
 	

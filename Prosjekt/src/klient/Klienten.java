@@ -21,15 +21,15 @@ public class Klienten {
 	public static ArrayList<Avtale> avtaler;
 	private static String valgtAvtale;
 	public static ArrayList<Møterom> alle_møterom;
+	private static boolean changed;
 	
 	
 	public Klienten() throws IOException {
+		avtaler = new ArrayList<Avtale>();
 		init();
 	}
 	
 	public static void init() throws UnknownHostException, IOException{
-		avtaler = new ArrayList<Avtale>();
-		alle_møterom = new ArrayList<Møterom>();
 		String ip = "localhost";
 		int port = 6789;
 		try {
@@ -127,8 +127,9 @@ public class Klienten {
 			ScreenNavigator.loadScreen(ScreenNavigator.TILKOBLING_ERROR);
 		}
 		String output = "";
-		String tempString = inFromServer.readLine();
-		while(tempString != null && tempString.length() > 0) {
+		String tempString = "";
+		tempString = inFromServer.readLine();
+		while(tempString != null && tempString.length() > 0 && tempString != "") {
 			output += tempString + "\r\n";
 			tempString = inFromServer.readLine();
 		}
@@ -251,7 +252,7 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 	
-	public static ArrayList<Bruker> getGroupMembers(String gruppeid) throws IOException{
+	public static ArrayList<Bruker> getGroupMembers(int gruppeid) throws IOException{
 		String toServer = "GET GROUP " + gruppeid;
 		String[] members = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> memberList= new ArrayList<Bruker>();
@@ -305,6 +306,14 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 	
+	public static void changeAvtale(String appID, String value, String what) throws IOException{
+		String toServer = "CHANGE "+what+" "+appID+" "+value;
+		if(what.equals("APPNAME")){
+			toServer += " ENDOFMESSAGE";
+		}
+		sendTilServer(toServer);
+	}
+	
 	public static String getGroups() throws IOException {
 		String toServer = "GET GROUPS " + bruker.getEmail().trim();
 		return sendTilServer(toServer);
@@ -313,6 +322,14 @@ public class Klienten {
 	public static String getGroupName(String gruppeid) throws IOException {
 		String toServer = "GET GROUPNAME " + gruppeid;
 		return sendTilServer(toServer);
+	}
+	
+	public static void setChanged(boolean c){
+		changed = c;
+	}
+
+	public static boolean getChanged() {
+		return changed;
 	}
 }
 

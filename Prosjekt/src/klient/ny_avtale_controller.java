@@ -313,10 +313,10 @@ public class ny_avtale_controller {
 		timeTil.getSelectionModel().selectedIndexProperty().addListener(handleTilTime);
 		minuttFra.getSelectionModel().selectedIndexProperty().addListener(handleFraMinutt);
 		minuttTil.getSelectionModel().selectedIndexProperty().addListener(handleTilMinutt);
-		startT = 999;
-		startM = 999;
-		sluttT = 999;
-		sluttM = 999;
+		startT = 0;
+		startM = 0;
+		sluttT = 0;
+		sluttM = 0;
 		evigheten = LocalTime.of(00, 00);
 		start = evigheten;
 		slutt = evigheten;
@@ -705,6 +705,7 @@ public class ny_avtale_controller {
 				}
 				String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, datoen), rom, avtalenavn.getText());
 				Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, datoen), rom, avtaleid);
+				Klienten.avtaler.add(avtale);
 				for (Bruker deltaker : gjeste_liste) {
 					deltaker.inviterTilNyAvtale(avtale);
 				}
@@ -716,7 +717,8 @@ public class ny_avtale_controller {
 						dag.addAvtale(avtale);
 					}
 				}
-				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+				Klienten.setChanged(true);
+				ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
 			}
 		}
 	}
@@ -772,7 +774,7 @@ public class ny_avtale_controller {
 					break;
 				}
 				else {	
-					brukere = Klienten.getGroupMembers(id.trim());
+					brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
 					Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
 					gruppe_liste.add(gruppe);
 				}
