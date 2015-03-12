@@ -18,7 +18,7 @@
                   <Font name="Segoe UI Light" size="15.0" />
                </font>
             </Text>
-            <Label styleClass="label-name" text="brukernavn">
+            <Label styleClass="label-name" fx:id="brukernavn">
                <font>
                   <Font size="15.0" />
                </font>
@@ -32,10 +32,10 @@
                         <Font name="Segoe UI Light" size="15.0" />
                      </font>
                   </Text>
-                  <ListView prefHeight="211.0" prefWidth="169.0" />
+                  <ListView prefHeight="211.0" prefWidth="169.0" fx:id="notifikasjoner_lv" styleClass="label-normal-objects"/>
                </children>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#nextPaneLogOut" styleClass="specialButton" text="Logg ut" />
+            <Button mnemonicParsing="false" onAction="#logout" styleClass="specialButton" text="Logg ut" />
          </children>
       </VBox>
       <HBox layoutX="633.0" layoutY="48.0" prefHeight="35.0" prefWidth="291.0">

@@ -28,8 +28,10 @@ public class KalenderProtocol {
 							user = input[1];
 							rights = loginResult;
 							return "OK";
-						} else {
+						} else if(loginResult == -1){
 							return "NOK";
+						} else if(loginResult == -2){
+							return "NO SUCH USER";
 						}
 					default:
 						return "PERMISSION DENIED";
@@ -228,6 +230,12 @@ public class KalenderProtocol {
 				if(rights != Integer.parseInt(output)){
 					rights = Integer.parseInt(output);
 				}
+				break;
+			case "GROUPS":
+				output = kalenderdb.group().getGroups(input[1]);
+				break;
+			case "GROUPNAME":
+				output = kalenderdb.group().getGroupName(input[1]);
 				break;
 			}
 			

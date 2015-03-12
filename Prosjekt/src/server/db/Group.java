@@ -87,7 +87,7 @@ public class Group {
 
 // GET =====================================================
 	
-	// GROUP
+	// GROUPMEMBERS
 	public String getGroup(String groupId) throws Exception {
 		query = "select epost\n" + 
 				"from gruppemedlem\n" + 
@@ -101,7 +101,44 @@ public class Group {
 		while(result.next()){
 			output += result.getString(1)+" ";
 		}
-		return output;
+		if(output.length() > 1){
+			return output.substring(0, output.length()-1);
+		} else {
+			return "";
+		}
+	}
+	
+	// GROUPNAME
+	public String getGroupName(String id) throws Exception {
+		query = "SELECT gruppenavn FROM gruppe WHERE gruppeid = ?";
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, id);
+		ResultSet result = statement.executeQuery();
+		if(result.next()){
+			return result.getString(1);
+		} else {
+			return "";
+		}
+	}
+	
+	// GROUPS
+	public String getGroups(String user) throws Exception {
+		query = "SELECT gruppeid FROM gruppemedlem WHERE epost = ?";
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, user);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		while(result.next()){
+			output += result.getString(1)+" ";
+		}
+		if(output.length() > 1){
+			return output.substring(0, output.length()-1);
+		} else {
+			return "";
+		}
 	}
 	
 }

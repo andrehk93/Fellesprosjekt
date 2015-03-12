@@ -311,5 +311,15 @@ public class Klienten {
 		String toServer = "CHANGE "+what+" "+appID+" "+value;
 		sendTilServer(toServer);
 	}
+	
+	public static String getGroups() throws IOException {
+		String toServer = "GET GROUPS " + bruker.getEmail().trim();
+		return sendTilServer(toServer);
+	}
+	
+	public static String getGroupName(String gruppeid) throws IOException {
+		String toServer = "GET GROUPNAME " + gruppeid;
+		return sendTilServer(toServer);
+	}
 }
 
