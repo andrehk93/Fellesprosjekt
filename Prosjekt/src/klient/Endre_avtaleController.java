@@ -62,6 +62,7 @@ public class Endre_avtaleController {
 	private LocalTime evigheten;
 	private Avtale avtalen;
 	
+	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
 	@FXML
@@ -261,6 +262,7 @@ public class Endre_avtaleController {
 		}
 		avtalenavn.setText(avtalen.getAvtaleNavn());
 		startdato.setValue(avtalen.getTid().getDato());
+		dato = startdato.getValue();
 		timeFra.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getStart().getHour())));
 		timeTil.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getSlutt().getHour())));
 		minuttFra.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getStart().getMinute())));
@@ -316,6 +318,8 @@ public class Endre_avtaleController {
 				}
 				else{
 					feilDato.setVisible(false);
+					dato = arg2;
+					System.out.println("ÆÆÆÆÆÆÆÆÆ");
 				}
 			}
     	};
@@ -368,6 +372,7 @@ public class Endre_avtaleController {
 				sluttT = Integer.parseInt(timeTil.getItems().get((Integer) newValue));
 				if(sluttM!=999){
 					slutt = LocalTime.of(sluttT, sluttM);
+					System.out.println(slutt);
 					feilTekst.setVisible(!sjekkTid(start, slutt));
 				}
 			}
@@ -540,9 +545,21 @@ public class Endre_avtaleController {
 		System.out.println(start);
 		System.out.println(slutt);
 		System.out.println(dato);
-		boolean nyRom,nyStart,nySlutt,nyDato;
+		if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null){
+			System.out.println("WHAAAAAAAAAAAAAT????!?!?!");
+			handleChanges();
+			ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
+		}
+	}
+    
+    private void handleChanges() throws IOException{
+    	boolean nyRom,nyStart,nySlutt,nyDato;
 		Møterom rom = new Møterom(sluttM, "he");
-		if(!valgt_rom.getText().equals(avtalen.getRom().getNavn())){
+		if(!avtalenavn.getText().equals(avtalen.getAvtaleNavn())){
+			Klienten.changeAvtale(avtalen.getAvtaleid(), avtalenavn.getText(), "APPNAME");
+			avtalen.setAvtaleNavn(avtalenavn.getText());
+		}
+    	if(!valgt_rom.getText().equals(avtalen.getRom().getNavn())){
 			Klienten.changeAvtale(avtalen.getAvtaleid(), valgt_rom.getText(),"ROOM");
 			//avtalen.setRom(Klienten.møterom);
 		}
@@ -551,7 +568,7 @@ public class Endre_avtaleController {
 			avtalen.setTid(new TidsIntervall(start,slutt,dato));
 		}
 		if(!slutt.equals(avtalen.getTid().getSlutt())){
-			Klienten.changeAvtale(avtalen.getAvtaleid(), start.toString(),"ENDTIME");
+			Klienten.changeAvtale(avtalen.getAvtaleid(), slutt.toString(),"ENDTIME");
 			avtalen.setTid(new TidsIntervall(start,slutt,dato));
 		}
 		if(!dato.equals(avtalen.getTid().getDato())){
@@ -559,6 +576,7 @@ public class Endre_avtaleController {
 			avtalen.setTid(new TidsIntervall(start,slutt,dato));
 		}
 		ArrayList<Bruker> nye_gjester = new ArrayList<Bruker>();
+		ArrayList<Bruker> fjerna_gjester = new ArrayList<Bruker>();
 		if(!gjeste_liste.equals(avtalen.getDeltakere())){
 			boolean ny;
 			for(Bruker b : gjeste_liste){
@@ -569,6 +587,7 @@ public class Endre_avtaleController {
 					}
 				}
 				if(ny){
+					nye_gjester.add(b);
 					b.inviterTilNyAvtale(avtalen);
 				}
 			}
@@ -581,29 +600,12 @@ public class Endre_avtaleController {
 					}
 				}
 				if(fjernet){
+					fjerna_gjester.add(b);
 					b.deleteAvtale(avtalen);
 				}
 			}
 		}
-		
-		/*if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
-			System.out.println("GJESTENE: " + gjeste_liste);
-			String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom, avtalenavn.getText());
-			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
-			for (Bruker deltaker : gjeste_liste) {
-				deltaker.inviterTilNyAvtale(avtale);
-			}
-			getBruker().inviterTilNyAvtale(avtale);
-			System.out.println("ENDREr status: ");
-			Klienten.changeStatus(avtaleid, "1");
-			for (Dag dag : KalenderController.dager) {
-				if (dag.getDato().equals(dato)) {
-					dag.addAvtale(avtale);
-				}
-			}*/
-			ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
-		
-	}
+    }
 	
 	public Bruker getBruker() {
 		return Klienten.bruker;

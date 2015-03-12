@@ -72,12 +72,12 @@ public class Appointment {
 				"from avtale \n" + 
 				"where avtaleid=" + avtaleid;
 		
-		System.out.println("QUERY : " + query);
+		//System.out.println("QUERY : " + query);
 		PreparedStatement statement = con.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		result.next();
 		String output = result.getString(1);
-		System.out.println("outp: " + output);
+		//System.out.println("outp: " + output);
 		if (output == null) {
 			return "Ingen beskrivelse";
 		}

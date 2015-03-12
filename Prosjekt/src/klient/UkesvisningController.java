@@ -176,11 +176,11 @@ public class UkesvisningController {
 	}
 	
 	private void loadGrid() throws IOException {
-		if(Klienten.avtaler.isEmpty()){
+		if(Klienten.avtaler.isEmpty() || Klienten.getChanged()){
 			hentAvtaler();
+			Klienten.setChanged(false);
 		}
 		setUkeAvtaler();
-		System.out.println("AVTALENE: " + ukeAvtaler);
 		setTimeLabels();
 		for(Avtale app : ukeAvtaler){
 			setRects(app);
@@ -215,7 +215,6 @@ public class UkesvisningController {
 	private void setRects(Avtale app) throws IOException{
 		StackPane stack = new StackPane();
 		int gridPos = app.getTid().getWeekGridPos();
-		System.out.println(gridPos);
 		double ySize = app.getTid().getWeekSize();
 		int day = app.getTid().getDato().getDayOfWeek().getValue();
 		double margin = app.getTid().getMargin();
@@ -230,8 +229,8 @@ public class UkesvisningController {
 		stack.setMinSize(0, 0);
 		StackPane.setAlignment(box, Pos.TOP_LEFT);
 		StackPane.setAlignment(text, Pos.TOP_LEFT);
-		StackPane.setMargin(box, new Insets(margin,0,0,1));
-		StackPane.setMargin(text, new Insets(margin,0,0,1));
+		StackPane.setMargin(box, new Insets(margin+1,0,0,1));
+		StackPane.setMargin(text, new Insets(margin+1,0,0,1));
 		bokser.add(stack);
 		ruter.add(stack, day, gridPos);
 		GridPane.setValignment(stack, VPos.TOP);
@@ -315,10 +314,10 @@ public class UkesvisningController {
 			}
 		}
 		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		avtale.setAvtaleNavn(Klienten.getAppNavn(avtaleid));
 		Klienten.avtaler.add(avtale);
 		Dag dagen = new Dag(tid.getDato());
 		dagen.addAvtale(avtale);
-		System.out.println("Deltakere for "+avtaleid+": "+deltaker_liste);
 	}
 	
 	private Dag getDag(LocalDate dato) {
@@ -342,11 +341,13 @@ public class UkesvisningController {
 	
 	@FXML
 	private void nextPaneMakeAppointment(ActionEvent event) {
+		ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
 	}
 	
 	@FXML
 	private void nextPaneEditGroups(ActionEvent event) {
+		ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
 	}
 	
