@@ -323,7 +323,6 @@ public class KalenderController {
 						createAvtale(dato, avtaleid);
 					}
 					catch (NullPointerException e) {
-						System.out.println("NULL");
 					}
 				}
 			}

@@ -88,25 +88,13 @@ public class Bruker {
 	
 	
 	public void addAvtale(Avtale avtale) throws IOException {
-		boolean duplikat = false;
 		if (avtaleListeProperty.getValue() == null) {
 			ArrayList<Avtale> denne_avtalen = new ArrayList<Avtale>();
 			denne_avtalen.add(avtale);
 			avtaleListeProperty.setValue(denne_avtalen);
 		}
 		else {
-			for (Avtale avtaler : avtaleListeProperty.getValue()) {
-				if (avtale.equals(avtaler)) {
-					duplikat = true;
-				}
-			}
-			if (duplikat) {
-				System.out.println("avtalen finnes allerede");
-			}
-			else {
-				avtaleListeProperty.getValue().add(avtale);
-			}
-			
+			avtaleListeProperty.getValue().add(avtale);
 		}
 	}
 	

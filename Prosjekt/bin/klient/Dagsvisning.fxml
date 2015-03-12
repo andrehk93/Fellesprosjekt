@@ -15,12 +15,12 @@
          <children>
             <VBox alignment="TOP_CENTER" layoutX="28.0" layoutY="165.0" prefHeight="471.0" prefWidth="169.0" spacing="20.0" stylesheets="@application.css">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-normal-objects" text="Innlogget som">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:">
                      <font>
                         <Font name="Segoe UI Light" size="18.0" />
                      </font>
                   </Text>
-                  <Label styleClass="label-normal-objects" text="brukernavn">
+                  <Label styleClass="label-name" fx:id="brukernavn">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -34,7 +34,7 @@
                               <Font name="Segoe UI Light" size="15.0" />
                            </font>
                         </Text>
-                        <ListView prefHeight="211.0" prefWidth="169.0" />
+                        <ListView prefHeight="211.0" prefWidth="169.0" fx:id="notifikasjoner_lv" styleClass="label-normal-objects"/>
                      </children>
                      <children>
                         <Button mnemonicParsing="false" onAction="#nextPaneLogOut" styleClass="normalButton" text="Logg ut" />
@@ -93,7 +93,7 @@
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <GridPane gridLinesVisible="true" layoutX="220.0" layoutY="165.0" opacity="0.34" prefHeight="471.0" prefWidth="716.0">
+            <GridPane gridLinesVisible="true" layoutX="220.0" layoutY="165.0" opacity="0.34" prefHeight="471.0" prefWidth="716.0" styleClass="label-normal-objects">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="08:00">
                      <GridPane.margin>

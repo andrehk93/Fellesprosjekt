@@ -262,60 +262,6 @@ public class UkesvisningController {
 			}
 		});
 	}
-
-	
-	private void hentAvtaler() throws IOException {
-		try {
-			if (Klienten.avtaler.isEmpty()) {
-				avtaleListe = Klienten.mineAvtaler(Klienten.bruker.getEmail(), 0).split(" "); //Husk filtrering!!!
-				for (int k = 0; k < avtaleListe.length; k++) {
-					if (k%2 != 0) {
-						String dato = avtaleListe[k];
-						String avtaleid = avtaleListe[k-1];
-						createAvtale(dato, avtaleid);
-					}
-				}
-			}
-			else {
-				for (Avtale avtale : Klienten.avtaler) {
-					getDag(avtale.getTid().getDato()).addAvtale(avtale);
-				}
-			}
-		}
-		catch (NullPointerException e) {
-		}
-		
-	}
-	
-	
-	//ER DENNE UNØDVENDIG?
-	private void createAvtale(String dato, String avtaleid) throws IOException {
-		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
-		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
-		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
-		Møterom rom = new Møterom(kapasitet, romnavn);
-		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
-		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
-				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
-				Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
-						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid,"0").split(" ");
-		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
-			for (String epost : deltakere) {
-				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
-					break;
-				}
-				else {
-					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
-					deltaker_liste.add(deltaker);
-				}
-			}
-		}
-		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
-		Klienten.avtaler.add(avtale);
-		Dag dagen = new Dag(tid.getDato());
-		dagen.addAvtale(avtale);
-	}
 	
 	private Dag getDag(LocalDate dato) {
 		for (Dag dag : dager) {

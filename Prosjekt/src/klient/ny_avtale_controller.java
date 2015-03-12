@@ -5,15 +5,14 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.List;
-
-import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
 
 import org.controlsfx.control.CheckComboBox;
 
-import com.sun.javafx.css.StyleCache.Key;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
+
 
 
 import javafx.beans.property.Property;
@@ -26,9 +25,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.NodeOrientation;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -38,23 +34,29 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 
 public class ny_avtale_controller {
 	
+	
 	Property<Number> ant_gjester = new SimpleIntegerProperty();
-	private ArrayList<Bruker> gjeste_liste;
-	private ArrayList<Gruppe> gruppe_liste;
+	private Bruker forrigeValg;
+	
+	//LISTENE SOM INNEHOLDER GJESTER OG GRUPPER (IKKE TIL LISTVIEW, TIL COMBOBOX)
+	private ObservableList<Bruker> gjeste_ComboBox;
+	private ObservableList<Gruppe> gruppe_ComboBox;
+	
+	//LISTER OVER INVITERTE BRUKERE OG GRUPPER (UAVHENGIGE LISTER)
+	private ArrayList<Bruker> inviterte_gjester;
+	private ArrayList<Gruppe> inviterte_grupper;
+	private List<Bruker> listeForGjesteCombobox;
+	private List<Gruppe> listeForGruppeCombobox;
+
+	//TID OG DATO
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
-	private String[] ledigeBrukerEmailer;
-	private ArrayList<Bruker> ledigeBrukere;
 	private LocalDate tilDato;
 	private int startT;
 	private int startM;
@@ -63,111 +65,87 @@ public class ny_avtale_controller {
 	private LocalTime evigheten;
 	private ArrayList<String> repDays;
 	private ArrayList<LocalDate> repDates;
+	
+	//LEDIGE BRUKERE OG GRUPPER
+	private String[] ledigeBrukerEmailer;
+    private String[] ledigeGrupperId;
+	
+	//LISTENER TIL LISTVIEW SINE GJELDENDE VALG (MULIG IKKE FUNGERER)
+	private Bruker valg;
+    private Gruppe valgGruppe;
+	
+	
+	//LISTER OG OBSERVABLELISTER TIL LISTVIEW
+	private List<HBox> gjeste_listen;
+    private List<HBox> gruppe_listen;
+    private ObservableList<HBox> gjestene_observable;
+    private ObservableList<HBox> gruppene_observable;
+	
+	//REPETISJON
 	private ArrayList<String> repRooms;
 	private boolean isrep;
 	
 	@FXML
-	CheckBox hele_dagen = new CheckBox();
+	CheckBox hele_dagen, gjentakelse;
 	@FXML
-	Button leggTil = new Button();
-	@FXML
-	Button addGjestBtn;
-	@FXML
-	Text feilDato = new Text();
-	@FXML
-	CheckBox gjentakelse = new CheckBox();
-	@FXML
-    TextField avtalenavn = new TextField();
-	@FXML
-    Text feilTekst = new Text();
+	Text feilDato, feilTekst;
     @FXML
-    DatePicker startdato = new DatePicker();
+    DatePicker startdato, sluttdato;
     @FXML
-    DatePicker sluttdato = new DatePicker();
+    ChoiceBox<String> timeFra, timeTil, minuttFra, minuttTil;
     @FXML
-    ChoiceBox<String> timeFra = new ChoiceBox<String>();
+    ComboBox<Bruker> legg_til_gjester;
     @FXML
-    ChoiceBox<String> timeTil = new ChoiceBox<String>();
+    ListView<HBox> gjesteliste, gruppeliste;
     @FXML
-    ChoiceBox<String> minuttFra = new ChoiceBox<String>();
+    Button søk_møterom, forkast_knapp, lagre_knapp, addGruppeBtn, leggTil, addGjestBtn;
     @FXML
-    ChoiceBox<String> minuttTil = new ChoiceBox<String>();
+    ListView<String> møteromliste;
     @FXML
-    ComboBox<Bruker> legg_til_gjester = new ComboBox<Bruker>();
+    Slider møteromliste_slider;
     @FXML
-    ListView<HBox> gjesteliste = new ListView<HBox>();
-    @FXML
-    Button søk_møterom = new Button();
-    @FXML
-    ListView<String> møteromliste = new ListView<String>();
-    @FXML
-    Slider møteromliste_slider = new Slider();
-    @FXML
-    TextField antall_gjester = new TextField();
-    @FXML
-    TextField valgt_rom = new TextField();
-    @FXML
-    Button forkast_knapp = new Button();
-    @FXML
-    Button lagre_knapp = new Button();
+    TextField antall_gjester, valgt_rom, avtalenavn;
     @FXML
     CheckComboBox<String> repeatDays;
-    List<HBox> gjestelisten;
-    List<HBox> gruppelisten;
-    
-    ObservableList<HBox> gjestene;
-    ObservableList<HBox> gruppene;
-    
-    @FXML
-    ListView<HBox> gruppeliste;
-    
-    @FXML
-    Button addGruppeBtn;
-    
     @FXML
     ComboBox<Gruppe> legg_til_gruppe;
     
-    private Bruker valg;
-    private Gruppe valgGruppe;
-    private String ledigeGrupperId;
 	
 	public void initialize() throws IOException {
+		
+		
+	//INITIALISERER LISTER OVER INVITERTE GRUPPER/BRUKERE
+		
+		inviterte_gjester = new ArrayList<Bruker>();
+		inviterte_grupper = new ArrayList<Gruppe>();
+		
+	//MYE RART HER
+		
 		repDates = new ArrayList<LocalDate>();
 		isrep = false;
 		sluttdato.setDisable(true);
-		gjeste_liste = new ArrayList<Bruker>();
-		gruppe_liste = new ArrayList<Gruppe>();
-		gruppelisten = new ArrayList<HBox>();
 		antall_gjester.setDisable(false);
 		antall_gjester.setEditable(true);
 		ant_gjester.setValue(0);
+		
+		
+	//LEGGER TIL DIVERSE LISTENERS
+		
 		ChangeListener<Number> antall = new ChangeListener<Number>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0,
 					Number arg1, Number arg2) {
-				if (ant_gjester.getValue().intValue() < gjestene.size()) {
-					ant_gjester.setValue(gjestene.size());
+				if (ant_gjester.getValue().intValue() < gjestene_observable.size()) {
+					ant_gjester.setValue(gjestene_observable.size());
 				}
 				antall_gjester.setText(ant_gjester.getValue().toString());
 			}
 			
 		};
 		
-		ledigeBrukerEmailer = Klienten.getAllUserEmails();
-		ledigeBrukere = new ArrayList<Bruker>();
+		ant_gjester.addListener(antall);
 		
-		for(String email : ledigeBrukerEmailer){
-			if(email != null || email != ""){
-				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email, 0));
-			}
-		}
-		
-		ledigeGrupperId = Klienten.getGroups();
-		lagGrupper();
-		
-		legg_til_gjester.getItems().addAll(ledigeBrukere);
-		legg_til_gruppe.getItems().addAll(gruppe_liste);
 		ChangeListener<String> tekstStr = new ChangeListener<String>() {
 
 			@Override
@@ -175,23 +153,21 @@ public class ny_avtale_controller {
 					String arg1, String arg2) {
 				try {
 					int str = Integer.parseInt(antall_gjester.getText());
-					if (str < gjestene.size()) {
-						antall_gjester.setText(gjestene.size()+"");
+					if (str < gjestene_observable.size()) {
+						antall_gjester.setText(gjestene_observable.size()+"");
 						antall_gjester.end();
 					}
 				}
 				catch (Exception e) {
-					antall_gjester.setText(gjestene.size()+"");
+					antall_gjester.setText(gjestene_observable.size()+"");
 					antall_gjester.end();
 				}
 			}
 			
 		};
 		antall_gjester.textProperty().addListener(tekstStr);
-		ant_gjester.addListener(antall);
+		
 		sluttdato.setDisable(true);
-		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
-		FxUtil.autoCompleteComboBox(legg_til_gruppe, FxUtil.AutoCompleteMode.CONTAINING);
 		ChangeListener<Boolean> aktiver = new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0,
@@ -212,12 +188,55 @@ public class ny_avtale_controller {
 			
 		};
 		gjentakelse.selectedProperty().addListener(aktiver);
+		
+		
+	//INSTATNSIERER SELVE LISTENE SOM INNEHOLDER GRUPPER/BRUKERE TIL COMBOBOXENE
+		
+		listeForGjesteCombobox = new ArrayList<Bruker>();
+		listeForGruppeCombobox = new ArrayList<Gruppe>();
+		
+		
+	//INSTANSIERER HBOX-LISTENE OG LEGGER DE TIL I OBSERVABLELISTENE
+		
+		gjeste_listen = new ArrayList<HBox>();
+		gruppe_listen = new ArrayList<HBox>();
+		
+		gjestene_observable = FXCollections.observableList(gjeste_listen);
+    	gruppene_observable = FXCollections.observableList(gruppe_listen);
+		
+		
+	//HENTER GRUPPER OG LEGGER TIL GRUPPER OG BRUKERE I LISTVIEWENE
+		
+		ledigeBrukerEmailer = Klienten.getAllUserEmails();
+		
+		for(String email : ledigeBrukerEmailer){
+			if(email != null && email != "" && ! email.trim().equals(Klienten.bruker.getEmail())){
+				listeForGjesteCombobox.add(new Bruker(Klienten.getBruker(email), email, 0));
+			}
+			else {
+				System.out.println(email);
+			}
+		}
+		
+		ledigeGrupperId = Klienten.getGroups().split(" ");
+		
+		//LEGGER GRUPPER TIL I GRUPPE_COMBOBOX
+		lagGrupper();
+		
+		gjeste_ComboBox = FXCollections.observableList(listeForGjesteCombobox);
+		gruppe_ComboBox = FXCollections.observableList(listeForGruppeCombobox);
+		legg_til_gjester.setItems(gjeste_ComboBox);
+		legg_til_gruppe.setItems(gruppe_ComboBox);
+		
+		
+	//LEGGER TIL LISTENERS FOR LEGG TIL GRUPPER/BRUKER
+		
 		ChangeListener<Bruker> valgt_bruker = new ChangeListener<Bruker>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Bruker> arg0,
 					Bruker arg1, Bruker arg2) {
-				valg = arg2;
+				valg = FxUtil.getComboBoxValue(legg_til_gjester);
 			}
 			
 		};
@@ -228,12 +247,18 @@ public class ny_avtale_controller {
 			@Override
 			public void changed(ObservableValue<? extends Gruppe> arg0,
 					Gruppe arg1, Gruppe arg2) {
-				valgGruppe = arg2;
+				valgGruppe = FxUtil.getComboBoxValue(legg_til_gruppe);
 			}
 			
 		};
 		legg_til_gruppe.getSelectionModel().selectedItemProperty().addListener(valgt_gruppe);
 		
+	//LAGER COMBOBOXENE SØKBARE
+		
+		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
+		FxUtil.autoCompleteComboBox(legg_til_gruppe, FxUtil.AutoCompleteMode.CONTAINING);
+		
+	//SETTER OPP CHECKCOMBOBOXEN
 		setUpCCB();
 		
 		
@@ -270,9 +295,6 @@ public class ny_avtale_controller {
 		};
 		hele_dagen.selectedProperty().addListener(allDay);
 		
-		gjestelisten = new ArrayList<HBox>();
-    	gjestene = FXCollections.observableList(gjestelisten);
-    	gruppene = FXCollections.observableList(gruppelisten);
 		feilTekst.setVisible(false);
 		feilDato.setVisible(false);
 		List<String> list = new ArrayList<String>();
@@ -424,7 +446,6 @@ public class ny_avtale_controller {
     
     private void findDates() {
     	LocalDate i = dato;
-    	System.out.println("HEI PÅ DEG!!! YO!!");
     	repDates = new ArrayList<LocalDate>();
     	repDates.add(i);
     	for(String day : repDays){
@@ -538,81 +559,6 @@ public class ny_avtale_controller {
     	return false;
     }
     
-    public void showGjest(HBox boks) {
-    	gjestene.add(boks);
-    	this.gjesteliste.setItems(gjestene);
-    	ant_gjester.setValue(ant_gjester.getValue().intValue()+1);
-    }
-    
-    public void removeGjest(HBox boks) {
-    	for (Bruker bruker : gjeste_liste) {
-    		Text te = (Text) boks.getChildren().get(0);
-    		if (bruker.getNavn().equals(te.getText())) {
-    			gjeste_liste.remove(bruker);
-    			legg_til_gjester.getItems().add(bruker);
-    		}
-    		else {
-    			System.out.println(boks.getChildren().get(0).toString());
-    		}
-    	}
-    	gjestene.remove(boks);
-    	this.gjesteliste.setItems(gjestene);
-    	ant_gjester.setValue(ant_gjester.getValue().intValue()-1);
-    	antall_gjester.setText(ant_gjester.getValue().intValue() + "");
-    }
-    
-    public void addGjest(Bruker bruker) throws IOException {
-    	HBox boks = new HBox();
-    	Button kryss = new Button();
-    	kryss.setText("x");
-    	kryss.setOpacity(0.8);
-    	kryss.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				removeGjest(boks);
-			}
-    		
-    	});
-    	String brukernavn = bruker.getNavn();
-    	boks.getChildren().add(new Text(brukernavn));
-    	boks.getChildren().add(boks);
-    	showGjest(boks);
-    	gjeste_liste.add(bruker);
-    	legg_til_gjester.getItems().remove(bruker);
-    }
-    
-    @FXML
-    private void addGjesten(ActionEvent event) {
-    	if (valg != null) {
-    		Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
-        	for(Bruker gjest : gjeste_liste){
-        		if(gjest.getEmail() == selectedUser.getEmail()){
-        			System.out.println("Brukeren er allerede invitert");
-        			return;
-        		}
-        	}
-	    	HBox boks = new HBox();
-	    	Button kryss = new Button();
-	    	kryss.setText("x");
-	    	kryss.setOpacity(0.8);
-	    	kryss.setOnAction(new EventHandler<ActionEvent>() {
-	
-				@Override
-				public void handle(ActionEvent event) {
-					removeGjest(boks);
-				}
-	    		
-	    	});
-	    	String brukernavn = selectedUser.getNavn();
-	    	boks.getChildren().add(new Text(brukernavn));
-	    	boks.getChildren().add(kryss);
-	    	showGjest(boks);
-	    	gjeste_liste.add(selectedUser);
-	    	legg_til_gjester.getItems().remove(selectedUser);
-    	}
-    }
-    
     @FXML
     public void finnRom(ActionEvent event) throws IOException {
     	String rom = "";
@@ -627,7 +573,7 @@ public class ny_avtale_controller {
 	    	if (isrep){
 	    		repRooms = new ArrayList<String>();
 	    		for(LocalDate date : repDates){
-	    			String[] besteRom = Klienten.getRom(date.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "").split(" ");
+	    			String[] besteRom = Klienten.getRom(date.toString(), start.toString(), slutt.toString(), gjeste_ComboBox.size() + "").split(" ");
 	    			repRooms.add(besteRom[0]);
 	    		}
 	    		ArrayList<String> beskjed = new ArrayList<String>();
@@ -636,7 +582,7 @@ public class ny_avtale_controller {
 	    		return;
 	    	}
 	    	else {
-	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
+	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_ComboBox.size() + "");
 	    		ArrayList<String> rommene = new ArrayList<String>();
 		    	String[] rom_listen = rom.split(" ");
 		    	for (int i = 0; i < rom_listen.length; i++) {
@@ -648,23 +594,11 @@ public class ny_avtale_controller {
     	catch (NullPointerException e) {
     		System.out.println("Må fylle ut avgjørende felter");
     	}
-    	System.out.println("ROMMENE: " + rom);
     	ArrayList<String> rommene = new ArrayList<String>();
     	String[] rom_listen = rom.split(" ");
     	for (int i = 0; i < rom_listen.length; i++) {
     		rommene.add(rom_listen[i]);
 		}
-    	//Må spørre database om ledig(e) rom, midlertidig metode:
-    	showRom(rommene);
-    }
-    
-    private void bookRepRom(String rom){
-    	ArrayList<String> rommene = new ArrayList<String>();
-    	String[] rom_listen = rom.split(" ");
-    	for (int i = 0; i < rom_listen.length; i++) {
-    		rommene.add(rom_listen[i]);
-		}
-    	//Må spørre database om ledig(e) rom, midlertidig metode:
     	showRom(rommene);
     }
     
@@ -689,27 +623,22 @@ public class ny_avtale_controller {
 	
     @FXML
 	public void lagre(ActionEvent event) throws IOException {
-		System.out.println(start);
-		System.out.println(slutt);
-		System.out.println(dato);
 		Møterom rom =  new Møterom(100, valgt_rom.getText());
 		if (startdato.getValue() != null && repDates.isEmpty()) {
 			repDates.add(startdato.getValue());
 		}
 		for (LocalDate datoen : repDates) {
 			if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
-				System.out.println("GJESTENE: " + gjeste_liste);
 				if (isrep) {
 					int i = repDates.indexOf(datoen);
 					rom = new Møterom(100, repRooms.get(i));
 				}
 				String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, datoen), rom, avtalenavn.getText());
-				Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, datoen), rom, avtaleid);
-				for (Bruker deltaker : gjeste_liste) {
+				Avtale avtale = new Avtale(getBruker(), inviterte_gjester, new TidsIntervall(start, slutt, datoen), rom, avtaleid);
+				for (Bruker deltaker : inviterte_gjester) {
 					deltaker.inviterTilNyAvtale(avtale);
 				}
 				getBruker().inviterTilNyAvtale(avtale);
-				System.out.println("ENDREr status: ");
 				Klienten.changeStatus(avtaleid, "1");
 				for (Dag dag : KalenderController.dager) {
 					if (dag.getDato().equals(datoen)) {
@@ -725,22 +654,126 @@ public class ny_avtale_controller {
 		return Klienten.bruker;
 	}
 	
+    //LEGGER TIL HBOX I LISTVIEW FOR GJESTER
+    public void showGjest(HBox boks) {
+    	gjestene_observable.add(boks);
+    	gjesteliste.setItems(gjestene_observable);
+    	ant_gjester.setValue(ant_gjester.getValue().intValue()+1);
+    }
+    
+    
+    //FJERNER ÉN GJEST FRA LISTVIEW MED GJESTER
+    public void removeGjest(HBox boks) {
+    	for (Bruker bruker : inviterte_gjester) {
+    		Text te = (Text) boks.getChildren().get(0);
+    		if (bruker.getNavn().equals(te.getText())) {
+    			inviterte_gjester.remove(bruker);
+    			gjeste_ComboBox.add(bruker);
+    			legg_til_gjester.setItems(gjeste_ComboBox);
+    			gjestene_observable.remove(boks);
+    	    	gjesteliste.setItems(gjestene_observable);
+    	    	ant_gjester.setValue(ant_gjester.getValue().intValue()-1);
+    	    	antall_gjester.setText(ant_gjester.getValue().intValue() + "");
+    	    	return;
+    		}
+    		else {
+    		}
+    	}
+    }
+    
+    
+    //LEGGER TIL ÉN GJEST (FRA GRUPPE!) OG KALLER SHOWGJEST MED BOKSEN
+    public void addGjest(Bruker bruker) throws IOException {
+    	HBox boks = new HBox();
+    	Button kryss = new Button();
+    	kryss.setText("x");
+    	kryss.setOpacity(0.8);
+    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				removeGjest(boks);
+			}
+    		
+    	});
+    	String brukernavn = bruker.getNavn();
+    	boks.getChildren().add(new Text(brukernavn));
+    	boks.getChildren().add(kryss);
+    	showGjest(boks);
+    	inviterte_gjester.add(bruker);
+    	gjeste_ComboBox.remove(bruker);
+    	legg_til_gjester.setItems(gjeste_ComboBox);
+    }
+    
+    
+    //LEGGER TIL ÉN GJEST (VED Å OPPRETTE HBOX OBJEKT) OG KALLER SHOWGJEST MED BOKSEN
+    @FXML
+    private void addGjesten(ActionEvent event) {
+    	if (valg != null && FxUtil.getComboBoxValue(legg_til_gjester) != null) {
+    		valg = FxUtil.getComboBoxValue(legg_til_gjester);
+	    	HBox boks = new HBox();
+	    	Button kryss = new Button();
+	    	kryss.setText("x");
+	    	kryss.setOpacity(0.8);
+	    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+	
+				@Override
+				public void handle(ActionEvent event) {
+					removeGjest(boks);
+				}
+	    		
+	    	});
+	    	String brukernavn = valg.getNavn();
+	    	boks.getChildren().add(new Text(brukernavn));
+	    	boks.getChildren().add(kryss);
+	    	showGjest(boks);
+	    	inviterte_gjester.add(valg);
+	    	gjeste_ComboBox.remove(valg);
+	    	legg_til_gjester.setItems(gjeste_ComboBox);
+	    	forrigeValg = valg;
+    	}
+    	else {
+    	}
+    }
+	
 	public void removeGruppe(HBox boks) {
-		
+		for (Gruppe gruppe : inviterte_grupper) {
+    		Text te = (Text) boks.getChildren().get(0);
+    		if (gruppe.getNavn().equals(te.getText())) {
+    			for (Bruker bruker : gruppe.getMedlemmer()) {
+    				try {
+	    				for (HBox gjest_boks : gjestene_observable) {
+	    					Text text = (Text) gjest_boks.getChildren().get(0);
+	    					if (text.getText().equals(bruker.getNavn())) {
+	    						removeGjest(gjest_boks);
+	    					}
+	    				}
+    				}
+    				catch (ConcurrentModificationException e) {
+    					
+    				}
+    			}
+    			inviterte_grupper.remove(gruppe);
+    			gruppe_ComboBox.add(gruppe);
+    			legg_til_gruppe.setItems(gruppe_ComboBox);
+    			gruppene_observable.remove(boks);
+    	    	gruppeliste.setItems(gruppene_observable);
+    			return;
+    		}
+    		else {
+    		}
+    	}
+    	
 	}
 	
+	
+	//LEGGER TIL VALGT GRUPPE (FRA COMBOBOX) OG KALLER SHOWGRUPPE
 	@FXML
-	private void addGruppen() throws IOException {
+	private void addGruppen() throws IOException, ClassCastException {
 		if (valgGruppe != null) {
-    		Gruppe selectedGruppe = FxUtil.getComboBoxValue(legg_til_gruppe);
-    		System.out.println("SELECTED: " + selectedGruppe);
-        	for(Gruppe gruppe : gruppe_liste){
-        		System.out.println("LISTA SJÆL: " + gruppe_liste);
-        		if(gruppe.getNavn() == selectedGruppe.getNavn()){
-        			System.out.println("Gruppen er allerede invitert");
-        			return;
-        		}
-        	}
+			if (FxUtil.getComboBoxValue(legg_til_gruppe) != null && ! valgGruppe.equals(FxUtil.getComboBoxValue(legg_til_gruppe))) {
+				valgGruppe = FxUtil.getComboBoxValue(legg_til_gruppe);
+			}
 	    	HBox boks = new HBox();
 	    	Button kryss = new Button();
 	    	kryss.setText("x");
@@ -753,39 +786,49 @@ public class ny_avtale_controller {
 				}
 	    		
 	    	});
-	    	String gruppenavn = selectedGruppe.getNavn();
+	    	String gruppenavn = valgGruppe.getNavn();
 	    	boks.getChildren().add(new Text(gruppenavn));
 	    	boks.getChildren().add(kryss);
-	    	showGrupper(boks, selectedGruppe);
-	    	gruppe_liste.add(selectedGruppe);
-	    	legg_til_gruppe.getItems().remove(selectedGruppe);
+	    	showGrupper(boks, valgGruppe);
+	    	inviterte_grupper.add(valgGruppe);
+	    	gruppe_ComboBox.remove(valgGruppe);
+	    	if (gruppe_ComboBox.isEmpty()) {
+	    		valgGruppe = null;
+	    	}
+	    	legg_til_gruppe.setItems(gruppe_ComboBox);
     	}
 	}
 	
+	
+	//OPPRETTER GRUPPER TIL LISTVIEW FOR GRUPPER
 	private void lagGrupper() throws NumberFormatException, IOException {
-		String[] gruppeId = ledigeGrupperId.split(" ");
 		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
-		if (gruppeId != null) {
-			for (String id : gruppeId) {
-				String gruppenavn = Klienten.getGroupName(id);
+		if (ledigeGrupperId != null) {
+			for (String id : ledigeGrupperId) {
+				String gruppenavn = Klienten.getGroupName(id.trim());
 				if (gruppenavn.trim().equals("NONE")) {
 					break;
 				}
 				else {	
 					brukere = Klienten.getGroupMembers(id.trim());
 					Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
-					gruppe_liste.add(gruppe);
+					listeForGruppeCombobox.add(gruppe);
 				}
 			}
 		}
 	}
 	
+	
+	//LEGGER BOKS TIL I LISTVIEW FOR GRUPPER, OG GRUPPEMEDLEMMER I LISTVIEW FOR GJESTER
 	private void showGrupper(HBox boks, Gruppe gruppe) throws IOException {
-		gruppene.add(boks);
-		gruppeliste.setItems(gruppene);
+		gruppene_observable.add(boks);
+		gruppeliste.setItems(gruppene_observable);
     	for (Bruker bruker : gruppe.getMedlemmer()) {
-    		if (! gjeste_liste.contains(bruker))  {
-    			addGjest(bruker);
+    		for (Bruker bruker_compare : gjeste_ComboBox) {
+    			if (bruker.getEmail().equals(bruker_compare.getEmail())) {
+    				addGjest(bruker_compare);
+    				break;
+    			}
     		}
     	}
 	}
