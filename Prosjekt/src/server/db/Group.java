@@ -110,7 +110,7 @@ public class Group {
 	
 	// GROUPNAME
 	public String getGroupName(String id) throws Exception {
-		query = "SELECT gruppenavn WHERE gruppeid = ?";
+		query = "SELECT gruppenavn FROM gruppe WHERE gruppeid = ?";
 		
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, id);
@@ -124,7 +124,7 @@ public class Group {
 	
 	// GROUPS
 	public String getGroups(String user) throws Exception {
-		query = "SELECT gruppeid WHERE epost = ?";
+		query = "SELECT gruppeid FROM gruppemedlem WHERE epost = ?";
 		
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, user);

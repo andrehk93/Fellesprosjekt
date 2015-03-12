@@ -18,7 +18,7 @@
                   <Font name="Segoe UI Light" size="15.0" />
                </font>
             </Text>
-            <Label styleClass="label-name" text="brukernavn">
+            <Label styleClass="label-name" fx:id="brukernavn">
                <font>
                   <Font size="15.0" />
                </font>

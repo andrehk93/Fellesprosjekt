@@ -30,7 +30,7 @@
 		<!-- PASSORD *******************-->
 				<PasswordField fx:id="passord" onKeyReleased="#enterKeyPress" prefHeight="40.0" prefWidth="269.0" promptText="Passord" GridPane.rowIndex="1" />
       
-            		<Label fx:id="msg" prefHeight="30.0" prefWidth="10.0" styleClass="label-errormsg" GridPane.rowIndex="2">
+            		<Label fx:id="msg" prefHeight="30.0" prefWidth="500.0" styleClass="label-errormsg" GridPane.rowIndex="2">
       
             			<font>
       				<Font name="Segoe UI Light" size="40.0" />
