@@ -194,9 +194,7 @@ public class UkesvisningController {
 	
 	private void setUkeAvtaler(){
 		ukeAvtaler = new ArrayList<Avtale>();
-		System.out.println(Klienten.avtaler);
 		for(Avtale app : Klienten.avtaler){
-			System.out.println("HENTER DENNE: " + app.getAvtaleid());
 			if(!app.getTid().getDato().isBefore(firstDayOfWeek) && !app.getTid().getDato().isAfter(firstDayOfWeek.plusWeeks(1).minusDays(1))){
 				ukeAvtaler.add(app);
 			}

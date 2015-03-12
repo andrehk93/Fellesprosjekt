@@ -20,6 +20,7 @@ public class Klienten {
 	private static boolean tilkobling;
 	public static ArrayList<Avtale> avtaler;
 	private static String valgtAvtale;
+	public static ArrayList<Møterom> alle_møterom;
 	
 	
 	public Klienten() throws IOException {
@@ -28,6 +29,7 @@ public class Klienten {
 	
 	public static void init() throws UnknownHostException, IOException{
 		avtaler = new ArrayList<Avtale>();
+		alle_møterom = new ArrayList<Møterom>();
 		String ip = "localhost";
 		int port = 6789;
 		try {

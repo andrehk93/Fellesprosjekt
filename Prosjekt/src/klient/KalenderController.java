@@ -341,6 +341,7 @@ private void createAvtale(String dato, String avtaleid) throws IOException {
 	String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
 	int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
 	Møterom rom = new Møterom(kapasitet, romnavn);
+	Klienten.alle_møterom.add(rom);
 	String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
 	TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
 			Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
