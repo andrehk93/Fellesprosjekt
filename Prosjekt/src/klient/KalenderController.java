@@ -48,6 +48,7 @@ public class KalenderController {
 	public static ArrayList<Varsel> oppdelte_notifikasjoner;
 	public static String valg;
 	private boolean ingenInvitasjoner = false;
+	public static String[] notifikasjonene;
 	
 	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
@@ -163,7 +164,7 @@ public class KalenderController {
 		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
 	}
 	
-	private void pop(String notifikasjon_trykketPå) throws Exception {
+	public static void pop(String notifikasjon_trykketPå) throws Exception {
 		String[] enhetene = notifikasjon_trykketPå.split(" ");
 		valg = enhetene[1];
 		Popup pop = new Popup();
@@ -171,7 +172,7 @@ public class KalenderController {
 	}
 	
 	private void showInvitasjoner() throws Exception {
-		String[] notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
+		notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
 		for (int i = 0; i < notifikasjonene.length; i++) {
 			if (notifikasjonene[i].trim().equals("NONE") || notifikasjonene[i].trim().equals("-1")) {
 				ingenInvitasjoner = true;
@@ -194,7 +195,6 @@ public class KalenderController {
 		String meld = "";
 		if (! notifikasjon_liste[0].trim().toString().equals("NONE")) {
 			for (String notifikasjon_oppdeling : notifikasjon_liste) {
-				System.out.println("Legger til:");
 				if(! notifikasjon_oppdeling.equals("!ENDMESS!") && ! meldingFerdig) {
 					meld += notifikasjon_oppdeling + " ";
 				}

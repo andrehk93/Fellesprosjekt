@@ -55,7 +55,7 @@ public class InnloggingController {//implements Initializable
 			checkInput();
 			String svar = Klienten.login(brukernavn.getText(), passord.getText()); 
 			if (svar.equals("OK")){
-				ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
+				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 			} else if(svar.equals("NO SUCH USER")){
 				msg.setText("Brukernavnet eksisterer ikke!");
 			}

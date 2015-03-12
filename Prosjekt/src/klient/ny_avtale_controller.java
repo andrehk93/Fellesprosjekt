@@ -768,9 +768,14 @@ public class ny_avtale_controller {
 		if (gruppeId != null) {
 			for (String id : gruppeId) {
 				String gruppenavn = Klienten.getGroupName(id);
-				brukere = Klienten.getGroupMembers(id.trim());
-				Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
-				gruppe_liste.add(gruppe);
+				if (gruppenavn.trim().equals("NONE")) {
+					break;
+				}
+				else {	
+					brukere = Klienten.getGroupMembers(id.trim());
+					Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
+					gruppe_liste.add(gruppe);
+				}
 			}
 		}
 	}
