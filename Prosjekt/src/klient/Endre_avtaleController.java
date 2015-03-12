@@ -55,14 +55,12 @@ public class Endre_avtaleController {
 	private LocalDate dato;
 	private String[] ledigeBrukerEmailer;
 	private ArrayList<Bruker> ledigeBrukere;
-	private LocalDate tilDato;
 	private int startT;
 	private int startM;
 	private int sluttT;
 	private int sluttM;
 	private LocalTime evigheten;
 	private Avtale avtalen;
-	private boolean fystegongen;
 	
 	@FXML
 	CheckBox hele_dagen = new CheckBox();
@@ -119,6 +117,16 @@ public class Endre_avtaleController {
 		gjeste_liste = new ArrayList<Bruker>();
 		gjestelisten = new ArrayList<HBox>();
     	gjestene = FXCollections.observableList(gjestelisten);
+    	ledigeBrukerEmailer = Klienten.getAllUserEmails();
+		ledigeBrukere = new ArrayList<Bruker>();
+		
+		for(String email : ledigeBrukerEmailer){
+			if(email != null || email != ""){
+				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email,0));
+			}
+		}
+		
+		legg_til_gjester.getItems().addAll(ledigeBrukere);
 		insertAppDetails();
 		antall_gjester.setDisable(false);
 		antall_gjester.setEditable(true);
@@ -136,16 +144,7 @@ public class Endre_avtaleController {
 			
 		};
 		
-		ledigeBrukerEmailer = Klienten.getAllUserEmails();
-		ledigeBrukere = new ArrayList<Bruker>();
 		
-		for(String email : ledigeBrukerEmailer){
-			if(email != null || email != ""){
-				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email,0));
-			}
-		}
-		
-		legg_til_gjester.getItems().addAll(ledigeBrukere);
 		ChangeListener<String> tekstStr = new ChangeListener<String>() {
 
 			@Override
@@ -192,10 +191,6 @@ public class Endre_avtaleController {
 					timeTil.setDisable(true);
 					minuttFra.setDisable(true);
 					minuttTil.setDisable(true);
-					timeFra.setValue(null);
-					timeTil.setValue(null);
-					minuttFra.setValue(null);
-					minuttTil.setValue(null);
 					start = LocalTime.of(0, 0);
 					slutt = LocalTime.of(23, 59);
 				}
@@ -272,11 +267,16 @@ public class Endre_avtaleController {
 		minuttTil.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getSlutt().getMinute())));
 		valgt_rom.setText(avtalen.getRom().getNavn());
 		valg = new Bruker();
-		for(Bruker b : avtalen.getDeltakere()){
-			addGjestenEgentlig(b);
-			gjeste_liste.add(b);
+		for(Bruker d : avtalen.getDeltakere()){
+			for(Bruker b : legg_til_gjester.getItems()){
+				if(b.getEmail().equals(d.getEmail())){
+					addGjestenEgentlig(b);
+					gjeste_liste.add(b);
+				}
+			}
 		}
 		valg = null;
+		antall_gjester.setText(String.valueOf((int)gjeste_liste.size()/2));
     }
     
     private String timeStringFormat(String s){
@@ -516,16 +516,6 @@ public class Endre_avtaleController {
     	showRom(rommene);
     }
     
-    private void bookRepRom(String rom){
-    	ArrayList<String> rommene = new ArrayList<String>();
-    	String[] rom_listen = rom.split(" ");
-    	for (int i = 0; i < rom_listen.length; i++) {
-    		rommene.add(rom_listen[i]);
-		}
-    	//Må spørre database om ledig(e) rom, midlertidig metode:
-    	showRom(rommene);
-    }
-    
     @FXML
 	public void handleKeyInput(KeyEvent event) {
 		ChangeListener<String> avtaleListener = new ChangeListener<String>() {
@@ -550,8 +540,53 @@ public class Endre_avtaleController {
 		System.out.println(start);
 		System.out.println(slutt);
 		System.out.println(dato);
-		Møterom rom =  new Møterom(100, valgt_rom.getText());
-		if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
+		boolean nyRom,nyStart,nySlutt,nyDato;
+		Møterom rom = new Møterom(sluttM, "he");
+		if(!valgt_rom.getText().equals(avtalen.getRom().getNavn())){
+			Klienten.changeAvtale(avtalen.getAvtaleid(), valgt_rom.getText(),"ROOM");
+			//avtalen.setRom(Klienten.møterom);
+		}
+		if(!start.equals(avtalen.getTid().getStart())){
+			Klienten.changeAvtale(avtalen.getAvtaleid(), start.toString(),"STARTTIME");
+			avtalen.setTid(new TidsIntervall(start,slutt,dato));
+		}
+		if(!slutt.equals(avtalen.getTid().getSlutt())){
+			Klienten.changeAvtale(avtalen.getAvtaleid(), start.toString(),"ENDTIME");
+			avtalen.setTid(new TidsIntervall(start,slutt,dato));
+		}
+		if(!dato.equals(avtalen.getTid().getDato())){
+			Klienten.changeAvtale(avtalen.getAvtaleid(), dato.toString(), "DATE");
+			avtalen.setTid(new TidsIntervall(start,slutt,dato));
+		}
+		ArrayList<Bruker> nye_gjester = new ArrayList<Bruker>();
+		if(!gjeste_liste.equals(avtalen.getDeltakere())){
+			boolean ny;
+			for(Bruker b : gjeste_liste){
+				ny = true;
+				for(Bruker n : avtalen.getDeltakere()){
+					if(b.getEmail().equals(n.getEmail())){
+						ny = false;
+					}
+				}
+				if(ny){
+					b.inviterTilNyAvtale(avtalen);
+				}
+			}
+			boolean fjernet;
+			for(Bruker b :  avtalen.getDeltakere()){
+				fjernet = true;
+				for(Bruker n : gjeste_liste){
+					if(b.getEmail().equals(n.getEmail())){
+						fjernet = false;
+					}
+				}
+				if(fjernet){
+					b.deleteAvtale(avtalen);
+				}
+			}
+		}
+		
+		/*if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
 			System.out.println("GJESTENE: " + gjeste_liste);
 			String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, dato), rom, avtalenavn.getText());
 			Avtale avtale = new Avtale(getBruker(), gjeste_liste, new TidsIntervall(start, slutt, dato), rom, avtaleid);
@@ -565,9 +600,9 @@ public class Endre_avtaleController {
 				if (dag.getDato().equals(dato)) {
 					dag.addAvtale(avtale);
 				}
-			}
-			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
-		}
+			}*/
+			ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
+		
 	}
 	
 	public Bruker getBruker() {
@@ -588,7 +623,7 @@ public class Endre_avtaleController {
 	
 	@FXML
 	public void avbryt(){
-		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+		ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
 	}
 	
 	

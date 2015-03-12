@@ -145,6 +145,7 @@ public class UkesvisningController {
 				avtale = app.getAvtaleid();
 				if(app.getAvtaleAdmin().equals(Klienten.bruker)){
 					Klienten.setValgtAvtale(avtale);
+					ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{

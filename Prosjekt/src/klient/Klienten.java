@@ -306,5 +306,10 @@ public class Klienten {
 		String toServer = "GET RIGHTS";
 		return sendTilServer(toServer);
 	}
+	
+	public static void changeAvtale(String appID, String value, String what) throws IOException{
+		String toServer = "CHANGE "+what+" "+appID+" "+value;
+		sendTilServer(toServer);
+	}
 }
 
