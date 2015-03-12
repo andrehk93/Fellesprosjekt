@@ -30,77 +30,126 @@ public class InnloggingController {//implements Initializable
 	public DataOutputStream outToServer;
 	public BufferedReader inFromServer;
 	private static String modifiedSentence;
-	
+
 	public void initialize() {
 	}
 
 
 	@FXML// LOGG INN KNAPPEN
 	private void handleButtonAction(ActionEvent event) throws IOException, NoSuchAlgorithmException {
-		checkInput();
+		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
+				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+		
+		brukernavn.setStyle("-fx-text-box-border : white ");
+		passord.setStyle("-fx-text-box-border : white ");
+		msg.setText(" ");
+
 		String svar = Klienten.login(brukernavn.getText(), passord.getText());
+
+		System.out.println("\"" + brukernavn + "\"" + "\"" + passord + "\"");
 		if (svar.equals("OK")) {
 			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
-		} else if(svar.equals("NO SUCH USER")){
+
+			//IF SETNINGENE - satt i slik rekkefølge sånn at de ikke overrider hverandre (labelet)
+		}else if(passord.getText().equals("") && brukernavn.getText().equals("")){
+			brukernavn.setStyle("-fx-text-box-border : red ");
+			passord.setStyle("-fx-text-box-border : red ");
+			msg.setText("Skriv inn brukernavn og passord.");
+
+		}else if (brukernavn.getText().isEmpty()){
+			brukernavn.setStyle("-fx-text-box-border : red ");
+			msg.setText("Skriv inn brukernavn (e-postadresse).");
+		}else if(!(brukernavn.getText().matches(regex))){
+			brukernavn.setStyle("-fx-text-box-border : red ");
+			msg.setText("Brukernavn er på ugyldig format!");
+		}else if(passord.getText().equals("")){		
+			passord.setStyle("-fx-text-box-border : red ");
+			msg.setText("Skriv inn passord.");
+
+		}else if(svar.equals("NO SUCH USER")){
 			msg.setText("Brukernavnet eksisterer ikke!");
-		}
-		else {
+		}else {
 			msg.setText("Feil passord!");
 		}
 	}
 
 	@FXML
 	private void enterKeyPress(KeyEvent event) throws NoSuchAlgorithmException, IOException{
+		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
+				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+		
+		brukernavn.setStyle("-fx-text-box-border : white ");
+		passord.setStyle("-fx-text-box-border : white ");
+		msg.setText(" ");
+
 		if(event.getCode() == KeyCode.ENTER){
-			checkInput();
 			String svar = Klienten.login(brukernavn.getText(), passord.getText()); 
-			if (svar.equals("OK")){
+			System.out.println("\"" + brukernavn + "\"" + "\"" + passord + "\"");
+			if (svar.equals("OK")) {
 				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
-			} else if(svar.equals("NO SUCH USER")){
+
+				//IF SETNINGENE - satt i slik rekkefølge sånn at de ikke overrider hverandre (labelet)
+			}else if(passord.getText().equals("") && brukernavn.getText().equals("")){
+				brukernavn.setStyle("-fx-text-box-border : red ");
+				passord.setStyle("-fx-text-box-border : red ");
+				msg.setText("Skriv inn brukernavn og passord.");
+
+			}else if (brukernavn.getText().isEmpty()){
+				brukernavn.setStyle("-fx-text-box-border : red ");
+				msg.setText("Skriv inn brukernavn (e-postadresse).");
+			}else if(!(brukernavn.getText().matches(regex))){
+				brukernavn.setStyle("-fx-text-box-border : red ");
+				msg.setText("Brukernavn er på ugyldig format!");
+			}else if(passord.getText().equals("")){		
+				passord.setStyle("-fx-text-box-border : red ");
+				msg.setText("Skriv inn passord.");
+
+			}else if(svar.equals("NO SUCH USER")){
 				msg.setText("Brukernavnet eksisterer ikke!");
-			}
-			else {
+			}else {
 				msg.setText("Feil passord!");
 			}
 		}
 	}
 
 
-	@FXML
-	private void retryCon(ActionEvent event) throws IOException {
-		Klienten klienten = new Klienten();
-		if(klienten.getTilkobling()){
-			ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+		@FXML
+		private void retryCon(ActionEvent event) throws IOException {
+			Klienten klienten = new Klienten();
+			if(klienten.getTilkobling()){
+				ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+			}
 		}
+
+
+		//************VALIDERINGSMETODER******************
+		//	public void checkInput(){
+		//		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
+		//				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+		//
+		//		if (brukernavn.getText().equals("")){
+		//			brukernavn.setStyle("-fx-text-box-border : red ");
+		//			msg.setText("Skriv inn brukernavn (e-postadresse).");
+		//		}else if(passord.getText().equals("")){		
+		//			passord.setStyle("-fx-text-box-border : red ");
+		//			msg.setText("Skriv inn passord.");
+		//		}else if(passord.getText().equals("") && brukernavn.getText().equals("")){
+		//			passord.setStyle("-fx-text-box-border : red ");
+		//			msg.setText("Skriv inn brukernavn og passord.");
+		//		}else if(!(brukernavn.getText().matches(regex))){
+		//			brukernavn.setStyle("-fx-text-box-border : red ");
+		//			msg.setText("Brukernavn er på ugyldig format!");
+		//		}else{
+		//			brukernavn.setStyle("-fx-text-box-border : white ");
+		//			passord.setStyle("-fx-text-box-border : white ");
+		//			msg.setText(" ");
+		//
+		//		}
+		//
+		//		//Sjekk om brukernavnet finnes, sjekk mot db liste av brukernavn. Gi tilbakemld = "Brukernavn eksisterer ikke"
+		//	}
+
 	}
-
-
-	//************VALIDERINGSMETODER******************
-	public void checkInput(){
-		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
-				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-		brukernavn.setStyle("-fx-text-box-border : white ");
-		passord.setStyle("-fx-text-box-border : white ");
-		msg.setText(" ");
-
-		if (brukernavn.getText().equals("")){
-			brukernavn.setStyle("-fx-text-box-border : red ");
-			msg.setText("Skriv inn brukernavn (e-postadresse).");
-		}
-		if(passord.getText().equals("")){		
-			passord.setStyle("-fx-text-box-border : red ");
-			msg.setText("Skriv inn passord.");
-		}
-		if(!(brukernavn.getText().matches(regex))){
-			brukernavn.setStyle("-fx-text-box-border : red ");
-			msg.setText("Brukernavn/epostadresse er på ugyldig format!");
-
-		}
-
-		//Sjekk om brukernavnet finnes, sjekk mot db liste av brukernavn. Gi tilbakemld = "Brukernavn eksisterer ikke"
-	}
-
-}
 
 
 

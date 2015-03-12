@@ -40,7 +40,14 @@
 }
 
 .label-normal-objects {
-	-fx-font-size: 12px;
+	-fx-font-size: 13px;
+    -fx-font-family: "Segoe UI Light";
+    /**-fx-text-fill: black;*/
+    
+}
+
+.label-days {
+	-fx-font-size: 15px;
     -fx-font-family: "Segoe UI Light";
     /**-fx-text-fill: black;*/
     
@@ -57,19 +64,25 @@
 .specialButton{
 	-fx-base: #4986E7;
     -fx-text-fill: white;
-    -fx-font-size: 19px;
+    -fx-font-size: 15px;
 }
+.specialButtonBigger{
+	-fx-base: #4986E7;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+}
+
 
 .normalButton{
 	-fx-base: #FFFFFF;
 	-fx-text-fill:#4a4a4a ;
-	-fx-font-size: 19px;
+	-fx-font-size: 15px;
 	
 }
 
 .arrowButtons{
 	-fx-base: #4986E7;
-	-fx-font-size: 15px;
+	-fx-font-size: 20px;
 	-fx-text-fill:white ;
 	
 }
