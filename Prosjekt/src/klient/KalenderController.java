@@ -23,7 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class KalenderController {
-	
+
 	public static ArrayList<Dag> dager;
 	@FXML private Button refresh, grupper;
 	@FXML private GridPane ruter;
@@ -49,7 +49,7 @@ public class KalenderController {
 	public static String valg;
 	private boolean ingenInvitasjoner = false;
 	public static String[] notifikasjonene;
-	
+
 	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
@@ -59,7 +59,7 @@ public class KalenderController {
 		System.out.println("admin?: " + Klienten.getRights());
 		brukerredigering.setVisible(Klienten.bruker.getRighs().intValue()>0);
 	}
-	
+
 	private void flushView() throws Exception{
 		notifikasjon_utenMelding = new ArrayList<ArrayList<String>>();
 		dager = new ArrayList<Dag>();
@@ -74,13 +74,13 @@ public class KalenderController {
 		showNotifications();
 		setItems();
 	}
-	
+
 	private void setUpFiltrering(){
 		filtrering.setItems(FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag"));
 		filtrering.setValue("Alle");
 		filtrering.getSelectionModel().selectedIndexProperty().addListener(filtChange);
 	}
-	
+
 	ChangeListener<? super Number> filtChange = new ChangeListener<Number>() {
 		@Override
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -116,25 +116,25 @@ public class KalenderController {
 			}
 		}
 	};
-	
-// GÅ TIL EN NY SCREEN*****************
+
+	// GÅ TIL EN NY SCREEN*****************
 	public void grupperView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
 	}
-	
+
 	public void redigerBrukerView(ActionEvent event){
 		ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
 	}
-	
+
 	public void refreshKalender(ActionEvent event) throws Exception {
 		flushView();
 	}
-	
+
 	private void showBruker() {
 		System.out.println("navnet: " + Klienten.bruker.getNavn());
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
-	
+
 	private void svarInvite() {
 		ChangeListener<String> invite = new ChangeListener<String>() {
 
@@ -155,22 +155,22 @@ public class KalenderController {
 					}
 				}
 				catch (NullPointerException e) {
-					
+
 				}
-			
+
 			}
-			
+
 		};
 		notifikasjoner.getSelectionModel().selectedItemProperty().addListener(invite);
 	}
-	
+
 	public static void pop(String notifikasjon_trykketPå) throws Exception {
 		String[] enhetene = notifikasjon_trykketPå.split(" ");
 		valg = enhetene[1];
 		Popup pop = new Popup();
 		pop.start(new Stage());
 	}
-	
+
 	private void showInvitasjoner() throws Exception {
 		notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
 		for (int i = 0; i < notifikasjonene.length; i++) {
@@ -185,7 +185,7 @@ public class KalenderController {
 			}
 		}
 	}
-	
+
 	private void showNotifications() throws Exception {
 		boolean meldingFerdig = false;
 		ArrayList<String> resten = new ArrayList<String>();
@@ -216,7 +216,7 @@ public class KalenderController {
 					meldingFerdig = false;
 					ingenInvitasjoner = false;
 				}
-				
+
 			}
 		}
 		else {
@@ -225,30 +225,30 @@ public class KalenderController {
 			}
 		}
 	}
-	
+
 	private void setItems() {
 		items = FXCollections.observableList(list);
 		notifikasjoner.setItems(items);
 	}
-	
+
 	private void setMonth(int month){
 		maned = month;
 		manedLabel.setText(LocalDate.of(2015, month, 01).getMonth().toString());
 	}
-	
+
 	private int getMonth(){
 		return maned;
 	}
-	
+
 	private void setYear(int year){
 		aar = year;
 		arLabel.setText(String.valueOf(year));
 	}
-	
+
 	private int getYear(){
 		return aar;
 	}
-	
+
 	private void getDays(){
 		try{
 			int i=1;
@@ -261,7 +261,7 @@ public class KalenderController {
 		}
 		catch (DateTimeException e){}
 	}
-	
+
 	private Dag getDag(LocalDate dato) {
 		for (Dag dag : dager) {
 			if (dag.getDato().equals(dato)) {
@@ -270,17 +270,17 @@ public class KalenderController {
 		}
 		return null;
 	}
-	
+
 	private void setFiltVerdi(int verdi) {
 		this.filtverdi = verdi;
 	}
-	
+
 	private int getFiltVerdi() {
 		return this.filtverdi;
 	}
-	
-	
-	
+
+
+
 	private void loadGrid() throws IOException{
 		int lengde = dager.size();
 		hentAvtaler();
@@ -310,122 +310,124 @@ public class KalenderController {
 			}
 		}
 	}
-	
+
 	private void hentAvtaler() throws IOException {
-		try {
-			if (Klienten.avtaler.isEmpty()) {
-				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
-				for (int k = 0; k < avtale_liste.length; k++) {
-					if (k%2 != 0) {
-						String dato = avtale_liste[k];
-						String avtaleid = avtale_liste[k-1];
+		if (Klienten.avtaler.isEmpty()) {
+			String streng = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi());
+			avtale_liste = streng.split(" ");
+			for (int k = 0; k < avtale_liste.length; k++) {
+				if (k%2 != 0) {
+					String dato = avtale_liste[k];
+					String avtaleid = avtale_liste[k-1];
+					try {
 						createAvtale(dato, avtaleid);
+					}
+					catch (NullPointerException e) {
+						System.out.println("NULL");
 					}
 				}
 			}
+		}
+		else {
+			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
+		}
+	}
+
+
+// VELDIG MYE TULL, MEN FUNKER
+//Lager: bruker(deltaker)-objektene, avtale-objekt, møterom-objekt og tidsobjekt
+private void createAvtale(String dato, String avtaleid) throws IOException {
+	ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
+	String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
+	int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
+	Møterom rom = new Møterom(kapasitet, romnavn);
+	Klienten.alle_møterom.add(rom);
+	String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
+	TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
+			Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
+					Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
+							Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
+	String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
+	if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
+		for (String epost : deltakere) {
+			if (epost.trim().equals("NONE") || epost.trim().equals("")) {
+				break;
+			}
+			else if (! epost.equals(Klienten.bruker.getEmail())){
+				Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
+				deltaker_liste.add(deltaker);
+			}
 			else {
-				avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
+				deltaker_liste.add(Klienten.bruker);
 			}
 		}
-		catch (NullPointerException e) {
-		}
-		
 	}
-	
-	
-	// VELDIG MYE TULL, MEN FUNKER
-	//Lager: bruker(deltaker)-objektene, avtale-objekt, møterom-objekt og tidsobjekt
-	private void createAvtale(String dato, String avtaleid) throws IOException {
-		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
-		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
-		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
-		Møterom rom = new Møterom(kapasitet, romnavn);
-		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
-		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
-				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
-				Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
-						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
-		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
-			for (String epost : deltakere) {
-				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
-					break;
-				}
-				else if (! epost.equals(Klienten.bruker.getEmail())){
-					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
-					deltaker_liste.add(deltaker);
-				}
-				else {
-					deltaker_liste.add(Klienten.bruker);
-				}
+	Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+	Klienten.avtaler.add(avtale);
+	getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
+			Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
+}
+
+private void setTexts(int j,int i,int t) throws IOException{
+	Text text = new Text();
+	String avtale_dag = dager.get(t).getDato().toString();
+	String temp = "";
+	for (int k = 0; k < avtale_liste.length; k++) {
+		if (k%2 != 0) {
+			String dato = avtale_liste[k];
+			String avtaleid = avtale_liste[k-1];
+			if (avtale_dag.equals(dato)) {
+				temp += avtaleid + " ";
 			}
 		}
-		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
-		Klienten.avtaler.add(avtale);
-		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
-						Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
 	}
-	
-	private void setTexts(int j,int i,int t) throws IOException{
-		Text text = new Text();
-		String avtale_dag = dager.get(t).getDato().toString();
-		String temp = "";
-		for (int k = 0; k < avtale_liste.length; k++) {
-			if (k%2 != 0) {
-				String dato = avtale_liste[k];
-				String avtaleid = avtale_liste[k-1];
-				if (avtale_dag.equals(dato)) {
-					temp += avtaleid + " ";
-				}
-			}
-		}
-		text.setText(temp);
-		ruter.add(text, j, i);
+	text.setText(temp);
+	ruter.add(text, j, i);
+}
+
+@FXML
+private void nextPaneDayView(ActionEvent event) {
+	ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
+}
+
+@FXML
+private void nextPaneWeekView(ActionEvent event) {
+	ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
+}
+
+@FXML
+private void nextPaneMakeAppointment(ActionEvent event) {
+	ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
+}
+
+@FXML
+private void nextMonth(ActionEvent event) throws Exception {
+	if(getMonth()+1>=13){
+		setMonth(1);
+		setYear(getYear()+1);
 	}
-	
-	@FXML
-	private void nextPaneDayView(ActionEvent event) {
-		ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
+	else{
+		setMonth(getMonth()+1);
 	}
-	
-	@FXML
-	private void nextPaneWeekView(ActionEvent event) {
-		ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
+	flushView();
+}
+
+@FXML
+private void previousMonth(ActionEvent event) throws Exception {
+	if(getMonth()-1<=0){
+		setMonth(12);
+		setYear(getYear()-1);
 	}
-	
-	@FXML
-	private void nextPaneMakeAppointment(ActionEvent event) {
-		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
+	else{
+		setMonth(getMonth()-1);
 	}
-	
-	@FXML
-	private void nextMonth(ActionEvent event) throws Exception {
-		if(getMonth()+1>=13){
-			setMonth(1);
-			setYear(getYear()+1);
-		}
-		else{
-			setMonth(getMonth()+1);
-		}
-		flushView();
-	}
-	
-	@FXML
-	private void previousMonth(ActionEvent event) throws Exception {
-		if(getMonth()-1<=0){
-			setMonth(12);
-			setYear(getYear()-1);
-		}
-		else{
-			setMonth(getMonth()-1);
-		}
-		flushView();
-	}
-	
-	@FXML
-	private void logout() throws IOException{
-		Klienten.logout();
-	}
-	
-	
+	flushView();
+}
+
+@FXML
+private void logout() throws IOException{
+	Klienten.logout();
+}
+
+
 }

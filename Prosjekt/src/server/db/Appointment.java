@@ -196,7 +196,7 @@ public class Appointment {
 		while(result.next()){
 			output += result.getString(1)+" " + result.getString(2)+" ";
 		}
-		return output;
+		return output.substring(0, output.length()-1);
 	}
 	
 	// APP ATTENDEES

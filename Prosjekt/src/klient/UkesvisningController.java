@@ -71,10 +71,10 @@ public class UkesvisningController {
 		}
 		flushView();
 		showBruker();
+		this.notifikasjonene = KalenderController.notifikasjonene;
 		settUpListView();
 		showInvitasjoner();
 		showNotifications();
-		this.notifikasjonene = KalenderController.notifikasjonene;
 		ruter.setGridLinesVisible(true);
 		setItems();
 		loadGrid();
@@ -176,9 +176,9 @@ public class UkesvisningController {
 	}
 	
 	private void loadGrid() throws IOException {
-		hentAvtaler();
+		//hentAvtaler();
 		setUkeAvtaler();
-		System.out.println(ukeAvtaler);
+		System.out.println("AVTALENE: " + ukeAvtaler);
 		setTimeLabels();
 		for(Avtale app : ukeAvtaler){
 			setRects(app);
@@ -186,6 +186,7 @@ public class UkesvisningController {
 	}
 	
 	private void flushView(){
+		list = new ArrayList<String>();
 		for(StackPane panes : bokser){
 			ruter.getChildren().remove(panes);
 		}
@@ -276,7 +277,9 @@ public class UkesvisningController {
 				}
 			}
 			else {
-				avtaleListe = Klienten.mineAvtaler(Klienten.bruker.getEmail(), 0).split(" ");
+				for (Avtale avtale : Klienten.avtaler) {
+					getDag(avtale.getTid().getDato()).addAvtale(avtale);
+				}
 			}
 		}
 		catch (NullPointerException e) {
@@ -284,6 +287,8 @@ public class UkesvisningController {
 		
 	}
 	
+	
+	//ER DENNE UNØDVENDIG?
 	private void createAvtale(String dato, String avtaleid) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
@@ -342,11 +347,6 @@ public class UkesvisningController {
 	}
 	
 	@FXML
-	private void nextPaneLogOut(ActionEvent event) {
-		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
-	}
-	
-	@FXML
 	private void nextWeek(ActionEvent event) throws Exception {
 		firstDayOfWeek = firstDayOfWeek.plusWeeks(1);
 		loadStuff();
@@ -356,6 +356,11 @@ public class UkesvisningController {
 	private void prevWeek(ActionEvent event) throws Exception {
 		firstDayOfWeek = firstDayOfWeek.minusWeeks(1);
 		loadStuff();
+	}
+	
+	@FXML
+	private void logout() throws IOException{
+		Klienten.logout();
 	}
 
 }

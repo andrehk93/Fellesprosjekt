@@ -16,8 +16,6 @@ public class Bruker {
 	
 	
 	public Bruker(String navn, String email, Number rights){
-		System.out.println("NAVNET : " + navn.trim());
-		System.out.println("EMAIL: " + email.trim());
 		setNavn(navn.trim());
 		setEmail(email.trim());
 		setRights(rights);
