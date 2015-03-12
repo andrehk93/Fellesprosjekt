@@ -96,16 +96,6 @@ public class InnloggingController {//implements Initializable
 			msg.setText("Brukernavn/epostadresse er på ugyldig format!");
 
 		}
-
 		//Sjekk om brukernavnet finnes, sjekk mot db liste av brukernavn. Gi tilbakemld = "Brukernavn eksisterer ikke"
 	}
-
 }
-
-
-
-
-
-
-
-
