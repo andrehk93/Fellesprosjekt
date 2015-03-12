@@ -323,7 +323,6 @@ public class KalenderController {
 						createAvtale(dato, avtaleid);
 					}
 					catch (NullPointerException e) {
-						System.out.println("NULL");
 					}
 				}
 			}
@@ -334,100 +333,100 @@ public class KalenderController {
 	}
 
 
-// VELDIG MYE TULL, MEN FUNKER
-//Lager: bruker(deltaker)-objektene, avtale-objekt, møterom-objekt og tidsobjekt
-private void createAvtale(String dato, String avtaleid) throws IOException {
-	ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
-	String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
-	int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
-	Møterom rom = new Møterom(kapasitet, romnavn);
-	Klienten.alle_møterom.add(rom);
-	String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
-	TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
-			Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
-					Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
-							Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-	String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
-	if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
-		for (String epost : deltakere) {
-			if (epost.trim().equals("NONE") || epost.trim().equals("")) {
-				break;
-			}
-			else if (! epost.equals(Klienten.bruker.getEmail())){
-				Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
-				deltaker_liste.add(deltaker);
-			}
-			else {
-				deltaker_liste.add(Klienten.bruker);
-			}
-		}
-	}
-	Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
-	Klienten.avtaler.add(avtale);
-	getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
-			Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
-}
-
-private void setTexts(int j,int i,int t) throws IOException{
-	Text text = new Text();
-	String avtale_dag = dager.get(t).getDato().toString();
-	String temp = "";
-	for (int k = 0; k < avtale_liste.length; k++) {
-		if (k%2 != 0) {
-			String dato = avtale_liste[k];
-			String avtaleid = avtale_liste[k-1];
-			if (avtale_dag.equals(dato)) {
-				temp += avtaleid + " ";
+	// VELDIG MYE TULL, MEN FUNKER
+	//Lager: bruker(deltaker)-objektene, avtale-objekt, møterom-objekt og tidsobjekt
+	private void createAvtale(String dato, String avtaleid) throws IOException {
+		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
+		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
+		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
+		Møterom rom = new Møterom(kapasitet, romnavn);
+		Klienten.alle_møterom.add(rom);
+		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
+		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
+				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
+						Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
+								Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
+		String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
+		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
+			for (String epost : deltakere) {
+				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
+					break;
+				}
+				else if (! epost.equals(Klienten.bruker.getEmail())){
+					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
+					deltaker_liste.add(deltaker);
+				}
+				else {
+					deltaker_liste.add(Klienten.bruker);
+				}
 			}
 		}
+		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		Klienten.avtaler.add(avtale);
+		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
+				Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
 	}
-	text.setText(temp);
-	ruter.add(text, j, i);
-}
 
-@FXML
-private void nextPaneDayView(ActionEvent event) {
-	ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
-}
-
-@FXML
-private void nextPaneWeekView(ActionEvent event) {
-	ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
-}
-
-@FXML
-private void nextPaneMakeAppointment(ActionEvent event) {
-	ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
-}
-
-@FXML
-private void nextMonth(ActionEvent event) throws Exception {
-	if(getMonth()+1>=13){
-		setMonth(1);
-		setYear(getYear()+1);
+	private void setTexts(int j,int i,int t) throws IOException{
+		Text text = new Text();
+		String avtale_dag = dager.get(t).getDato().toString();
+		String temp = "";
+		for (int k = 0; k < avtale_liste.length; k++) {
+			if (k%2 != 0) {
+				String dato = avtale_liste[k];
+				String avtaleid = avtale_liste[k-1];
+				if (avtale_dag.equals(dato)) {
+					temp += avtaleid + " ";
+				}
+			}
+		}
+		text.setText(temp);
+		ruter.add(text, j, i);
 	}
-	else{
-		setMonth(getMonth()+1);
-	}
-	flushView();
-}
 
-@FXML
-private void previousMonth(ActionEvent event) throws Exception {
-	if(getMonth()-1<=0){
-		setMonth(12);
-		setYear(getYear()-1);
+	@FXML
+	private void nextPaneDayView(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
 	}
-	else{
-		setMonth(getMonth()-1);
-	}
-	flushView();
-}
 
-@FXML
-private void logout() throws IOException{
-	Klienten.logout();
-}
+	@FXML
+	private void nextPaneWeekView(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
+	}
+
+	@FXML
+	private void nextPaneMakeAppointment(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
+	}
+
+	@FXML
+	private void nextMonth(ActionEvent event) throws Exception {
+		if(getMonth()+1>=13){
+			setMonth(1);
+			setYear(getYear()+1);
+		}
+		else{
+			setMonth(getMonth()+1);
+		}
+		flushView();
+	}
+
+	@FXML
+	private void previousMonth(ActionEvent event) throws Exception {
+		if(getMonth()-1<=0){
+			setMonth(12);
+			setYear(getYear()-1);
+		}
+		else{
+			setMonth(getMonth()-1);
+		}
+		flushView();
+	}
+
+	@FXML
+	private void logout() throws IOException{
+		Klienten.logout();
+	}
 
 
 }
