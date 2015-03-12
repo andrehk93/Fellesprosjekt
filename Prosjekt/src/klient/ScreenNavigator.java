@@ -19,7 +19,8 @@ public class ScreenNavigator {
 	public static final String BRUKERREDIGERING = "Rediger_brukere.fxml";
 	public static String lastScreen;
 	
-	private static String current;
+	private static String current = "Startside_innlogging.fxml";
+	private static String last;
 	/** The main application layout controller. */
 	private static MainController mainController;
 
@@ -52,6 +53,7 @@ public class ScreenNavigator {
 	 */
 	public static void loadScreen(String fxml) {
 		try {
+			last = current;
 			current = fxml;
 			mainController.setScreen(
 					FXMLLoader.load(
@@ -64,6 +66,10 @@ public class ScreenNavigator {
 	
 	public static String getLoadScreen() {
 		return current;
+	}
+	
+	public static String getForrigeScreen() {
+		return last;
 	}
 
 }

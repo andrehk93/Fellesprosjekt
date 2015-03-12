@@ -25,11 +25,12 @@ public class Klienten {
 	
 	
 	public Klienten() throws IOException {
-		avtaler = new ArrayList<Avtale>();
 		init();
 	}
 	
 	public static void init() throws UnknownHostException, IOException{
+		avtaler = new ArrayList<Avtale>();
+		alle_møterom = new ArrayList<Møterom>();
 		String ip = "localhost";
 		int port = 6789;
 		try {
