@@ -9,6 +9,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Klienten {
@@ -277,6 +279,36 @@ public class Klienten {
 	
 	public static String getValgtAvtale() {
 		return valgtAvtale;
+	}
+	
+	public static Avtale createAvtale(String dato, String avtaleid) throws IOException {
+		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
+		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
+		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
+		Møterom rom = new Møterom(kapasitet, romnavn);
+		Klienten.alle_møterom.add(rom);
+		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
+		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
+				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
+						Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
+								Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
+		String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
+		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
+			for (String epost : deltakere) {
+				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
+					break;
+				}
+				else if (! epost.equals(Klienten.bruker.getEmail())){
+					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
+					deltaker_liste.add(deltaker);
+				}
+				else {
+					deltaker_liste.add(Klienten.bruker);
+				}
+			}
+		}
+		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		return avtale;
 	}
 	
 	public static void addGroupMembers(ArrayList<Bruker> users) throws IOException {
