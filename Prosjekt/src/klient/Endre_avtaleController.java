@@ -18,15 +18,6 @@ import com.sun.javafx.css.StyleCache.Key;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 
-
-
-
-
-
-
-
-
-
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -74,8 +65,10 @@ public class Endre_avtaleController {
 	private Avtale avtalen;
 	private int indexen;
 	private HashMap<String,String> oppmoteListe;
+	private HashMap<HBox,String> boksBruker;
 	private String avtaleid;
 	private String choiceBruker;
+	private boolean fysteGongen;
 	
 	
 //LISTENE SOM INNEHOLDER GJESTER OG GRUPPER (IKKE TIL LISTVIEW, TIL COMBOBOX)
@@ -144,6 +137,7 @@ public class Endre_avtaleController {
     	ledigeBrukerEmailer = Klienten.getAllUserEmails();
 		ledigeBrukere = new ArrayList<Bruker>();
 		oppmoteListe = new HashMap<String,String>();
+		boksBruker = new HashMap<HBox,String>();
 		for(String email : ledigeBrukerEmailer){
 			if(email != null || email != ""){
 				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email,0));
@@ -220,8 +214,6 @@ public class Endre_avtaleController {
 		gjeste_ComboBox = FXCollections.observableList(listeForGjesteCombobox);
 		gruppe_ComboBox = FXCollections.observableList(listeForGruppeCombobox);
 		legg_til_gjester.setItems(gjeste_ComboBox);
-		System.out.println(gruppe_ComboBox);
-		System.out.println(legg_til_gruppe);
 		legg_til_gruppe.setItems(gruppe_ComboBox);
 		
 		
@@ -276,7 +268,7 @@ public class Endre_avtaleController {
 		
 		insertAppDetails();
 		
-
+		System.out.println(oppmoteListe);
 		
 		//layoutX="439.0" layoutY="261.0" prefWidth="150.0"
 		
@@ -372,11 +364,7 @@ public class Endre_avtaleController {
 		}
 		valgt_rom.setText(avtalen.getRom().getNavn());
 		valg = new Bruker();
-		System.out.println("Inviterte: "+gjeste_liste);
-		for(Bruker brukere : gjeste_liste){
-			oppmoteListe.put(brukere.getEmail(), Klienten.getStatus(avtalen.getAvtaleid(), brukere.getEmail()));
-		}
-		System.out.println("Oppmøteliste: "+oppmoteListe);
+		fysteGongen = true;
 		for(Bruker d : avtalen.getDeltakere()){
 			for(Bruker b : listeForGjesteCombobox){
 				if(b.getEmail().equals(d.getEmail())){
@@ -386,6 +374,7 @@ public class Endre_avtaleController {
 				}
 			}
 		}
+		fysteGongen = false;
 		valg = null;
 		antall_gjester.setText(String.valueOf((int)inviterte_gjester.size()/2));
 		
@@ -581,6 +570,7 @@ public class Endre_avtaleController {
     	if (valg != null && selectedUser != null) {
     		valg = selectedUser;
 	    	HBox boks = new HBox();
+	    	boksBruker.put(boks, selectedUser.getEmail());
 	    	Button kryss = new Button();
 	    	kryss.setText("x");
 	    	kryss.setOpacity(0.8);
@@ -604,11 +594,13 @@ public class Endre_avtaleController {
 	    	oppmote.getSelectionModel().selectedIndexProperty().addListener(handleOppmote);
 	    	oppmote.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
 	    	String status = "0";
-	    	if(avtalen.getDeltakere().contains(valg)){
+	    	if(fysteGongen){
 	    		status = Klienten.getStatus(avtalen.getAvtaleid(), valg.getEmail());
+	    		status = correction(status);
+	    		System.out.println("FYSTEGONGEN FOR "+valg.getEmail()+" "+status);
 	    	}
 	    	oppmote.setValue(getStatus(status));
-	    	oppmoteListe.put(valg.getEmail(), status);
+	    	oppmoteListe.put(valg.getEmail(), correction(status));
 	    	boks.getChildren().add(oppmote);
 	    	boks.getChildren().add(kryss);
 	    	showGjest(boks);
@@ -621,16 +613,31 @@ public class Endre_avtaleController {
     	}
     }
 	
+	private String correction(String status) {
+		String s = "";
+		if(status.trim().equals("0")){
+			s =  "1";
+		}
+		else if(status.trim().equals("1")){
+			s = "0";
+		}
+		else{
+			s = "null";
+		}
+		return s;
+	}
+
+
 	private String getStatus(String string) {
-		switch(string){
+		switch(string.trim()){
 		case "0":
 			return "Skal";
-		case "1":
+		case "null":
 			return "Ikke svart";
-		case "2":
+		case "1":
 			return "Skal ikke";
 		}
-		return null;
+		return "Skal ikke";
 	}
 
 
@@ -788,8 +795,7 @@ public class Endre_avtaleController {
 		System.out.println(start);
 		System.out.println(slutt);
 		System.out.println(dato);
-		if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null){
-			System.out.println("WHAAAAAAAAAAAAAT????!?!?!");
+		if (! feilTekst.isVisible() && avtalenavn.getText() != null){
 			handleChanges();
 			String oppdatertAvtale = Klienten.hentAvtale(avtaleid);
 			for (Avtale avtale : Klienten.avtaler) {
@@ -800,7 +806,7 @@ public class Endre_avtaleController {
 					break;
 				}
 			}
-			ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
+			ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 		}
 	}
     
@@ -827,6 +833,7 @@ public class Endre_avtaleController {
 			Klienten.changeAvtale(avtalen.getAvtaleid(), dato.toString(), "DATE");
 			avtalen.setTid(new TidsIntervall(start,slutt,dato));
 		}
+		Klienten.changeOppmote(avtaleid, oppmoteListe);
 		ArrayList<Bruker> nye_gjester = new ArrayList<Bruker>();
 		ArrayList<Bruker> fjerna_gjester = new ArrayList<Bruker>();
 		if(!inviterte_gjester.equals(avtalen.getDeltakere())){
@@ -846,7 +853,7 @@ public class Endre_avtaleController {
 				}
 			}
 			boolean fjernet;
-			for(Bruker b :  avtalen.getDeltakere()){
+			/*for(Bruker b :  avtalen.getDeltakere()){
 				fjernet = true;
 				for(Bruker n : inviterte_gjester){
 					if(b.getEmail().equals(n.getEmail())){
@@ -858,7 +865,7 @@ public class Endre_avtaleController {
 					fjerna_gjester.add(b);
 					b.deleteAvtale(avtalen);
 				}
-			}
+			}*/
 		}
     }
 	
@@ -882,7 +889,6 @@ public class Endre_avtaleController {
 		@Override
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			String verdi = "";
-			System.out.println((Integer) newValue);
 			if(((Integer) newValue).equals((Integer) 0)){
 				verdi = "1";
 			}
@@ -899,8 +905,8 @@ public class Endre_avtaleController {
 	EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
 	    public void handle(MouseEvent event) {
 	        ChoiceBox<String> boksen = (ChoiceBox<String>) event.getSource();
-	        Text teksten = (Text) boksen.getParent().getChildrenUnmodifiable().get(0);
-	        choiceBruker = teksten.getText();
+	        HBox boks = (HBox) boksen.getParent();
+	        choiceBruker = boksBruker.get(boks);
 	    }
 	};
 	

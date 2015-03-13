@@ -114,13 +114,14 @@ public class Appointment {
 	public String getAppTime(String appID) throws Exception{
 		query = "select fra,til\n" + 
 				"from avtale\n" + 
-				"where avtaleid="+Integer.parseInt(appID);
+				"where avtaleid=?";
 		
 		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, appID);
 		ResultSet result = statement.executeQuery();
 		result.next();
 		
-		String output = result.getString(1)+" "+result.getString(2)+" ";
+		String output = result.getString(1)+" "+result.getString(2);
 		return output;
 	}
 	
