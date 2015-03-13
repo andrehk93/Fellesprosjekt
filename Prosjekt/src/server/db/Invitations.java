@@ -42,6 +42,10 @@ public class Invitations {
 	
 	// STATUS
 	public void changeStatus(String user, String avtale, String newStatus) throws Exception {
+		if(newStatus.equals("null")){
+			query = "UPDATE ermed SET oppmotestatus=NULL\n"+
+					"WHERE epost=? AND avtaleid=?;";
+		}
 		query = "UPDATE ermed SET oppmotestatus=?\n" + 
 				"WHERE epost=? AND avtaleid=?;";
 		PreparedStatement statement = con.prepareStatement(query);
@@ -94,9 +98,8 @@ public class Invitations {
 		ResultSet result = statement.executeQuery();
 		
 		String output = "";
-		while(result.next()) {
-			output += result.getString(1);
-		}
+		result.next();
+		output = result.getString(1);
 		return output;
 	}
 }

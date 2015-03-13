@@ -57,7 +57,6 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
                   <Text fx:id="feilTekst" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-errormsg" text="Tiden må være etter fra-tidspunkt!" />
-                  <Text fx:id="feilDato" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-errormsg" text="Datoen må være etter startdato!" />
                </children>
                <padding>
                   <Insets left="250.0" />
@@ -83,49 +82,21 @@
                      <children>
                         <VBox layoutX="6.0" prefHeight="280.0" prefWidth="463.0" spacing="10.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="25.0">
+                              <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="122.0">
                                  <children>
-                                    <ComboBox fx:id="legg_til_gjester" prefHeight="38.0" minWidth="260" maxWidth="260" promptText="Legg til e-postadresser.." styleClass="label-errormsg">
+                                    <Label prefHeight="39.0" prefWidth="114.0" text="Gjesteliste" />
+                                    <ComboBox fx:id="legg_til_gjester" onAction="#addGjesten" prefHeight="38.0" prefWidth="260.0" promptText="Legg til e-postadresser.." styleClass="label-errormsg">
                                        <HBox.margin>
                                           <Insets top="7.0" />
                                        </HBox.margin>
                                     </ComboBox>
-                                    <Button fx:id="addGjestBtn" onAction="#addGjesten" Text="Legg til" minWidth="100" maxWidth="100" styleClass="specialButton"/>
+                                    <Button fx:id="addGjestBtn" Text="Legg til" onAction="#addGjesten" />
                                  </children>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
                               </HBox>
                               <ListView fx:id="gjesteliste" prefHeight="191.0" prefWidth="442.0" styleClass="label-normal-objects" />
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab id="#MyTabPane" closable="false" text="Legg til grupper">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="509.0">
-                     <children>
-                        <VBox layoutX="6.0" prefHeight="280.0" prefWidth="463.0" spacing="10.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="25.0">
-                                 <children>
-                                    <ComboBox fx:id="legg_til_gruppe" prefHeight="38.0" minWidth="260" maxWidth="260" promptText="Legg til grupper..." styleClass="label-errormsg">
-                                       <HBox.margin>
-                                          <Insets top="7.0" />
-                                       </HBox.margin>
-                                    </ComboBox>
-                                    <Button fx:id="addGruppeBtn" onAction="#addGruppen" Text="Legg til" minWidth="100" maxWidth="100" styleClass="specialButton"/>
-                                 </children>
-                                 <padding>
-                                    <Insets left="10.0" right="10.0" />
-                                 </padding>
-                              </HBox>
-                              <ListView fx:id="gruppeliste" prefHeight="191.0" prefWidth="442.0" styleClass="label-normal-objects" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
@@ -173,7 +144,7 @@
       </TabPane>
       <VBox layoutX="664.0" layoutY="463.0" prefHeight="169.0" prefWidth="216.0" spacing="10.0" styleClass="label-normal-objects">
          <children>
-            <Button fx:id="forkast_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#reset" prefHeight="46.0" prefWidth="135.0" styleClass="normalButton" text="Forkast" />
+            <Button fx:id="slett_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#slett" prefHeight="46.0" prefWidth="135.0" styleClass="normalButton" text="Slett" />
             <Button fx:id="lagre_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#lagre" prefHeight="46.0" prefWidth="134.0" styleClass="specialButton" text="Lagre" />
          	<Button fx:id="avbryt_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#avbryt" prefHeight="46.0" prefWidth="130.0" styleClass="normalButton" text="Avbryt" />
          </children>

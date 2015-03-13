@@ -87,6 +87,8 @@ public class KalenderProtocol {
 			case "STATUS":
 				kalenderdb.invitations().changeStatus(user, input[2], input[3]);
 				break;
+			case "STATUSES":
+				flereStatuser(input[2],Arrays.copyOfRange(input, 3, input.length), kalenderdb);
 			case "NOTIFICATION":
 				kalenderdb.notification().changeNotification(user, input[2], input[3]);
 				break;
@@ -96,6 +98,16 @@ public class KalenderProtocol {
 				}
 				break;
 		}
+	}
+
+	private void flereStatuser(String avtaleid, String[] liste, KalenderDB db) throws Exception {
+		int i = 2;
+		while(i<liste.length){
+			System.out.println("TESTNR "+i+": "+liste[i]+", "+avtaleid+", "+liste[i+1]);
+			db.invitations().changeStatus(liste[i],avtaleid,liste[i+1]);
+			i += 2;
+		}
+		
 	}
 
 	private String createHandler(String[] input) throws Exception{
@@ -294,6 +306,9 @@ public class KalenderProtocol {
 					output = "OK";
 				}
 				break;
+			case "APP":
+				kalenderdb.appointment().deleteApp(input[2]);
+				output = "OK";
 		}
 		if(output.trim().equals("")){
 			output = "NONE";

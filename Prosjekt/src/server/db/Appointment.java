@@ -2,8 +2,9 @@ package server.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.sql.Connection;
+import java.sql.SQLException;
+
 import com.mysql.jdbc.Statement;
 
 public class Appointment {
@@ -62,6 +63,15 @@ public class Appointment {
 		statement.executeUpdate();
 	}
 	
+// DELETE ============================================================
+	
+	public void deleteApp(String appID) throws SQLException {
+		query = "DELETE FROM `christwg_fp`.`avtale` WHERE `avtaleid`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, appID);
+		statement.executeUpdate();
+	}
+	
 	
 // GET ================================================================
 	
@@ -104,13 +114,14 @@ public class Appointment {
 	public String getAppTime(String appID) throws Exception{
 		query = "select fra,til\n" + 
 				"from avtale\n" + 
-				"where avtaleid="+Integer.parseInt(appID);
+				"where avtaleid=?";
 		
 		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, appID);
 		ResultSet result = statement.executeQuery();
 		result.next();
 		
-		String output = result.getString(1)+" "+result.getString(2)+" ";
+		String output = result.getString(1)+" "+result.getString(2);
 		return output;
 	}
 	
@@ -261,6 +272,9 @@ public class Appointment {
 		}
 		return output;
 	}
+
+
+	
 	
 	
 }

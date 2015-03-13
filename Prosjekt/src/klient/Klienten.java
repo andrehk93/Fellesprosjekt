@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Klienten {
 	
@@ -344,6 +345,7 @@ public class Klienten {
 		if(what.equals("APPNAME")){
 			toServer += " ENDOFMESSAGE";
 		}
+		System.out.println(toServer);
 		sendTilServer(toServer);
 	}
 	
@@ -363,6 +365,21 @@ public class Klienten {
 
 	public static boolean getChanged() {
 		return changed;
+	}
+
+	public static void deleteAvtale(String avtaleid) throws IOException {
+		String toServer = "DELETE APP "+avtaleid;
+		sendTilServer(toServer);
+	}
+
+	public static void changeOppmote(String avtaleid, HashMap<String, String> oppmoteListe) throws IOException {
+		String liste = "";
+		for(String email : oppmoteListe.keySet()){
+			liste += email +" "+ oppmoteListe.get(email) +" ";
+		}
+		System.out.println("Avtaleid: "+avtaleid);
+		String toServer = "CHANGE STATUSES "+avtaleid+" "+liste.substring(0, liste.length()-1);
+		sendTilServer(toServer);
 	}
 }
 
