@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
@@ -15,6 +16,10 @@ import org.controlsfx.control.CheckComboBox;
 
 import com.sun.javafx.css.StyleCache.Key;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
+
+
+
 
 
 
@@ -56,7 +61,6 @@ public class Endre_avtaleController {
 	private LocalTime start;
 	private LocalTime slutt;
 	private LocalDate dato;
-	private String[] ledigeBrukerEmailer;
 	private ArrayList<Bruker> ledigeBrukere;
 	private int startT;
 	private int startM;
@@ -67,67 +71,69 @@ public class Endre_avtaleController {
 	private int indexen;
 	private HashMap<String,String> oppmoteListe;
 	private Bruker theUser;
+	private String avtaleid;
 	
 	
+//LISTENE SOM INNEHOLDER GJESTER OG GRUPPER (IKKE TIL LISTVIEW, TIL COMBOBOX)
+	private ObservableList<Bruker> gjeste_ComboBox;
+	private ObservableList<Gruppe> gruppe_ComboBox;
+		
+//LISTER OVER INVITERTE BRUKERE OG GRUPPER (UAVHENGIGE LISTER)
+	private ArrayList<Bruker> inviterte_gjester;
+	private ArrayList<Gruppe> inviterte_grupper;
+	private List<Bruker> listeForGjesteCombobox;
+	private List<Gruppe> listeForGruppeCombobox;
+	
+//LEDIGE BRUKERE OG GRUPPER
+	private String[] ledigeBrukerEmailer;
+    private String[] ledigeGrupperId;
+	
+//LISTENER TIL LISTVIEW SINE GJELDENDE VALG (MULIG IKKE FUNGERER)
+	private Bruker valg;
+    private Gruppe valgGruppe;
+    private Bruker forrigeValg;
+	
+	
+//LISTER OG OBSERVABLELISTER TIL LISTVIEW
+	private List<HBox> gjeste_listen;
+    private List<HBox> gruppe_listen;
+    private ObservableList<HBox> gjestene_observable;
+    private ObservableList<HBox> gruppene_observable;
+	
 	@FXML
-	CheckBox hele_dagen = new CheckBox();
+	CheckBox hele_dagen;
 	@FXML
-	Button leggTil = new Button();
-	@FXML
-	Button addGjestBtn;
-	@FXML
-	Text feilDato = new Text();
-	@FXML
-    TextField avtalenavn = new TextField();
-	@FXML
-    Text feilTekst = new Text();
+	Text feilDato, feilTekst;
     @FXML
-    DatePicker startdato = new DatePicker();
+    DatePicker startdato;
     @FXML
-    ChoiceBox<String> timeFra = new ChoiceBox<String>();
+    ChoiceBox<String> timeFra, timeTil, minuttFra, minuttTil;
     @FXML
-    ChoiceBox<String> timeTil = new ChoiceBox<String>();
+    ComboBox<Bruker> legg_til_gjester;
     @FXML
-    ChoiceBox<String> minuttFra = new ChoiceBox<String>();
+    ComboBox<Gruppe> legg_til_gruppe;
     @FXML
-    ChoiceBox<String> minuttTil = new ChoiceBox<String>();
+    ListView<HBox> gjesteliste, gruppeliste;
     @FXML
-    ComboBox<Bruker> legg_til_gjester = new ComboBox<Bruker>();
+    ListView<String> møteromliste;
     @FXML
-    ListView<HBox> gjesteliste = new ListView<HBox>();
+    Slider møteromliste_slider;
     @FXML
-    Button søk_møterom = new Button();
+    TextField antall_gjester,valgt_rom, avtalenavn;
     @FXML
-    ListView<String> møteromliste = new ListView<String>();
-    @FXML
-    Slider møteromliste_slider = new Slider();
-    @FXML
-    TextField antall_gjester = new TextField();
-    @FXML
-    TextField valgt_rom = new TextField();
-    @FXML
-    Button slett_knapp = new Button();
-    @FXML
-    Button lagre_knapp = new Button();
-    @FXML
-    RadioButton skal = new RadioButton();
-    @FXML
-    RadioButton ikke_svart = new RadioButton();
-    @FXML
-    RadioButton skal_ikke = new RadioButton();
-    @FXML
-    ListView<HBox> gjesteliste2 = new ListView<HBox>();
+    Button addGruppeBtn, lagre_knapp, slett_knapp, søk_møterom, addGjestBtn, leggTil;
+    
+    
     List<HBox> gjestelisten;
     ObservableList<HBox> gjestene;
-    ObservableList<HBox> gjestene2;
-    
-    private Bruker valg;
+	
 	
 	public void initialize() throws IOException {
+		inviterte_gjester = new ArrayList<Bruker>();
+		inviterte_grupper = new ArrayList<Gruppe>();
 		gjeste_liste = new ArrayList<Bruker>();
 		gjestelisten = new ArrayList<HBox>();
     	gjestene = FXCollections.observableList(gjestelisten);
-    	gjestene2 = FXCollections.observableList(gjestelisten);
     	ledigeBrukerEmailer = Klienten.getAllUserEmails();
 		ledigeBrukere = new ArrayList<Bruker>();
 		oppmoteListe = new HashMap<String,String>();
@@ -147,8 +153,8 @@ public class Endre_avtaleController {
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0,
 					Number arg1, Number arg2) {
-				if (ant_gjester.getValue().intValue() < gjestene.size()) {
-					ant_gjester.setValue(gjestene.size());
+				if (ant_gjester.getValue().intValue() < inviterte_gjester.size()) {
+					ant_gjester.setValue(inviterte_gjester.size());
 				}
 				antall_gjester.setText(ant_gjester.getValue().toString());
 			}
@@ -163,13 +169,13 @@ public class Endre_avtaleController {
 					String arg1, String arg2) {
 				try {
 					int str = Integer.parseInt(antall_gjester.getText());
-					if (str < gjestene.size()) {
-						antall_gjester.setText(gjestene.size()+"");
+					if (str < inviterte_gjester.size()) {
+						antall_gjester.setText(inviterte_gjester.size()+"");
 						antall_gjester.end();
 					}
 				}
 				catch (Exception e) {
-					antall_gjester.setText(gjestene.size()+"");
+					antall_gjester.setText(inviterte_gjester.size()+"");
 					antall_gjester.end();
 				}
 			}
@@ -177,18 +183,98 @@ public class Endre_avtaleController {
 		};
 		antall_gjester.textProperty().addListener(tekstStr);
 		ant_gjester.addListener(antall);
-		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
+			
+	//INSTATNSIERER SELVE LISTENE SOM INNEHOLDER GRUPPER/BRUKERE TIL COMBOBOXENE
+		
+		listeForGjesteCombobox = new ArrayList<Bruker>();
+		listeForGruppeCombobox = new ArrayList<Gruppe>();
+				
+				
+	//INSTANSIERER HBOX-LISTENE OG LEGGER DE TIL I OBSERVABLELISTENE
+				
+		gjeste_listen = new ArrayList<HBox>();
+		gruppe_listen = new ArrayList<HBox>();
+			
+		gjestene_observable = FXCollections.observableList(gjeste_listen);
+	   	gruppene_observable = FXCollections.observableList(gruppe_listen);
+				
+				
+	//HENTER GRUPPER OG LEGGER TIL GRUPPER OG BRUKERE I LISTVIEWENE
+				
+		ledigeBrukerEmailer = Klienten.getAllUserEmails();
+		
+		for(String email : ledigeBrukerEmailer){
+			if(email != null && email != "" && ! email.trim().equals(Klienten.bruker.getEmail())){
+				listeForGjesteCombobox.add(new Bruker(Klienten.getBruker(email), email, 0));
+			}
+			else {
+				System.out.println(email);
+			}
+		}
+		
+		ledigeGrupperId = Klienten.getGroups().split(" ");
+		
+		//LEGGER GRUPPER TIL I GRUPPE_COMBOBOX
+		lagGrupper();
+		
+		gjeste_ComboBox = FXCollections.observableList(listeForGjesteCombobox);
+		gruppe_ComboBox = FXCollections.observableList(listeForGruppeCombobox);
+		legg_til_gjester.setItems(gjeste_ComboBox);
+		legg_til_gruppe.setItems(gruppe_ComboBox);
+		
+		
+	//LEGGER TIL LISTENERS FOR LEGG TIL GRUPPER/BRUKER
+		
 		ChangeListener<Bruker> valgt_bruker = new ChangeListener<Bruker>() {
-
-			@Override
+				@Override
 			public void changed(ObservableValue<? extends Bruker> arg0,
 					Bruker arg1, Bruker arg2) {
-				valg = arg2;
+				valg = FxUtil.getComboBoxValue(legg_til_gjester);
 			}
 			
 		};
 		legg_til_gjester.getSelectionModel().selectedItemProperty().addListener(valgt_bruker);
 		
+		ChangeListener<Gruppe> valgt_gruppe = new ChangeListener<Gruppe>() {
+				@Override
+			public void changed(ObservableValue<? extends Gruppe> arg0,
+					Gruppe arg1, Gruppe arg2) {
+				valgGruppe = FxUtil.getComboBoxValue(legg_til_gruppe);
+			}
+			
+		};
+		legg_til_gruppe.getSelectionModel().selectedItemProperty().addListener(valgt_gruppe);
+		
+	//LAGER COMBOBOXENE SØKBARE
+		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
+		ChangeListener<Bruker> valgt_brukeren = new ChangeListener<Bruker>() {
+				@Override
+			public void changed(ObservableValue<? extends Bruker> arg0,
+					Bruker arg1, Bruker arg2) {
+				valg = FxUtil.getComboBoxValue(legg_til_gjester);
+			}
+			
+		};
+		legg_til_gjester.getSelectionModel().selectedItemProperty().addListener(valgt_brukeren);
+		
+		ChangeListener<Gruppe> valgt_gruppen = new ChangeListener<Gruppe>() {
+				@Override
+			public void changed(ObservableValue<? extends Gruppe> arg0,
+					Gruppe arg1, Gruppe arg2) {
+				valgGruppe = FxUtil.getComboBoxValue(legg_til_gruppe);
+			}
+			
+		};
+		legg_til_gruppe.getSelectionModel().selectedItemProperty().addListener(valgt_gruppen);
+		
+	//LAGER COMBOBOXENE SØKBARE
+		
+		FxUtil.autoCompleteComboBox(legg_til_gjester, FxUtil.AutoCompleteMode.CONTAINING);
+		FxUtil.autoCompleteComboBox(legg_til_gruppe, FxUtil.AutoCompleteMode.CONTAINING);
+		
+		insertAppDetails();
+		
+
 		
 		//layoutX="439.0" layoutY="261.0" prefWidth="150.0"
 		
@@ -264,14 +350,12 @@ public class Endre_avtaleController {
     
     
     private void insertAppDetails() throws IOException {
-    	int indeks = 0;
 		for(Avtale app : Klienten.avtaler){
 			if(Klienten.getValgtAvtale().equals(app.getAvtaleid())){
 				avtalen = app;
-				indexen = indeks;
+				avtaleid = app.getAvtaleid();
 				break;
 			}
-			indeks++;
 		}
 		avtalenavn.setText(avtalen.getAvtaleNavn());
 		startdato.setValue(avtalen.getTid().getDato());
@@ -279,22 +363,28 @@ public class Endre_avtaleController {
 		timeFra.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getStart().getHour())));
 		timeTil.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getSlutt().getHour())));
 		minuttFra.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getStart().getMinute())));
-		minuttTil.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getSlutt().getMinute())));
+		if (avtalen.getTid().getSlutt().getMinute() == 59) {
+			minuttTil.setValue(timeStringFormat(String.valueOf((55))));
+		}
+		else {
+			minuttTil.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getSlutt().getMinute())));
+		}
 		valgt_rom.setText(avtalen.getRom().getNavn());
 		valg = new Bruker();
 		for(Bruker brukere : gjeste_liste){
 			oppmoteListe.put(brukere.getEmail(), Klienten.getStatus(avtalen.getAvtaleid(), brukere.getEmail()));
 		}
 		for(Bruker d : avtalen.getDeltakere()){
-			for(Bruker b : legg_til_gjester.getItems()){
+			for(Bruker b : listeForGjesteCombobox){
 				if(b.getEmail().equals(d.getEmail())){
 					addGjestenEgentlig(b);
 					gjeste_liste.add(b);
+					break;
 				}
 			}
 		}
 		valg = null;
-		antall_gjester.setText(String.valueOf((int)gjeste_liste.size()/2));
+		antall_gjester.setText(String.valueOf((int)inviterte_gjester.size()/2));
 		//setOppmote();
 		
     }
@@ -305,48 +395,7 @@ public class Endre_avtaleController {
 			
 		}
 		
-	}
-
-    public void addRadioListeners() {
-		ChangeListener<Boolean> select_skal = new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0,
-					Boolean arg1, Boolean arg2) {
-				if (skal.isSelected()) {
-					skal_ikke.setSelected(false);
-					ikke_svart.setSelected(false);
-				}
-			}
-			
-		};
-		ChangeListener<Boolean> select_skal_ikke = new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0,
-					Boolean arg1, Boolean arg2) {
-				if (skal_ikke.isSelected()) {
-					skal.setSelected(false);
-					ikke_svart.setSelected(false);
-				}
-			}
-			
-		};
-		ChangeListener<Boolean> select_ikke_svart = new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0,
-					Boolean arg1, Boolean arg2) {
-				if (ikke_svart.isSelected()) {
-					skal_ikke.setSelected(false);
-					skal.setSelected(false);
-				}
-			}
-		};
-		skal.selectedProperty().addListener(select_skal);
-		skal_ikke.selectedProperty().addListener(select_skal_ikke);
-		ikke_svart.selectedProperty().addListener(select_ikke_svart);
-	}
+    }
 
 	private String timeStringFormat(String s){
     	if(s.length()==1){
@@ -486,7 +535,6 @@ public class Endre_avtaleController {
 		}
 	};
 
-
 	public boolean sjekkTid(LocalTime start, LocalTime slutt) {
     	if (start == evigheten || slutt == evigheten) {
     		return true;
@@ -497,34 +545,58 @@ public class Endre_avtaleController {
     	return false;
     }
     
+    //LEGGER TIL HBOX I LISTVIEW FOR GJESTER
     public void showGjest(HBox boks) {
-    	gjestene.add(boks);
-    	this.gjesteliste.setItems(gjestene);
+    	gjestene_observable.add(boks);
+    	gjesteliste.setItems(gjestene_observable);
     	ant_gjester.setValue(ant_gjester.getValue().intValue()+1);
     }
     
+    //FJERNER ÉN GJEST FRA LISTVIEW MED GJESTER
     public void removeGjest(HBox boks) {
-    	for (Bruker bruker : gjeste_liste) {
+    	for (Bruker bruker : inviterte_gjester) {
     		Text te = (Text) boks.getChildren().get(0);
     		if (bruker.getNavn().equals(te.getText())) {
-    			gjeste_liste.remove(bruker);
-    			System.out.println("HERVED FJERNET");
+    			inviterte_gjester.remove(bruker);
+    			gjeste_ComboBox.add(bruker);
+    			legg_til_gjester.setItems(gjeste_ComboBox);
+    			gjestene_observable.remove(boks);
+    	    	gjesteliste.setItems(gjestene_observable);
+    	    	ant_gjester.setValue(ant_gjester.getValue().intValue()-1);
+    	    	antall_gjester.setText(ant_gjester.getValue().intValue() + "");
+    	    	return;
     		}
     		else {
-    			System.out.println(boks.getChildren().get(0).toString());
     		}
     	}
-    	gjestene.remove(boks);
-    	this.gjesteliste.setItems(gjestene);
-    	ant_gjester.setValue(ant_gjester.getValue().intValue()-1);
-    	antall_gjester.setText(ant_gjester.getValue().intValue() + "");
     }
     
-    @FXML
-    public void addGjest(ActionEvent event) throws IOException {
-    	
+    
+    //LEGGER TIL ÉN GJEST (FRA GRUPPE!) OG KALLER SHOWGJEST MED BOKSEN
+    public void addGjest(Bruker bruker) throws IOException {
+    	HBox boks = new HBox();
+    	Button kryss = new Button();
+    	kryss.setText("x");
+    	kryss.setOpacity(0.8);
+    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				removeGjest(boks);
+			}
+    		
+    	});
+    	String brukernavn = bruker.getNavn();
+    	boks.getChildren().add(new Text(brukernavn));
+    	boks.getChildren().add(kryss);
+    	showGjest(boks);
+    	inviterte_gjester.add(bruker);
+    	gjeste_ComboBox.remove(bruker);
+    	legg_til_gjester.setItems(gjeste_ComboBox);
     }
     
+    
+    //LEGGER TIL ÉN GJEST (VED Å OPPRETTE HBOX OBJEKT) OG KALLER SHOWGJEST MED BOKSEN
     @FXML
     private void addGjesten(ActionEvent event) {
     	Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
@@ -532,14 +604,8 @@ public class Endre_avtaleController {
     }
     
     private void addGjestenEgentlig(Bruker selectedUser){
-    	if (valg != null) {
-    		theUser = selectedUser;
-        	for(Bruker gjest : gjeste_liste){
-        		if(gjest.getEmail() == selectedUser.getEmail()){
-        			System.out.println("Brukeren er allerede invitert");
-        			return;
-        		}
-        	}
+    	if (valg != null && selectedUser != null) {
+    		valg = selectedUser;
 	    	HBox boks = new HBox();
 	    	Button kryss = new Button();
 	    	kryss.setText("x");
@@ -552,22 +618,125 @@ public class Endre_avtaleController {
 				}
 	    		
 	    	});
-	    	String brukernavn = selectedUser.getNavn();
-	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail(),0);
+	    	String brukernavn = valg.getNavn();
 	    	boks.getChildren().add(new Text(brukernavn));
 	    	ChoiceBox<String> oppmote = new ChoiceBox<String>();
-	    	ArrayList<String> valg = new ArrayList<String>();
-	    	valg.add("Skal");
-	    	valg.add("Ikke svart");
-	    	valg.add("Skal ikke");
-	    	oppmote.setItems(FXCollections.observableList(valg));
+	    	ArrayList<String> valget = new ArrayList<String>();
+	    	valget.add("Skal");
+	    	valget.add("Ikke svart");
+	    	valget.add("Skal ikke");
+	    	oppmote.setItems(FXCollections.observableList(valget));
 	    	oppmote.setPrefHeight(boks.getPrefHeight());
 	    	oppmote.getSelectionModel().selectedIndexProperty().addListener(handleOppmote);
 	    	boks.getChildren().add(oppmote);
+	    	boks.getChildren().add(kryss);
 	    	showGjest(boks);
-	    	gjeste_liste.add(gjest);
+	    	inviterte_gjester.add(valg);
+	    	gjeste_ComboBox.remove(valg);
+	    	legg_til_gjester.setItems(gjeste_ComboBox);
+	    	forrigeValg = valg;
+    	}
+    	else {
     	}
     }
+	
+	public void removeGruppe(HBox boks) {
+		for (Gruppe gruppe : inviterte_grupper) {
+    		Text te = (Text) boks.getChildren().get(0);
+    		if (gruppe.getNavn().equals(te.getText())) {
+    			for (Bruker bruker : gruppe.getMedlemmer()) {
+    				try {
+	    				for (HBox gjest_boks : gjestene_observable) {
+	    					Text text = (Text) gjest_boks.getChildren().get(0);
+	    					if (text.getText().equals(bruker.getNavn())) {
+	    						removeGjest(gjest_boks);
+	    					}
+	    				}
+    				}
+    				catch (ConcurrentModificationException e) {
+    					
+    				}
+    			}
+    			inviterte_grupper.remove(gruppe);
+    			gruppe_ComboBox.add(gruppe);
+    			legg_til_gruppe.setItems(gruppe_ComboBox);
+    			gruppene_observable.remove(boks);
+    	    	gruppeliste.setItems(gruppene_observable);
+    			return;
+    		}
+    		else {
+    		}
+    	}
+    	
+	}
+	
+	
+	//LEGGER TIL VALGT GRUPPE (FRA COMBOBOX) OG KALLER SHOWGRUPPE
+	@FXML
+	private void addGruppen() throws IOException, ClassCastException {
+		if (valgGruppe != null) {
+			if (FxUtil.getComboBoxValue(legg_til_gruppe) != null && ! valgGruppe.equals(FxUtil.getComboBoxValue(legg_til_gruppe))) {
+				valgGruppe = FxUtil.getComboBoxValue(legg_til_gruppe);
+			}
+	    	HBox boks = new HBox();
+	    	Button kryss = new Button();
+	    	kryss.setText("x");
+	    	kryss.setOpacity(0.8);
+	    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+	
+				@Override
+				public void handle(ActionEvent event) {
+					removeGruppe(boks);
+				}
+	    		
+	    	});
+	    	String gruppenavn = valgGruppe.getNavn();
+	    	boks.getChildren().add(new Text(gruppenavn));
+	    	boks.getChildren().add(kryss);
+	    	showGrupper(boks, valgGruppe);
+	    	inviterte_grupper.add(valgGruppe);
+	    	gruppe_ComboBox.remove(valgGruppe);
+	    	if (gruppe_ComboBox.isEmpty()) {
+	    		valgGruppe = null;
+	    	}
+	    	legg_til_gruppe.setItems(gruppe_ComboBox);
+    	}
+	}
+	
+	
+	//OPPRETTER GRUPPER TIL LISTVIEW FOR GRUPPER
+	private void lagGrupper() throws NumberFormatException, IOException {
+		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
+		if (ledigeGrupperId != null) {
+			for (String id : ledigeGrupperId) {
+				String gruppenavn = Klienten.getGroupName(id.trim());
+				if (gruppenavn.trim().equals("NONE")) {
+					break;
+				}
+				else {	
+					brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
+					Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
+					listeForGruppeCombobox.add(gruppe);
+				}
+			}
+		}
+	}
+	
+	
+	//LEGGER BOKS TIL I LISTVIEW FOR GRUPPER, OG GRUPPEMEDLEMMER I LISTVIEW FOR GJESTER
+	private void showGrupper(HBox boks, Gruppe gruppe) throws IOException {
+		gruppene_observable.add(boks);
+		gruppeliste.setItems(gruppene_observable);
+    	for (Bruker bruker : gruppe.getMedlemmer()) {
+    		for (Bruker bruker_compare : gjeste_ComboBox) {
+    			if (bruker.getEmail().equals(bruker_compare.getEmail())) {
+    				addGjest(bruker_compare);
+    				break;
+    			}
+    		}
+    	}
+	}
+	
     
     @FXML
     public void finnRom(ActionEvent event) throws IOException {
@@ -580,7 +749,7 @@ public class Endre_avtaleController {
 	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), Integer.parseInt(antall_gjester.getText()) + "");
 	    	}
 	    	System.out.println("ROMMENE: " + rom);
-	    	rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_liste.size() + "");
+	    	rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), inviterte_gjester.size() + "");
 	    	ArrayList<String> rommene = new ArrayList<String>();
 		    String[] rom_listen = rom.split(" ");
 		    for (int i = 0; i < rom_listen.length; i++) {
@@ -628,6 +797,15 @@ public class Endre_avtaleController {
 		if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null){
 			System.out.println("WHAAAAAAAAAAAAAT????!?!?!");
 			handleChanges();
+			String oppdatertAvtale = Klienten.hentAvtale(avtaleid);
+			for (Avtale avtale : Klienten.avtaler) {
+				if (avtale.getAvtaleid().equals(avtaleid)) {
+					Klienten.avtaler.remove(avtale);
+					Avtale avtaleOppdatertLagd = Klienten.createAvtale(dato.toString(), avtaleid);
+					Klienten.avtaler.add(avtaleOppdatertLagd);
+					break;
+				}
+			}
 			ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
 		}
 	}
@@ -657,13 +835,14 @@ public class Endre_avtaleController {
 		}
 		ArrayList<Bruker> nye_gjester = new ArrayList<Bruker>();
 		ArrayList<Bruker> fjerna_gjester = new ArrayList<Bruker>();
-		if(!gjeste_liste.equals(avtalen.getDeltakere())){
+		if(!inviterte_gjester.equals(avtalen.getDeltakere())){
 			boolean ny;
-			for(Bruker b : gjeste_liste){
+			for(Bruker b : inviterte_gjester){
 				ny = true;
 				for(Bruker n : avtalen.getDeltakere()){
 					if(b.getEmail().equals(n.getEmail())){
 						ny = false;
+						break;
 					}
 				}
 				if(ny){
@@ -675,9 +854,10 @@ public class Endre_avtaleController {
 			boolean fjernet;
 			for(Bruker b :  avtalen.getDeltakere()){
 				fjernet = true;
-				for(Bruker n : gjeste_liste){
+				for(Bruker n : inviterte_gjester){
 					if(b.getEmail().equals(n.getEmail())){
 						fjernet = false;
+						break;
 					}
 				}
 				if(fjernet){

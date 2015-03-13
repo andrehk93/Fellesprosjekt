@@ -100,6 +100,7 @@ public class Bruker {
 	
 	public void inviterTilNyAvtale(Avtale avtale) throws IOException {
 		Klienten.inviterDeltaker(this.getEmail(), avtale.getAvtaleid());
+		avtale.addDeltakere(this);
 	}
 	
 	public void removeAvtale(Avtale avtale) {
