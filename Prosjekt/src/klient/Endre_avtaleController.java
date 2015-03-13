@@ -111,7 +111,7 @@ public class Endre_avtaleController {
     @FXML
     ComboBox<Bruker> legg_til_gjester;
     @FXML
-    ComboBox<Gruppe> legg_til_gruppe;
+    ComboBox<Gruppe> legg_til_gruppe = new ComboBox<Gruppe>();
     @FXML
     ListView<HBox> gjesteliste, gruppeliste;
     @FXML
@@ -129,6 +129,9 @@ public class Endre_avtaleController {
 	
 	
 	public void initialize() throws IOException {
+		//INSTATNSIERER SELVE LISTENE SOM INNEHOLDER GRUPPER/BRUKERE TIL COMBOBOXENE
+		listeForGjesteCombobox = new ArrayList<Bruker>();
+		listeForGruppeCombobox = new ArrayList<Gruppe>();
 		inviterte_gjester = new ArrayList<Bruker>();
 		inviterte_grupper = new ArrayList<Gruppe>();
 		gjeste_liste = new ArrayList<Bruker>();
@@ -144,7 +147,6 @@ public class Endre_avtaleController {
 		}
 		
 		legg_til_gjester.getItems().addAll(ledigeBrukere);
-		insertAppDetails();
 		antall_gjester.setDisable(false);
 		antall_gjester.setEditable(true);
 		ant_gjester.setValue(0);
@@ -183,12 +185,6 @@ public class Endre_avtaleController {
 		};
 		antall_gjester.textProperty().addListener(tekstStr);
 		ant_gjester.addListener(antall);
-			
-	//INSTATNSIERER SELVE LISTENE SOM INNEHOLDER GRUPPER/BRUKERE TIL COMBOBOXENE
-		
-		listeForGjesteCombobox = new ArrayList<Bruker>();
-		listeForGruppeCombobox = new ArrayList<Gruppe>();
-				
 				
 	//INSTANSIERER HBOX-LISTENE OG LEGGER DE TIL I OBSERVABLELISTENE
 				
@@ -220,6 +216,8 @@ public class Endre_avtaleController {
 		gjeste_ComboBox = FXCollections.observableList(listeForGjesteCombobox);
 		gruppe_ComboBox = FXCollections.observableList(listeForGruppeCombobox);
 		legg_til_gjester.setItems(gjeste_ComboBox);
+		System.out.println(gruppe_ComboBox);
+		System.out.println(legg_til_gruppe);
 		legg_til_gruppe.setItems(gruppe_ComboBox);
 		
 		
@@ -304,7 +302,6 @@ public class Endre_avtaleController {
 		
 		
 		feilTekst.setVisible(false);
-		feilDato.setVisible(false);
 		List<String> list = new ArrayList<String>();
 		ObservableList<String> timer = FXCollections.observableList(list);
 		for (int i = 0; i < 24; i++) {
@@ -632,7 +629,7 @@ public class Endre_avtaleController {
 	    	boks.getChildren().add(kryss);
 	    	showGjest(boks);
 	    	inviterte_gjester.add(valg);
-	    	gjeste_ComboBox.remove(valg);
+	    	//gjeste_ComboBox.remove(valg);
 	    	legg_til_gjester.setItems(gjeste_ComboBox);
 	    	forrigeValg = valg;
     	}

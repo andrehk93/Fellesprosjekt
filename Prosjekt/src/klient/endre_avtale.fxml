@@ -85,7 +85,7 @@
                               <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="122.0">
                                  <children>
                                     <Label prefHeight="39.0" prefWidth="114.0" text="Gjesteliste" />
-                                    <ComboBox fx:id="legg_til_gjester" onAction="#addGjest" prefHeight="38.0" prefWidth="260.0" promptText="Legg til e-postadresser.." styleClass="label-errormsg">
+                                    <ComboBox fx:id="legg_til_gjester" onAction="#addGjesten" prefHeight="38.0" prefWidth="260.0" promptText="Legg til e-postadresser.." styleClass="label-errormsg">
                                        <HBox.margin>
                                           <Insets top="7.0" />
                                        </HBox.margin>
