@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
@@ -14,6 +15,8 @@ import org.controlsfx.control.CheckComboBox;
 
 import com.sun.javafx.css.StyleCache.Key;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
+
 
 
 import javafx.beans.property.Property;
@@ -61,6 +64,9 @@ public class Endre_avtaleController {
 	private int sluttM;
 	private LocalTime evigheten;
 	private Avtale avtalen;
+	private int indexen;
+	private HashMap<String,String> oppmoteListe;
+	private Bruker theUser;
 	
 	
 	@FXML
@@ -104,13 +110,16 @@ public class Endre_avtaleController {
     @FXML
     Button lagre_knapp = new Button();
     @FXML
-    RadioButton radioSkal = new RadioButton();
+    RadioButton skal = new RadioButton();
     @FXML
-    RadioButton radioVetIkke = new RadioButton();
+    RadioButton ikke_svart = new RadioButton();
     @FXML
-    RadioButton radioIkke = new RadioButton();
+    RadioButton skal_ikke = new RadioButton();
+    @FXML
+    ListView<HBox> gjesteliste2 = new ListView<HBox>();
     List<HBox> gjestelisten;
     ObservableList<HBox> gjestene;
+    ObservableList<HBox> gjestene2;
     
     private Bruker valg;
 	
@@ -118,9 +127,10 @@ public class Endre_avtaleController {
 		gjeste_liste = new ArrayList<Bruker>();
 		gjestelisten = new ArrayList<HBox>();
     	gjestene = FXCollections.observableList(gjestelisten);
+    	gjestene2 = FXCollections.observableList(gjestelisten);
     	ledigeBrukerEmailer = Klienten.getAllUserEmails();
 		ledigeBrukere = new ArrayList<Bruker>();
-		
+		oppmoteListe = new HashMap<String,String>();
 		for(String email : ledigeBrukerEmailer){
 			if(email != null || email != ""){
 				ledigeBrukere.add(new Bruker(Klienten.getBruker(email), email,0));
@@ -254,11 +264,14 @@ public class Endre_avtaleController {
     
     
     private void insertAppDetails() throws IOException {
+    	int indeks = 0;
 		for(Avtale app : Klienten.avtaler){
 			if(Klienten.getValgtAvtale().equals(app.getAvtaleid())){
 				avtalen = app;
+				indexen = indeks;
 				break;
 			}
+			indeks++;
 		}
 		avtalenavn.setText(avtalen.getAvtaleNavn());
 		startdato.setValue(avtalen.getTid().getDato());
@@ -269,6 +282,9 @@ public class Endre_avtaleController {
 		minuttTil.setValue(timeStringFormat(String.valueOf(avtalen.getTid().getSlutt().getMinute())));
 		valgt_rom.setText(avtalen.getRom().getNavn());
 		valg = new Bruker();
+		for(Bruker brukere : gjeste_liste){
+			oppmoteListe.put(brukere.getEmail(), Klienten.getStatus(avtalen.getAvtaleid(), brukere.getEmail()));
+		}
 		for(Bruker d : avtalen.getDeltakere()){
 			for(Bruker b : legg_til_gjester.getItems()){
 				if(b.getEmail().equals(d.getEmail())){
@@ -279,7 +295,8 @@ public class Endre_avtaleController {
 		}
 		valg = null;
 		antall_gjester.setText(String.valueOf((int)gjeste_liste.size()/2));
-		setOppmote();
+		//setOppmote();
+		
     }
     
     private void setOppmote() throws IOException {
@@ -290,6 +307,46 @@ public class Endre_avtaleController {
 		
 	}
 
+    public void addRadioListeners() {
+		ChangeListener<Boolean> select_skal = new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean arg1, Boolean arg2) {
+				if (skal.isSelected()) {
+					skal_ikke.setSelected(false);
+					ikke_svart.setSelected(false);
+				}
+			}
+			
+		};
+		ChangeListener<Boolean> select_skal_ikke = new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean arg1, Boolean arg2) {
+				if (skal_ikke.isSelected()) {
+					skal.setSelected(false);
+					ikke_svart.setSelected(false);
+				}
+			}
+			
+		};
+		ChangeListener<Boolean> select_ikke_svart = new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean arg1, Boolean arg2) {
+				if (ikke_svart.isSelected()) {
+					skal_ikke.setSelected(false);
+					skal.setSelected(false);
+				}
+			}
+		};
+		skal.selectedProperty().addListener(select_skal);
+		skal_ikke.selectedProperty().addListener(select_skal_ikke);
+		ikke_svart.selectedProperty().addListener(select_ikke_svart);
+	}
 
 	private String timeStringFormat(String s){
     	if(s.length()==1){
@@ -314,6 +371,7 @@ public class Endre_avtaleController {
     @FXML
     public void slett() throws IOException {
     	Klienten.deleteAvtale(avtalen.getAvtaleid());
+    	Klienten.avtaler.remove(indexen);
     	ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
     }
     
@@ -428,7 +486,8 @@ public class Endre_avtaleController {
 		}
 	};
 
-    public boolean sjekkTid(LocalTime start, LocalTime slutt) {
+
+	public boolean sjekkTid(LocalTime start, LocalTime slutt) {
     	if (start == evigheten || slutt == evigheten) {
     		return true;
     	}
@@ -474,6 +533,7 @@ public class Endre_avtaleController {
     
     private void addGjestenEgentlig(Bruker selectedUser){
     	if (valg != null) {
+    		theUser = selectedUser;
         	for(Bruker gjest : gjeste_liste){
         		if(gjest.getEmail() == selectedUser.getEmail()){
         			System.out.println("Brukeren er allerede invitert");
@@ -495,6 +555,15 @@ public class Endre_avtaleController {
 	    	String brukernavn = selectedUser.getNavn();
 	    	Bruker gjest = new Bruker(brukernavn, selectedUser.getEmail(),0);
 	    	boks.getChildren().add(new Text(brukernavn));
+	    	ChoiceBox<String> oppmote = new ChoiceBox<String>();
+	    	ArrayList<String> valg = new ArrayList<String>();
+	    	valg.add("Skal");
+	    	valg.add("Ikke svart");
+	    	valg.add("Skal ikke");
+	    	oppmote.setItems(FXCollections.observableList(valg));
+	    	oppmote.setPrefHeight(boks.getPrefHeight());
+	    	oppmote.getSelectionModel().selectedIndexProperty().addListener(handleOppmote);
+	    	boks.getChildren().add(oppmote);
 	    	showGjest(boks);
 	    	gjeste_liste.add(gjest);
     	}
@@ -634,6 +703,22 @@ public class Endre_avtaleController {
 			return true;
 		}
 	}
+	
+	ChangeListener<? super Number> handleOppmote = new ChangeListener<Number>() {
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			String verdi = "";
+			switch((Integer) newValue){
+				case 0:
+					verdi = "0";
+				case 1:
+					verdi = "null";
+				case 2:
+					verdi = "1";
+			}
+			oppmoteListe.put(theUser.getEmail(), verdi);
+		}
+	};
 	
 	@FXML
 	public void avbryt(){

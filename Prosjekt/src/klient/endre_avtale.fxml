@@ -146,9 +146,9 @@
                               <ListView fx:id="gjesteliste2" prefHeight="191.0" prefWidth="442.0" styleClass="label-normal-objects" />
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <RadioButton fx:id="radioSkal" mnemonicParsing="false" text="Skal" />
-                                    <RadioButton fx:id="radioVetIkke" mnemonicParsing="false" text="Ikke svart" />
-                                    <RadioButton fx:id="radioIkke" mnemonicParsing="false" text="Skal ikke" />
+                                    <RadioButton fx:id="skal" mnemonicParsing="false" text="Skal" />
+                                    <RadioButton fx:id="ikke_svart" mnemonicParsing="false" text="Ikke svart" />
+                                    <RadioButton fx:id="skal_ikke" mnemonicParsing="false" text="Skal ikke" />
                                  </children>
                               </HBox>
                            </children>
