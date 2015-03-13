@@ -24,6 +24,9 @@ import com.sun.javafx.css.StyleCache.Key;
 
 
 
+
+
+
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -33,6 +36,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
@@ -70,8 +74,8 @@ public class Endre_avtaleController {
 	private Avtale avtalen;
 	private int indexen;
 	private HashMap<String,String> oppmoteListe;
-	private Bruker theUser;
 	private String avtaleid;
+	private String choiceBruker;
 	
 	
 //LISTENE SOM INNEHOLDER GJESTER OG GRUPPER (IKKE TIL LISTVIEW, TIL COMBOBOX)
@@ -368,9 +372,11 @@ public class Endre_avtaleController {
 		}
 		valgt_rom.setText(avtalen.getRom().getNavn());
 		valg = new Bruker();
+		System.out.println("Inviterte: "+gjeste_liste);
 		for(Bruker brukere : gjeste_liste){
 			oppmoteListe.put(brukere.getEmail(), Klienten.getStatus(avtalen.getAvtaleid(), brukere.getEmail()));
 		}
+		System.out.println("Oppmøteliste: "+oppmoteListe);
 		for(Bruker d : avtalen.getDeltakere()){
 			for(Bruker b : listeForGjesteCombobox){
 				if(b.getEmail().equals(d.getEmail())){
@@ -382,15 +388,6 @@ public class Endre_avtaleController {
 		}
 		valg = null;
 		antall_gjester.setText(String.valueOf((int)inviterte_gjester.size()/2));
-		//setOppmote();
-		
-    }
-    
-    private void setOppmote() throws IOException {
-		for(Bruker b : gjeste_liste){
-			String oppmote = Klienten.getStatus(avtalen.getAvtaleid(), b.getEmail());
-			
-		}
 		
     }
 
@@ -439,26 +436,6 @@ public class Endre_avtaleController {
 			}
     	};
     	startdato.valueProperty().addListener(datoEndring);
-    }
-    
-    private DayOfWeek findWeekDay(String dag) {
-    	switch(dag){
-    	case "Mandag":
-    		return DayOfWeek.MONDAY;
-    	case "Tirsdag":
-    		return DayOfWeek.TUESDAY;
-    	case "Onsdag":
-    		return DayOfWeek.WEDNESDAY;
-    	case "Torsdag":
-    		return DayOfWeek.THURSDAY;
-    	case "Fredag":
-    		return DayOfWeek.FRIDAY;
-    	case "Lørdag":
-    		return DayOfWeek.SATURDAY;
-    	case "Søndag":
-    		return DayOfWeek.SUNDAY;
-    	}
-    	return null;
     }
     
     @FXML
@@ -595,12 +572,12 @@ public class Endre_avtaleController {
     
     //LEGGER TIL ÉN GJEST (VED Å OPPRETTE HBOX OBJEKT) OG KALLER SHOWGJEST MED BOKSEN
     @FXML
-    private void addGjesten(ActionEvent event) {
+    private void addGjesten(ActionEvent event) throws IOException {
     	Bruker selectedUser = FxUtil.getComboBoxValue(legg_til_gjester);
     	addGjestenEgentlig(selectedUser);
     }
     
-    private void addGjestenEgentlig(Bruker selectedUser){
+    private void addGjestenEgentlig(Bruker selectedUser) throws IOException{
     	if (valg != null && selectedUser != null) {
     		valg = selectedUser;
 	    	HBox boks = new HBox();
@@ -625,6 +602,13 @@ public class Endre_avtaleController {
 	    	oppmote.setItems(FXCollections.observableList(valget));
 	    	oppmote.setPrefHeight(boks.getPrefHeight());
 	    	oppmote.getSelectionModel().selectedIndexProperty().addListener(handleOppmote);
+	    	oppmote.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+	    	String status = "0";
+	    	if(avtalen.getDeltakere().contains(valg)){
+	    		status = Klienten.getStatus(avtalen.getAvtaleid(), valg.getEmail());
+	    	}
+	    	oppmote.setValue(getStatus(status));
+	    	oppmoteListe.put(valg.getEmail(), status);
 	    	boks.getChildren().add(oppmote);
 	    	boks.getChildren().add(kryss);
 	    	showGjest(boks);
@@ -637,6 +621,19 @@ public class Endre_avtaleController {
     	}
     }
 	
+	private String getStatus(String string) {
+		switch(string){
+		case "0":
+			return "Skal";
+		case "1":
+			return "Ikke svart";
+		case "2":
+			return "Skal ikke";
+		}
+		return null;
+	}
+
+
 	public void removeGruppe(HBox boks) {
 		for (Gruppe gruppe : inviterte_grupper) {
     		Text te = (Text) boks.getChildren().get(0);
@@ -885,25 +882,32 @@ public class Endre_avtaleController {
 		@Override
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			String verdi = "";
-			switch((Integer) newValue){
-				case 0:
-					verdi = "0";
-				case 1:
-					verdi = "null";
-				case 2:
-					verdi = "1";
+			System.out.println((Integer) newValue);
+			if(((Integer) newValue).equals((Integer) 0)){
+				verdi = "1";
 			}
-			oppmoteListe.put(theUser.getEmail(), verdi);
+			else if(((Integer) newValue).equals((Integer) 1)){
+				verdi = "null";
+			}
+			else{
+				verdi = "0";
+			}
+			oppmoteListe.put(choiceBruker, verdi);
 		}
+	};
+	
+	EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
+	    public void handle(MouseEvent event) {
+	        ChoiceBox<String> boksen = (ChoiceBox<String>) event.getSource();
+	        Text teksten = (Text) boksen.getParent().getChildrenUnmodifiable().get(0);
+	        choiceBruker = teksten.getText();
+	    }
 	};
 	
 	@FXML
 	public void avbryt(){
 		ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
 	}
-	
-	
-		
 }
 
 

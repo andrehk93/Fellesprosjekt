@@ -137,29 +137,6 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Endre oppmøtestatuser">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="280.0" prefWidth="463.0" spacing="10.0">
-                           <children>
-                              <ListView fx:id="gjesteliste2" prefHeight="191.0" prefWidth="442.0" styleClass="label-normal-objects" />
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <RadioButton fx:id="skal" mnemonicParsing="false" text="Skal" />
-                                    <RadioButton fx:id="ikke_svart" mnemonicParsing="false" text="Ikke svart" />
-                                    <RadioButton fx:id="skal_ikke" mnemonicParsing="false" text="Skal ikke" />
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
         </tabs>
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
