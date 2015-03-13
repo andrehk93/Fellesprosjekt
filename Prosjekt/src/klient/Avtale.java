@@ -115,12 +115,10 @@ public class Avtale {
 	//Antar at det legges til én
 	public void addDeltakere(Bruker deltaker) throws IOException {
 		try {
-			for (Bruker bruker : deltakerProperty.getValue()) {
+			if (! deltaker.equals(eierProperty.getValue())) {
 				deltakerProperty.getValue().add(deltaker);
-				if (! deltaker.equals(eierProperty.getValue())) {
-					Klienten.leggTilAvtale(bruker.getEmail(), avtaleid);
-					deltaker.addAvtale(this);
-				}
+				Klienten.leggTilAvtale(deltaker.getEmail(), avtaleid);
+				deltaker.addAvtale(this);
 			}
 		}
 		catch (NullPointerException e) {
