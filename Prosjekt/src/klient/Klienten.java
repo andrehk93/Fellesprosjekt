@@ -33,7 +33,7 @@ public class Klienten {
 	public static void init() throws UnknownHostException, IOException{
 		avtaler = new ArrayList<Avtale>();
 		alle_møterom = new ArrayList<Møterom>();
-		String ip = "78.91.25.45";
+		String ip = "localhost";
 		int port = 6789;
 		try {
 			socket = new Socket(ip, port);
