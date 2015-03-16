@@ -102,7 +102,10 @@ public class Klienten {
 	
 	public static String getDeltakere(String avtaleid, String status) throws IOException {
 		String toServer = "";
-		if (status.equals("2")) {
+		if(status == null){
+			toServer = "GET APPATTS " + avtaleid + " "+ status;
+		}
+		else if (status.equals("2")) {
 			toServer = "GET ALLAPPATTS " + avtaleid;
 		}
 		else {

@@ -129,6 +129,7 @@
                   </GridPane>
                </content>
             </ScrollPane>
+            <ChoiceBox fx:id="filtrering" layoutX="790.0" layoutY="647.0" prefWidth="150.0" styleClass="label-normal-objects"/>
          </children>
       </AnchorPane>
    </children>
