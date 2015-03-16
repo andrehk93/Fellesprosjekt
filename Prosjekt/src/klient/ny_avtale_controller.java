@@ -41,7 +41,6 @@ public class ny_avtale_controller {
 	
 	
 	Property<Number> ant_gjester = new SimpleIntegerProperty();
-	private Bruker forrigeValg;
 	
 	//LISTENE SOM INNEHOLDER GJESTER OG GRUPPER (IKKE TIL LISTVIEW, TIL COMBOBOX)
 	private ObservableList<Bruker> gjeste_ComboBox;
@@ -731,7 +730,6 @@ public class ny_avtale_controller {
 	    	inviterte_gjester.add(valg);
 	    	gjeste_ComboBox.remove(valg);
 	    	legg_til_gjester.setItems(gjeste_ComboBox);
-	    	forrigeValg = valg;
     	}
     	else {
     	}

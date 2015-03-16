@@ -36,6 +36,7 @@ public class KalenderController {
 	public static String[] notifikasjon_liste;
 	private int maned;
 	private int aar;
+	private int dag;
 	private String[] avtale_liste;
 	private int filtverdi;
 	public static String[] enheter;
@@ -53,6 +54,7 @@ public class KalenderController {
 	public void initialize() throws Exception{
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
+		setDay(LocalDate.now().getDayOfMonth());
 		setFiltVerdi(0);
 		setUpFiltrering();
 		flushView();
@@ -60,7 +62,7 @@ public class KalenderController {
 		brukerredigering.setVisible(Klienten.bruker.getRighs().intValue()>0);
 	}
 
-	private void flushView() throws Exception{
+	public void flushView() throws Exception{
 		notifikasjon_utenMelding = new ArrayList<ArrayList<String>>();
 		dager = new ArrayList<Dag>();
 		meldinger = new ArrayList<String>();
@@ -75,7 +77,7 @@ public class KalenderController {
 		setItems();
 	}
 
-	private void setUpFiltrering(){
+	public void setUpFiltrering(){
 		filtrering.setItems(FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag"));
 		filtrering.setValue("Alle");
 		filtrering.getSelectionModel().selectedIndexProperty().addListener(filtChange);
@@ -130,12 +132,12 @@ public class KalenderController {
 		flushView();
 	}
 
-	private void showBruker() {
+	public void showBruker() {
 		System.out.println("navnet: " + Klienten.bruker.getNavn());
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
 
-	private void svarInvite() {
+	public void svarInvite() {
 		ChangeListener<String> invite = new ChangeListener<String>() {
 
 			@Override
@@ -171,7 +173,7 @@ public class KalenderController {
 		pop.start(new Stage());
 	}
 
-	private void showInvitasjoner() throws Exception {
+	public void showInvitasjoner() throws Exception {
 		notifikasjonene = Klienten.getInvitasjoner(Klienten.bruker).split(" ");
 		for (int i = 0; i < notifikasjonene.length; i++) {
 			if (notifikasjonene[i].trim().equals("NONE") || notifikasjonene[i].trim().equals("-1")) {
@@ -186,7 +188,7 @@ public class KalenderController {
 		}
 	}
 
-	private void showNotifications() throws Exception {
+	public void showNotifications() throws Exception {
 		boolean meldingFerdig = false;
 		ArrayList<String> resten = new ArrayList<String>();
 		oppdelte_notifikasjoner = new ArrayList<Varsel>();
@@ -226,30 +228,38 @@ public class KalenderController {
 		}
 	}
 
-	private void setItems() {
+	public void setItems() {
 		items = FXCollections.observableList(list);
 		notifikasjoner.setItems(items);
 	}
+	
+	public void setDay(int day) {
+		dag = day;
+	}
+	
+	public int getDay() {
+		return dag;
+	}
 
-	private void setMonth(int month){
+	public void setMonth(int month){
 		maned = month;
 		manedLabel.setText(new Dag(LocalDate.of(2015, month, 01)).getManedNavn());
 	}
 
-	private int getMonth(){
+	public int getMonth(){
 		return maned;
 	}
 
-	private void setYear(int year){
+	public void setYear(int year){
 		aar = year;
 		arLabel.setText(String.valueOf(year));
 	}
 
-	private int getYear(){
+	public int getYear(){
 		return aar;
 	}
 
-	private void getDays(){
+	public void getDays(){
 		try{
 			int i=1;
 			while(true){
@@ -262,7 +272,7 @@ public class KalenderController {
 		catch (DateTimeException e){}
 	}
 
-	private Dag getDag(LocalDate dato) {
+	public Dag getDag(LocalDate dato) {
 		for (Dag dag : dager) {
 			if (dag.getDato().equals(dato)) {
 				return dag;
@@ -271,17 +281,17 @@ public class KalenderController {
 		return null;
 	}
 
-	private void setFiltVerdi(int verdi) {
+	public void setFiltVerdi(int verdi) {
 		this.filtverdi = verdi;
 	}
 
-	private int getFiltVerdi() {
+	public int getFiltVerdi() {
 		return this.filtverdi;
 	}
 
 
 
-	private void loadGrid() throws IOException{
+	public void loadGrid() throws IOException{
 		int lengde = dager.size();
 		hentAvtaler();
 		LocalDate fysteDag = dager.get(0).getDato();
@@ -311,7 +321,7 @@ public class KalenderController {
 		}
 	}
 
-	private void hentAvtaler() throws IOException {
+	public void hentAvtaler() throws IOException {
 		if (Klienten.avtaler.isEmpty()) {
 			String streng = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi());
 			avtale_liste = streng.split(" ");
@@ -335,7 +345,7 @@ public class KalenderController {
 
 	// VELDIG MYE TULL, MEN FUNKER
 	//Lager: bruker(deltaker)-objektene, avtale-objekt, møterom-objekt og tidsobjekt
-	private void createAvtale(String dato, String avtaleid) throws IOException {
+	public void createAvtale(String dato, String avtaleid) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
 		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
@@ -367,7 +377,7 @@ public class KalenderController {
 				Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
 	}
 
-	private void setTexts(int j,int i,int t) throws IOException{
+	public void setTexts(int j,int i,int t) throws IOException{
 		Text text = new Text();
 		String avtale_dag = dager.get(t).getDato().toString();
 		String temp = "";
@@ -385,22 +395,22 @@ public class KalenderController {
 	}
 
 	@FXML
-	private void nextPaneDayView(ActionEvent event) {
+	public void nextPaneDayView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
 	}
 
 	@FXML
-	private void nextPaneWeekView(ActionEvent event) {
+	public void nextPaneWeekView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
 	}
 
 	@FXML
-	private void nextPaneMakeAppointment(ActionEvent event) {
+	public void nextPaneMakeAppointment(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
 	}
 
 	@FXML
-	private void nextMonth(ActionEvent event) throws Exception {
+	public void nextMonth(ActionEvent event) throws Exception {
 		if(getMonth()+1>=13){
 			setMonth(1);
 			setYear(getYear()+1);
@@ -412,7 +422,7 @@ public class KalenderController {
 	}
 
 	@FXML
-	private void previousMonth(ActionEvent event) throws Exception {
+	public void previousMonth(ActionEvent event) throws Exception {
 		if(getMonth()-1<=0){
 			setMonth(12);
 			setYear(getYear()-1);
@@ -424,7 +434,7 @@ public class KalenderController {
 	}
 
 	@FXML
-	private void logout() throws IOException{
+	public void logout() throws IOException{
 		Klienten.logout();
 	}
 

@@ -252,7 +252,7 @@ public class UkesvisningController {
 		box.setOnMouseClicked(new EventHandler<Event>() {
 			public void handle(Event event) {
 				avtale = app.getAvtaleid();
-				if(app.getAvtaleAdmin().equals(Klienten.bruker)){
+				if(app.getEier().equals(Klienten.bruker)){
 					Klienten.setValgtAvtale(avtale);
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
