@@ -321,9 +321,11 @@ public class KalenderProtocol {
 			case "APP":
 				kalenderdb.appointment().deleteApp(input[2]);
 				output = "OK";
+				break;
 			case "APPATTENDANT":
 				kalenderdb.appointment().deleteAttendant(input[1], input[2]);
 				output = "OK";
+				break;
 		}
 		if(output.trim().equals("")){
 			output = "NONE";
