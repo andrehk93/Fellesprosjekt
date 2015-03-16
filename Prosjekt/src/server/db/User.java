@@ -69,7 +69,7 @@ import java.sql.Connection;
 			byte[] salt = new byte[32];
 			r.nextBytes(salt);
 			
-	        String s = secrets.bytesToHex(salt);
+	        String s = Secrets.bytesToHex(salt);
 	        String temp_pass = s + password;
 	        String passw = secrets.toSha(temp_pass);
 	        
@@ -191,6 +191,30 @@ import java.sql.Connection;
 				rights = temp_rights;
 			}
 			return rights;
+		}
+		
+		// ADMINS
+		public String getAdmins() throws Exception {
+			query = "SELECT epost FROM bruker WHERE rettigheter > 0";
+			PreparedStatement statement = con.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			String output = "";
+			while(result.next()){
+				output += result.getString(1) + " ";
+			}
+			return output.substring(0, output.length()-1);
+		}
+		
+		// NORMAL USERS AKA users that are not admins
+		public String getNormalUsers() throws Exception {
+			query = "SELECT epost FROM bruker WHERE COALESCE(rettigheter, 0) = 0";
+			PreparedStatement statement = con.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			String output = "";
+			while(result.next()){
+				output += result.getString(1) + " ";
+			}
+			return output.substring(0, output.length()-1);
 		}
 
 }
