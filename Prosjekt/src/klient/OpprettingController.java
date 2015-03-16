@@ -114,7 +114,7 @@ public class OpprettingController {
 
 	
 	public boolean isValidFornavn(){ // Validerer fornavn
-    	String regex = "^[a-zA-Z'-]+$";
+    	String regex = "^[a-zA-ZæøåÆØÅ'-]+$";
     	if (!fornavn.getText().matches(regex)){
     		fornavn.setStyle("-fx-text-box-border : red");
     		fornavn_lbl.setText("*Kan kun bestå av bokstaver.");
@@ -133,7 +133,7 @@ public class OpprettingController {
     }
     	
 	public boolean isValidEtternavn(){ // Validerer etternavn
-		String regex = "^[a-zA-Z'-]+$";
+		String regex = "^[a-zA-ZæøåÆØÅ'-]+$";
     	if(!etternavn.getText().matches(regex)){
     		etternavn.setStyle("-fx-text-box-border : red");
     		etternavn_lbl.setText("*Kan kun bestå av bokstaver.");
