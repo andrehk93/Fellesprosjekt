@@ -82,21 +82,49 @@
                      <children>
                         <VBox layoutX="6.0" prefHeight="280.0" prefWidth="463.0" spacing="10.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="122.0">
+                              <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="25.0">
                                  <children>
-                                    <Label prefHeight="39.0" prefWidth="114.0" text="Gjesteliste" />
-                                    <ComboBox fx:id="legg_til_gjester" onAction="#addGjesten" prefHeight="38.0" prefWidth="260.0" promptText="Legg til e-postadresser.." styleClass="label-errormsg">
+                                    <ComboBox fx:id="legg_til_gjester" prefHeight="38.0" minWidth="260" maxWidth="260" promptText="Legg til e-postadresser.." styleClass="label-errormsg">
                                        <HBox.margin>
                                           <Insets top="7.0" />
                                        </HBox.margin>
                                     </ComboBox>
-                                    <Button fx:id="addGjestBtn" Text="Legg til" onAction="#addGjesten" />
+                                    <Button fx:id="addGjestBtn" onAction="#addGjesten" Text="Legg til" minWidth="100" maxWidth="100" styleClass="specialButton"/>
                                  </children>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
                               </HBox>
                               <ListView fx:id="gjesteliste" prefHeight="191.0" prefWidth="442.0" styleClass="label-normal-objects" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab id="#MyTabPane" closable="false" text="Legg til grupper">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="509.0">
+                     <children>
+                        <VBox layoutX="6.0" prefHeight="280.0" prefWidth="463.0" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="25.0">
+                                 <children>
+                                    <ComboBox fx:id="legg_til_gruppe" prefHeight="38.0" minWidth="260" maxWidth="260" promptText="Legg til grupper..." styleClass="label-errormsg">
+                                       <HBox.margin>
+                                          <Insets top="7.0" />
+                                       </HBox.margin>
+                                    </ComboBox>
+                                    <Button fx:id="addGruppeBtn" onAction="#addGruppen" Text="Legg til" minWidth="100" maxWidth="100" styleClass="specialButton"/>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </HBox>
+                              <ListView fx:id="gruppeliste" prefHeight="191.0" prefWidth="442.0" styleClass="label-normal-objects" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
