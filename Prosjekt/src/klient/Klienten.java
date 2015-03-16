@@ -278,7 +278,7 @@ public class Klienten {
 	}
 	
 	public static void addGruppe(String name, ArrayList<Bruker> members) throws IOException{
-		String toServer = "CREATE GROUP " + name;
+		String toServer = "CREATE GROUP " + name + " ENDOFMESSAGE";
 		for(Bruker member : members){
 			toServer += " " + member.getEmail();
 		}

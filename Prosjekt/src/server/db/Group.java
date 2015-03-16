@@ -29,12 +29,16 @@ public class Group {
 
 	
 	// GROUP
-	public void createGroup(String name, String user, String[] users) throws Exception {
+	public void createGroup(String user, String name, String[] users) throws Exception {
+		System.out.println("NAVN: " + name);
 		query = "INSERT INTO `christwg_fp`.`gruppe` (`gruppenavn`) VALUES (?);";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, name);
 		statement.executeUpdate();
-		
+		System.out.println("ADDER TIL GRUPPE: " );
+		for (String userstr : users) {
+			System.out.println(userstr);
+		}
 		query = "SELECT LAST_INSERT_ID();";
 		statement = con.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
@@ -42,8 +46,16 @@ public class Group {
 		String gruppeId= result.getString(1);
 		
 		String[] bruker = {user};
-		
-		addGroupMember(gruppeId,bruker);
+		boolean a = true;
+		for (String user_sjekk : users) {
+			if (user_sjekk.equals(user)) {
+				a = false;
+				break;
+			}
+		}
+		if (a){
+			addGroupMember(gruppeId,bruker);
+		}
 		addGroupMember(gruppeId,users);
 	}
 	
@@ -58,6 +70,7 @@ public class Group {
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setString(1, newMembers[i]);
 			statement.setString(2, groupId);
+			System.out.println("LEGGER TIL: " + newMembers[i]);
 			statement.executeUpdate();
 		}
 	}
@@ -115,11 +128,11 @@ public class Group {
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, id);
 		ResultSet result = statement.executeQuery();
-		if(result.next()){
-			return result.getString(1);
-		} else {
-			return "";
+		String output = "";
+		while (result.next()){
+			output += result.getString(1) + " ";
 		}
+		return output.substring(0, output.length()-1);
 	}
 	
 	// GROUPS

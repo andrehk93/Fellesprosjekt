@@ -181,14 +181,14 @@ public class grupper_controller {
     }
     
     @FXML
-	public void lagre(){											// Kan ikke bli ferdig med før grupper-klassen er endret
+	public void lagre() throws IOException{											// Kan ikke bli ferdig med før grupper-klassen er endret
     	gruppeNavn = gruppenavn.getText();
 		System.out.println(gruppeNavn);
 		if (medlemmer.size() <2){
 			legg_til_lbl.setText("*Du kan ikke lage en gruppe med mindre enn to personer.");
 		}
-//		gruppe.setNavn(gruppeNavn);
-//		gruppe.setMedlemmer(medlemmer);
+		gruppe = new Gruppe(gruppeNavn, medlemmer);
+		ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 	}
     
     @FXML

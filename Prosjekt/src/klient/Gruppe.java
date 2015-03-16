@@ -14,9 +14,10 @@ public class Gruppe {
 		
 	}
 	
-	public Gruppe(String navn, ArrayList<Bruker> medlemmer) {
+	public Gruppe(String navn, ArrayList<Bruker> medlemmer) throws IOException {
 		this.gruppenavn = navn;
 		setMedlemmer(medlemmer);
+		Klienten.addGruppe(navn, medlemmer);
 	}
 	
 	public void setNavn(String navn){

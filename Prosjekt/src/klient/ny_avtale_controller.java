@@ -645,6 +645,7 @@ public class ny_avtale_controller {
 					}
 				}
 				Klienten.setChanged(true);
+				Klienten.avtaler.add(avtale);
 				ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 			}
 		}
