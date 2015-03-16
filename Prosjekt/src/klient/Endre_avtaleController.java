@@ -854,7 +854,8 @@ public class Endre_avtaleController {
 				Bruker b;
 				if (avtalen.getDeltakere().size() + 1 > i) {
 					b = avtalen.getDeltakere().get(i);
-					if (b.equals(Klienten.bruker)) {
+					if (b.getEmail().equals(Klienten.bruker.getEmail())) {
+						System.out.println("DETTE ER DEEEEG");
 						continue;
 					}
 				}
@@ -866,6 +867,10 @@ public class Endre_avtaleController {
 					Bruker n;
 					if (inviterte_gjester.size() > j) {
 						n = inviterte_gjester.get(j);
+						if (n.getEmail().equals(Klienten.bruker.getEmail())) {
+							System.out.println("DETTE ER MEG");
+							continue;
+						}
 					}
 					else {
 						break;
