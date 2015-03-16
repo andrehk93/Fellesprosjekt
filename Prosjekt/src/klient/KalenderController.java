@@ -56,7 +56,6 @@ public class KalenderController {
 		setDay(LocalDate.now().getDayOfMonth());
 		setUpFiltrering();
 		flushView();
-		System.out.println("admin?: " + Klienten.getRights());
 		brukerredigering.setVisible(Klienten.bruker.getRighs().intValue()>0);
 	}
 
@@ -73,6 +72,25 @@ public class KalenderController {
 		showInvitasjoner();
 		showNotifications();
 		setItems();
+		makeGroups();
+	}
+	
+	private void makeGroups() throws IOException {
+		String[] ledigeGrupperId = Klienten.getGroups().split(" ");
+		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
+		if (ledigeGrupperId != null) {
+			for (String id : ledigeGrupperId) {
+				String gruppenavn = Klienten.getGroupName(id.trim());
+				if (gruppenavn.trim().equals("NONE")) {
+					break;
+				}
+				else {	
+					brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
+					Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
+					Klienten.grupper.add(gruppe);
+				}
+			}
+		}
 	}
 
 	public void setUpFiltrering(){
@@ -325,9 +343,6 @@ public class KalenderController {
 				}
 			}
 		}
-		else {
-			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), Klienten.getFiltrering()).split(" ");
-		}
 	}
 
 
@@ -336,7 +351,6 @@ public class KalenderController {
 	public void createAvtale(String dato, String avtaleid) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
-		System.out.println("Romnavn: " + romnavn + " AVtale: " + avtaleid);
 		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
 		Møterom rom = new Møterom(kapasitet, romnavn);
 		Klienten.alle_møterom.add(rom);
@@ -365,15 +379,11 @@ public class KalenderController {
 
 	public void setTexts(int j,int i,int t) throws IOException{
 		Text text = new Text();
-		String avtale_dag = dager.get(t).getDato().toString();
+		LocalDate avtale_dag = dager.get(t).getDato();
 		String temp = "";
-		for (int k = 0; k < avtale_liste.length; k++) {
-			if (k%2 != 0) {
-				String dato = avtale_liste[k];
-				String avtaleid = avtale_liste[k-1];
-				if (avtale_dag.equals(dato)) {
-					temp += avtaleid + " ";
-				}
+		for (int k = 0; k < Klienten.avtaler.size(); k++) {
+			if (avtale_dag.equals(Klienten.avtaler.get(k).getTid().getDato())) {
+				temp += ".";
 			}
 		}
 		text.setText(temp);
