@@ -21,10 +21,9 @@
 }
 	
 .header {
-    -fx-background-color: #4986E7 ;
+    -fx-background-color: #4986E7;
     -fx-text-fill: white;
     -fx-padding: 19px ;
-
 }
 
 .text-field, .label {

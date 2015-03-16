@@ -243,7 +243,7 @@ public class KalenderController {
 
 	public void setMonth(int month){
 		maned = month;
-		manedLabel.setText(LocalDate.of(2015, month, 01).getMonth().toString());
+		manedLabel.setText(new Dag(LocalDate.of(2015, month, 01)).getManedNavn());
 	}
 
 	public int getMonth(){

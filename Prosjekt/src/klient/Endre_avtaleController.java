@@ -404,7 +404,7 @@ public class Endre_avtaleController {
     public void slett() throws IOException {
     	Klienten.deleteAvtale(avtalen.getAvtaleid());
     	Klienten.avtaler.remove(indexen);
-    	ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
+    	ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
     }
     
     @FXML
@@ -912,7 +912,7 @@ public class Endre_avtaleController {
 	
 	@FXML
 	public void avbryt(){
-		ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
+		ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 	}
 }
 

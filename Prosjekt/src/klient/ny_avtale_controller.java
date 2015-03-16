@@ -635,7 +635,7 @@ public class ny_avtale_controller {
 				String avtaleid = Klienten.lagAvtale(new TidsIntervall(start, slutt, datoen), rom, avtalenavn.getText());
 				Avtale avtale = new Avtale(getBruker(), inviterte_gjester, new TidsIntervall(start, slutt, datoen), rom, avtaleid);
 				for (Bruker deltaker : inviterte_gjester) {
-					deltaker.inviterTilNyAvtale(avtale);
+					deltaker.inviterTilNyAvtale(avtale); 
 				}
 				getBruker().inviterTilNyAvtale(avtale);
 				Klienten.changeStatus(avtaleid, "1");
