@@ -252,11 +252,15 @@ public class KalenderProtocol {
 				output = kalenderdb.group().getGroupName(input[1]);
 				break;
 			}
-			
-			if(output.trim().equals("")){
-				output = "NONE";
-			} else if(output.equals("-1")){
-				output = "INCORRECT INPUT";
+			try {
+				if(output.trim().equals("")){
+					output = "NONE";
+				} else if(output.equals("-1")){
+					output = "INCORRECT INPUT";
+				}
+			}
+			catch (NullPointerException e) {
+				output = "NULL";
 			}
 			return output;
 	}
@@ -308,6 +312,9 @@ public class KalenderProtocol {
 				break;
 			case "APP":
 				kalenderdb.appointment().deleteApp(input[2]);
+				output = "OK";
+			case "APPATTENDANT":
+				kalenderdb.appointment().deleteAttendant(input[1], input[2]);
 				output = "OK";
 		}
 		if(output.trim().equals("")){

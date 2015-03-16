@@ -72,6 +72,14 @@ public class Appointment {
 		statement.executeUpdate();
 	}
 	
+	public void deleteAttendant(String appID, String email) throws SQLException {
+		query = "DELETE FROM `christwg_fp`.`ermed` WHERE `avtaleid`=? AND `epost`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, appID);
+		statement.setString(2, email);
+		statement.executeUpdate();
+	}
+	
 	
 // GET ================================================================
 	

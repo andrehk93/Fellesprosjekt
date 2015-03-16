@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
@@ -16,6 +17,7 @@ import org.controlsfx.control.CheckComboBox;
 
 import com.sun.javafx.css.StyleCache.Key;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
 
 
 import javafx.beans.property.Property;
@@ -365,6 +367,7 @@ public class Endre_avtaleController {
 		valgt_rom.setText(avtalen.getRom().getNavn());
 		valg = new Bruker();
 		fysteGongen = true;
+		System.out.println("DELTAKERE: " + avtalen.getDeltakere());
 		for(Bruker d : avtalen.getDeltakere()){
 			for(Bruker b : listeForGjesteCombobox){
 				if(b.getEmail().equals(d.getEmail())){
@@ -403,8 +406,15 @@ public class Endre_avtaleController {
     @FXML
     public void slett() throws IOException {
     	Klienten.deleteAvtale(avtalen.getAvtaleid());
-    	Klienten.avtaler.remove(indexen);
-    	ScreenNavigator.loadScreen(ScreenNavigator.lastScreen);
+    	System.out.println("FØR: "+ Klienten.avtaler);
+    	for (Avtale avt : Klienten.avtaler) {
+    		if (avt.getAvtaleid().equals(avtaleid)) {
+    			Klienten.avtaler.remove(avt);
+    			break;
+    		}
+    	}
+    	System.out.println("ETTER: " + Klienten.avtaler);
+    	ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
     }
     
     @FXML
@@ -797,12 +807,10 @@ public class Endre_avtaleController {
 		System.out.println(dato);
 		if (! feilTekst.isVisible() && avtalenavn.getText() != null){
 			handleChanges();
-			String oppdatertAvtale = Klienten.hentAvtale(avtaleid);
 			for (Avtale avtale : Klienten.avtaler) {
 				if (avtale.getAvtaleid().equals(avtaleid)) {
 					Klienten.avtaler.remove(avtale);
-					Avtale avtaleOppdatertLagd = Klienten.createAvtale(dato.toString(), avtaleid);
-					Klienten.avtaler.add(avtaleOppdatertLagd);
+					Klienten.avtaler.add(avtalen);
 					break;
 				}
 			}
@@ -846,16 +854,33 @@ public class Endre_avtaleController {
 						break;
 					}
 				}
-				if(ny){
+				if(ny) {
 					nye_gjester.add(b);
 					b.inviterTilNyAvtale(avtalen);
 					avtalen.addDeltakere(b);
 				}
 			}
 			boolean fjernet;
-			/*for(Bruker b :  avtalen.getDeltakere()){
+			for (int i = 0; i < avtalen.getDeltakere().size(); i++) {
+				Bruker b;
+				if (avtalen.getDeltakere().size() + 1 > i) {
+					b = avtalen.getDeltakere().get(i);
+					if (b.equals(Klienten.bruker)) {
+						continue;
+					}
+				}
+				else {
+					break;
+				}
 				fjernet = true;
-				for(Bruker n : inviterte_gjester){
+				for (int j = 0; j < inviterte_gjester.size(); j++) {
+					Bruker n;
+					if (inviterte_gjester.size() > j) {
+						n = inviterte_gjester.get(j);
+					}
+					else {
+						break;
+					}
 					if(b.getEmail().equals(n.getEmail())){
 						fjernet = false;
 						break;
@@ -863,10 +888,15 @@ public class Endre_avtaleController {
 				}
 				if(fjernet){
 					fjerna_gjester.add(b);
-					b.deleteAvtale(avtalen);
 				}
-			}*/
+			}
 		}
+		System.out.println("FJERNA : " + fjerna_gjester);
+		for (Bruker b : fjerna_gjester) {
+			b.deleteAvtale(avtalen);
+			System.out.println("DELETED");
+		}
+		
     }
 	
 	public Bruker getBruker() {

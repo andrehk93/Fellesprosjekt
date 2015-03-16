@@ -33,8 +33,8 @@ public class KalenderThread extends Thread {
 	            	} catch(Exception ArrayIndexOutOfBoudsException){
 	        			outputLine = "ABSOLUTT RAR INPUT \r\n";
 	        		}*/
-	            	//System.out.println("INPUT: " + inputLine);
-		           // System.out.println("OUTPUT: " + outputLine);
+	            	System.out.println("INPUT: " + inputLine);
+	            	System.out.println("OUTPUT: " + outputLine);
 		            if (! outputLine.trim().equals("-1 ")) {
 		              	out.println(outputLine);
 		            }
