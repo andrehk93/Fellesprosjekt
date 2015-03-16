@@ -13,35 +13,46 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 
 public class Rediger_brukerController {
 	
 	
 	@FXML
-	private ListView<Bruker> eksisterendeBrukere, slettListe;
+	private ListView<Bruker> eksisterendeBrukere, eksisterendeAdministratorer, slettListe;
 	
 	@FXML
-	private Button add, remove, slett;
+	private TabPane BrukerTabs;
 	
-	private List<Bruker> brukere;
+	@FXML
+	private Button add, remove, slett, mkAdmin, rmAdmin;
+	
+	private List<Bruker> brukere, admins;
 	
 	private Bruker valg;
 	private Bruker fjernValg;
 	
 	private ObservableList<Bruker> slettItems;
 	private List<Bruker> slettBrukere;
-	private ObservableList<Bruker> items;
+	private ObservableList<Bruker> items, adminItems;
+	private boolean showBtns = true;
 	
 	
 	
 	@FXML
 	private void initialize() throws IOException {
+		mkAdmin.setVisible(showBtns);
+		rmAdmin.setVisible(!showBtns);
 		slettBrukere = new ArrayList<Bruker>();
 		brukere = new ArrayList<Bruker>();
-		brukere = Klienten.getAllUserDetails();
+		brukere = Klienten.getAllNonAdmins();
+		admins = Klienten.getAllAdminDetails();
 		System.out.println("BRUKERNE: " + brukere);
 		items = FXCollections.observableList(brukere);
+		adminItems = FXCollections.observableList(admins);
 		eksisterendeBrukere.setItems(items);
+		eksisterendeAdministratorer.setItems(adminItems);
 		ChangeListener<Bruker> currentValg = new ChangeListener<Bruker>() {
 
 			@Override
@@ -53,6 +64,7 @@ public class Rediger_brukerController {
 			
 		};
 		eksisterendeBrukere.getSelectionModel().selectedItemProperty().addListener(currentValg);
+		eksisterendeAdministratorer.getSelectionModel().selectedItemProperty().addListener(currentValg);
 		ChangeListener<Bruker> currentFjern = new ChangeListener<Bruker>() {
 
 			@Override
@@ -64,6 +76,17 @@ public class Rediger_brukerController {
 			
 		};
 		slettListe.getSelectionModel().selectedItemProperty().addListener(currentFjern);
+		BrukerTabs.getSelectionModel().selectedItemProperty().addListener(
+			    new ChangeListener<Tab>() {
+			        @Override
+			        public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+						toggleBtns();
+						slettBrukere.clear();
+						slettItems = FXCollections.observableList(slettBrukere);
+						slettListe.setItems(slettItems);
+			        }
+			    }
+			);
 	}
 	
 	@FXML// GÅ TIL BRUKEROPPRETTING KNAPPEN
@@ -111,5 +134,57 @@ public class Rediger_brukerController {
 			eksisterendeBrukere.setItems(items);
 		}
 	}
-
+	
+	@FXML
+	private void makeAdmin(ActionEvent event) throws IOException {
+		if(! slettBrukere.isEmpty()){
+			for(Bruker bruker : slettBrukere){
+				Klienten.makeAdmin(bruker);
+				bruker.setRights(1);
+			}
+			
+			for(int i = 0; i < slettBrukere.size(); i++){
+				admins.add(slettBrukere.get(i));
+				items.remove(slettBrukere.get(i));
+				slettBrukere.remove(i);
+			}
+			slettItems = FXCollections.observableList(slettBrukere);
+			slettListe.setItems(slettItems);
+			adminItems = FXCollections.observableList(admins);
+			items = FXCollections.observableList(brukere);
+			eksisterendeBrukere.setItems(items);
+			eksisterendeAdministratorer.setItems(adminItems);
+		}
+	}
+	
+	
+	@FXML
+	private void removeAdmin(ActionEvent event) throws IOException {
+		if(! slettBrukere.isEmpty()){
+			for(Bruker bruker : slettBrukere){
+				Klienten.removeAdmin(bruker);
+				bruker.setRights(0);
+			}
+			
+			for(int i = 0; i < slettBrukere.size(); i++){
+				admins.remove(slettBrukere.get(i));
+				items.add(slettBrukere.get(i));
+				slettBrukere.remove(i);
+			}
+			slettItems = FXCollections.observableList(slettBrukere);
+			slettListe.setItems(slettItems);
+			adminItems = FXCollections.observableList(admins);
+			items = FXCollections.observableList(brukere);
+			eksisterendeBrukere.setItems(items);
+			eksisterendeAdministratorer.setItems(adminItems);
+		}
+	}
+	
+	@FXML
+	private void toggleBtns(){
+		showBtns = !showBtns;
+		System.out.println(showBtns);
+		mkAdmin.setVisible(showBtns);
+		rmAdmin.setVisible(!showBtns);
+	}
 }

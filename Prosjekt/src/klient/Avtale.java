@@ -213,14 +213,16 @@ public class Avtale {
 	
 	
 	// Antar at det fjernes én om gangen
-	public void removeDeltakere(Bruker deltaker) {
+	public void removeDeltakere(Bruker deltaker) throws IOException {
 		try {
 			deltakerProperty.getValue().remove(deltaker);
+			Klienten.deleteAttendant(avtaleid, deltaker.getEmail());
 			if (deltakerProperty.getValue().isEmpty()) {
 				removeEier();
 			}
 		}
 		catch (NullPointerException e) {
+			System.out.println("NULLPOINTER");
 		}
 		
 	}

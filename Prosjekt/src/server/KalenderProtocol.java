@@ -44,7 +44,7 @@ public class KalenderProtocol {
 				case("CREATE"):
 					return createHandler(Arrays.copyOfRange(input, 1, input.length));
 				case("CHANGE"):
-					changeHandler(input);
+					changeHandler(input); return "OK";
 				case("INVITE"):
 					return createHandler(input);
 				case("ADD"):
@@ -253,12 +253,22 @@ public class KalenderProtocol {
 			case "GROUPNAME":
 				output = kalenderdb.group().getGroupName(input[1]);
 				break;
+			case "ADMINS":
+				output = kalenderdb.user().getAdmins();
+				break;
+			case "NORMALUSERS":
+				output = kalenderdb.user().getNormalUsers();
+				break;
 			}
-			
-			if(output.trim().equals("")){
-				output = "NONE";
-			} else if(output.equals("-1")){
-				output = "INCORRECT INPUT";
+			try {
+				if(output.trim().equals("")){
+					output = "NONE";
+				} else if(output.equals("-1")){
+					output = "INCORRECT INPUT";
+				}
+			}
+			catch (NullPointerException e) {
+				output = "NULL";
 			}
 			return output;
 	}
@@ -310,6 +320,9 @@ public class KalenderProtocol {
 				break;
 			case "APP":
 				kalenderdb.appointment().deleteApp(input[2]);
+				output = "OK";
+			case "APPATTENDANT":
+				kalenderdb.appointment().deleteAttendant(input[1], input[2]);
 				output = "OK";
 		}
 		if(output.trim().equals("")){

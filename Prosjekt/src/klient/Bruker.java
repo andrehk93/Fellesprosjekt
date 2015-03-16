@@ -103,7 +103,7 @@ public class Bruker {
 		avtale.addDeltakere(this);
 	}
 	
-	public void removeAvtale(Avtale avtale) {
+	public void removeAvtale(Avtale avtale) throws IOException {
 		if (avtaleListeProperty.getValue() == null) {
 			System.out.println("Du har ingen avtaler");
 		}
@@ -151,7 +151,7 @@ public class Bruker {
 		
 	}
 	
-	public void deleteAvtale(Avtale avtale) {
+	public void deleteAvtale(Avtale avtale) throws IOException {
 		System.out.println("SLETTER DENNE BRUKEREN: " + this.getNavn());
 		System.out.println("FØRSTE BRUKER: " + avtale.getDeltakere().get(0).getNavn());
 		avtale.removeDeltakere(this);

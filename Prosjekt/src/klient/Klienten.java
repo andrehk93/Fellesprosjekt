@@ -93,8 +93,19 @@ public class Klienten {
 		return svar.trim();
 	}
 	
+	public static void deleteAttendant(String avtaleid, String email) throws IOException {
+		String toServer = "DELETE APPATTENDANT " + avtaleid + " " + email;
+		sendTilServer(toServer);
+	}
+	
 	public static String getDeltakere(String avtaleid, String status) throws IOException {
-		String toServer = "GET APPATTS " + avtaleid + " " + status;
+		String toServer = "";
+		if (status.equals("2")) {
+			toServer = "GET ALLAPPATTS " + avtaleid;
+		}
+		else {
+			toServer = "GET APPATTS " + avtaleid + " " + status;
+		}
 		return sendTilServer(toServer);
 	}
 	
@@ -393,6 +404,44 @@ public class Klienten {
 	
 	public static int getFiltrering() {
 		return filtrering;
+	}
+			
+	public static void makeAdmin(Bruker user) throws IOException{
+		changeRights(user, 1);
+	}
+	
+	public static void removeAdmin(Bruker user) throws IOException{
+		changeRights(user, 0);
+	}
+	
+	public static ArrayList<Bruker> getAllAdminDetails() throws IOException{
+		String toServer = "GET ADMINS";
+		String[] users = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
+		for(String email : users){
+			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+				toServer = "GET USERDETAILS "+email;
+				String[] userDetails = sendTilServer(toServer).split(" ");
+				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2], 1);
+				allUsers.add(user);
+			}
+		}
+		return allUsers;
+	}
+	
+	public static ArrayList<Bruker> getAllNonAdmins() throws IOException {
+		String toServer = "GET NORMALUSERS";
+		String[] users = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
+		for(String email : users){
+			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+				toServer = "GET USERDETAILS "+email;
+				String[] userDetails = sendTilServer(toServer).split(" ");
+				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2], 1);
+				allUsers.add(user);
+			}
+		}
+		return allUsers;
 	}
 }
 
