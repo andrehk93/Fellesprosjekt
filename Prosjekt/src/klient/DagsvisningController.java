@@ -1,5 +1,9 @@
 package klient;
 
+import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,32 +12,157 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class DagsvisningController {
 	
 	
 	@FXML private Label brukernavn;
+	@FXML private ListView<String> notifikasjoner_lv;
+	@FXML private Label ukenrTekst;
+	@FXML private GridPane ruter;
+	@FXML private Label ukedagTekst;
+	
 	private String[] notifikasjonene;
 	private boolean ingenInvitasjoner;
-	@FXML private ListView<String> notifikasjoner_lv;
+	private DayOfWeek weekday;
 	private List<String> list;
 	private ArrayList<Varsel> oppdelte_notifikasjoner;
 	private ObservableList<String> items;
 	private String[] avtaleListe;
+	private ArrayList<StackPane> bokser;
+	private Dag dagen;
+	private int weekNumber;
+	private ArrayList<Avtale> dagAvtaler;
+	private double colWidth;
 	
 	public void initialize() throws Exception {
 		list = new ArrayList<String>();
+		bokser = new ArrayList<StackPane>();
+		dagen = new Dag(LocalDate.now());
+		weekday = dagen.getDato().getDayOfWeek();
+		colWidth = 700.0;
+		showBruker();
+		this.notifikasjonene = KalenderController.notifikasjonene;
+		loadStuff();
+	}
+	
+	private void loadStuff() throws Exception {
+		weekNumber = dagen.getDato().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+		ukenrTekst.setText(String.valueOf(weekNumber));
+		ukedagTekst.setText(weekday.toString());
+		flushView();
 		showBruker();
 		this.notifikasjonene = KalenderController.notifikasjonene;
 		settUpListView();
 		showInvitasjoner();
 		showNotifications();
+		ruter.setGridLinesVisible(true);
 		setItems();
+		loadGrid();
 	}
 	
+	private void loadGrid() throws IOException {
+		if(Klienten.avtaler.isEmpty() || Klienten.getChanged()){
+			Klienten.setChanged(false);
+		}
+		setDagAvtaler();
+		setTimeLabels();
+		for(Avtale app : dagAvtaler){
+			setRects(app);
+		}
+	}
+	
+	private void setRects(Avtale app) throws IOException{
+		StackPane stack = new StackPane();
+		int gridPos = app.getTid().getWeekGridPos();
+		double ySize = app.getTid().getWeekSize();
+		double margin = app.getTid().getMargin();
+		Rectangle box = new Rectangle(colWidth,ySize);
+		box.setFill(Color.BLUE);
+		Text text = new Text(app.getAvtaleid());
+	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
+	    text.setFill(Color.WHITE);
+	    text.setStroke(Color.WHITE); 
+	    setUpBox(box,app);
+		stack.getChildren().addAll(box,text);
+		stack.setMinSize(0, 0);
+		StackPane.setAlignment(box, Pos.TOP_LEFT);
+		StackPane.setAlignment(text, Pos.TOP_LEFT);
+		StackPane.setMargin(box, new Insets(margin+1,0,0,1));
+		StackPane.setMargin(text, new Insets(margin+1,0,0,1));
+		bokser.add(stack);
+		ruter.add(stack, 1, gridPos);
+		GridPane.setValignment(stack, VPos.TOP);
+		
+	}
+	
+	private void setUpBox(Rectangle box, Avtale app) {
+		box.setOnMouseEntered(new EventHandler<Event>() {
+		    public void handle(Event event) {
+		        box.setFill(Color.LIGHTBLUE);
+		    }
+		});
+		
+		box.setOnMouseExited(new EventHandler<Event>() {
+			public void handle(Event event) {
+				box.setFill(Color.BLUE);
+			}
+		});
+		
+		box.setOnMouseClicked(new EventHandler<Event>() {
+			public void handle(Event event) {
+				String avtale = app.getAvtaleid();
+				if(app.getAvtaleAdmin().equals(Klienten.bruker)){
+					Klienten.setValgtAvtale(avtale);
+					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
+				}
+				else{
+					//ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+				}
+			}
+		});
+	}
+	
+	private void setDagAvtaler(){
+		dagAvtaler = new ArrayList<Avtale>();
+		for(Avtale app : Klienten.avtaler){
+			if(app.getTid().getDato().equals(dagen.getDato())){
+				dagAvtaler.add(app);
+			}
+		}
+	}
+	
+	private void setTimeLabels(){
+		String string = "";
+		for(int i=0;i<24;i++){
+			string = "0"+String.valueOf(i)+":00";
+			Label label = new Label(string.substring(string.length()-5));
+			ruter.add(label, 0, i);
+		}
+	}
+	
+	private void flushView(){
+		list = new ArrayList<String>();
+		for(StackPane panes : bokser){
+			ruter.getChildren().remove(panes);
+		}
+	}
+
 	private void showBruker() {
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}

@@ -254,7 +254,6 @@ public class UkesvisningController {
 				avtale = app.getAvtaleid();
 				if(app.getAvtaleAdmin().equals(Klienten.bruker)){
 					Klienten.setValgtAvtale(avtale);
-					ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{
@@ -285,13 +284,11 @@ public class UkesvisningController {
 	
 	@FXML
 	private void nextPaneMakeAppointment(ActionEvent event) {
-		ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 		ScreenNavigator.loadScreen(ScreenNavigator.AVTALE);
 	}
 	
 	@FXML
 	private void nextPaneEditGroups(ActionEvent event) {
-		ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
 	}
 	
