@@ -171,11 +171,14 @@ public class KalenderController {
 				try {
 					enheter = newValue.split(" ");
 					if (enheter[0].equals("Invitasjon:")) {
+						Klienten.setValgtAvtale(enheter[1]);
 						ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+						enheter = null;
 					}
 					else {
 						try {
 							pop(newValue);
+							enheter = null;
 						} catch (Exception e) {
 							System.out.println("FEIL: " + e);
 						}
@@ -394,7 +397,7 @@ public class KalenderController {
 		String temp = "";
 		for (int k = 0; k < Klienten.avtaler.size(); k++) {
 			if (avtale_dag.equals(Klienten.avtaler.get(k).getTid().getDato())) {
-				temp += ".";
+				temp += "x";
 			}
 		}
 		text.setText(temp);

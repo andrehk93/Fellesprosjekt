@@ -131,12 +131,13 @@ public class DagsvisningController {
 		box.setOnMouseClicked(new EventHandler<Event>() {
 			public void handle(Event event) {
 				String avtale = app.getAvtaleid();
-				if(app.getEier().equals(Klienten.bruker)){
-					Klienten.setValgtAvtale(avtale);
+				Klienten.setValgtAvtale(avtale);
+				if(app.getEier().getEmail().equals(Klienten.bruker.getEmail())){
+					Klienten.setValgtAvtale(KalenderController.enheter[1]);
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{
-					//ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
 				}
 			}
 		});
@@ -251,7 +252,9 @@ public class DagsvisningController {
 				try {
 					KalenderController.enheter = newValue.split(" ");
 					if (KalenderController.enheter[0].equals("Invitasjon:")) {
+						Klienten.setValgtAvtale(KalenderController.enheter[1]);
 						ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+						KalenderController.enheter = null;
 					}
 					else {
 						try {
@@ -259,6 +262,7 @@ public class DagsvisningController {
 						} catch (Exception e) {
 							System.out.println("FEIL: " + e);
 						}
+						KalenderController.enheter = null;
 					}
 				}
 				catch (NullPointerException e) {
