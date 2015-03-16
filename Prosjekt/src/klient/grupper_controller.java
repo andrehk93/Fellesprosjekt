@@ -194,19 +194,22 @@ public class grupper_controller {
 		if (medlemmer.size() <2){
 			legg_til_lbl.setText("*Du kan ikke lage en gruppe med mindre enn to personer.");
 		}
-		gruppe = new Gruppe(gruppeNavn, medlemmer);
-		Klienten.addGruppe(gruppeNavn, medlemmer);
-		ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
+		else {
+			gruppe = new Gruppe(gruppeNavn, medlemmer);
+			Klienten.grupper.add(gruppe);
+			Klienten.addGruppe(gruppeNavn, medlemmer);
+			ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
+		}
 	}
     
     @FXML
     public void forkast(){
-    	ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);  // Må endres etter grupper-klasse fix
+    	ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());  // Må endres etter grupper-klasse fix
     }
     
     @FXML
 	public void avbryt(){
-		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+		ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 	}
    
     

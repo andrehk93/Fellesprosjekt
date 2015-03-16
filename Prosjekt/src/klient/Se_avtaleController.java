@@ -27,17 +27,16 @@ public class Se_avtaleController {
 	@FXML private RadioButton skal, skal_ikke, ikke_svart;
 	private ObservableList<HBox> addDeltakere;
 	private String avtaleid;
+	private Avtale avtalen;
 	@FXML private Button bekreft;
 	
-	public void setAvtale(String avtale, String avtaleid) throws IOException {
-		String[] detaljer = avtale.trim().split(" ");
-		this.avtaleid = avtaleid;
-		fratid = detaljer[0];
-		tiltid = detaljer[1];
-		dato = detaljer[2];
-		rommet = detaljer[3];
-		admin = detaljer[4];
-		avtalenavn = Klienten.getAppNavn(avtaleid);
+	public void setAvtale() throws IOException {
+		fratid = avtalen.getTid().getStart().toString();
+		tiltid = avtalen.getTid().getSlutt().toString();
+		dato = avtalen.getTid().getDato().toString();
+		rommet = avtalen.getRom().getNavn();
+		admin = avtalen.getEier().getEmail();
+		avtalenavn = avtalen.getAvtaleNavn();
 		String deltakerne = Klienten.getDeltakere(avtaleid, "1");
 		String[] deltakere_attender = deltakerne.trim().split(" ");
 		List<HBox> deltaker_liste = new ArrayList<HBox>();
@@ -79,16 +78,21 @@ public class Se_avtaleController {
 	}
 	
 	public void initialize() throws IOException {
-		String[] enhet = KalenderController.enheter;
-		String avtale = Klienten.hentAvtale(enhet[1]);
-		setAvtale(avtale, enhet[1]);
+		for(Avtale app : Klienten.avtaler){
+			if(Klienten.getValgtAvtale().equals(app.getAvtaleid())){
+				avtalen = app;
+				avtaleid = app.getAvtaleid();
+				break;
+			}
+		}
+		setAvtale();
 		addListeners();
 		deltaker_listeview.setItems(addDeltakere);
 		fra.setText(fratid);
 		til.setText(tiltid);
 		rom.setText(rommet);
 		startdato.setText(dato);
-		if (avtalenavn.trim().equals("NONE")) {
+		if (avtalenavn == null || avtalenavn.trim().equals("NONE")) {
 			tittel.setText(avtaleid + ": Ingen beskrivelse");
 		}
 		else {

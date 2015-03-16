@@ -49,7 +49,6 @@ public class UkesvisningController {
 	private static ArrayList<Dag> dager;
 	private static final double colWidth = 92;
 	private ArrayList<StackPane> bokser;
-	private String avtale;
 	private String[] notifikasjonene;
 	private boolean ingenInvitasjoner;
 	@FXML private ListView<String> notifikasjoner_lv;
@@ -113,7 +112,9 @@ public class UkesvisningController {
 				try {
 					KalenderController.enheter = newValue.split(" ");
 					if (KalenderController.enheter[0].equals("Invitasjon:")) {
+						Klienten.setValgtAvtale(KalenderController.enheter[1]);
 						ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+						KalenderController.enheter = null;
 					}
 					else {
 						try {
@@ -121,6 +122,7 @@ public class UkesvisningController {
 						} catch (Exception e) {
 							System.out.println("FEIL: " + e);
 						}
+						KalenderController.enheter = null;
 					}
 				}
 				catch (NullPointerException e) {
@@ -255,9 +257,10 @@ public class UkesvisningController {
 		
 		box.setOnMouseClicked(new EventHandler<Event>() {
 			public void handle(Event event) {
-				avtale = app.getAvtaleid();
-				if(app.getEier().equals(Klienten.bruker)){
-					Klienten.setValgtAvtale(avtale);
+				String avtale = app.getAvtaleid();
+				Klienten.setValgtAvtale(avtale);
+				if(app.getEier().getEmail().equals(Klienten.bruker.getEmail())){
+					
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{

@@ -145,6 +145,15 @@ public class KalenderController {
 	}
 
 	public void refreshKalender(ActionEvent event) throws Exception {
+		String[] avtaleider_datoer = Klienten.mineAvtaler(Klienten.bruker.getEmail(), 0).split(" ");
+		System.out.println("FØRSTE : " + Klienten.avtaler.get(0) + " SISTE: " + Klienten.avtaler.get(Klienten.avtaler.size()-1));
+		for (int i = 0; i < avtaleider_datoer.length; i += 2) {
+			if (Integer.parseInt(avtaleider_datoer[i].trim()) > 
+				Integer.parseInt(Klienten.avtaler.get(Klienten.avtaler.size()-1).getAvtaleid().trim())) {
+				createAvtale(avtaleider_datoer[i+1], avtaleider_datoer[i]);
+				System.out.println("AVTALEIDEN: " + avtaleider_datoer[i] + " DATOEN: " + avtaleider_datoer[i+1]);
+			}
+		}			
 		flushView();
 	}
 
@@ -162,11 +171,14 @@ public class KalenderController {
 				try {
 					enheter = newValue.split(" ");
 					if (enheter[0].equals("Invitasjon:")) {
+						Klienten.setValgtAvtale(enheter[1]);
 						ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+						enheter = null;
 					}
 					else {
 						try {
 							pop(newValue);
+							enheter = null;
 						} catch (Exception e) {
 							System.out.println("FEIL: " + e);
 						}
@@ -371,7 +383,9 @@ public class KalenderController {
 				}
 			}
 		}
-		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		String admin_str = Klienten.getAvtaleAdmin(avtaleid);
+		Bruker admin = new Bruker(Klienten.getBruker(admin_str), admin_str, 0);
+		Avtale avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
 		Klienten.avtaler.add(avtale);
 		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 				Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
@@ -383,7 +397,7 @@ public class KalenderController {
 		String temp = "";
 		for (int k = 0; k < Klienten.avtaler.size(); k++) {
 			if (avtale_dag.equals(Klienten.avtaler.get(k).getTid().getDato())) {
-				temp += ".";
+				temp += "x";
 			}
 		}
 		text.setText(temp);
