@@ -10,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -20,6 +21,9 @@ public class OpprettingController {
     @FXML private TextField fornavn, etternavn, epost;
     @FXML private Label fornavn_lbl, etternavn_lbl, epost_lbl,passord_lbl, passord2_lbl;
     @FXML private PasswordField passord, passord2;
+    @FXML private CheckBox adminRights;
+    
+    private Boolean newUserAdmin= false;
 
     
     @FXML private Button lagre;
@@ -33,14 +37,13 @@ public class OpprettingController {
     
     @FXML
     void previousPane(ActionEvent event) {
-        ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+        ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
     }
 	@FXML// OPPRETT BRUKER - Gå til neste screen
 	private void nextPane(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		if (isValidFornavn() && isValidEtternavn() && isValidEpost() && isPassordTheSame() && isPassordFilled()){
 			lagBruker(event);
-			Klienten.login(epost.getText(), passord.getText());
-			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+			ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
 		}else{
 			isValidFornavn();
 			isValidEtternavn();
@@ -55,6 +58,14 @@ public class OpprettingController {
 	
 	public void lagBruker(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		Klienten.createUser(epost.getText(), fornavn.getText(), etternavn.getText(), passord.getText());
+		if(newUserAdmin){
+			Klienten.makeAdmin(new Bruker(Klienten.getBruker(epost.getText()), epost.getText(), 1));
+		}
+	}
+	
+	public void toggleAdmin(){
+		newUserAdmin = !newUserAdmin;
+		System.out.println(newUserAdmin);
 	}
  
 	public void addListner(){
@@ -103,7 +114,7 @@ public class OpprettingController {
 
 	
 	public boolean isValidFornavn(){ // Validerer fornavn
-    	String regex = "^[a-zA-Z'-]+$";
+    	String regex = "^[a-zA-ZæøåÆØÅ'-]+$";
     	if (!fornavn.getText().matches(regex)){
     		fornavn.setStyle("-fx-text-box-border : red");
     		fornavn_lbl.setText("*Kan kun bestå av bokstaver.");
@@ -122,7 +133,7 @@ public class OpprettingController {
     }
     	
 	public boolean isValidEtternavn(){ // Validerer etternavn
-		String regex = "^[a-zA-Z'-]+$";
+		String regex = "^[a-zA-ZæøåÆØÅ'-]+$";
     	if(!etternavn.getText().matches(regex)){
     		etternavn.setStyle("-fx-text-box-border : red");
     		etternavn_lbl.setText("*Kan kun bestå av bokstaver.");

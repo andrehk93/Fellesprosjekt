@@ -15,6 +15,7 @@ import org.controlsfx.control.CheckComboBox;
 
 
 
+
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -628,6 +629,7 @@ public class ny_avtale_controller {
 		}
 		for (LocalDate datoen : repDates) {
 			if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
+				lagre_knapp.setDisable(true);
 				if (isrep) {
 					int i = repDates.indexOf(datoen);
 					rom = new Møterom(100, repRooms.get(i));
@@ -645,6 +647,7 @@ public class ny_avtale_controller {
 					}
 				}
 				Klienten.setChanged(true);
+				Klienten.avtaler.add(avtale);
 				ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 			}
 		}
@@ -801,19 +804,8 @@ public class ny_avtale_controller {
 	
 	//OPPRETTER GRUPPER TIL LISTVIEW FOR GRUPPER
 	private void lagGrupper() throws NumberFormatException, IOException {
-		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
-		if (ledigeGrupperId != null) {
-			for (String id : ledigeGrupperId) {
-				String gruppenavn = Klienten.getGroupName(id.trim());
-				if (gruppenavn.trim().equals("NONE")) {
-					break;
-				}
-				else {	
-					brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
-					Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
-					listeForGruppeCombobox.add(gruppe);
-				}
-			}
+		for (Gruppe gruppe : Klienten.grupper) {
+			listeForGruppeCombobox.add(gruppe);
 		}
 	}
 	

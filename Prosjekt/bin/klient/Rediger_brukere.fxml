@@ -15,7 +15,20 @@
             <VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="297.0" spacing="10.0" styleClass="label-normal-objects">
                <children>
                   <Label prefHeight="32.0" prefWidth="270.0" text="Oversikt over eksisterende brukere" />
-                  <ListView fx:id="eksisterendeBrukere" prefHeight="296.0" prefWidth="321.0" styleClass="label-normal-objects" />
+                  <TabPane fx:id="BrukerTabs" layoutX="112.0" layoutY="326.0" prefHeight="318.0" prefWidth="471.0" styleClass="label-normal-objects" stylesheets="@application.css" tabClosingPolicy="UNAVAILABLE">
+			        <tabs>
+			          <Tab id="#MyTabPane" closable="false" text="Brukere">
+			            <content>
+		                  <ListView fx:id="eksisterendeBrukere" prefHeight="296.0" prefWidth="321.0" styleClass="label-normal-objects" />
+		                </content>
+		              </Tab>
+		              <Tab id="#MyTabPane" closable="false" text="Administratorer">
+			            <content>
+		                  <ListView fx:id="eksisterendeAdministratorer" prefHeight="296.0" prefWidth="321.0" styleClass="label-normal-objects" />
+		                </content>
+		              </Tab>
+		            </tabs>
+		         </TabPane>
                </children>
             </VBox>
             <HBox alignment="CENTER" prefHeight="323.0" prefWidth="101.0">
@@ -33,6 +46,8 @@
                   <Label prefHeight="27.0" prefWidth="123.0" text="Valgte brukere " />
                   <ListView fx:id="slettListe" prefHeight="224.0" prefWidth="293.0" styleClass="label-normal-objects" />
                   <Button fx:id="slett" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#slettBrukere" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Slett" />
+                  <Button fx:id="mkAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#makeAdmin" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Gjør til admin" />
+                  <Button fx:id="rmAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#removeAdmin" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Fjern som admin"/>
                </children>
             </VBox>
          </children>
@@ -42,7 +57,7 @@
       </HBox>
       <VBox alignment="CENTER" layoutX="739.0" layoutY="522.0" prefHeight="135.0" prefWidth="227.0" spacing="15.0">
          <children>
-            <Button mnemonicParsing="false" styleClass="specialButton" text="Opprett ny konto" /> <!-- onAction="#opprettingView" -->
+            <Button mnemonicParsing="false" onAction="#opprettingView" styleClass="specialButton" text="Opprett ny konto" /> <!-- onAction="#opprettingView" -->
             <Button mnemonicParsing="false" onAction="#monthView" prefHeight="46.0" prefWidth="166.0" styleClass="normalButton" text="Tilbake" />
          </children>
       </VBox>

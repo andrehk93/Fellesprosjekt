@@ -72,6 +72,14 @@ public class Appointment {
 		statement.executeUpdate();
 	}
 	
+	public void deleteAttendant(String appID, String email) throws SQLException {
+		query = "DELETE FROM `christwg_fp`.`ermed` WHERE `avtaleid`=? AND `epost`=?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, appID);
+		statement.setString(2, email);
+		statement.executeUpdate();
+	}
+	
 	
 // GET ================================================================
 	
@@ -207,7 +215,23 @@ public class Appointment {
 		while(result.next()){
 			output += result.getString(1)+" " + result.getString(2)+" ";
 		}
+		if(output.length()==0){
+			return "";
+		}
 		return output.substring(0, output.length()-1);
+	}
+	
+	public String getAppAdmin(String avtaleid) throws SQLException {
+		query = "SELECT avtaleadmin FROM avtale WHERE avtaleid=?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, avtaleid);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		if(result.next()) {
+			output = result.getString(1);
+		}
+		return output;
 	}
 	
 	// APP ATTENDEES

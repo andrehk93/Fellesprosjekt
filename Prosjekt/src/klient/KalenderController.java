@@ -38,7 +38,6 @@ public class KalenderController {
 	private int aar;
 	private int dag;
 	private String[] avtale_liste;
-	private int filtverdi;
 	public static String[] enheter;
 	public static List<String> list;
 	public static String melding;
@@ -52,13 +51,13 @@ public class KalenderController {
 	public static String[] notifikasjonene;
 
 	public void initialize() throws Exception{
+		Klienten.setUpBrukere();
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
 		setDay(LocalDate.now().getDayOfMonth());
-		setFiltVerdi(0);
 		setUpFiltrering();
+		makeGroups();
 		flushView();
-		System.out.println("admin?: " + Klienten.getRights());
 		brukerredigering.setVisible(Klienten.bruker.getRighs().intValue()>0);
 	}
 
@@ -76,6 +75,37 @@ public class KalenderController {
 		showNotifications();
 		setItems();
 	}
+	
+	private void makeGroups() throws IOException {
+		String[] ledigeGrupperId = Klienten.getGroups().split(" ");
+		if (ledigeGrupperId.length == Klienten.grupper.size()) {
+		}
+		else {
+			ArrayList<Bruker> brukere = new ArrayList<Bruker>();
+			if (ledigeGrupperId != null) {
+				for (String id : ledigeGrupperId) {
+					String gruppenavn = Klienten.getGroupName(id.trim());
+					if (gruppenavn.trim().equals("NONE")) {
+						break;
+					}
+					else {	
+						brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
+						boolean duplikat = false;
+						for (Gruppe grupp : Klienten.grupper) {
+							if (grupp.getNavn().equals(gruppenavn)) {
+								duplikat = true;
+								break;
+							}
+						}
+						if (! duplikat) {
+							Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
+							Klienten.grupper.add(gruppe);
+						}
+					}
+				}
+			}
+		}
+	}
 
 	public void setUpFiltrering(){
 		filtrering.setItems(FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag"));
@@ -88,28 +118,28 @@ public class KalenderController {
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			switch(filtrering.getItems().get((Integer) newValue)){
 			case "Alle":
-				setFiltVerdi(0);
+				Klienten.setFiltrering(0);
 				try {
 					flushView();
 				} catch (Exception e) {
 				}
 				break;
 			case "Bare godtatt":
-				setFiltVerdi(1);
+				Klienten.setFiltrering(1);
 				try {
 					flushView();
 				} catch (Exception e) {
 				}
 				break;
 			case "Ikke svart":
-				setFiltVerdi(2);
+				Klienten.setFiltrering(2);
 				try {
 					flushView();
 				} catch (Exception e) {
 				}
 				break;
 			case "Avslag":
-				setFiltVerdi(3);
+				Klienten.setFiltrering(3);
 				try {
 					flushView();
 				} catch (Exception e) {
@@ -146,11 +176,14 @@ public class KalenderController {
 				try {
 					enheter = newValue.split(" ");
 					if (enheter[0].equals("Invitasjon:")) {
+						Klienten.setValgtAvtale(enheter[1]);
 						ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+						enheter = null;
 					}
 					else {
 						try {
 							pop(newValue);
+							enheter = null;
 						} catch (Exception e) {
 							System.out.println("FEIL: " + e);
 						}
@@ -281,16 +314,6 @@ public class KalenderController {
 		return null;
 	}
 
-	public void setFiltVerdi(int verdi) {
-		this.filtverdi = verdi;
-	}
-
-	public int getFiltVerdi() {
-		return this.filtverdi;
-	}
-
-
-
 	public void loadGrid() throws IOException{
 		int lengde = dager.size();
 		hentAvtaler();
@@ -323,7 +346,7 @@ public class KalenderController {
 
 	public void hentAvtaler() throws IOException {
 		if (Klienten.avtaler.isEmpty()) {
-			String streng = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi());
+			String streng = Klienten.mineAvtaler(Klienten.bruker.getEmail(), Klienten.getFiltrering());
 			avtale_liste = streng.split(" ");
 			for (int k = 0; k < avtale_liste.length; k++) {
 				if (k%2 != 0) {
@@ -336,9 +359,6 @@ public class KalenderController {
 					}
 				}
 			}
-		}
-		else {
-			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
 		}
 	}
 
@@ -356,7 +376,7 @@ public class KalenderController {
 				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
 						Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 								Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
+		String[] deltakere = Klienten.getDeltakere(avtaleid, "2").split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
@@ -366,12 +386,11 @@ public class KalenderController {
 					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
 					deltaker_liste.add(deltaker);
 				}
-				else {
-					deltaker_liste.add(Klienten.bruker);
-				}
 			}
 		}
-		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		String admin_str = Klienten.getAvtaleAdmin(avtaleid);
+		Bruker admin = new Bruker(Klienten.getBruker(admin_str), admin_str, 0);
+		Avtale avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
 		Klienten.avtaler.add(avtale);
 		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 				Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
@@ -379,15 +398,11 @@ public class KalenderController {
 
 	public void setTexts(int j,int i,int t) throws IOException{
 		Text text = new Text();
-		String avtale_dag = dager.get(t).getDato().toString();
+		LocalDate avtale_dag = dager.get(t).getDato();
 		String temp = "";
-		for (int k = 0; k < avtale_liste.length; k++) {
-			if (k%2 != 0) {
-				String dato = avtale_liste[k];
-				String avtaleid = avtale_liste[k-1];
-				if (avtale_dag.equals(dato)) {
-					temp += avtaleid + " ";
-				}
+		for (int k = 0; k < Klienten.avtaler.size(); k++) {
+			if (avtale_dag.equals(Klienten.avtaler.get(k).getTid().getDato())) {
+				temp += "x";
 			}
 		}
 		text.setText(temp);

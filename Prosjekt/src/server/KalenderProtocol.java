@@ -44,7 +44,7 @@ public class KalenderProtocol {
 				case("CREATE"):
 					return createHandler(Arrays.copyOfRange(input, 1, input.length));
 				case("CHANGE"):
-					changeHandler(input);
+					changeHandler(input); return "OK";
 				case("INVITE"):
 					return createHandler(input);
 				case("ADD"):
@@ -84,11 +84,13 @@ public class KalenderProtocol {
 			case "APPNAME":
 				String beskrivelse = findMessage(Arrays.copyOfRange(input, 3, input.length));
 				kalenderdb.appointment().changeApp(input[2], beskrivelse, "beskrivelse");
+				break;
 			case "STATUS":
 				kalenderdb.invitations().changeStatus(user, input[2], input[3]);
 				break;
 			case "STATUSES":
 				flereStatuser(input[2],Arrays.copyOfRange(input, 3, input.length), kalenderdb);
+				break;
 			case "NOTIFICATION":
 				kalenderdb.notification().changeNotification(user, input[2], input[3]);
 				break;
@@ -136,7 +138,8 @@ public class KalenderProtocol {
 				output = "" + kalenderdb.notification().sendNotification(user, input[1], message,input[2]);
 				break;
 			case "GROUP":
-				kalenderdb.group().createGroup(input[1], user, Arrays.copyOfRange(input, 2, input.length));
+				String name = findMessage(Arrays.copyOfRange(input, 1, input.length));
+				kalenderdb.group().createGroup(user, name, Arrays.copyOfRange(input, findGroupStart(input), input.length));
 				output = "";
 				break;
 		}
@@ -146,7 +149,6 @@ public class KalenderProtocol {
 			output = "INCORRECT INPUT";
 		}
 		return output;
-		
 		
 	}
 	
@@ -158,7 +160,14 @@ public class KalenderProtocol {
 			i++;
 		}
 		return message;
-		
+	}
+	
+	private int findGroupStart(String[] input) {
+		int i = 0;
+		while(!input[i].equals("ENDOFMESSAGE")){
+			i++;
+		}
+		return i+1;
 	}
 
 	private String getHandler(String[] input) throws Exception{
@@ -181,6 +190,9 @@ public class KalenderProtocol {
 				break;
 			case "APPNAME":
 				output = kalenderdb.appointment().getAppNavn(input[1]);
+				break;
+			case "APPADMIN":
+				output = kalenderdb.appointment().getAppAdmin(input[1]);
 				break;
 			case "APPTIME":
 				output = kalenderdb.appointment().getAppTime(input[1]);
@@ -251,12 +263,22 @@ public class KalenderProtocol {
 			case "GROUPNAME":
 				output = kalenderdb.group().getGroupName(input[1]);
 				break;
+			case "ADMINS":
+				output = kalenderdb.user().getAdmins();
+				break;
+			case "NORMALUSERS":
+				output = kalenderdb.user().getNormalUsers();
+				break;
 			}
-			
-			if(output.trim().equals("")){
-				output = "NONE";
-			} else if(output.equals("-1")){
-				output = "INCORRECT INPUT";
+			try {
+				if(output.trim().equals("")){
+					output = "NONE";
+				} else if(output.equals("-1")){
+					output = "INCORRECT INPUT";
+				}
+			}
+			catch (NullPointerException e) {
+				output = "NULL";
 			}
 			return output;
 	}
@@ -309,6 +331,11 @@ public class KalenderProtocol {
 			case "APP":
 				kalenderdb.appointment().deleteApp(input[2]);
 				output = "OK";
+				break;
+			case "APPATTENDANT":
+				kalenderdb.appointment().deleteAttendant(input[1], input[2]);
+				output = "OK";
+				break;
 		}
 		if(output.trim().equals("")){
 			output = "NONE";

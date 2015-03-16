@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Klienten {
 	
@@ -22,9 +23,12 @@ public class Klienten {
 	public static Bruker bruker;
 	private static boolean tilkobling;
 	public static ArrayList<Avtale> avtaler;
+	public static ArrayList<Gruppe> grupper;
 	private static String valgtAvtale;
 	public static ArrayList<Møterom> alle_møterom;
 	private static boolean changed;
+	private static int filtrering;
+	private static HashMap<String,Bruker> brukere;
 	
 	
 	public Klienten() throws IOException {
@@ -33,7 +37,10 @@ public class Klienten {
 	
 	public static void init() throws UnknownHostException, IOException{
 		avtaler = new ArrayList<Avtale>();
+		grupper = new ArrayList<Gruppe>();
 		alle_møterom = new ArrayList<Møterom>();
+		filtrering = 0;
+		brukere = new HashMap<String,Bruker>();
 		String ip = "localhost";
 		int port = 6789;
 		try {
@@ -91,8 +98,22 @@ public class Klienten {
 		return svar.trim();
 	}
 	
+	public static void deleteAttendant(String avtaleid, String email) throws IOException {
+		String toServer = "DELETE APPATTENDANT " + avtaleid + " " + email;
+		sendTilServer(toServer);
+	}
+	
 	public static String getDeltakere(String avtaleid, String status) throws IOException {
-		String toServer = "GET APPATTS " + avtaleid + " " + status;
+		String toServer = "";
+		if(status == null){
+			toServer = "GET APPATTS " + avtaleid + " "+ status;
+		}
+		else if (status.equals("2")) {
+			toServer = "GET ALLAPPATTS " + avtaleid;
+		}
+		else {
+			toServer = "GET APPATTS " + avtaleid + " " + status;
+		}
 		return sendTilServer(toServer);
 	}
 	
@@ -163,11 +184,17 @@ public class Klienten {
 	
 	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
 		String toServer = "CHANGE STATUS " + avtaleid.trim() + " " + newStatus;
+		System.out.println(toServer);
 		sendTilServer(toServer);
 	}
 	
 	public static String getStatus(String avtaleid, String email) throws IOException {
 		String toServer = "GET STATUS " + avtaleid + " " + email;
+		return sendTilServer(toServer);
+	}
+	
+	public static String getAvtaleAdmin(String avtaleid) throws IOException {
+		String toServer = "GET APPADMIN " + avtaleid;
 		return sendTilServer(toServer);
 	}
 	
@@ -192,7 +219,9 @@ public class Klienten {
 	}
 	
 	public static String[] getAllUserEmails() throws IOException{
-		return  sendTilServer("GET USERS").split(" ");
+		Set<String> myset = brukere.keySet();
+		String[] liste = myset.toArray(new String[myset.size()]);
+		return liste;
 	}
 	
 	public static String lagAvtale(TidsIntervall tid, Møterom rom, String avtalenavn) throws IOException {
@@ -206,9 +235,8 @@ public class Klienten {
 	}
 	
 	public static String getBruker(String email) throws IOException {
-		if (email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
-			String toServer = "GET USERFULLNAME " + email;
-			return sendTilServer(toServer);
+		if (brukere.containsKey(email)) {
+			return brukere.get(email).getNavn();
 		}
 		else {
 			return "no Name";
@@ -267,7 +295,7 @@ public class Klienten {
 	}
 	
 	public static void addGruppe(String name, ArrayList<Bruker> members) throws IOException{
-		String toServer = "CREATE GROUP " + name;
+		String toServer = "CREATE GROUP " + name + " ENDOFMESSAGE";
 		for(Bruker member : members){
 			toServer += " " + member.getEmail();
 		}
@@ -379,7 +407,61 @@ public class Klienten {
 		}
 		System.out.println("Avtaleid: "+avtaleid);
 		String toServer = "CHANGE STATUSES "+avtaleid+" "+liste.substring(0, liste.length()-1);
+		System.out.println(toServer);
 		sendTilServer(toServer);
+	}
+	
+	public static void setFiltrering(int f) {
+		filtrering = f;
+		avtaler.clear();
+	}
+	
+	public static int getFiltrering() {
+		return filtrering;
+	}
+			
+	public static void makeAdmin(Bruker user) throws IOException{
+		changeRights(user, 1);
+	}
+	
+	public static void removeAdmin(Bruker user) throws IOException{
+		changeRights(user, 0);
+	}
+	
+	public static ArrayList<Bruker> getAllAdminDetails() throws IOException{
+		String toServer = "GET ADMINS";
+		String[] users = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
+		for(String email : users){
+			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+				allUsers.add(brukere.get(email));
+			}
+		}
+		return allUsers;
+	}
+	
+	public static ArrayList<Bruker> getAllNonAdmins() throws IOException {
+		String toServer = "GET NORMALUSERS";
+		String[] users = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
+		for(String email : users){
+			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+				allUsers.add(brukere.get(email));
+			}
+		}
+		return allUsers;
+	}
+	
+	public static void setUpBrukere() throws IOException {
+		ArrayList<Bruker> brukerListe = getAllUserDetails();
+		for(Bruker b : brukerListe){
+			String email = b.getEmail();
+			addBruker(email,b);
+		}
+	}
+	
+	public static void addBruker(String email, Bruker bruker) {
+		brukere.putIfAbsent(email, bruker);
 	}
 }
 
