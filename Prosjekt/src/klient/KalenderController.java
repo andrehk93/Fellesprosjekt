@@ -55,6 +55,7 @@ public class KalenderController {
 		setYear(LocalDate.now().getYear());
 		setDay(LocalDate.now().getDayOfMonth());
 		setUpFiltrering();
+		makeGroups();
 		flushView();
 		brukerredigering.setVisible(Klienten.bruker.getRighs().intValue()>0);
 	}
@@ -72,22 +73,34 @@ public class KalenderController {
 		showInvitasjoner();
 		showNotifications();
 		setItems();
-		makeGroups();
 	}
 	
 	private void makeGroups() throws IOException {
 		String[] ledigeGrupperId = Klienten.getGroups().split(" ");
-		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
-		if (ledigeGrupperId != null) {
-			for (String id : ledigeGrupperId) {
-				String gruppenavn = Klienten.getGroupName(id.trim());
-				if (gruppenavn.trim().equals("NONE")) {
-					break;
-				}
-				else {	
-					brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
-					Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
-					Klienten.grupper.add(gruppe);
+		if (ledigeGrupperId.length == Klienten.grupper.size()) {
+		}
+		else {
+			ArrayList<Bruker> brukere = new ArrayList<Bruker>();
+			if (ledigeGrupperId != null) {
+				for (String id : ledigeGrupperId) {
+					String gruppenavn = Klienten.getGroupName(id.trim());
+					if (gruppenavn.trim().equals("NONE")) {
+						break;
+					}
+					else {	
+						brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
+						boolean duplikat = false;
+						for (Gruppe grupp : Klienten.grupper) {
+							if (grupp.getNavn().equals(gruppenavn)) {
+								duplikat = true;
+								break;
+							}
+						}
+						if (! duplikat) {
+							Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
+							Klienten.grupper.add(gruppe);
+						}
+					}
 				}
 			}
 		}
