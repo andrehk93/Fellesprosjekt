@@ -797,7 +797,8 @@ public class Endre_avtaleController {
 		System.out.println(dato);
 		if (! feilTekst.isVisible() && avtalenavn.getText() != null){
 			handleChanges();
-			String oppdatertAvtale = Klienten.hentAvtale(avtaleid);
+			System.out.println();
+			//String oppdatertAvtale = Klienten.hentAvtale(avtaleid); Hvorfor er denne her?
 			for (Avtale avtale : Klienten.avtaler) {
 				if (avtale.getAvtaleid().equals(avtaleid)) {
 					Klienten.avtaler.remove(avtale);

@@ -38,7 +38,6 @@ public class KalenderController {
 	private int aar;
 	private int dag;
 	private String[] avtale_liste;
-	private int filtverdi;
 	public static String[] enheter;
 	public static List<String> list;
 	public static String melding;
@@ -55,7 +54,6 @@ public class KalenderController {
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
 		setDay(LocalDate.now().getDayOfMonth());
-		setFiltVerdi(0);
 		setUpFiltrering();
 		flushView();
 		System.out.println("admin?: " + Klienten.getRights());
@@ -88,28 +86,28 @@ public class KalenderController {
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			switch(filtrering.getItems().get((Integer) newValue)){
 			case "Alle":
-				setFiltVerdi(0);
+				Klienten.setFiltrering(0);
 				try {
 					flushView();
 				} catch (Exception e) {
 				}
 				break;
 			case "Bare godtatt":
-				setFiltVerdi(1);
+				Klienten.setFiltrering(1);
 				try {
 					flushView();
 				} catch (Exception e) {
 				}
 				break;
 			case "Ikke svart":
-				setFiltVerdi(2);
+				Klienten.setFiltrering(2);
 				try {
 					flushView();
 				} catch (Exception e) {
 				}
 				break;
 			case "Avslag":
-				setFiltVerdi(3);
+				Klienten.setFiltrering(3);
 				try {
 					flushView();
 				} catch (Exception e) {
@@ -281,16 +279,6 @@ public class KalenderController {
 		return null;
 	}
 
-	public void setFiltVerdi(int verdi) {
-		this.filtverdi = verdi;
-	}
-
-	public int getFiltVerdi() {
-		return this.filtverdi;
-	}
-
-
-
 	public void loadGrid() throws IOException{
 		int lengde = dager.size();
 		hentAvtaler();
@@ -323,7 +311,7 @@ public class KalenderController {
 
 	public void hentAvtaler() throws IOException {
 		if (Klienten.avtaler.isEmpty()) {
-			String streng = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi());
+			String streng = Klienten.mineAvtaler(Klienten.bruker.getEmail(), Klienten.getFiltrering());
 			avtale_liste = streng.split(" ");
 			for (int k = 0; k < avtale_liste.length; k++) {
 				if (k%2 != 0) {
@@ -338,7 +326,7 @@ public class KalenderController {
 			}
 		}
 		else {
-			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), getFiltVerdi()).split(" ");
+			avtale_liste = Klienten.mineAvtaler(Klienten.bruker.getEmail(), Klienten.getFiltrering()).split(" ");
 		}
 	}
 

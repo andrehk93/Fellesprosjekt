@@ -84,11 +84,13 @@ public class KalenderProtocol {
 			case "APPNAME":
 				String beskrivelse = findMessage(Arrays.copyOfRange(input, 3, input.length));
 				kalenderdb.appointment().changeApp(input[2], beskrivelse, "beskrivelse");
+				break;
 			case "STATUS":
 				kalenderdb.invitations().changeStatus(user, input[2], input[3]);
 				break;
 			case "STATUSES":
 				flereStatuser(input[2],Arrays.copyOfRange(input, 3, input.length), kalenderdb);
+				break;
 			case "NOTIFICATION":
 				kalenderdb.notification().changeNotification(user, input[2], input[3]);
 				break;

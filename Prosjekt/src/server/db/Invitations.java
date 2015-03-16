@@ -52,6 +52,7 @@ public class Invitations {
 		statement.setString(1, newStatus);
 		statement.setString(2, user);
 		statement.setString(3, avtale);
+		System.out.println(statement.toString());
 		statement.executeUpdate();
 	}
 	

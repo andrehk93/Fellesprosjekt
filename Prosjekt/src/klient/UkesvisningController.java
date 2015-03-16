@@ -19,6 +19,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -37,6 +38,7 @@ public class UkesvisningController {
 	@FXML private Label ukeNr, brukernavn;
 	@FXML private Button nesteUke;
 	@FXML private Button forrigeUke;
+	@FXML private ChoiceBox<String> filtrering;
 	
 	private ArrayList<Varsel> oppdelte_notifikasjoner;
 	private ObservableList<String> items;
@@ -58,6 +60,7 @@ public class UkesvisningController {
 		bokser = new ArrayList<StackPane>();
 		scroll.setVvalue(scroll.getVmin());
 		firstDayOfWeek = LocalDate.now().minusDays(LocalDate.now().getDayOfWeek().getValue()-1);
+		setUpFiltrering();
 		loadStuff();
 	}
 	
@@ -191,6 +194,7 @@ public class UkesvisningController {
 		for(StackPane panes : bokser){
 			ruter.getChildren().remove(panes);
 		}
+		
 	}
 	
 	private void setUkeAvtaler(){
@@ -262,6 +266,53 @@ public class UkesvisningController {
 			}
 		});
 	}
+	
+	public void setUpFiltrering(){
+		ObservableList<String> lista = FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag");
+		filtrering.setItems(lista);
+		filtrering.setValue(lista.get(Klienten.getFiltrering()));
+		filtrering.getSelectionModel().selectedIndexProperty().addListener(filtChange);
+	}
+
+	ChangeListener<? super Number> filtChange = new ChangeListener<Number>() {
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			switch(filtrering.getItems().get((Integer) newValue)){
+			case "Alle":
+				Klienten.setFiltrering(0);
+				try {
+					(new KalenderController()).hentAvtaler();
+					loadStuff();
+				} catch (Exception e) {
+				}
+				break;
+			case "Bare godtatt":
+				Klienten.setFiltrering(1);
+				try {
+					(new KalenderController()).hentAvtaler();
+					loadStuff();
+				} catch (Exception e) {
+				}
+				break;
+			case "Ikke svart":
+				Klienten.setFiltrering(2);
+				try {
+					(new KalenderController()).hentAvtaler();
+					loadStuff();
+				} catch (Exception e) {
+				}
+				break;
+			case "Avslag":
+				Klienten.setFiltrering(3);
+				try {
+					(new KalenderController()).hentAvtaler();
+					loadStuff();
+				} catch (Exception e) {
+				}
+				break;
+			}
+		}
+	};
 	
 	private Dag getDag(LocalDate dato) {
 		for (Dag dag : dager) {

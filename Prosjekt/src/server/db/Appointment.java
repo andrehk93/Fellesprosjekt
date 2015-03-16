@@ -207,6 +207,9 @@ public class Appointment {
 		while(result.next()){
 			output += result.getString(1)+" " + result.getString(2)+" ";
 		}
+		if(output.length()==0){
+			return "";
+		}
 		return output.substring(0, output.length()-1);
 	}
 	
