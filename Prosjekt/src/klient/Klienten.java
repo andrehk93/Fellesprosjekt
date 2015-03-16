@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Klienten {
 	
@@ -27,6 +28,7 @@ public class Klienten {
 	public static ArrayList<Møterom> alle_møterom;
 	private static boolean changed;
 	private static int filtrering;
+	private static HashMap<String,Bruker> brukere;
 	
 	
 	public Klienten() throws IOException {
@@ -38,6 +40,7 @@ public class Klienten {
 		grupper = new ArrayList<Gruppe>();
 		alle_møterom = new ArrayList<Møterom>();
 		filtrering = 0;
+		brukere = new HashMap<String,Bruker>();
 		String ip = "localhost";
 		int port = 6789;
 		try {
@@ -216,7 +219,9 @@ public class Klienten {
 	}
 	
 	public static String[] getAllUserEmails() throws IOException{
-		return  sendTilServer("GET USERS").split(" ");
+		Set<String> myset = brukere.keySet();
+		String[] liste = myset.toArray(new String[myset.size()]);
+		return liste;
 	}
 	
 	public static String lagAvtale(TidsIntervall tid, Møterom rom, String avtalenavn) throws IOException {
@@ -230,9 +235,8 @@ public class Klienten {
 	}
 	
 	public static String getBruker(String email) throws IOException {
-		if (email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
-			String toServer = "GET USERFULLNAME " + email;
-			return sendTilServer(toServer);
+		if (brukere.containsKey(email)) {
+			return brukere.get(email).getNavn();
 		}
 		else {
 			return "no Name";
@@ -430,10 +434,7 @@ public class Klienten {
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
 			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
-				toServer = "GET USERDETAILS "+email;
-				String[] userDetails = sendTilServer(toServer).split(" ");
-				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2], 1);
-				allUsers.add(user);
+				allUsers.add(brukere.get(email));
 			}
 		}
 		return allUsers;
@@ -445,13 +446,22 @@ public class Klienten {
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
 			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
-				toServer = "GET USERDETAILS "+email;
-				String[] userDetails = sendTilServer(toServer).split(" ");
-				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2], 1);
-				allUsers.add(user);
+				allUsers.add(brukere.get(email));
 			}
 		}
 		return allUsers;
+	}
+	
+	public static void setUpBrukere() throws IOException {
+		ArrayList<Bruker> brukerListe = getAllUserDetails();
+		for(Bruker b : brukerListe){
+			String email = b.getEmail();
+			addBruker(email,b);
+		}
+	}
+	
+	public static void addBruker(String email, Bruker bruker) {
+		brukere.putIfAbsent(email, bruker);
 	}
 }
 

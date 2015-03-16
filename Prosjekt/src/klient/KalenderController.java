@@ -51,6 +51,7 @@ public class KalenderController {
 	public static String[] notifikasjonene;
 
 	public void initialize() throws Exception{
+		Klienten.setUpBrukere();
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
 		setDay(LocalDate.now().getDayOfMonth());
@@ -145,15 +146,6 @@ public class KalenderController {
 	}
 
 	public void refreshKalender(ActionEvent event) throws Exception {
-		String[] avtaleider_datoer = Klienten.mineAvtaler(Klienten.bruker.getEmail(), 0).split(" ");
-		System.out.println("FØRSTE : " + Klienten.avtaler.get(0) + " SISTE: " + Klienten.avtaler.get(Klienten.avtaler.size()-1));
-		for (int i = 0; i < avtaleider_datoer.length; i += 2) {
-			if (Integer.parseInt(avtaleider_datoer[i].trim()) > 
-				Integer.parseInt(Klienten.avtaler.get(Klienten.avtaler.size()-1).getAvtaleid().trim())) {
-				createAvtale(avtaleider_datoer[i+1], avtaleider_datoer[i]);
-				System.out.println("AVTALEIDEN: " + avtaleider_datoer[i] + " DATOEN: " + avtaleider_datoer[i+1]);
-			}
-		}			
 		flushView();
 	}
 
