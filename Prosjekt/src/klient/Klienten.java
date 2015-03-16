@@ -91,8 +91,19 @@ public class Klienten {
 		return svar.trim();
 	}
 	
+	public static void deleteAttendant(String avtaleid, String email) throws IOException {
+		String toServer = "DELETE APPATTENDANT " + avtaleid + " " + email;
+		sendTilServer(toServer);
+	}
+	
 	public static String getDeltakere(String avtaleid, String status) throws IOException {
-		String toServer = "GET APPATTS " + avtaleid + " " + status;
+		String toServer = "";
+		if (status.equals("2")) {
+			toServer = "GET ALLAPPATTS " + avtaleid;
+		}
+		else {
+			toServer = "GET APPATTS " + avtaleid + " " + status;
+		}
 		return sendTilServer(toServer);
 	}
 	
