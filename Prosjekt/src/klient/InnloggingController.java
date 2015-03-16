@@ -15,6 +15,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import klient.Klienten;
+import klient.ScreenNavigator;
 
 
 public class InnloggingController {//implements Initializable
@@ -87,7 +89,7 @@ public class InnloggingController {//implements Initializable
 				msg.setText("Skriv inn brukernavn og passord");
 			}else if(brukernavn.getText().equals("")){
 				brukernavn.setStyle("-fx-text-box-border : red ");
-				msg.setText("Skriv inn passord.");
+				msg.setText("Skriv inn brukernavn");
 
 			}else if(passord.getText().equals("")){
 				passord.setStyle("-fx-text-box-border : red ");
@@ -115,6 +117,7 @@ public class InnloggingController {//implements Initializable
 			ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
 		}
 	}
+}
 
 
 	//************VALIDERINGSMETODER******************
@@ -138,16 +141,4 @@ public class InnloggingController {//implements Initializable
 	//			msg.setText("Brukernavn/epostadresse er på ugyldig format!");
 	//
 	//		}
-
-	//Sjekk om brukernavnet finnes, sjekk mot db liste av brukernavn. Gi tilbakemld = "Brukernavn eksisterer ikke"
-}
-
-
-
-
-
-
-
-
-
 
