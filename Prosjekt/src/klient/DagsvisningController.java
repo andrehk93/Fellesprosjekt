@@ -128,7 +128,7 @@ public class DagsvisningController {
 		box.setOnMouseClicked(new EventHandler<Event>() {
 			public void handle(Event event) {
 				String avtale = app.getAvtaleid();
-				if(app.getAvtaleAdmin().equals(Klienten.bruker)){
+				if(app.getEier().equals(Klienten.bruker)){
 					Klienten.setValgtAvtale(avtale);
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
