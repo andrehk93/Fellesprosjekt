@@ -107,19 +107,23 @@ public class Bruker {
 		if (avtaleListeProperty.getValue() == null) {
 			System.out.println("Du har ingen avtaler");
 		}
-		else if (! avtale.getAvtaleAdmin().equals(this)) {
-			this.deleteAvtale(avtale);
-		}
 		else {
+			try {
+				if (! avtale.getEier().equals(this)) {
+					deleteAvtale(avtale);
+				}
+			}
+			catch (NullPointerException e) {
+				
+			}
 			try {
 				for (int i = 0; i < avtale.getDeltakere().size(); i++) {
 					avtale.getDeltakere().get(i).deleteAvtale(avtale);
 				}
 				avtaleListeProperty.getValue().remove(avtale);
-				System.out.println("Avtalen ble fjernet");
 			}
 			catch (NullPointerException e) {
-				System.out.println("Avtalen finnes ikke");
+				avtaleListeProperty.getValue().remove(avtale);
 			}
 		}
 	}

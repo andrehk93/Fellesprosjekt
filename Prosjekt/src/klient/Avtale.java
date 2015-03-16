@@ -7,6 +7,8 @@ import java.util.Iterator;
 
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class Avtale {
 	
@@ -25,6 +27,10 @@ public class Avtale {
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
+	}
+	
+	private void removeEier() {
+		eierProperty.setValue(null);
 	}
 	
 	public String getAvtaleid() {
@@ -80,13 +86,10 @@ public class Avtale {
 	};
 	
 	public void setEier(Bruker eier) throws IOException {
-		if (deltakerProperty.getValue() == null || eierProperty.getValue() == null) {
+		if (eierProperty.getValue() == null) {
 			eierProperty.setValue(eier);
 			addDeltakere(eier);
 			eier.addAvtale(this);
-		}
-		else {
-			System.out.println("Denne avtalen har en eier allerede");
 		}
 	}
 	
@@ -96,7 +99,6 @@ public class Avtale {
 	
 	public void endreTid(TidsIntervall tid) {
 		tidsProperty.setValue(tid);
-		finnRom();
 	}
 	
 	private Property<TidsIntervall> tidsProperty = new ObjectPropertyBase<TidsIntervall>(null) {
@@ -117,13 +119,36 @@ public class Avtale {
 	public void addDeltakere(Bruker deltaker) throws IOException {
 		try {
 			if (! deltaker.equals(eierProperty.getValue())) {
+				for (Bruker delt : deltakerProperty.getValue()) {
+					if (delt.getEmail().equals(deltaker.getEmail())) {
+						return;
+					}
+				}
 				deltakerProperty.getValue().add(deltaker);
 				Klienten.leggTilAvtale(deltaker.getEmail(), avtaleid);
 				deltaker.addAvtale(this);
 			}
+			else {
+				for (Bruker delt : deltakerProperty.getValue()) {
+					if (delt.getEmail().equals(deltaker.getEmail())) {
+						return;
+					}
+				}
+				deltakerProperty.getValue().add(deltaker);
+			}
 		}
 		catch (NullPointerException e) {
-			
+			ArrayList<Bruker> deltakeren = new ArrayList<Bruker>();
+			if (! deltaker.equals(eierProperty.getValue())) {
+				deltakeren.add(deltaker);
+				deltakerProperty.setValue(deltakeren);
+				Klienten.leggTilAvtale(deltaker.getEmail(), avtaleid);
+				deltaker.addAvtale(this);
+			}
+			else {
+				deltakeren.add(deltaker);
+				deltakerProperty.setValue(deltakeren);
+			}
 		}
 	}
 	
@@ -135,12 +160,8 @@ public class Avtale {
 		return tidsProperty.getValue();
 	}
 	
-	public Bruker getAvtaleAdmin() {
+	public Bruker getEier() {
 		return eierProperty.getValue();
-	}
-	
-	public void setAvtaleAdmin(Bruker eier) {
-		eierProperty.setValue(eier);
 	}
 	
 	private Property<ArrayList<Bruker>> deltakerProperty = new ObjectPropertyBase<ArrayList<Bruker>>(null) {
@@ -175,21 +196,9 @@ public class Avtale {
 		return romProperty.getValue();
 	}
 	
-	public Møterom finnRom() {
-		//Skal spørre databasen om ledige rom i tidspunktet angitt.
-		
-		
-		//Midlertidig løsning
-		return romProperty.getValue();
-	}
-	
-	
 	public void setRom(Møterom møterom) {
 		if (romProperty.getValue() == null) {
 			romProperty.setValue(møterom);
-		}
-		else {
-			System.out.println("For å endre møterom må funksjonen ENDREROM benyttes");
 		}
 	}
 	
@@ -207,7 +216,9 @@ public class Avtale {
 	public void removeDeltakere(Bruker deltaker) {
 		try {
 			deltakerProperty.getValue().remove(deltaker);
-			//SKAL FJERNE BRUKER FRA AVTALEN I DATABASEN HER
+			if (deltakerProperty.getValue().isEmpty()) {
+				removeEier();
+			}
 		}
 		catch (NullPointerException e) {
 		}
