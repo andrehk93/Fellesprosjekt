@@ -187,6 +187,11 @@ public class Klienten {
 		return sendTilServer(toServer);
 	}
 	
+	public static String getAvtaleAdmin(String avtaleid) throws IOException {
+		String toServer = "GET APPADMIN " + avtaleid;
+		return sendTilServer(toServer);
+	}
+	
 	public static String getRomStr(String romnavn) throws IOException {
 		String toServer = "GET ROOMSTR " + romnavn;
 		return sendTilServer(toServer);

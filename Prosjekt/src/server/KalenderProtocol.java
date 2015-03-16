@@ -191,6 +191,9 @@ public class KalenderProtocol {
 			case "APPNAME":
 				output = kalenderdb.appointment().getAppNavn(input[1]);
 				break;
+			case "APPADMIN":
+				output = kalenderdb.appointment().getAppAdmin(input[1]);
+				break;
 			case "APPTIME":
 				output = kalenderdb.appointment().getAppTime(input[1]);
 				break;

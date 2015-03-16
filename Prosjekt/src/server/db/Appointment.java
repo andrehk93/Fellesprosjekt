@@ -221,6 +221,19 @@ public class Appointment {
 		return output.substring(0, output.length()-1);
 	}
 	
+	public String getAppAdmin(String avtaleid) throws SQLException {
+		query = "SELECT avtaleadmin FROM avtale WHERE avtaleid=?";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, avtaleid);
+		ResultSet result = statement.executeQuery();
+		
+		String output = "";
+		if(result.next()) {
+			output = result.getString(1);
+		}
+		return output;
+	}
+	
 	// APP ATTENDEES
 	public String getAppAttendees(String avtale, String status) throws Exception {
 		
