@@ -44,7 +44,7 @@ public class KalenderProtocol {
 				case("CREATE"):
 					return createHandler(Arrays.copyOfRange(input, 1, input.length));
 				case("CHANGE"):
-					changeHandler(input);
+					changeHandler(input); return "OK";
 				case("INVITE"):
 					return createHandler(input);
 				case("ADD"):
@@ -250,6 +250,12 @@ public class KalenderProtocol {
 				break;
 			case "GROUPNAME":
 				output = kalenderdb.group().getGroupName(input[1]);
+				break;
+			case "ADMINS":
+				output = kalenderdb.user().getAdmins();
+				break;
+			case "NORMALUSERS":
+				output = kalenderdb.user().getNormalUsers();
 				break;
 			}
 			
