@@ -138,7 +138,8 @@ public class KalenderProtocol {
 				output = "" + kalenderdb.notification().sendNotification(user, input[1], message,input[2]);
 				break;
 			case "GROUP":
-				kalenderdb.group().createGroup(input[1], user, Arrays.copyOfRange(input, 2, input.length));
+				String name = findMessage(Arrays.copyOfRange(input, 1, input.length));
+				kalenderdb.group().createGroup(user, name, Arrays.copyOfRange(input, findGroupStart(input), input.length));
 				output = "";
 				break;
 		}
@@ -148,7 +149,6 @@ public class KalenderProtocol {
 			output = "INCORRECT INPUT";
 		}
 		return output;
-		
 		
 	}
 	
@@ -160,7 +160,14 @@ public class KalenderProtocol {
 			i++;
 		}
 		return message;
-		
+	}
+	
+	private int findGroupStart(String[] input) {
+		int i = 0;
+		while(!input[i].equals("ENDOFMESSAGE")){
+			i++;
+		}
+		return i+1;
 	}
 
 	private String getHandler(String[] input) throws Exception{

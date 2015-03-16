@@ -22,6 +22,7 @@ public class Klienten {
 	public static Bruker bruker;
 	private static boolean tilkobling;
 	public static ArrayList<Avtale> avtaler;
+	public static ArrayList<Gruppe> grupper;
 	private static String valgtAvtale;
 	public static ArrayList<Møterom> alle_møterom;
 	private static boolean changed;
@@ -34,6 +35,7 @@ public class Klienten {
 	
 	public static void init() throws UnknownHostException, IOException{
 		avtaler = new ArrayList<Avtale>();
+		grupper = new ArrayList<Gruppe>();
 		alle_møterom = new ArrayList<Møterom>();
 		filtrering = 0;
 		String ip = "localhost";
@@ -281,7 +283,7 @@ public class Klienten {
 	}
 	
 	public static void addGruppe(String name, ArrayList<Bruker> members) throws IOException{
-		String toServer = "CREATE GROUP " + name;
+		String toServer = "CREATE GROUP " + name + " ENDOFMESSAGE";
 		for(Bruker member : members){
 			toServer += " " + member.getEmail();
 		}

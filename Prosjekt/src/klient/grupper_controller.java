@@ -3,6 +3,7 @@ package klient;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -172,6 +173,12 @@ public class grupper_controller {
     public void getUsers() throws IOException{
 		brukere = new ArrayList<Bruker>();
     	brukere = Klienten.getAllUserDetails();
+    	for (Bruker bruker : brukere) {
+    		if (bruker.getEmail().equals(Klienten.bruker.getEmail())) {
+    			brukere.remove(bruker);
+    			break;
+    		}
+    	}
     	brukerliste(brukere);
     }
     
@@ -181,14 +188,15 @@ public class grupper_controller {
     }
     
     @FXML
-	public void lagre(){											// Kan ikke bli ferdig med før grupper-klassen er endret
+	public void lagre() throws IOException{											// Kan ikke bli ferdig med før grupper-klassen er endret
     	gruppeNavn = gruppenavn.getText();
 		System.out.println(gruppeNavn);
 		if (medlemmer.size() <2){
 			legg_til_lbl.setText("*Du kan ikke lage en gruppe med mindre enn to personer.");
 		}
-//		gruppe.setNavn(gruppeNavn);
-//		gruppe.setMedlemmer(medlemmer);
+		gruppe = new Gruppe(gruppeNavn, medlemmer);
+		Klienten.addGruppe(gruppeNavn, medlemmer);
+		ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 	}
     
     @FXML

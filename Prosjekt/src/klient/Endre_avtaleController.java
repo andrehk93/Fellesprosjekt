@@ -85,7 +85,6 @@ public class Endre_avtaleController {
 	
 //LEDIGE BRUKERE OG GRUPPER
 	private String[] ledigeBrukerEmailer;
-    private String[] ledigeGrupperId;
 	
 //LISTENER TIL LISTVIEW SINE GJELDENDE VALG (MULIG IKKE FUNGERER)
 	private Bruker valg;
@@ -208,7 +207,6 @@ public class Endre_avtaleController {
 			}
 		}
 		
-		ledigeGrupperId = Klienten.getGroups().split(" ");
 		
 		//LEGGER GRUPPER TIL I GRUPPE_COMBOBOX
 		lagGrupper();
@@ -717,19 +715,8 @@ public class Endre_avtaleController {
 	
 	//OPPRETTER GRUPPER TIL LISTVIEW FOR GRUPPER
 	private void lagGrupper() throws NumberFormatException, IOException {
-		ArrayList<Bruker> brukere = new ArrayList<Bruker>();
-		if (ledigeGrupperId != null) {
-			for (String id : ledigeGrupperId) {
-				String gruppenavn = Klienten.getGroupName(id.trim());
-				if (gruppenavn.trim().equals("NONE")) {
-					break;
-				}
-				else {	
-					brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
-					Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
-					listeForGruppeCombobox.add(gruppe);
-				}
-			}
+		for (Gruppe gruppe : Klienten.grupper) {
+			listeForGruppeCombobox.add(gruppe);
 		}
 	}
 	
