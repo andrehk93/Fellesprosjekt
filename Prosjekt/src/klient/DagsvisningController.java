@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
@@ -31,11 +32,10 @@ import javafx.scene.text.Text;
 public class DagsvisningController {
 	
 	
-	@FXML private Label brukernavn;
 	@FXML private ListView<String> notifikasjoner_lv;
-	@FXML private Label ukenrTekst;
 	@FXML private GridPane ruter;
-	@FXML private Label ukedagTekst;
+	@FXML private Label datoTekst, brukernavn, ukenrTekst, aarTekst;
+	@FXML private Button ukeBtn, manedBtn, nesteDag, forrigeDag;
 	
 	private String[] notifikasjonene;
 	private boolean ingenInvitasjoner;
@@ -54,7 +54,6 @@ public class DagsvisningController {
 		list = new ArrayList<String>();
 		bokser = new ArrayList<StackPane>();
 		dagen = new Dag(LocalDate.now());
-		weekday = dagen.getDato().getDayOfWeek();
 		colWidth = 700.0;
 		showBruker();
 		this.notifikasjonene = KalenderController.notifikasjonene;
@@ -62,9 +61,11 @@ public class DagsvisningController {
 	}
 	
 	private void loadStuff() throws Exception {
+		weekday = dagen.getDato().getDayOfWeek();
 		weekNumber = dagen.getDato().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 		ukenrTekst.setText(String.valueOf(weekNumber));
-		ukedagTekst.setText(weekday.toString());
+		aarTekst.setText(String.valueOf(dagen.getDato().getYear()));
+		setDatoTekst();
 		flushView();
 		showBruker();
 		this.notifikasjonene = KalenderController.notifikasjonene;
@@ -162,6 +163,12 @@ public class DagsvisningController {
 			ruter.getChildren().remove(panes);
 		}
 	}
+	
+	private void setDatoTekst(){
+		String t = dagen.getDagNavn()+" ";
+		t += dagen.getDayinMonth()+". "+dagen.getManedNavn();
+		datoTekst.setText(t);
+	}
 
 	private void showBruker() {
 		brukernavn.setText(Klienten.bruker.getNavn());
@@ -256,6 +263,18 @@ public class DagsvisningController {
 				list.add("Ingen notifikasjoner");
 			}
 		}
+	}
+	
+	@FXML
+	private void nextDay(ActionEvent event) throws Exception {
+		dagen.setDato(dagen.getDato().plusDays(1));
+		loadStuff();
+	}
+	
+	@FXML
+	private void lastDay(ActionEvent event) throws Exception {
+		dagen.setDato(dagen.getDato().minusDays(1));
+		loadStuff();
 	}
 	
 	@FXML

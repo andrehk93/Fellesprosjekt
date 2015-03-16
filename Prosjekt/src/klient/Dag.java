@@ -83,5 +83,57 @@ public class Dag {
 			}
 		}
 	}
+	
+	public String getManedNavn() {
+		int i = this.getDato().getMonthValue();
+		switch(i){
+			case 1:
+				return "januar";
+			case 2:
+				return "februar";
+			case 3:
+				return "mars";
+			case 4:
+				return "april";
+			case 5:
+				return "mai";
+			case 6:
+				return "juni";
+			case 7:
+				return "juli";
+			case 8:
+				return "august";
+			case 9:
+				return "september";
+			case 10:
+				return "oktober";
+			case 11:
+				return "november";
+			case 12:
+				return "desember";
+		}
+		return null;
+	}
+	
+	public String getDagNavn(){
+		int i = this.getDato().getDayOfWeek().getValue();
+		switch(i){
+			case 1:
+				return "mandag";
+			case 2:
+				return "tirsdag";
+			case 3:
+				return "onsdag";
+			case 4:
+				return "torsdag";
+			case 5:
+				return "fredag";
+			case 6:
+				return "lørdag";
+			case 7:
+				return "søndag";
+		}
+		return null;
+	}
 
 }

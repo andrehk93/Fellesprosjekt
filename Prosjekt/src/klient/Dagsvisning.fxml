@@ -55,35 +55,35 @@
             </HBox>
             <HBox layoutX="230.0" layoutY="53.0" prefHeight="46.0" prefWidth="118.0">
                <children>
-                  <Button fx:id="forrigeDag" mnemonicParsing="false" prefHeight="46.0" prefWidth="61.0" styleClass="specialButton" text="&lt;">
+                  <Button fx:id="forrigeDag" mnemonicParsing="false" onAction="#lastDay" prefHeight="46.0" prefWidth="61.0" styleClass="specialButton" text="&lt;">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="nesteDag" mnemonicParsing="false" prefHeight="46.0" prefWidth="59.0" styleClass="specialButton" text="&gt;">
+                  <Button fx:id="nesteDag" mnemonicParsing="false" onAction="#nextDay" prefHeight="46.0" prefWidth="59.0" styleClass="specialButton" text="&gt;">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </Button>
                </children>
             </HBox>
-            <HBox layoutX="237.0" layoutY="111.0" prefHeight="34.0" prefWidth="686.0" spacing="250.0" styleClass="label-days">
+            <HBox alignment="CENTER_LEFT" layoutX="237.0" layoutY="111.0" prefHeight="34.0" prefWidth="686.0" styleClass="label-days">
                <children>
-                  <HBox prefHeight="34.0" prefWidth="71.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="100.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Uke" wrappingWidth="33.205078125">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Uke" wrappingWidth="30.205078125" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="Segoe UI Light" size="18.0" />
                            </font>
                         </Text>
-                        <Label fx:id="ukenrTekst" prefHeight="27.0" prefWidth="42.0" text="(nr)" />
+                        <Label fx:id="ukenrTekst" nodeOrientation="LEFT_TO_RIGHT" prefHeight="27.0" prefWidth="35.0" text="(nr)" />
                      </children>
                      <padding>
                         <Insets left="5.0" />
                      </padding>
                   </HBox>
-                  <Label fx:id="datoTekst" text="(dato)" />
-                  <Label fx:id="ukedagTekst" text="(ukedag)" />
+                  <Label fx:id="datoTekst" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="486.0" text="(dato)" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="aarTekst" nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0" prefWidth="100.0" text="(år)" textAlignment="RIGHT" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <Line endX="640.0" layoutX="295.0" layoutY="145.0" opacity="0.72" startX="-75.0" stroke="#aeadad" />
@@ -93,7 +93,7 @@
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <ScrollPane hbarPolicy="NEVER" layoutX="220.0" layoutY="165.0" prefHeight="471.0" prefWidth="716.0">
+            <ScrollPane hbarPolicy="NEVER" layoutX="220.0" layoutY="165.0" prefHeight="471.0" prefWidth="716.0" styleClass="label-normal-objects">
                <content>
                   <GridPane fx:id="ruter" prefHeight="1200.0" prefWidth="716.0">
                     <columnConstraints>
