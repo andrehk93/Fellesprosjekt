@@ -18,7 +18,7 @@
                   <Font name="Segoe UI Light" size="15.0" />
                </font>
             </Text>
-            <Label styleClass="label-name" fx:id="brukernavn">
+            <Label fx:id="brukernavn" styleClass="label-name">
                <font>
                   <Font size="15.0" />
                </font>
@@ -32,7 +32,7 @@
                         <Font name="Segoe UI Light" size="15.0" />
                      </font>
                   </Text>
-                  <ListView prefHeight="211.0" prefWidth="169.0" fx:id="notifikasjoner_lv" styleClass="label-normal-objects"/>
+                  <ListView fx:id="notifikasjoner_lv" prefHeight="211.0" prefWidth="169.0" styleClass="label-normal-objects" />
                </children>
             </VBox>
             <Button mnemonicParsing="false" onAction="#logout" styleClass="specialButton" text="Logg ut" />
@@ -40,12 +40,12 @@
       </VBox>
       <HBox layoutX="633.0" layoutY="48.0" prefHeight="35.0" prefWidth="291.0">
          <children>
-            <Button onAction="#nextPaneDayView" mnemonicParsing="false" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="Dag" />
+            <Button mnemonicParsing="false" onAction="#nextPaneDayView" prefHeight="46.0" prefWidth="65.0" styleClass="specialButton" text="Dag" />
             <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="63.0" styleClass="specialButton" text="Uke">
             <effect>
                   <ColorAdjust contrast="-0.25" />
                </effect></Button>
-            <Button onAction="#nextPaneMonthView" mnemonicParsing="false" styleClass="specialButton" text="Måned" /> 
+            <Button mnemonicParsing="false" onAction="#nextPaneMonthView" styleClass="specialButton" text="Måned" /> 
          </children>
       </HBox>
       <HBox layoutX="231.0" layoutY="58.0" prefHeight="35.0" prefWidth="110.0">
@@ -138,5 +138,6 @@
             </GridPane>
          </content>
       </ScrollPane>
+      <ChoiceBox fx:id="filtrering" layoutX="790.0" layoutY="647.0" prefWidth="150.0" styleClass="label-normal-objects"/>
    </children>
 </AnchorPane>

@@ -25,6 +25,7 @@ public class Klienten {
 	private static String valgtAvtale;
 	public static ArrayList<Møterom> alle_møterom;
 	private static boolean changed;
+	private static int filtrering;
 	
 	
 	public Klienten() throws IOException {
@@ -34,6 +35,7 @@ public class Klienten {
 	public static void init() throws UnknownHostException, IOException{
 		avtaler = new ArrayList<Avtale>();
 		alle_møterom = new ArrayList<Møterom>();
+		filtrering = 0;
 		String ip = "localhost";
 		int port = 6789;
 		try {
@@ -174,6 +176,7 @@ public class Klienten {
 	
 	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
 		String toServer = "CHANGE STATUS " + avtaleid.trim() + " " + newStatus;
+		System.out.println(toServer);
 		sendTilServer(toServer);
 	}
 	
@@ -390,9 +393,19 @@ public class Klienten {
 		}
 		System.out.println("Avtaleid: "+avtaleid);
 		String toServer = "CHANGE STATUSES "+avtaleid+" "+liste.substring(0, liste.length()-1);
+		System.out.println(toServer);
 		sendTilServer(toServer);
 	}
 	
+	public static void setFiltrering(int f) {
+		filtrering = f;
+		avtaler.clear();
+	}
+	
+	public static int getFiltrering() {
+		return filtrering;
+	}
+			
 	public static void makeAdmin(Bruker user) throws IOException{
 		changeRights(user, 1);
 	}
