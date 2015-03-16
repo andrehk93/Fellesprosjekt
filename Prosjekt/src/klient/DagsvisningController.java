@@ -19,6 +19,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
@@ -36,6 +37,7 @@ public class DagsvisningController {
 	@FXML private GridPane ruter;
 	@FXML private Label datoTekst, brukernavn, ukenrTekst, aarTekst;
 	@FXML private Button ukeBtn, manedBtn, nesteDag, forrigeDag;
+	@FXML private ChoiceBox<String> filtrering;
 	
 	private String[] notifikasjonene;
 	private boolean ingenInvitasjoner;
@@ -55,6 +57,7 @@ public class DagsvisningController {
 		bokser = new ArrayList<StackPane>();
 		dagen = new Dag(LocalDate.now());
 		colWidth = 700.0;
+		setUpFiltrering();
 		showBruker();
 		this.notifikasjonene = KalenderController.notifikasjonene;
 		loadStuff();
@@ -169,6 +172,54 @@ public class DagsvisningController {
 		t += dagen.getDayinMonth()+". "+dagen.getManedNavn();
 		datoTekst.setText(t);
 	}
+	
+	public void setUpFiltrering(){
+		ObservableList<String> lista = FXCollections.observableArrayList("Alle","Bare godtatt","Ikke svart","Avslag");
+		filtrering.setItems(lista);
+		filtrering.setValue(lista.get(Klienten.getFiltrering()));
+		filtrering.getSelectionModel().selectedIndexProperty().addListener(filtChange);
+	}
+
+	ChangeListener<? super Number> filtChange = new ChangeListener<Number>() {
+
+		@Override
+		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+			switch(filtrering.getItems().get((Integer) newValue)){
+			case "Alle":
+				Klienten.setFiltrering(0);
+				try {
+					(new KalenderController()).hentAvtaler();
+					loadStuff();
+				} catch (Exception e) {
+				}
+				break;
+			case "Bare godtatt":
+				Klienten.setFiltrering(1);
+				try {
+					(new KalenderController()).hentAvtaler();
+					loadStuff();
+				} catch (Exception e) {
+				}
+				break;
+			case "Ikke svart":
+				Klienten.setFiltrering(2);
+				try {
+					(new KalenderController()).hentAvtaler();
+					loadStuff();
+				} catch (Exception e) {
+				}
+				break;
+			case "Avslag":
+				Klienten.setFiltrering(3);
+				try {
+					(new KalenderController()).hentAvtaler();
+					loadStuff();
+				} catch (Exception e) {
+				}
+				break;
+			}
+		}
+	};
 
 	private void showBruker() {
 		brukernavn.setText(Klienten.bruker.getNavn());

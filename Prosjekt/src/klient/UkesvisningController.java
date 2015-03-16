@@ -261,7 +261,7 @@ public class UkesvisningController {
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{
-					//ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
 				}
 			}
 		});
