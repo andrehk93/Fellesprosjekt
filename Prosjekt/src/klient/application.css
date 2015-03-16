@@ -39,6 +39,18 @@
     
 }
 
+.label-calenderdays{
+	-fx-font-size: 15px;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #4986E7;
+}
+
+.label-days{
+	-fx-font-size: 13px;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #4986E7;
+}
+
 .label-normal-objects {
 	-fx-font-size: 12px;
     -fx-font-family: "Segoe UI Light";
@@ -57,13 +69,25 @@
 .specialButton{
 	-fx-base: #4986E7;
     -fx-text-fill: white;
-    -fx-font-size: 19px;
+    -fx-font-size: 15px;
 }
+
+.big-specialButton{
+	-fx-base: #4986E7;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+}
+.menu-specialButton{
+	-fx-base: #4986E7;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+}
+
 
 .normalButton{
 	-fx-base: #FFFFFF;
-	-fx-text-fill:#4a4a4a ;
-	-fx-font-size: 19px;
+	-fx-text-fill:#4a4a4a;
+	-fx-font-size: 15px;
 	
 }
 

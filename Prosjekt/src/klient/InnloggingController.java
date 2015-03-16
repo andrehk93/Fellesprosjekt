@@ -30,19 +30,40 @@ public class InnloggingController {//implements Initializable
 	public DataOutputStream outToServer;
 	public BufferedReader inFromServer;
 	private static String modifiedSentence;
-	
+
 	public void initialize() {
 	}
 
 
 	@FXML// LOGG INN KNAPPEN
 	private void handleButtonAction(ActionEvent event) throws IOException, NoSuchAlgorithmException {
-		checkInput();
-		String svar = Klienten.login(brukernavn.getText(), passord.getText());
-		if (svar.equals("OK")) {
+		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
+				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+		brukernavn.setStyle("-fx-text-box-border : white ");
+		passord.setStyle("-fx-text-box-border : white ");
+		msg.setText(" ");
+
+		String svar = Klienten.login(brukernavn.getText(), passord.getText()); 
+		if (brukernavn.getText().equals("")&&passord.getText().equals("")){
+			brukernavn.setStyle("-fx-text-box-border : red ");
+			passord.setStyle("-fx-text-box-border : red ");
+			msg.setText("Skriv inn brukernavn og passord");
+		}else if(brukernavn.getText().equals("")){
+			brukernavn.setStyle("-fx-text-box-border : red ");
+			msg.setText("Skriv inn passord.");
+
+		}else if(passord.getText().equals("")){
+			passord.setStyle("-fx-text-box-border : red ");
+			msg.setText("Skriv inn passord.");
+		}
+		else if (svar.equals("OK")){
 			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 		} else if(svar.equals("NO SUCH USER")){
 			msg.setText("Brukernavnet eksisterer ikke!");
+			
+		}else if(!(brukernavn.getText().matches(regex))){
+			brukernavn.setStyle("-fx-text-box-border : red ");
+			msg.setText("Ugyldig format!");
 		}
 		else {
 			msg.setText("Feil passord!");
@@ -52,12 +73,33 @@ public class InnloggingController {//implements Initializable
 	@FXML
 	private void enterKeyPress(KeyEvent event) throws NoSuchAlgorithmException, IOException{
 		if(event.getCode() == KeyCode.ENTER){
-			checkInput();
+
+			String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
+					+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+			brukernavn.setStyle("-fx-text-box-border : white ");
+			passord.setStyle("-fx-text-box-border : white ");
+			msg.setText(" ");
+
 			String svar = Klienten.login(brukernavn.getText(), passord.getText()); 
-			if (svar.equals("OK")){
+			if (brukernavn.getText().equals("") && passord.getText().equals("")){
+				brukernavn.setStyle("-fx-text-box-border : red ");
+				passord.setStyle("-fx-text-box-border : red ");
+				msg.setText("Skriv inn brukernavn og passord");
+			}else if(brukernavn.getText().equals("")){
+				brukernavn.setStyle("-fx-text-box-border : red ");
+				msg.setText("Skriv inn passord.");
+
+			}else if(passord.getText().equals("")){
+				passord.setStyle("-fx-text-box-border : red ");
+				msg.setText("Skriv inn passord.");
+			}
+			else if (svar.equals("OK")){
 				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
 			} else if(svar.equals("NO SUCH USER")){
 				msg.setText("Brukernavnet eksisterer ikke!");
+			}else if(!(brukernavn.getText().matches(regex))){
+				brukernavn.setStyle("-fx-text-box-border : red ");
+				msg.setText("Ugyldig format!");
 			}
 			else {
 				msg.setText("Feil passord!");
@@ -76,31 +118,31 @@ public class InnloggingController {//implements Initializable
 
 
 	//************VALIDERINGSMETODER******************
-	public void checkInput(){
-		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
-				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-		brukernavn.setStyle("-fx-text-box-border : white ");
-		passord.setStyle("-fx-text-box-border : white ");
-		msg.setText(" ");
+	//	public void checkInput(){
+	//		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
+	//				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+	//		brukernavn.setStyle("-fx-text-box-border : white ");
+	//		passord.setStyle("-fx-text-box-border : white ");
+	//		msg.setText(" ");
+	//
+	//		if (brukernavn.getText().equals("")){
+	//			brukernavn.setStyle("-fx-text-box-border : red ");
+	//			msg.setText("Skriv inn brukernavn (e-postadresse).");
+	//		}
+	//		if(passord.getText().equals("")){		
+	//			passord.setStyle("-fx-text-box-border : red ");
+	//			msg.setText("Skriv inn passord.");
+	//		}
+	//		if(!(brukernavn.getText().matches(regex))){
+	//			brukernavn.setStyle("-fx-text-box-border : red ");
+	//			msg.setText("Brukernavn/epostadresse er på ugyldig format!");
+	//
+	//		}
 
-		if (brukernavn.getText().equals("")){
-			brukernavn.setStyle("-fx-text-box-border : red ");
-			msg.setText("Skriv inn brukernavn (e-postadresse).");
-		}
-		if(passord.getText().equals("")){		
-			passord.setStyle("-fx-text-box-border : red ");
-			msg.setText("Skriv inn passord.");
-		}
-		if(!(brukernavn.getText().matches(regex))){
-			brukernavn.setStyle("-fx-text-box-border : red ");
-			msg.setText("Brukernavn/epostadresse er på ugyldig format!");
-
-		}
-
-		//Sjekk om brukernavnet finnes, sjekk mot db liste av brukernavn. Gi tilbakemld = "Brukernavn eksisterer ikke"
-	}
-
+	//Sjekk om brukernavnet finnes, sjekk mot db liste av brukernavn. Gi tilbakemld = "Brukernavn eksisterer ikke"
 }
+
+
 
 
 

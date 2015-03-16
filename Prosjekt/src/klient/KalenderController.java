@@ -118,14 +118,15 @@ public class KalenderController {
 	};
 
 	// GÅ TIL EN NY SCREEN*****************
+	@FXML
 	public void grupperView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
 	}
-
+	@FXML
 	public void redigerBrukerView(ActionEvent event){
 		ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
 	}
-
+	@FXML
 	public void refreshKalender(ActionEvent event) throws Exception {
 		flushView();
 	}
