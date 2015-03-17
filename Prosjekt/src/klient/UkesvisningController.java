@@ -348,7 +348,6 @@ public class UkesvisningController {
 	
 	@FXML
 	private void nextPaneEditUsers(ActionEvent event) {
-		ScreenNavigator.lastScreen = ScreenNavigator.UKESVISNING;
 		ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
 	}
 	
