@@ -20,6 +20,7 @@ import com.sun.javafx.css.StyleCache.Key;
 
 
 
+
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -928,7 +929,8 @@ public class Endre_avtaleController {
 	
 	EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
 	    public void handle(MouseEvent event) {
-	        ChoiceBox<String> boksen = (ChoiceBox<String>) event.getSource();
+	        @SuppressWarnings("unchecked")
+			ChoiceBox<String> boksen = (ChoiceBox<String>) event.getSource();
 	        HBox boks = (HBox) boksen.getParent();
 	        choiceBruker = boksBruker.get(boks);
 	    }

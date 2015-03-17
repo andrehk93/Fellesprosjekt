@@ -224,7 +224,12 @@ public class UkesvisningController {
 		int day = app.getTid().getDato().getDayOfWeek().getValue();
 		double margin = app.getTid().getMargin();
 		Rectangle box = new Rectangle(colWidth,ySize);
-		box.setFill(Color.BLUE);
+		if(app.getStranger()){
+			box.setFill(Color.RED);
+		}
+		else{
+			box.setFill(Color.BLUE);
+		}
 		Text text = new Text(app.getAvtaleid());
 	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
 	    text.setFill(Color.WHITE);
@@ -251,7 +256,12 @@ public class UkesvisningController {
 		
 		box.setOnMouseExited(new EventHandler<Event>() {
 			public void handle(Event event) {
-				box.setFill(Color.BLUE);
+				if(app.getStranger()){
+					box.setFill(Color.RED);
+				}
+				else{
+					box.setFill(Color.BLUE);
+				}
 			}
 		});
 		

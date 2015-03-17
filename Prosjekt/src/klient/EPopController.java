@@ -24,14 +24,24 @@ public class EPopController {
 				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 		brukernavn.setStyle("-fx-text-box-border : white ");
 		msg.setText(" ");
-
-		String svar = Klienten.getBruker(brukernavn.getText()); 
+		String svar = brukernavn.getText(); 
 		if(brukernavn.getText().equals("")){
 			brukernavn.setStyle("-fx-text-box-border : red ");
 			msg.setText("Skriv inn epost.");
 		}
 		else if (!svar.equals("no Name")){
-			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+			System.out.println("SVAR=:=:="+svar);
+			Klienten.addEkstraBruker(svar);
+			if (ScreenNavigator.getLoadScreen().equals("Ukesvisning.fxml")) {
+				ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
+			}
+			else if (ScreenNavigator.getLoadScreen().equals("Kalender_månedsvisning.fxml")) {
+				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
+			}
+			else {
+				ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
+			}
+			Popup.exit();
 		}
 		else if(svar.equals("no Name")){
 			msg.setText("Brukernavnet eksisterer ikke!");
@@ -45,7 +55,6 @@ public class EPopController {
 	@FXML
 	public void handleButtonAction(ActionEvent event) throws IOException{
 		sjekkBrukernavn();
-		Popup.exit();
 	}
 	
 	@FXML

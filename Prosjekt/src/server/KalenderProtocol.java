@@ -206,6 +206,9 @@ public class KalenderProtocol {
 			case "MYDAGAPPS":
 				output = kalenderdb.appointment().getMyDagApps(user, Integer.parseInt(input[1]));
 				break;
+			case "STRANGERDAGAPPS":
+				output = kalenderdb.appointment().getMyDagApps(input[1], Integer.parseInt(input[2]));
+				break;
 			case "APPATTS":
 				output = kalenderdb.appointment().getAppAttendees(input[1], input[2]);
 				break;

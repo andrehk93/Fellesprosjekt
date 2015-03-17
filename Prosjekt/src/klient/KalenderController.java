@@ -348,6 +348,7 @@ public class KalenderController {
 
 	public void hentAvtaler() throws IOException {
 		if (Klienten.avtaler.isEmpty()) {
+			System.out.println("WHATHTEGFFUFUKCK");
 			String streng = Klienten.mineAvtaler(Klienten.bruker.getEmail(), Klienten.getFiltrering());
 			avtale_liste = streng.split(" ");
 			for (int k = 0; k < avtale_liste.length; k++) {
@@ -355,9 +356,30 @@ public class KalenderController {
 					String dato = avtale_liste[k];
 					String avtaleid = avtale_liste[k-1];
 					try {
-						createAvtale(dato, avtaleid);
+						createAvtale(dato, avtaleid, false);
 					}
 					catch (NullPointerException e) {
+					}
+				}
+			}
+		}
+		else if(!Klienten.getEkstraBrukere().isEmpty()){
+			
+			for(String extraemail : Klienten.getEkstraBrukere()){
+				System.out.println("EKSTRAEMAILEN: "+extraemail);
+				String streng = Klienten.noensAvtaler(extraemail, Klienten.getFiltrering());
+				avtale_liste = streng.split(" ");
+				avtale_liste = filtrerAvtaler(avtale_liste);
+				System.out.println("AVTALELISTE:"+avtale_liste);
+				for (int k = 0; k < avtale_liste.length; k++) {
+					if (k%2 != 0) {
+						String dato = avtale_liste[k];
+						String avtaleid = avtale_liste[k-1];
+						try {
+							createAvtale(dato, avtaleid, true);
+						}
+						catch (NullPointerException e) {
+						}
 					}
 				}
 			}
@@ -365,9 +387,30 @@ public class KalenderController {
 	}
 
 
+	private String[] filtrerAvtaler(String[] l) {
+		String s = "";
+		boolean samme;
+		for(int j = 0;j < l.length;j++){
+			if (j%2 != 0) {
+				samme = false;
+				for(Avtale a : Klienten.avtaler){
+					if(l[j-1].equals(a.getAvtaleid())){
+						samme = true;
+						break;
+					}
+				}
+				if(!samme){
+					s += l[j-1] + " " + l[j] + " ";
+				}
+			}
+		}
+		return s.split(" ");
+		
+	}
+
 	// VELDIG MYE TULL, MEN FUNKER
 	//Lager: bruker(deltaker)-objektene, avtale-objekt, møterom-objekt og tidsobjekt
-	public void createAvtale(String dato, String avtaleid) throws IOException {
+	public void createAvtale(String dato, String avtaleid, boolean strange) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
 		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
@@ -394,6 +437,7 @@ public class KalenderController {
 		Bruker admin = new Bruker(Klienten.getBruker(admin_str), admin_str, 0);
 		Avtale avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
 		avtale.setAvtaleNavn();
+		avtale.setStranger(strange);
 		Klienten.avtaler.add(avtale);
 		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 				Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
@@ -453,7 +497,7 @@ public class KalenderController {
 	
 	@FXML
 	public void extraCal(ActionEvent event) throws IOException{
-		Klienten.setDest("/klient/ekstraPopup.fxml");
+		Klienten.setDest("/klient/extraPopup.fxml");
 		Popup pop = new Popup();
 		pop.start(new Stage());
 	}

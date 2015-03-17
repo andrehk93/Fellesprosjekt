@@ -30,6 +30,7 @@ public class Klienten {
 	private static int filtrering;
 	private static HashMap<String,Bruker> brukere;
 	private static String dest;
+	private static ArrayList<String> ekstraBrukere;
 	
 	
 	public Klienten() throws IOException {
@@ -42,6 +43,7 @@ public class Klienten {
 		alle_møterom = new ArrayList<Møterom>();
 		filtrering = 0;
 		brukere = new HashMap<String,Bruker>();
+		ekstraBrukere = new ArrayList<String>();
 		String ip = "localhost";
 		int port = 6789;
 		try {
@@ -135,6 +137,11 @@ public class Klienten {
 	
 	public static String mineAvtaler(String brukernavn, int which) throws IOException {
 		String toServer = "GET MYDAGAPPS "+String.valueOf(which);
+		return sendTilServer(toServer);
+	}
+	
+	public static String noensAvtaler(String brukernavn, int which) throws IOException {
+		String toServer = "GET STRANGERDAGAPPS "+brukernavn+" "+String.valueOf(which);
 		return sendTilServer(toServer);
 	}
 	
@@ -477,6 +484,22 @@ public class Klienten {
 	
 	public static String getDest(){
 		return dest;
+	}
+	
+	public static ArrayList<String> getEkstraBrukere(){
+		return ekstraBrukere;
+	}
+	
+	public static void addEkstraBruker(String email){
+		if(!ekstraBrukere.contains(email)){
+			ekstraBrukere.add(email);
+		}
+	}
+	
+	public static void removeEkstraBruker(String email){
+		if(ekstraBrukere.contains(email)){
+			ekstraBrukere.remove(email);
+		}
 	}
 }
 
