@@ -30,7 +30,6 @@ public class EPopController {
 			msg.setText("Skriv inn epost.");
 		}
 		else if (!svar.equals("no Name")){
-			System.out.println("SVAR=:=:="+svar);
 			Klienten.addEkstraBruker(svar);
 			if (ScreenNavigator.getLoadScreen().equals("Ukesvisning.fxml")) {
 				ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
@@ -41,6 +40,7 @@ public class EPopController {
 			else {
 				ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
 			}
+			KalenderController.newStranger();
 			Popup.exit();
 		}
 		else if(svar.equals("no Name")){

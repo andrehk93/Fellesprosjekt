@@ -97,7 +97,12 @@ public class DagsvisningController {
 		double ySize = app.getTid().getWeekSize();
 		double margin = app.getTid().getMargin();
 		Rectangle box = new Rectangle(colWidth,ySize);
-		box.setFill(Color.BLUE);
+		if(app.getStranger()){
+			box.setFill(Color.RED);
+		}
+		else{
+			box.setFill(Color.BLUE);
+		}
 		Text text = new Text(app.getAvtaleid());
 	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
 	    text.setFill(Color.WHITE);
@@ -118,13 +123,23 @@ public class DagsvisningController {
 	private void setUpBox(Rectangle box, Avtale app) {
 		box.setOnMouseEntered(new EventHandler<Event>() {
 		    public void handle(Event event) {
-		        box.setFill(Color.LIGHTBLUE);
+		    	if(app.getStranger()){
+					box.setFill(Color.PINK);
+				}
+				else{
+					box.setFill(Color.LIGHTBLUE);
+				}
 		    }
 		});
 		
 		box.setOnMouseExited(new EventHandler<Event>() {
 			public void handle(Event event) {
-				box.setFill(Color.BLUE);
+				if(app.getStranger()){
+					box.setFill(Color.RED);
+				}
+				else{
+					box.setFill(Color.BLUE);
+				}
 			}
 		});
 		

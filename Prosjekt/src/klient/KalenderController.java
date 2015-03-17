@@ -37,7 +37,7 @@ public class KalenderController {
 	private int maned;
 	private int aar;
 	private int dag;
-	private String[] avtale_liste;
+	private static String[] avtale_liste;
 	public static String[] enheter;
 	public static List<String> list;
 	public static String melding;
@@ -307,7 +307,7 @@ public class KalenderController {
 		catch (DateTimeException e){}
 	}
 
-	public Dag getDag(LocalDate dato) {
+	public static Dag getDag(LocalDate dato) {
 		for (Dag dag : dager) {
 			if (dag.getDato().equals(dato)) {
 				return dag;
@@ -363,23 +363,23 @@ public class KalenderController {
 				}
 			}
 		}
-		else if(!Klienten.getEkstraBrukere().isEmpty()){
-			
-			for(String extraemail : Klienten.getEkstraBrukere()){
-				System.out.println("EKSTRAEMAILEN: "+extraemail);
-				String streng = Klienten.noensAvtaler(extraemail, Klienten.getFiltrering());
-				avtale_liste = streng.split(" ");
-				avtale_liste = filtrerAvtaler(avtale_liste);
-				System.out.println("AVTALELISTE:"+avtale_liste);
-				for (int k = 0; k < avtale_liste.length; k++) {
-					if (k%2 != 0) {
-						String dato = avtale_liste[k];
-						String avtaleid = avtale_liste[k-1];
-						try {
-							createAvtale(dato, avtaleid, true);
-						}
-						catch (NullPointerException e) {
-						}
+	}
+	
+	public static void newStranger() throws IOException{
+		for(String extraemail : Klienten.getEkstraBrukere()){
+			System.out.println("EKSTRAEMAILEN: "+extraemail);
+			String streng = Klienten.noensAvtaler(extraemail, Klienten.getFiltrering());
+			avtale_liste = streng.split(" ");
+			avtale_liste = filtrerAvtaler(avtale_liste);
+			System.out.println("AVTALELISTE:"+avtale_liste);
+			for (int k = 0; k < avtale_liste.length; k++) {
+				if (k%2 != 0) {
+					String dato = avtale_liste[k];
+					String avtaleid = avtale_liste[k-1];
+					try {
+						createAvtale(dato, avtaleid, true);
+					}
+					catch (NullPointerException e) {
 					}
 				}
 			}
@@ -387,7 +387,7 @@ public class KalenderController {
 	}
 
 
-	private String[] filtrerAvtaler(String[] l) {
+	private static String[] filtrerAvtaler(String[] l) {
 		String s = "";
 		boolean samme;
 		for(int j = 0;j < l.length;j++){
@@ -410,7 +410,7 @@ public class KalenderController {
 
 	// VELDIG MYE TULL, MEN FUNKER
 	//Lager: bruker(deltaker)-objektene, avtale-objekt, møterom-objekt og tidsobjekt
-	public void createAvtale(String dato, String avtaleid, boolean strange) throws IOException {
+	public static void createAvtale(String dato, String avtaleid, boolean strange) throws IOException {
 		ArrayList<Bruker> deltaker_liste = new ArrayList<Bruker>();
 		String romnavn = Klienten.getAvtaleRom(avtaleid.trim()).trim();
 		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
