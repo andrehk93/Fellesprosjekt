@@ -333,7 +333,7 @@ public class KalenderProtocol {
 				output = "OK";
 				break;
 			case "APPATTENDANT":
-				kalenderdb.appointment().deleteAttendant(input[1], input[2]);
+				kalenderdb.appointment().deleteAttendant(input[2], input[3]);
 				output = "OK";
 				break;
 		}
