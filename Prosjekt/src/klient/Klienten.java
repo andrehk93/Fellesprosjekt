@@ -337,6 +337,7 @@ public class Klienten {
 			}
 		}
 		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		avtale.setAvtaleNavn();
 		return avtale;
 	}
 	

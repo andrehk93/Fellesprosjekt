@@ -391,6 +391,7 @@ public class KalenderController {
 		String admin_str = Klienten.getAvtaleAdmin(avtaleid);
 		Bruker admin = new Bruker(Klienten.getBruker(admin_str), admin_str, 0);
 		Avtale avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
+		avtale.setAvtaleNavn();
 		Klienten.avtaler.add(avtale);
 		getDag(LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 				Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10)))).addAvtale(avtale);
