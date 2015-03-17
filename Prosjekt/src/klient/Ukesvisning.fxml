@@ -11,63 +11,104 @@
 
 
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.UkesvisningController">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0"
+	stylesheets="@application.css" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.UkesvisningController">
 
 	<!-- KALENDER TITTEL & FIRKANT -->
 	<children>
-		<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="613.0" layoutY="96.0" opacity="0.3" stroke="#9a9696" strokeType="INSIDE" width="200.0">
+		<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb"
+			height="613.0" layoutY="96.0" opacity="0.3" stroke="#9a9696"
+			strokeType="INSIDE" width="200.0">
 			<effect>
-				<DropShadow color="#888b8d4a" height="0.0" radius="0.0" spread="0.57" width="0.0" />
+				<DropShadow color="#888b8d4a" height="0.0" radius="0.0"
+					spread="0.57" width="0.0" />
 			</effect>
 		</Rectangle>
-		<Label alignment="TOP_LEFT" layoutX="20.0" layoutY="24.0" styleClass="label-header" text="Kalender" textFill="#476cd0">
+		<Label alignment="TOP_LEFT" layoutX="20.0" layoutY="24.0"
+			styleClass="label-header" text="Kalender" textFill="#476cd0">
 			<font>
 				<Font name="System Bold" size="25.0" />
 			</font>
 		</Label>
-		
+
 		<!-- SCROLLPANE & GRIDPANE -->
-		<ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="220.0" layoutY="165.0" prefHeight="525.0" prefWidth="763.0" styleClass="label-normal-objects" vvalue="0.5">
+		<ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="220.0"
+			layoutY="165.0" prefHeight="525.0" prefWidth="763.0" styleClass="label-normal-objects"
+			vvalue="0.5">
 			<content>
-				<GridPane fx:id="ruter" gridLinesVisible="true" opacity="0.34" prefHeight="1211.0" prefWidth="761.0" styleClass="label-normal-objects">
+				<GridPane fx:id="ruter" gridLinesVisible="true" opacity="0.34"
+					prefHeight="1211.0" prefWidth="761.0" styleClass="label-normal-objects">
 					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="58.0" />
-						<ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="105.0" />
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0"
+							minWidth="10.0" prefWidth="58.0" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0"
+							minWidth="10.0" prefWidth="105.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+							prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+							prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+							prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+							prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+							prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+							prefWidth="100.0" />
 					</columnConstraints>
 					<padding>
 						<Insets top="1.0" />
 					</padding>
 					<rowConstraints>
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
 					</rowConstraints>
 					<opaqueInsets>
 						<Insets left="5.0" />
@@ -75,20 +116,28 @@
 				</GridPane>
 			</content>
 		</ScrollPane>
-<!-- ØVERSTE LAG: KNAPPER og shit.  -->
-		<HBox alignment="CENTER_LEFT" layoutX="220.0" layoutY="28.0" prefHeight="46.0" prefWidth="771.0" spacing="100.0">
+		<!-- ØVERSTE LAG: KNAPPER og shit. -->
+		<HBox alignment="CENTER_LEFT" layoutX="220.0" layoutY="28.0"
+			prefHeight="46.0" prefWidth="771.0" spacing="100.0">
 			<children>
-				<HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="771.0" spacing="100.0">
+				<HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="771.0"
+					spacing="100.0">
 					<children>
-					<!-- FORRIGE UKE; NESTE UKE -->
-						<HBox alignment="CENTER" layoutX="221.0" layoutY="48.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="130.0">
+						<!-- FORRIGE UKE; NESTE UKE -->
+						<HBox alignment="CENTER" layoutX="221.0" layoutY="48.0"
+							maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+							minWidth="-Infinity" prefHeight="46.0" prefWidth="130.0">
 							<children>
-								<Button fx:id="forrigeUke" mnemonicParsing="false" onAction="#prevWeek" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="&lt;">
+								<Button fx:id="forrigeUke" mnemonicParsing="false"
+									onAction="#prevWeek" prefHeight="40.0" prefWidth="70.0"
+									styleClass="specialButton" text="&lt;">
 									<font>
 										<Font name="Arial Rounded MT Bold" size="20.0" />
 									</font>
 								</Button>
-								<Button fx:id="nesteUke" mnemonicParsing="false" onAction="#nextWeek" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="&gt;">
+								<Button fx:id="nesteUke" mnemonicParsing="false"
+									onAction="#nextWeek" prefHeight="40.0" prefWidth="70.0"
+									styleClass="specialButton" text="&gt;">
 									<font>
 										<Font name="Arial Rounded MT Bold" size="20.0" />
 									</font>
@@ -98,51 +147,70 @@
 						<!-- ÅR OG MANED LABELS -->
 						<VBox alignment="CENTER" prefHeight="54.0" prefWidth="200.0">
 							<children>
-								<Label fx:id="arLabel1" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
-								<Label fx:id="manedLabel1" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
+								<Label fx:id="arLabel1" alignment="CENTER" layoutX="467.0"
+									layoutY="20.0" text="År" textAlignment="CENTER" />
+								<Label fx:id="manedLabel1" alignment="CENTER" layoutX="450.0"
+									layoutY="48.0" text="Måned" textAlignment="CENTER" />
 							</children>
 						</VBox>
-						<HBox alignment="CENTER" layoutX="633.0" layoutY="48.0" prefHeight="40.0" prefWidth="240.0">
+						<HBox alignment="CENTER" layoutX="633.0" layoutY="48.0"
+							prefHeight="40.0" prefWidth="240.0">
 							<children>
-							<!-- DAYVIEW, WEEK AND MONTH -->
-								<Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneDayView" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="Dag" />
-								<Button minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="Uke">
+								<!-- DAYVIEW, WEEK AND MONTH -->
+								<Button minHeight="-Infinity" minWidth="-Infinity"
+									mnemonicParsing="false" onAction="#nextPaneDayView" prefHeight="40.0"
+									prefWidth="70.0" styleClass="specialButton" text="Dag" />
+								<Button minWidth="-Infinity" mnemonicParsing="false"
+									prefHeight="40.0" prefWidth="70.0" styleClass="specialButton"
+									text="Uke">
 									<effect>
 										<ColorAdjust contrast="-0.25" />
 									</effect>
 								</Button>
-								<Button minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneMonthView" prefHeight="40.0" prefWidth="100.0" styleClass="specialButton" text="Måned" />
+								<Button minWidth="-Infinity" mnemonicParsing="false"
+									onAction="#nextPaneMonthView" prefHeight="40.0" prefWidth="100.0"
+									styleClass="specialButton" text="Måned" />
 							</children>
 						</HBox>
 					</children>
 				</HBox>
 			</children>
 		</HBox>
-		
+
 		<!-- *****ØVRE LINJE, KALENDERDAGER, NEDRE LINJHE******* -->
-		<VBox alignment="TOP_RIGHT" layoutX="-2.0" layoutY="96.0" prefHeight="46.0" prefWidth="1011.0" spacing="5">
+		<VBox alignment="TOP_RIGHT" layoutX="-2.0" layoutY="96.0"
+			prefHeight="46.0" prefWidth="1011.0" spacing="5">
 			<children>
-				<Line endX="668.0" layoutX="275.0" layoutY="100.0" opacity="0.7" startX="-340.0" stroke="#aeadad" />
-				<HBox alignment="CENTER_RIGHT" layoutX="220.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0" spacing="5.0" styleClass="label-calenderdays">
+				<Line endX="668.0" layoutX="275.0" layoutY="100.0" opacity="0.7"
+					startX="-340.0" stroke="#aeadad" />
+				<HBox alignment="CENTER_RIGHT" layoutX="220.0" layoutY="100.0"
+					maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0"
+					prefWidth="1000.0" spacing="5.0" styleClass="label-calenderdays">
 					<children>
-						<HBox alignment="CENTER" prefHeight="34.0" prefWidth="71.0" styleClass="label-calenderdays">
+						<HBox alignment="CENTER" prefHeight="34.0" prefWidth="71.0"
+							styleClass="label-calenderdays">
 							<padding>
 								<Insets left="5.0" />
 							</padding>
 							<children>
-								<Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-calenderdays" text="Uke" wrappingWidth="27.205078125">
+								<Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label-calenderdays"
+									text="Uke" wrappingWidth="27.205078125">
 									<font>
 										<Font name="Segoe UI Light" size="18.0" />
 									</font>
 								</Text>
-								<Label fx:id="ukeNr" alignment="CENTER" prefHeight="27.0" prefWidth="29.0" styleClass="label-calenderdays" text="nr" />
+								<Label fx:id="ukeNr" alignment="CENTER" prefHeight="27.0"
+									prefWidth="29.0" styleClass="label-calenderdays" text="nr" />
 							</children>
 						</HBox>
-						<HBox alignment="CENTER" prefHeight="35.0" prefWidth="58.0" spacing="50.0" styleClass="label-calenderdays">
+						<HBox alignment="CENTER" prefHeight="35.0" prefWidth="58.0"
+							spacing="50.0" styleClass="label-calenderdays">
 							<children>
-								<Text fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Mandag" />
+								<Text fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE"
+									strokeWidth="0.0" text="Mandag" />
 								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tirsdag" />
-								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Onsdag" wrappingWidth="49.482421875" />
+								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Onsdag"
+									wrappingWidth="49.482421875" />
 								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Torsdag" />
 								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fredag" />
 								<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lørdag" />
@@ -154,12 +222,14 @@
 						<Insets right="78.0" />
 					</padding>
 				</HBox>
-				<Line endX="637.0" layoutX="285.0" layoutY="135.0" opacity="0.70" startX="-171.0" stroke="#aeadad" />
+				<Line endX="637.0" layoutX="285.0" layoutY="135.0" opacity="0.70"
+					startX="-171.0" stroke="#aeadad" />
 			</children>
 		</VBox>
-		
-		<!--  HELE VENSTRE MENY -->
-		<VBox alignment="TOP_CENTER" layoutX="3.0" layoutY="103.0" prefHeight="593.0" prefWidth="191.0" spacing="20.0">
+
+		<!-- HELE VENSTRE MENY -->
+		<VBox alignment="TOP_CENTER" layoutX="3.0" layoutY="103.0"
+			prefHeight="593.0" prefWidth="191.0" spacing="20.0">
 			<children>
 				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:">
 					<font>
@@ -171,27 +241,41 @@
 						<Font size="15.0" />
 					</font>
 				</Label>
-				<VBox alignment="CENTER" minHeight="-Infinity" prefHeight="120.0" prefWidth="165.0">
+				<VBox alignment="CENTER" minHeight="-Infinity" prefHeight="120.0"
+					prefWidth="165.0">
 					<children>
 
 
 						<!-- NY AVTALE,GRUPPEr OG BRUKER - KNAPP -->
-						<Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneMakeAppointment" prefHeight="40.0" prefWidth="175.0" styleClass="specialButton" text="Ny avtale" />
-						<Button fx:id="grupper" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneEditGroups" prefHeight="40.0" prefWidth="175.0" styleClass="specialButton" text="Grupper" />
-						<Button fx:id="brukerredigering" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneEditUsers" prefHeight="40.0" prefWidth="175.0" styleClass="specialButton" text="Brukerinnstillinger" />
+						<Button minHeight="-Infinity" minWidth="-Infinity"
+							mnemonicParsing="false" onAction="#nextPaneMakeAppointment"
+							prefHeight="40.0" prefWidth="175.0" styleClass="specialButton"
+							text="Ny avtale" />
+						<Button fx:id="grupper" minHeight="-Infinity" minWidth="-Infinity"
+							mnemonicParsing="false" onAction="#nextPaneEditGroups"
+							prefHeight="40.0" prefWidth="175.0" styleClass="specialButton"
+							text="Grupper" />
+						<Button fx:id="brukerredigering" minHeight="-Infinity"
+							minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneEditUsers"
+							prefHeight="40.0" prefWidth="175.0" styleClass="specialButton"
+							text="Brukerinnstillinger" />
 					</children>
 				</VBox>
-				<VBox alignment="TOP_CENTER" prefHeight="360.0" prefWidth="163.0" spacing="10.0" styleClass="label-normal-objects">
+				<VBox alignment="TOP_CENTER" prefHeight="360.0" prefWidth="163.0"
+					spacing="10.0" styleClass="label-normal-objects">
 					<children>
 						<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
 							<font>
 								<Font size="15.0" />
 							</font>
 						</Text>
-						<ListView fx:id="notifikasjoner" prefHeight="211.0" prefWidth="169.0" />
+						<ListView fx:id="notifikasjoner" prefHeight="211.0"
+							prefWidth="169.0" />
 					</children>
 					<children>
-						<ChoiceBox fx:id="filtrering" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="150.0" styleClass="label-calenderdays">
+						<ChoiceBox fx:id="filtrering" minHeight="-Infinity"
+							minWidth="-Infinity" prefHeight="43.0" prefWidth="150.0"
+							styleClass="label-calenderdays">
 							<padding>
 								<Insets bottom="5.0" />
 							</padding>
@@ -199,8 +283,12 @@
 						<VBox alignment="CENTER" prefHeight="80.0" prefWidth="150.0">
 							<children>
 								<!-- NORMAL BUTTONS; LOGOUT REFRESH -->
-								<Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="150.0" styleClass="normalButton" text="Logg ut" />
-								<Button fx:id="refresh" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshKalender" prefHeight="40.0" prefWidth="150.0" styleClass="normalButton" text="Last inn igjen" />
+								<Button minHeight="-Infinity" minWidth="-Infinity"
+									mnemonicParsing="false" onAction="#logout" prefHeight="40.0"
+									prefWidth="150.0" styleClass="normalButton" text="Logg ut" />
+								<Button fx:id="refresh" minHeight="-Infinity" minWidth="-Infinity"
+									mnemonicParsing="false" onAction="#refreshKalender" prefHeight="40.0"
+									prefWidth="150.0" styleClass="normalButton" text="Last inn igjen" />
 							</children>
 						</VBox>
 					</children>

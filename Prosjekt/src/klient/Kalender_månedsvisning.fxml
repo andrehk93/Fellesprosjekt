@@ -56,7 +56,7 @@
 		</VBox>
 
 		<!-- <>-knappene, MANED&AR, og VISNINGS-KNAPPER -->
-		<HBox alignment="CENTER_LEFT" layoutX="210.0" layoutY="28.0" prefHeight="46.0" prefWidth="771.0" spacing="100.0">
+		<HBox alignment="CENTER_LEFT" layoutX="210.0" layoutY="30.0" prefHeight="46.0" prefWidth="771.0" spacing="100.0">
 			<children>
 				<HBox alignment="CENTER" layoutX="221.0" layoutY="48.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="130.0">
 					<children>
