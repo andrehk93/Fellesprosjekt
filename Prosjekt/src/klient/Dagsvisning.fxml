@@ -11,91 +11,21 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.DagsvisningController">
    <children>
-      <AnchorPane layoutX="4.0" layoutY="10.0" prefHeight="700.0" prefWidth="1006.0" stylesheets="@application.css">
+      <AnchorPane layoutY="-8.0" prefHeight="727.0" prefWidth="1010.0" stylesheets="@application.css">
          <children>
-            <VBox alignment="TOP_CENTER" layoutX="28.0" layoutY="165.0" prefHeight="471.0" prefWidth="169.0" spacing="20.0" stylesheets="@application.css">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:">
-                     <font>
-                        <Font name="Segoe UI Light" size="18.0" />
-                     </font>
-                  </Text>
-                  <Label fx:id="brukernavn" styleClass="label-name">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Button mnemonicParsing="false" onAction="#nextPaneMakeAppointment" styleClass="specialButton" text="Ny avtale" />
-                  <Button mnemonicParsing="false" onAction="#nextPaneEditGroups" prefHeight="46.0" prefWidth="107.0" styleClass="specialButton" text="Grupper" />
-                  <VBox alignment="TOP_CENTER" prefHeight="249.0" prefWidth="153.0" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner: ">
-                           <font>
-                              <Font name="Segoe UI Light" size="15.0" />
-                           </font>
-                        </Text>
-                        <ListView fx:id="notifikasjoner_lv" prefHeight="211.0" prefWidth="169.0" styleClass="label-normal-objects" />
-                     </children>
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#nextPaneLogOut" styleClass="normalButton" text="Logg ut" />
-                     </children>
-                  </VBox>
-               </children>
-            </VBox>
-            <HBox layoutX="636.0" layoutY="53.0" prefHeight="46.0" prefWidth="300.0" styleClass="specialButton">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Dag" textFill="WHITE">
-                     <effect>
-                        <ColorAdjust contrast="0.03" saturation="-0.3" />
-                     </effect>
-                  </Button>
-                  <Button fx:id="ukeBtn" mnemonicParsing="false" onAction="#nextPaneWeekView" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Uke" />
-                  <Button fx:id="manedBtn" mnemonicParsing="false" onAction="#nextPaneMonthView" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Måned" />
-               </children>
-            </HBox>
-            <HBox layoutX="230.0" layoutY="53.0" prefHeight="46.0" prefWidth="118.0">
-               <children>
-                  <Button fx:id="forrigeDag" mnemonicParsing="false" onAction="#lastDay" prefHeight="46.0" prefWidth="61.0" styleClass="specialButton" text="&lt;">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="nesteDag" mnemonicParsing="false" onAction="#nextDay" prefHeight="46.0" prefWidth="59.0" styleClass="specialButton" text="&gt;">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="237.0" layoutY="111.0" prefHeight="34.0" prefWidth="686.0" styleClass="label-days">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="100.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Uke" wrappingWidth="30.205078125" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="Segoe UI Light" size="18.0" />
-                           </font>
-                        </Text>
-                        <Label fx:id="ukenrTekst" nodeOrientation="LEFT_TO_RIGHT" prefHeight="27.0" prefWidth="35.0" text="(nr)" />
-                     </children>
-                     <padding>
-                        <Insets left="5.0" />
-                     </padding>
-                  </HBox>
-                  <Label fx:id="datoTekst" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="486.0" text="(dato)" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="aarTekst" nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0" prefWidth="100.0" text="(år)" textAlignment="RIGHT" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-            <Line endX="640.0" layoutX="295.0" layoutY="145.0" opacity="0.72" startX="-75.0" stroke="#aeadad" />
-            <Line endX="655.0" layoutX="285.0" layoutY="110.0" opacity="0.33" startX="-215.0" stroke="#aeadad" />
-            <Label layoutX="50.0" layoutY="45.0" styleClass="label-header" text="Kalender" textFill="#476cd0">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="622.0" layoutX="-3.0" layoutY="87.0" opacity="0.3" stroke="#9a9696" strokeType="INSIDE" width="200.0">
+               <effect>
+                  <DropShadow color="#888b8d4a" height="0.0" radius="0.0" spread="0.57" width="0.0" />
+               </effect>
+            </Rectangle>
+            <Label layoutX="20.0" layoutY="25.0" styleClass="label-header" text="Kalender" textFill="#476cd0">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <ScrollPane hbarPolicy="NEVER" layoutX="220.0" layoutY="165.0" prefHeight="471.0" prefWidth="716.0" styleClass="label-normal-objects">
+            <ScrollPane hbarPolicy="NEVER" layoutX="215.0" layoutY="148.0" prefHeight="537.0" prefWidth="761.0" styleClass="label-normal-objects">
                <content>
-                  <GridPane fx:id="ruter" prefHeight="1200.0" prefWidth="716.0">
+                  <GridPane fx:id="ruter" prefHeight="1326.0" prefWidth="757.0" styleClass="label-calenderdays">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.0" minWidth="10.0" percentWidth="15.0" prefWidth="106.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="111.0" minWidth="10.0" percentWidth="85.0" prefWidth="94.0" />
@@ -129,7 +59,116 @@
                   </GridPane>
                </content>
             </ScrollPane>
-            <ChoiceBox fx:id="filtrering" layoutX="790.0" layoutY="647.0" prefWidth="150.0" styleClass="label-normal-objects"/>
+            <HBox alignment="CENTER_LEFT" layoutX="210.0" layoutY="30.0" prefHeight="46.0" prefWidth="771.0" spacing="100.0">
+               <children>
+                  <HBox alignment="CENTER" layoutX="221.0" layoutY="48.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="130.0">
+                     <children>
+                        <Button fx:id="forrigeDag" mnemonicParsing="false" onAction="#lastDay" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="&lt;">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="20.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#nextDay" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="&gt;">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="20.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <VBox alignment="CENTER" prefHeight="54.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="arLabel" alignment="CENTER" layoutX="467.0" layoutY="20.0" textAlignment="CENTER" />
+                        <Label fx:id="manedLabel" alignment="CENTER" layoutX="450.0" layoutY="48.0" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" layoutX="633.0" layoutY="48.0" prefHeight="40.0" prefWidth="240.0">
+                     <children>
+                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="Dag">
+                           <effect>
+                              <ColorAdjust contrast="-0.25" />
+                           </effect></Button>
+                        <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneWeekView" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="Uke" />
+                        <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneMonthView" prefHeight="40.0" prefWidth="100.0" styleClass="specialButton" text="Måned" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER" layoutX="2.0" layoutY="89.0" prefHeight="615.0" prefWidth="191.0" spacing="20.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="brukernavn1" styleClass="label-name" text="brukernavn">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <VBox alignment="CENTER" minHeight="-Infinity" prefHeight="120.0" prefWidth="165.0">
+                     <children>
+                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneMakeAppointment" prefHeight="40.0" prefWidth="175.0" styleClass="specialButton" text="Ny avtale" />
+                        <Button fx:id="grupper" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneEditGroups" prefHeight="40.0" prefWidth="175.0" styleClass="specialButton" text="Grupper" />
+                        <Button fx:id="brukerredigering" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneEditUsers" prefHeight="40.0" prefWidth="175.0" styleClass="specialButton" text="Brukerinnstillinger" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="360.0" prefWidth="163.0" spacing="10.0" styleClass="label-normal-objects">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notifikasjoner:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                        <ListView prefHeight="200.0" prefWidth="200.0" />
+                        <ChoiceBox fx:id="filtrering1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="150.0" styleClass="label-calenderdays">
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </ChoiceBox>
+                        <VBox alignment="CENTER" prefHeight="80.0" prefWidth="150.0">
+                           <children>
+                              <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneLogOut" prefHeight="40.0" prefWidth="150.0" styleClass="normalButton" text="Logg ut" />
+                              <Button fx:id="refresh" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshKalender" prefHeight="40.0" prefWidth="150.0" styleClass="normalButton" text="Last inn igjen" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="TOP_RIGHT" layoutX="-17.0" layoutY="86.0" prefHeight="46.0" prefWidth="1018.0" spacing="5">
+               <children>
+                  <Line endX="668.0" layoutX="275.0" layoutY="100.0" opacity="0.7" startX="-335.0" stroke="#aeadad" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="983.0" spacing="200.0" styleClass="label-days">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="34.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Uke " wrappingWidth="37.205078125" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Segoe UI Light" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Label fx:id="ukenrTekst" nodeOrientation="LEFT_TO_RIGHT" prefHeight="27.0" prefWidth="29.0" styleClass="label-calenderdays" text="(nr)" />
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </HBox>
+                        <Label fx:id="datoTekst" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="87.0" text="(dato)" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="aarTekst" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="27.0" prefWidth="84.0" text="(år)" textAlignment="RIGHT" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets right="100.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Line endX="637.0" layoutX="285.0" layoutY="135.0" opacity="0.70" startX="-166.0" stroke="#aeadad" />
+               </children>
+            </VBox>
          </children>
       </AnchorPane>
    </children>
