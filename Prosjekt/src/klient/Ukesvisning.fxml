@@ -188,7 +188,7 @@
 								<Font size="15.0" />
 							</font>
 						</Text>
-						<ListView fx:id="notifikasjoner" prefHeight="211.0" prefWidth="169.0" />
+						<ListView fx:id="notifikasjoner_lv" prefHeight="211.0" prefWidth="169.0" />
 					</children>
 					<children>
 						<ChoiceBox fx:id="filtrering" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="150.0" styleClass="label-calenderdays">
