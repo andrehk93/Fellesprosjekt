@@ -47,7 +47,6 @@
                   <ListView fx:id="slettListe" prefHeight="224.0" prefWidth="293.0" styleClass="label-normal-objects" />
                   <Button fx:id="slett" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#slettBrukere" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Slett" />
                   <Button fx:id="mkAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#makeAdmin" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Gjør til admin" />
-                  <Button fx:id="rmAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#removeAdmin" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Fjern som admin"/>
                </children>
             </VBox>
          </children>
