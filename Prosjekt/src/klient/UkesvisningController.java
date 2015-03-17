@@ -2,7 +2,6 @@ package klient;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,24 +29,25 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class UkesvisningController {
 	
 	@FXML private GridPane ruter;
 	@FXML private ScrollPane scroll;
-	@FXML private Label ukeNr, brukernavn;
-	@FXML private Button nesteUke;
-	@FXML private Button forrigeUke;
+	@FXML private Label ukeNr, brukernavn, arLabel, manedLabel;
+	@FXML private Button nesteUke, grupper, brukerredigering, refresh;
+	@FXML private Button forrigeUke, ekstraKal;
 	@FXML private ChoiceBox<String> filtrering;
+	@FXML private Text man, tir, ons, tor, fre, lor, son;
 	
 	private ArrayList<Varsel> oppdelte_notifikasjoner;
 	private ObservableList<String> items;
-	private String[] avtaleListe;
 	private ArrayList<Avtale> ukeAvtaler;
 	private LocalDate firstDayOfWeek;
 	private int weekNumber;
 	private static ArrayList<Dag> dager;
-	private static final double colWidth = 92;
+	private static final double colWidth = 98;
 	private ArrayList<StackPane> bokser;
 	private String[] notifikasjonene;
 	private boolean ingenInvitasjoner;
@@ -71,6 +71,7 @@ public class UkesvisningController {
 		for(int i=1;i<7;i++){
 			dager.add(new Dag(firstDayOfWeek.plusDays(i)));
 		}
+		loadDayTexts();
 		flushView();
 		showBruker();
 		this.notifikasjonene = KalenderController.notifikasjonene;
@@ -82,6 +83,16 @@ public class UkesvisningController {
 		loadGrid();
 	}
 	
+	private void loadDayTexts() {
+		man.setText(dager.get(0).getDagNavn()+" "+dager.get(0).getDayinMonth()+".");
+		tir.setText(dager.get(1).getDagNavn()+" "+dager.get(1).getDayinMonth()+".");
+		ons.setText(dager.get(2).getDagNavn()+" "+dager.get(2).getDayinMonth()+".");
+		tor.setText(dager.get(3).getDagNavn()+" "+dager.get(3).getDayinMonth()+".");
+		fre.setText(dager.get(4).getDagNavn()+" "+dager.get(4).getDayinMonth()+".");
+		lor.setText(dager.get(5).getDagNavn()+" "+dager.get(5).getDayinMonth()+".");
+		son.setText(dager.get(6).getDagNavn()+" "+dager.get(6).getDayinMonth()+".");
+	}
+
 	private void showBruker() {
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
@@ -224,7 +235,12 @@ public class UkesvisningController {
 		int day = app.getTid().getDato().getDayOfWeek().getValue();
 		double margin = app.getTid().getMargin();
 		Rectangle box = new Rectangle(colWidth,ySize);
-		box.setFill(Color.BLUE);
+		if(app.getStranger()){
+			box.setFill(Color.RED);
+		}
+		else{
+			box.setFill(Color.BLUE);
+		}
 		Text text = new Text(app.getAvtaleid());
 	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
 	    text.setFill(Color.WHITE);
@@ -251,7 +267,12 @@ public class UkesvisningController {
 		
 		box.setOnMouseExited(new EventHandler<Event>() {
 			public void handle(Event event) {
-				box.setFill(Color.BLUE);
+				if(app.getStranger()){
+					box.setFill(Color.RED);
+				}
+				else{
+					box.setFill(Color.BLUE);
+				}
 			}
 		});
 		
@@ -317,15 +338,6 @@ public class UkesvisningController {
 		}
 	};
 	
-	private Dag getDag(LocalDate dato) {
-		for (Dag dag : dager) {
-			if (dag.getDato().equals(dato)) {
-				return dag;
-			}
-		}
-		return null;
-	}
-	
 	@FXML
 	private void nextPaneMonthView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
@@ -366,6 +378,13 @@ public class UkesvisningController {
 	@FXML
 	public void refreshKalender(ActionEvent event) throws Exception {
 		flushView();
+	}
+	
+	@FXML
+	public void extraCal(ActionEvent event) throws IOException{
+		Klienten.setDest("/klient/extraPopup.fxml");
+		Popup pop = new Popup();
+		pop.start(new Stage());
 	}
 	
 	@FXML

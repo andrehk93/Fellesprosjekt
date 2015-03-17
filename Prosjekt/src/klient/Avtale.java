@@ -15,6 +15,7 @@ public class Avtale {
 	
 	private String avtaleid;
 	private String avtalenavn;
+	private boolean stranger;
 	
 	public Avtale() {
 		
@@ -27,6 +28,7 @@ public class Avtale {
 		setDeltakere(deltakere);
 		setTid(tid);
 		setRom(rom);
+		setStranger(false);
 	}
 	
 	private void removeEier() {
@@ -242,6 +244,14 @@ public class Avtale {
 				deltakere.get(i).addAvtale(this);
 			}
 		}
+	}
+	
+	public boolean getStranger(){
+		return this.stranger;
+	}
+	
+	public void setStranger(boolean b){
+		this.stranger = b;
 	}
 	
 	public String toString() {
