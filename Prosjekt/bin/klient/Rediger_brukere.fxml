@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -47,7 +49,7 @@
                   <ListView fx:id="slettListe" prefHeight="224.0" prefWidth="293.0" styleClass="label-normal-objects" />
                   <Button fx:id="slett" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#slettBrukere" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Slett" />
                   <Button fx:id="mkAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#makeAdmin" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Gjør til admin" />
-                  <Button fx:id="rmAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#removeAdmin" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Fjern som admin"/>
+                  <Button fx:id="rmAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#removeAdmin" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Fjern som admin" />
                </children>
             </VBox>
          </children>
@@ -61,5 +63,15 @@
             <Button mnemonicParsing="false" onAction="#monthView" prefHeight="46.0" prefWidth="166.0" styleClass="normalButton" text="Tilbake" />
          </children>
       </VBox>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4986e7" height="5.0" layoutX="99.0" layoutY="101.0" opacity="0.72" strokeType="INSIDE" strokeWidth="0.0" width="835.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#d9d9d900" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Rectangle>
    </children>
 </AnchorPane>
