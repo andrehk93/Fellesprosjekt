@@ -43,7 +43,7 @@
             </VBox>
 		
       		<!-- BUTTON - LOGG INN  ******************-->
-				<Button fx:id="logginn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="33.0" prefWidth="343.0" styleClass="specialButton " text="Logg inn" GridPane.rowIndex="3">
+				<Button fx:id="logginn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="33.0" prefWidth="343.0" styleClass="big-specialButton " text="Logg inn" GridPane.rowIndex="3">
 					<font>
 						<Font name="Garamond" size="18.0" />
 					</font>
