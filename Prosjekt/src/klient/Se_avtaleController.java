@@ -37,6 +37,11 @@ public class Se_avtaleController {
 		rommet = avtalen.getRom().getNavn();
 		admin = avtalen.getEier().getEmail();
 		avtalenavn = avtalen.getAvtaleNavn();
+		if(!avtalen.getDeltakere().contains(Klienten.bruker)){
+			skal.disableProperty().set(true);
+			skal_ikke.disableProperty().set(true);
+			ikke_svart.disableProperty().set(true);
+		}
 		String deltakerne = Klienten.getDeltakere(avtaleid, "1");
 		String[] deltakere_attender = deltakerne.trim().split(" ");
 		List<HBox> deltaker_liste = new ArrayList<HBox>();

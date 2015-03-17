@@ -261,7 +261,12 @@ public class UkesvisningController {
 	private void setUpBox(Rectangle box, Avtale app) {
 		box.setOnMouseEntered(new EventHandler<Event>() {
 		    public void handle(Event event) {
-		        box.setFill(Color.LIGHTBLUE);
+		    	if(app.getStranger()){
+					box.setFill(Color.PINK);
+				}
+				else{
+					box.setFill(Color.LIGHTBLUE);
+				}
 		    }
 		});
 		
