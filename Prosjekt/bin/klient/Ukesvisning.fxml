@@ -96,8 +96,8 @@
 						<!-- ÅR OG MANED LABELS -->
 						<VBox alignment="CENTER" prefHeight="54.0" prefWidth="200.0">
 							<children>
-								<Label fx:id="arLabel1" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
-								<Label fx:id="manedLabel1" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
+								<Label fx:id="arLabel" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
+								<Label fx:id="manedLabel" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
 							</children>
 						</VBox>
 						<HBox alignment="CENTER" layoutX="633.0" layoutY="48.0" prefHeight="40.0" prefWidth="240.0">
@@ -121,7 +121,7 @@
 		<VBox alignment="TOP_RIGHT" layoutY="90.0" prefHeight="46.0" prefWidth="985.0" spacing="5">
 			<children>
 				<Line endX="660.0" layoutX="275.0" layoutY="100.0" opacity="0.7" startX="-340.0" stroke="#aeadad" />
-				<HBox alignment="CENTER_RIGHT" layoutX="220.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0" spacing="5.0" styleClass="label-calenderdays">
+				<HBox alignment="CENTER_RIGHT" layoutX="220.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="35.0" prefWidth="1000.0" styleClass="label-calenderdays">
 					<children>
 						<HBox alignment="CENTER" prefHeight="34.0" prefWidth="71.0" styleClass="label-calenderdays">
 							<padding>
@@ -136,20 +136,20 @@
 								<Label fx:id="ukeNr" alignment="CENTER" prefHeight="27.0" prefWidth="29.0" styleClass="label-calenderdays" text="nr" />
 							</children>
 						</HBox>
-						<HBox alignment="CENTER" prefHeight="35.0" prefWidth="58.0" spacing="50.0" styleClass="label-calenderdays">
+						<HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="705.0" styleClass="label-calenderdays">
 							<children>
-								<Text fx:id="man" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Mandag" />
-								<Text fx:id="tir" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Tirsdag" />
-								<Text fx:id="ons" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Onsdag" wrappingWidth="49.482421875" />
-								<Text fx:id="tor" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Torsdag" />
-								<Text fx:id="fre" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Fredag" />
-								<Text fx:id="lor" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Lørdag" />
-								<Text fx:id="son" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Søndag" />
+								<Text fx:id="man" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Mandag 19." textAlignment="CENTER" wrappingWidth="100.0" />
+								<Text fx:id="tir" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Tirsdag 19." textAlignment="CENTER" wrappingWidth="100.0" />
+								<Text fx:id="ons" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Onsdag 19." textAlignment="CENTER" wrappingWidth="100.0" />
+								<Text fx:id="tor" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Torsdag 19." textAlignment="CENTER" wrappingWidth="100.0" />
+								<Text fx:id="fre" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Fredag 19." textAlignment="CENTER" wrappingWidth="100.0" />
+								<Text fx:id="lor" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Lørdag 19." textAlignment="CENTER" wrappingWidth="100.0" />
+								<Text fx:id="son" fill="#000000db" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Søndag 19." textAlignment="CENTER" wrappingWidth="100.0" />
 							</children>
 						</HBox>
 					</children>
 					<padding>
-						<Insets right="78.0" />
+						<Insets right="20.0" />
 					</padding>
 				</HBox>
 				<Line endX="630.0" layoutX="285.0" layoutY="135.0" opacity="0.70" startX="-171.0" stroke="#aeadad" />

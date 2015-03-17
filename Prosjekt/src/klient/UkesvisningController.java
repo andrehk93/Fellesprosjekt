@@ -2,7 +2,6 @@ package klient;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,20 +35,19 @@ public class UkesvisningController {
 	
 	@FXML private GridPane ruter;
 	@FXML private ScrollPane scroll;
-	@FXML private Label ukeNr, brukernavn;
-	@FXML private Button nesteUke;
+	@FXML private Label ukeNr, brukernavn, arLabel, manedLabel;
+	@FXML private Button nesteUke, grupper, brukerredigering, refresh;
 	@FXML private Button forrigeUke, ekstraKal;
 	@FXML private ChoiceBox<String> filtrering;
 	@FXML private Text man, tir, ons, tor, fre, lor, son;
 	
 	private ArrayList<Varsel> oppdelte_notifikasjoner;
 	private ObservableList<String> items;
-	private String[] avtaleListe;
 	private ArrayList<Avtale> ukeAvtaler;
 	private LocalDate firstDayOfWeek;
 	private int weekNumber;
 	private static ArrayList<Dag> dager;
-	private static final double colWidth = 92;
+	private static final double colWidth = 98;
 	private ArrayList<StackPane> bokser;
 	private String[] notifikasjonene;
 	private boolean ingenInvitasjoner;
@@ -339,15 +337,6 @@ public class UkesvisningController {
 			}
 		}
 	};
-	
-	private Dag getDag(LocalDate dato) {
-		for (Dag dag : dager) {
-			if (dag.getDato().equals(dato)) {
-				return dag;
-			}
-		}
-		return null;
-	}
 	
 	@FXML
 	private void nextPaneMonthView(ActionEvent event) {

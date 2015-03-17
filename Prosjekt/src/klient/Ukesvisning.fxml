@@ -96,8 +96,8 @@
 						<!-- ÅR OG MANED LABELS -->
 						<VBox alignment="CENTER" prefHeight="54.0" prefWidth="200.0">
 							<children>
-								<Label fx:id="arLabel1" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
-								<Label fx:id="manedLabel1" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
+								<Label fx:id="arLabel" alignment="CENTER" layoutX="467.0" layoutY="20.0" text="År" textAlignment="CENTER" />
+								<Label fx:id="manedLabel" alignment="CENTER" layoutX="450.0" layoutY="48.0" text="Måned" textAlignment="CENTER" />
 							</children>
 						</VBox>
 						<HBox alignment="CENTER" layoutX="633.0" layoutY="48.0" prefHeight="40.0" prefWidth="240.0">
