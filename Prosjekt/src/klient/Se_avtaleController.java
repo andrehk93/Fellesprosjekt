@@ -163,15 +163,8 @@ public class Se_avtaleController {
 			Klienten.sendVarsel(avtaleid, admin, begrunnelse.getText());
 			Klienten.changeStatus(avtaleid, "0");
 		}
-		if (ScreenNavigator.getForrigeScreen().equals("Ukesvisning.fxml")) {
-			ScreenNavigator.loadScreen(ScreenNavigator.UKESVISNING);
-		}
-		else if (ScreenNavigator.getForrigeScreen().equals("Kalender_månedsvisning.fxml")) {
-			ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
-		}
-		else {
-			ScreenNavigator.loadScreen(ScreenNavigator.DAGSVISNING);
-		}
+		KalenderController.enheter = null;
+		ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 	}
 	
 

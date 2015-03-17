@@ -133,7 +133,11 @@ public class DagsvisningController {
 				String avtale = app.getAvtaleid();
 				Klienten.setValgtAvtale(avtale);
 				if(app.getEier().getEmail().equals(Klienten.bruker.getEmail())){
-					Klienten.setValgtAvtale(KalenderController.enheter[1]);
+					try {
+						Klienten.setValgtAvtale(KalenderController.enheter[1]);
+					}
+					catch (NullPointerException e) {
+					}
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{
