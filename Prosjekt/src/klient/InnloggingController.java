@@ -35,10 +35,8 @@ public class InnloggingController {//implements Initializable
 
 	public void initialize() {
 	}
-
-
-	@FXML// LOGG INN KNAPPEN
-	private void handleButtonAction(ActionEvent event) throws IOException, NoSuchAlgorithmException {
+	
+	private void loggInn() throws NoSuchAlgorithmException, IOException{
 		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
 				+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 		brukernavn.setStyle("-fx-text-box-border : white ");
@@ -72,40 +70,16 @@ public class InnloggingController {//implements Initializable
 		}
 	}
 
+
+	@FXML// LOGG INN KNAPPEN
+	private void handleButtonAction(ActionEvent event) throws IOException, NoSuchAlgorithmException {
+		loggInn();
+	}
+
 	@FXML
 	private void enterKeyPress(KeyEvent event) throws NoSuchAlgorithmException, IOException{
 		if(event.getCode() == KeyCode.ENTER){
-
-			String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
-					+ "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-			brukernavn.setStyle("-fx-text-box-border : white ");
-			passord.setStyle("-fx-text-box-border : white ");
-			msg.setText(" ");
-
-			String svar = Klienten.login(brukernavn.getText(), passord.getText()); 
-			if (brukernavn.getText().equals("") && passord.getText().equals("")){
-				brukernavn.setStyle("-fx-text-box-border : red ");
-				passord.setStyle("-fx-text-box-border : red ");
-				msg.setText("Skriv inn brukernavn og passord");
-			}else if(brukernavn.getText().equals("")){
-				brukernavn.setStyle("-fx-text-box-border : red ");
-				msg.setText("Skriv inn brukernavn");
-
-			}else if(passord.getText().equals("")){
-				passord.setStyle("-fx-text-box-border : red ");
-				msg.setText("Skriv inn passord.");
-			}
-			else if (svar.equals("OK")){
-				ScreenNavigator.loadScreen(ScreenNavigator.MANEDSVISNING);
-			} else if(svar.equals("NO SUCH USER")){
-				msg.setText("Brukernavnet eksisterer ikke!");
-			}else if(!(brukernavn.getText().matches(regex))){
-				brukernavn.setStyle("-fx-text-box-border : red ");
-				msg.setText("Ugyldig format!");
-			}
-			else {
-				msg.setText("Feil passord!");
-			}
+			loggInn();
 		}
 	}
 

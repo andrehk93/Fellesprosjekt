@@ -32,7 +32,7 @@ public class KalenderController {
 	@FXML private Label manedLabel, brukernavn, arLabel;
 	@FXML private ListView<String> notifikasjoner;
 	@FXML private ChoiceBox<String> filtrering;
-	@FXML private Button brukerredigering;
+	@FXML private Button brukerredigering, ekstraKal;
 	public static String[] notifikasjon_liste;
 	private int maned;
 	private int aar;
@@ -203,6 +203,7 @@ public class KalenderController {
 	public static void pop(String notifikasjon_trykketPå) throws Exception {
 		String[] enhetene = notifikasjon_trykketPå.split(" ");
 		valg = enhetene[1];
+		Klienten.setDest("/klient/SePopup.fxml");
 		Popup pop = new Popup();
 		pop.start(new Stage());
 	}
@@ -448,6 +449,13 @@ public class KalenderController {
 			setMonth(getMonth()-1);
 		}
 		flushView();
+	}
+	
+	@FXML
+	public void extraCal(ActionEvent event) throws IOException{
+		Klienten.setDest("/klient/ekstraPopup.fxml");
+		Popup pop = new Popup();
+		pop.start(new Stage());
 	}
 
 	@FXML

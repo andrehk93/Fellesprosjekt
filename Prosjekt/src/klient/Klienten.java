@@ -29,6 +29,7 @@ public class Klienten {
 	private static boolean changed;
 	private static int filtrering;
 	private static HashMap<String,Bruker> brukere;
+	private static String dest;
 	
 	
 	public Klienten() throws IOException {
@@ -468,6 +469,14 @@ public class Klienten {
 	
 	public static void addBruker(String email, Bruker bruker) {
 		brukere.putIfAbsent(email, bruker);
+	}
+	
+	public static void setDest(String d) {
+		dest = d;
+	}
+	
+	public static String getDest(){
+		return dest;
 	}
 }
 
