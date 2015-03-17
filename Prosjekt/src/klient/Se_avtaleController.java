@@ -154,6 +154,7 @@ public class Se_avtaleController {
 		ikke_svart.selectedProperty().addListener(select_ikke_svart);
 	}
 	
+	@FXML
 	public void bekreftEndringer(ActionEvent event) throws IOException {
 		if (skal.isSelected()) {
 			Klienten.sendVarsel(avtaleid, admin, begrunnelse.getText());

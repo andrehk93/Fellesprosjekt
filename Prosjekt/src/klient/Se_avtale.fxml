@@ -96,9 +96,9 @@
                         <Font name="Segoe UI Light" size="18.0" />
                      </font>
                   </Text>
-                  <RadioButton fx:id="ikke_svart" mnemonicParsing="false" onAction="#ikke_svart" styleClass="label-name" text="Ikke svart" />
-                  <RadioButton fx:id="skal" mnemonicParsing="false" onAction="#skal" text="Skal" />
-                  <RadioButton fx:id="skal_ikke" mnemonicParsing="false" onAction="#skal_ikke" text="Skal ikke" />
+                  <RadioButton fx:id="ikke_svart" mnemonicParsing="false" styleClass="label-name" text="Ikke svart" />
+                  <RadioButton fx:id="skal" mnemonicParsing="false" text="Skal" />
+                  <RadioButton fx:id="skal_ikke" mnemonicParsing="false" text="Skal ikke" />
                </children>
             </HBox>
             <HBox prefHeight="112.0" prefWidth="444.0" spacing="15.0">

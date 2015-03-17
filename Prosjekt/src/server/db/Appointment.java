@@ -69,6 +69,7 @@ public class Appointment {
 		query = "DELETE FROM `christwg_fp`.`avtale` WHERE `avtaleid`=?;";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, appID);
+		System.out.println(statement.toString());
 		statement.executeUpdate();
 	}
 	
@@ -77,6 +78,7 @@ public class Appointment {
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, appID);
 		statement.setString(2, email);
+		System.out.println(statement.toString());
 		statement.executeUpdate();
 	}
 	
