@@ -30,6 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class UkesvisningController {
 	
@@ -37,8 +38,9 @@ public class UkesvisningController {
 	@FXML private ScrollPane scroll;
 	@FXML private Label ukeNr, brukernavn;
 	@FXML private Button nesteUke;
-	@FXML private Button forrigeUke;
+	@FXML private Button forrigeUke, ekstraKal;
 	@FXML private ChoiceBox<String> filtrering;
+	@FXML private Text man, tir, ons, tor, fre, lor, son;
 	
 	private ArrayList<Varsel> oppdelte_notifikasjoner;
 	private ObservableList<String> items;
@@ -71,6 +73,7 @@ public class UkesvisningController {
 		for(int i=1;i<7;i++){
 			dager.add(new Dag(firstDayOfWeek.plusDays(i)));
 		}
+		loadDayTexts();
 		flushView();
 		showBruker();
 		this.notifikasjonene = KalenderController.notifikasjonene;
@@ -82,6 +85,16 @@ public class UkesvisningController {
 		loadGrid();
 	}
 	
+	private void loadDayTexts() {
+		man.setText(dager.get(0).getDagNavn()+" "+dager.get(0).getDayinMonth()+".");
+		tir.setText(dager.get(1).getDagNavn()+" "+dager.get(1).getDayinMonth()+".");
+		ons.setText(dager.get(2).getDagNavn()+" "+dager.get(2).getDayinMonth()+".");
+		tor.setText(dager.get(3).getDagNavn()+" "+dager.get(3).getDayinMonth()+".");
+		fre.setText(dager.get(4).getDagNavn()+" "+dager.get(4).getDayinMonth()+".");
+		lor.setText(dager.get(5).getDagNavn()+" "+dager.get(5).getDayinMonth()+".");
+		son.setText(dager.get(6).getDagNavn()+" "+dager.get(6).getDayinMonth()+".");
+	}
+
 	private void showBruker() {
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
@@ -376,6 +389,13 @@ public class UkesvisningController {
 	@FXML
 	public void refreshKalender(ActionEvent event) throws Exception {
 		flushView();
+	}
+	
+	@FXML
+	public void extraCal(ActionEvent event) throws IOException{
+		Klienten.setDest("/klient/extraPopup.fxml");
+		Popup pop = new Popup();
+		pop.start(new Stage());
 	}
 	
 	@FXML
