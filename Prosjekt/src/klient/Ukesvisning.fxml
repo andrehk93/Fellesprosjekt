@@ -9,25 +9,23 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-
 <AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.UkesvisningController">
 
 	<!-- KALENDER TITTEL & FIRKANT -->
 	<children>
-		<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="613.0" layoutY="96.0" opacity="0.3" stroke="#9a9696" strokeType="INSIDE" width="200.0">
+		<Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="613.0" layoutY="90.0" opacity="0.3" stroke="#9a9696" strokeType="INSIDE" width="200.0">
 			<effect>
 				<DropShadow color="#888b8d4a" height="0.0" radius="0.0" spread="0.57" width="0.0" />
 			</effect>
 		</Rectangle>
-		<Label alignment="TOP_LEFT" layoutX="20.0" layoutY="24.0" styleClass="label-header" text="Kalender" textFill="#476cd0">
+		<Label alignment="TOP_LEFT" layoutX="20.0" layoutY="25.0" styleClass="label-header" text="Kalender" textFill="#476cd0">
 			<font>
 				<Font name="System Bold" size="25.0" />
 			</font>
 		</Label>
-		
+
 		<!-- SCROLLPANE & GRIDPANE -->
-		<ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="220.0" layoutY="165.0" prefHeight="525.0" prefWidth="763.0" styleClass="label-normal-objects" vvalue="0.5">
+		<ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="215.0" layoutY="150.0" prefHeight="540.0" prefWidth="770.0" styleClass="label-normal-objects" vvalue="0.5">
 			<content>
 				<GridPane fx:id="ruter" gridLinesVisible="true" opacity="0.34" prefHeight="1211.0" prefWidth="761.0" styleClass="label-normal-objects">
 					<columnConstraints>
@@ -75,12 +73,12 @@
 				</GridPane>
 			</content>
 		</ScrollPane>
-<!-- ØVERSTE LAG: KNAPPER og shit.  -->
-		<HBox alignment="CENTER_LEFT" layoutX="220.0" layoutY="28.0" prefHeight="46.0" prefWidth="771.0" spacing="100.0">
+		<!-- ØVERSTE LAG: KNAPPER og shit. -->
+		<HBox alignment="CENTER_LEFT" layoutX="210.0" layoutY="30.0" prefHeight="46.0" prefWidth="771.0" spacing="100.0">
 			<children>
 				<HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="771.0" spacing="100.0">
 					<children>
-					<!-- FORRIGE UKE; NESTE UKE -->
+						<!-- FORRIGE UKE; NESTE UKE -->
 						<HBox alignment="CENTER" layoutX="221.0" layoutY="48.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="130.0">
 							<children>
 								<Button fx:id="forrigeUke" mnemonicParsing="false" onAction="#prevWeek" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="&lt;">
@@ -104,7 +102,7 @@
 						</VBox>
 						<HBox alignment="CENTER" layoutX="633.0" layoutY="48.0" prefHeight="40.0" prefWidth="240.0">
 							<children>
-							<!-- DAYVIEW, WEEK AND MONTH -->
+								<!-- DAYVIEW, WEEK AND MONTH -->
 								<Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneDayView" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="Dag" />
 								<Button minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="specialButton" text="Uke">
 									<effect>
@@ -118,11 +116,11 @@
 				</HBox>
 			</children>
 		</HBox>
-		
+
 		<!-- *****ØVRE LINJE, KALENDERDAGER, NEDRE LINJHE******* -->
-		<VBox alignment="TOP_RIGHT" layoutX="-2.0" layoutY="96.0" prefHeight="46.0" prefWidth="1011.0" spacing="5">
+		<VBox alignment="TOP_RIGHT" layoutY="90.0" prefHeight="46.0" prefWidth="985.0" spacing="5">
 			<children>
-				<Line endX="668.0" layoutX="275.0" layoutY="100.0" opacity="0.7" startX="-340.0" stroke="#aeadad" />
+				<Line endX="660.0" layoutX="275.0" layoutY="100.0" opacity="0.7" startX="-340.0" stroke="#aeadad" />
 				<HBox alignment="CENTER_RIGHT" layoutX="220.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="1000.0" spacing="5.0" styleClass="label-calenderdays">
 					<children>
 						<HBox alignment="CENTER" prefHeight="34.0" prefWidth="71.0" styleClass="label-calenderdays">
@@ -154,12 +152,12 @@
 						<Insets right="78.0" />
 					</padding>
 				</HBox>
-				<Line endX="637.0" layoutX="285.0" layoutY="135.0" opacity="0.70" startX="-171.0" stroke="#aeadad" />
+				<Line endX="630.0" layoutX="285.0" layoutY="135.0" opacity="0.70" startX="-171.0" stroke="#aeadad" />
 			</children>
 		</VBox>
-		
-		<!--  HELE VENSTRE MENY -->
-		<VBox alignment="TOP_CENTER" layoutX="3.0" layoutY="103.0" prefHeight="593.0" prefWidth="191.0" spacing="20.0">
+
+		<!-- HELE VENSTRE MENY -->
+		<VBox alignment="TOP_CENTER" layoutY="90.0" prefHeight="610.0" prefWidth="200.0" spacing="20.0">
 			<children>
 				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:">
 					<font>
@@ -188,7 +186,9 @@
 								<Font size="15.0" />
 							</font>
 						</Text>
+
 						<ListView fx:id="notifikasjoner_lv" prefHeight="211.0" prefWidth="169.0" />
+
 					</children>
 					<children>
 						<ChoiceBox fx:id="filtrering" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="150.0" styleClass="label-calenderdays">
