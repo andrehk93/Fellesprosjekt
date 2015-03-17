@@ -357,9 +357,20 @@ public class DagsvisningController {
 	}
 	
 	@FXML
+	private void nextPaneEditUsers(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
+	}
+	
+	@FXML
 	private void nextPaneLogOut(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
 	}
+	
+	@FXML
+	public void refreshKalender(ActionEvent event) throws Exception {
+		flushView();
+	}
+	
 	
 
 }
