@@ -59,6 +59,10 @@ public class Klienten {
 		tilkobling = truth;
 	}
 	
+	public static HashMap<String, Bruker> getBrukere() {
+		return brukere;
+	}
+	
 	public static void setLest(String email, String avtaleid) throws IOException {
 		String toServer = "CHANGE NOTIFICATION " + email + " " + avtaleid;
 		sendTilServer(toServer);
@@ -93,6 +97,7 @@ public class Klienten {
 		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
 			String navn = getBruker(brukernavn);
+			System.out.println("DETTE ER NAVNET");
 			bruker = new Bruker(navn, brukernavn, Integer.parseInt(getRights().trim()));
 		}
 		return svar.trim();

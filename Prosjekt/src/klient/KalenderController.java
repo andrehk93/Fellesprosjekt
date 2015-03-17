@@ -50,8 +50,10 @@ public class KalenderController {
 	private boolean ingenInvitasjoner = false;
 	public static String[] notifikasjonene;
 
-	public void initialize() throws Exception{
-		Klienten.setUpBrukere();
+	public void initialize() throws Exception {
+		if (Klienten.getBrukere().isEmpty()) {
+			Klienten.setUpBrukere();
+		}
 		setMonth(LocalDate.now().getMonthValue());
 		setYear(LocalDate.now().getYear());
 		setDay(LocalDate.now().getDayOfMonth());
@@ -150,14 +152,15 @@ public class KalenderController {
 	};
 
 	// GÅ TIL EN NY SCREEN*****************
+	@FXML
 	public void grupperView(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.GRUPPER);
 	}
-
+	@FXML
 	public void redigerBrukerView(ActionEvent event){
 		ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
 	}
-
+	@FXML
 	public void refreshKalender(ActionEvent event) throws Exception {
 		flushView();
 	}
@@ -178,12 +181,10 @@ public class KalenderController {
 					if (enheter[0].equals("Invitasjon:")) {
 						Klienten.setValgtAvtale(enheter[1]);
 						ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
-						enheter = null;
 					}
 					else {
 						try {
 							pop(newValue);
-							enheter = null;
 						} catch (Exception e) {
 							System.out.println("FEIL: " + e);
 						}

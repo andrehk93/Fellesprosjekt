@@ -347,6 +347,11 @@ public class UkesvisningController {
 	}
 	
 	@FXML
+	private void nextPaneEditUsers(ActionEvent event) {
+		ScreenNavigator.loadScreen(ScreenNavigator.BRUKERREDIGERING);
+	}
+	
+	@FXML
 	private void nextWeek(ActionEvent event) throws Exception {
 		firstDayOfWeek = firstDayOfWeek.plusWeeks(1);
 		loadStuff();
@@ -356,6 +361,11 @@ public class UkesvisningController {
 	private void prevWeek(ActionEvent event) throws Exception {
 		firstDayOfWeek = firstDayOfWeek.minusWeeks(1);
 		loadStuff();
+	}
+	
+	@FXML
+	public void refreshKalender(ActionEvent event) throws Exception {
+		flushView();
 	}
 	
 	@FXML
