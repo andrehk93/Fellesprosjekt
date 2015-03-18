@@ -11,7 +11,6 @@ public class Appointment {
 	
 	private Connection con;
 	private String query;
-	private Secrets secrets = new Secrets();
 	
 	public Appointment(Connection con){
 		setCon(con);
@@ -92,12 +91,12 @@ public class Appointment {
 				"from avtale \n" + 
 				"where avtaleid=" + avtaleid;
 		
-		//System.out.println("QUERY : " + query);
 		PreparedStatement statement = con.prepareStatement(query);
+		System.out.println("QUERY : " + query);
 		ResultSet result = statement.executeQuery();
 		result.next();
 		String output = result.getString(1);
-		//System.out.println("outp: " + output);
+		System.out.println("outp: " + output);
 		if (output == null) {
 			return "Ingen beskrivelse";
 		}
@@ -257,12 +256,14 @@ public class Appointment {
 			statement.setString(2, status);
 		}
 		ResultSet result = statement.executeQuery();
+		System.out.println("STAT: " + statement);
 		
 		String output = "";
 		
 		while(result.next()){
 			output += result.getString(1)+" ";
 		}
+		System.out.println("OUT: " + output);
 		return output;
 	}
 	

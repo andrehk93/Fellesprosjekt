@@ -10,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -26,7 +27,7 @@ public class Rediger_brukerController {
 	private TabPane BrukerTabs;
 	
 	@FXML
-	private Button add, remove, slett, mkAdmin, rmAdmin;
+	private Button add, remove, slett, mkAdmin;
 	
 	private List<Bruker> brukere, admins;
 	
@@ -43,7 +44,6 @@ public class Rediger_brukerController {
 	@FXML
 	private void initialize() throws IOException {
 		mkAdmin.setVisible(showBtns);
-		rmAdmin.setVisible(!showBtns);
 		slettBrukere = new ArrayList<Bruker>();
 		brukere = new ArrayList<Bruker>();
 		brukere = Klienten.getAllNonAdmins();
@@ -183,8 +183,28 @@ public class Rediger_brukerController {
 	@FXML
 	private void toggleBtns(){
 		showBtns = !showBtns;
-		System.out.println(showBtns);
-		mkAdmin.setVisible(showBtns);
-		rmAdmin.setVisible(!showBtns);
+		if(showBtns){
+			mkAdmin.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent t){
+					try {
+						makeAdmin(t);
+					} catch (IOException e) {
+					}
+				}
+			});
+			mkAdmin.setText("Gjør til admin");
+		} else {
+			mkAdmin.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent t){
+					try {
+						removeAdmin(t);
+					} catch (IOException e) {
+					}
+				}
+			});
+			mkAdmin.setText("Fjern adminstatus");
+		}
 	}
 }

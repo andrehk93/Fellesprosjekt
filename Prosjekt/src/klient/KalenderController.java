@@ -419,20 +419,29 @@ public class KalenderController {
 						Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 								Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
 		String[] deltakere = Klienten.getDeltakere(avtaleid, "2").split(" ");
+		String admin_str = Klienten.getAvtaleAdmin(avtaleid).trim();
+		Bruker admin = new Bruker(Klienten.getBruker(admin_str), admin_str, 0);
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
 					break;
 				}
-				else if (! epost.equals(Klienten.bruker.getEmail())){
+				else if (! epost.trim().equals(admin.getEmail())){
 					Bruker deltaker = new Bruker(Klienten.getBruker(epost), epost, 0);
 					deltaker_liste.add(deltaker);
 				}
 			}
 		}
-		String admin_str = Klienten.getAvtaleAdmin(avtaleid);
-		Bruker admin = new Bruker(Klienten.getBruker(admin_str), admin_str, 0);
-		Avtale avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
+		
+		Avtale avtale;
+		if (admin.getEmail().equals(Klienten.bruker.getEmail())) {
+			avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
+		}
+		else {
+			System.out.println("Ikke admin, legger til: " + deltaker_liste + " og: " + admin);
+			avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
+			System.out.println("Til slutt: " + avtale.getDeltakere());
+		}
 		avtale.setAvtaleNavn();
 		avtale.setStranger(strange);
 		Klienten.avtaler.add(avtale);

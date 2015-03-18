@@ -1,21 +1,15 @@
 package klient;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ConcurrentModificationException;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
 
-import org.controlsfx.control.CheckComboBox;
 
-import com.sun.javafx.css.StyleCache.Key;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 
@@ -26,30 +20,21 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.NodeOrientation;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 
 public class Endre_avtaleController {
@@ -66,7 +51,6 @@ public class Endre_avtaleController {
 	private int sluttM;
 	private LocalTime evigheten;
 	private Avtale avtalen;
-	private int indexen;
 	private HashMap<String,String> oppmoteListe;
 	private HashMap<HBox,String> boksBruker;
 	private String avtaleid;
@@ -90,7 +74,6 @@ public class Endre_avtaleController {
 //LISTENER TIL LISTVIEW SINE GJELDENDE VALG (MULIG IKKE FUNGERER)
 	private Bruker valg;
     private Gruppe valgGruppe;
-    private Bruker forrigeValg;
 	
 	
 //LISTER OG OBSERVABLELISTER TIL LISTVIEW
@@ -372,6 +355,8 @@ public class Endre_avtaleController {
 				if(b.getEmail().equals(d.getEmail())){
 					addGjestenEgentlig(b);
 					gjeste_liste.add(b);
+					gjeste_ComboBox.remove(b);
+			    	legg_til_gjester.setItems(gjeste_ComboBox);
 					break;
 				}
 			}
@@ -595,8 +580,8 @@ public class Endre_avtaleController {
 	    	boks.getChildren().add(new Text(brukernavn));
 	    	ChoiceBox<String> oppmote = new ChoiceBox<String>();
 	    	ArrayList<String> valget = new ArrayList<String>();
-	    	valget.add("Skal");
 	    	valget.add("Ikke svart");
+	    	valget.add("Skal");
 	    	valget.add("Skal ikke");
 	    	oppmote.setItems(FXCollections.observableList(valget));
 	    	oppmote.setPrefHeight(boks.getPrefHeight());
@@ -614,9 +599,8 @@ public class Endre_avtaleController {
 	    	boks.getChildren().add(kryss);
 	    	showGjest(boks);
 	    	inviterte_gjester.add(valg);
-	    	//gjeste_ComboBox.remove(valg);
+	    	gjeste_ComboBox.remove(valg);
 	    	legg_til_gjester.setItems(gjeste_ComboBox);
-	    	forrigeValg = valg;
     	}
     	else {
     	}
@@ -729,12 +713,58 @@ public class Endre_avtaleController {
     	for (Bruker bruker : gruppe.getMedlemmer()) {
     		for (Bruker bruker_compare : gjeste_ComboBox) {
     			if (bruker.getEmail().equals(bruker_compare.getEmail())) {
-    				addGjest(bruker_compare);
+    				addGjestenEgentligFraGruppen(bruker_compare);
     				break;
     			}
     		}
     	}
 	}
+	
+	private void addGjestenEgentligFraGruppen(Bruker selectedUser) throws IOException{
+    	if (selectedUser != null) {
+    		valg = selectedUser;
+	    	HBox boks = new HBox();
+	    	boksBruker.put(boks, selectedUser.getEmail());
+	    	Button kryss = new Button();
+	    	kryss.setText("x");
+	    	kryss.setOpacity(0.8);
+	    	kryss.setOnAction(new EventHandler<ActionEvent>() {
+	
+				@Override
+				public void handle(ActionEvent event) {
+					removeGjest(boks);
+				}
+	    		
+	    	});
+	    	String brukernavn = valg.getNavn();
+	    	boks.getChildren().add(new Text(brukernavn));
+	    	ChoiceBox<String> oppmote = new ChoiceBox<String>();
+	    	ArrayList<String> valget = new ArrayList<String>();
+	    	valget.add("Ikke svart");
+	    	valget.add("Skal");
+	    	valget.add("Skal ikke");
+	    	oppmote.setItems(FXCollections.observableList(valget));
+	    	oppmote.setPrefHeight(boks.getPrefHeight());
+	    	oppmote.getSelectionModel().selectedIndexProperty().addListener(handleOppmote);
+	    	oppmote.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+	    	String status = "0";
+	    	if(fysteGongen){
+	    		status = Klienten.getStatus(avtalen.getAvtaleid(), valg.getEmail());
+	    		status = correction(status);
+	    		System.out.println("FYSTEGONGEN FOR "+valg.getEmail()+" "+status);
+	    	}
+	    	oppmote.setValue(getStatus(status));
+	    	oppmoteListe.put(valg.getEmail(), correction(status));
+	    	boks.getChildren().add(oppmote);
+	    	boks.getChildren().add(kryss);
+	    	showGjest(boks);
+	    	inviterte_gjester.add(valg);
+	    	gjeste_ComboBox.remove(valg);
+	    	legg_til_gjester.setItems(gjeste_ComboBox);
+    	}
+    	else {
+    	}
+    }
 	
     
     @FXML
@@ -809,8 +839,6 @@ public class Endre_avtaleController {
 	}
     
     private void handleChanges() throws IOException{
-    	boolean nyRom,nyStart,nySlutt,nyDato;
-		Møterom rom = new Møterom(sluttM, "he");
 		if(!avtalenavn.getText().equals(avtalen.getAvtaleNavn())){
 			Klienten.changeAvtale(avtalen.getAvtaleid(), avtalenavn.getText(), "APPNAME");
 			avtalen.setAvtaleNavn(avtalenavn.getText());

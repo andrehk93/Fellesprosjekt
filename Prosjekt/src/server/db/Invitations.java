@@ -2,8 +2,8 @@ package server.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Invitations {
 	Connection con;
@@ -43,17 +43,26 @@ public class Invitations {
 	// STATUS
 	public void changeStatus(String user, String avtale, String newStatus) throws Exception {
 		if(newStatus.equals("null")){
-			query = "UPDATE ermed SET oppmotestatus=NULL\n"+
+			query = "UPDATE ermed SET oppmotestatus=null\n"+
 					"WHERE epost=? AND avtaleid=?;";
+			System.out.println("EQUALS");
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, user);
+			statement.setString(2, avtale);
+			System.out.println(statement.toString());
+			statement.executeUpdate();
 		}
-		query = "UPDATE ermed SET oppmotestatus=?\n" + 
-				"WHERE epost=? AND avtaleid=?;";
-		PreparedStatement statement = con.prepareStatement(query);
-		statement.setString(1, newStatus);
-		statement.setString(2, user);
-		statement.setString(3, avtale);
-		System.out.println(statement.toString());
-		statement.executeUpdate();
+		else {
+			query = "UPDATE ermed SET oppmotestatus=?\n" + 
+					"WHERE epost=? AND avtaleid=?;";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, newStatus);
+			statement.setString(2, user);
+			statement.setString(3, avtale);
+			System.out.println(statement.toString());
+			statement.executeUpdate();
+		}
+		
 	}
 	
 
@@ -92,15 +101,21 @@ public class Invitations {
 	public String getStatus(String avtaleid, String email) throws Exception {
 		query = "select oppmotestatus\n" +
 				"from ermed\n" + 
-				"where avtaleid=? and epost=?";
+				"where `avtaleid`=? and `epost`=?;";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, avtaleid);
 		statement.setString(2, email);
+		System.out.println("statement: " + statement.toString());
 		ResultSet result = statement.executeQuery();
 		
 		String output = "";
 		result.next();
-		output = result.getString(1);
+		try {
+			output = result.getString(1);
+		}
+		catch (SQLException e) {
+			output = "";
+		}
 		return output;
 	}
 }

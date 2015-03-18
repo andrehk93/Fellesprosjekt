@@ -16,6 +16,10 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Klienten {
+	static final Integer DEV = 0;
+	static final Integer LIVE = 1;
+	static Integer status = DEV;
+	
 	
 	public static Socket socket;
 	public static DataOutputStream outToServer;
@@ -44,8 +48,15 @@ public class Klienten {
 		filtrering = 0;
 		brukere = new HashMap<String,Bruker>();
 		ekstraBrukere = new ArrayList<String>();
-		String ip = "localhost";
-		int port = 6789;
+		String ip;
+		int port;
+		if(status == LIVE) {
+			ip = "server.granikt.no";
+			port = 6789;
+		} else {
+			ip = "localhost";
+			port = 6789;
+		}
 		try {
 			socket = new Socket(ip, port);
 			outToServer = new DataOutputStream(socket.getOutputStream());
@@ -100,7 +111,7 @@ public class Klienten {
 		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
 			String navn = getBruker(brukernavn);
-			System.out.println("DETTE ER NAVNET");
+			System.out.println("DETTE ER NAVNET: " + navn);
 			bruker = new Bruker(navn, brukernavn, Integer.parseInt(getRights().trim()));
 		}
 		return svar.trim();
@@ -251,7 +262,7 @@ public class Klienten {
 		if (brukere.containsKey(email)) {
 			return brukere.get(email).getNavn();
 		}
-		else if(brukere.isEmpty()){
+		else if (brukere.isEmpty()) {
 			String toServer = "GET USERFULLNAME " + email;
 			return sendTilServer(toServer);
 		}
