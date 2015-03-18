@@ -251,6 +251,10 @@ public class Klienten {
 		if (brukere.containsKey(email)) {
 			return brukere.get(email).getNavn();
 		}
+		else if(brukere.isEmpty()){
+			String toServer = "GET USERFULLNAME " + email;
+			return sendTilServer(toServer);
+		}
 		else {
 			return "no Name";
 		}

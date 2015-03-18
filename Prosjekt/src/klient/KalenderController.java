@@ -348,7 +348,6 @@ public class KalenderController {
 
 	public void hentAvtaler() throws IOException {
 		if (Klienten.avtaler.isEmpty()) {
-			System.out.println("WHATHTEGFFUFUKCK");
 			String streng = Klienten.mineAvtaler(Klienten.bruker.getEmail(), Klienten.getFiltrering());
 			avtale_liste = streng.split(" ");
 			for (int k = 0; k < avtale_liste.length; k++) {
@@ -367,11 +366,9 @@ public class KalenderController {
 	
 	public static void newStranger() throws IOException{
 		for(String extraemail : Klienten.getEkstraBrukere()){
-			System.out.println("EKSTRAEMAILEN: "+extraemail);
 			String streng = Klienten.noensAvtaler(extraemail, Klienten.getFiltrering());
 			avtale_liste = streng.split(" ");
 			avtale_liste = filtrerAvtaler(avtale_liste);
-			System.out.println("AVTALELISTE:"+avtale_liste);
 			for (int k = 0; k < avtale_liste.length; k++) {
 				if (k%2 != 0) {
 					String dato = avtale_liste[k];

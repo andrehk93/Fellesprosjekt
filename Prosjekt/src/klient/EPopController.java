@@ -17,7 +17,11 @@ public class EPopController {
 	@FXML private Button leggtil, removeCal;
 	@FXML private Label msg;
 	
-	void initialize(){}
+	public void initialize(){
+		if(Klienten.getEkstraBrukere().isEmpty()){
+			removeCal.disableProperty().set(true);
+		}
+	}
 	
 	private void sjekkBrukernavn() throws IOException{
 		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
