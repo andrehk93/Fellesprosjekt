@@ -85,7 +85,7 @@ public class Endre_avtaleController {
 	@FXML
 	CheckBox hele_dagen;
 	@FXML
-	Text feilDato, feilTekst;
+	Text feilDato, feilTekst, lagreErrormessage;
     @FXML
     DatePicker startdato;
     @FXML
@@ -282,6 +282,7 @@ public class Endre_avtaleController {
 		
 		
 		feilTekst.setVisible(false);
+		lagreErrormessage.setVisible(false);
 		List<String> list = new ArrayList<String>();
 		ObservableList<String> timer = FXCollections.observableList(list);
 		for (int i = 0; i < 24; i++) {
@@ -823,7 +824,8 @@ public class Endre_avtaleController {
 		System.out.println(start);
 		System.out.println(slutt);
 		System.out.println(dato);
-		if (! feilTekst.isVisible() && avtalenavn.getText() != null){
+		if (! feilTekst.isVisible() && avtalenavn.getText() != null && Integer.parseInt(Klienten.getRomStr(valgt_rom.getText()).trim()) >= ant_gjester.getValue().intValue()){
+			lagreErrormessage.setVisible(false);
 			handleChanges();
 			System.out.println();
 			//String oppdatertAvtale = Klienten.hentAvtale(avtaleid); Hvorfor er denne her?
@@ -836,6 +838,14 @@ public class Endre_avtaleController {
 			}
 			ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 		}
+		else if (feilTekst.isVisible() || avtalenavn.getText() == null){
+			lagreErrormessage.setText("Du må fylle ut alle felter");
+			lagreErrormessage.setVisible(true);
+		}
+		else {
+			lagreErrormessage.setText("Møterommet er ikke stort nok, velg et nytt");
+			lagreErrormessage.setVisible(true);
+		}
 	}
     
     private void handleChanges() throws IOException{
@@ -845,7 +855,10 @@ public class Endre_avtaleController {
 		}
     	if(!valgt_rom.getText().equals(avtalen.getRom().getNavn())){
 			Klienten.changeAvtale(avtalen.getAvtaleid(), valgt_rom.getText(),"ROOM");
-			//avtalen.setRom(Klienten.møterom);
+			String room_details = Klienten.getAvtaleRom(avtalen.getAvtaleid());
+			String room_str = Klienten.getRomStr(room_details);
+			Møterom nytt_rom = new Møterom(Integer.parseInt(room_str.trim()), room_details.trim());
+			avtalen.setRom(nytt_rom);
 		}
 		if(!start.equals(avtalen.getTid().getStart())){
 			Klienten.changeAvtale(avtalen.getAvtaleid(), start.toString(),"STARTTIME");
