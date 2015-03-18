@@ -27,7 +27,7 @@ public class KalenderThread extends Thread {
             while ((inputLine = in.readLine()) != null) {
             	//try {
             	if (inputLine.trim().length() > 2) {
-            		System.out.println("PREPUT: " + inputLine);
+            		//System.out.println("PREPUT: " + inputLine);
             		outputLine = kp.processInput(inputLine) + "\r\n";
             		/*
 	            	} catch(Exception ArrayIndexOutOfBoudsException){

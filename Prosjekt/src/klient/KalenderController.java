@@ -438,9 +438,9 @@ public class KalenderController {
 			avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
 		}
 		else {
-			System.out.println("Ikke admin, legger til: " + deltaker_liste + " og: " + admin);
+			//System.out.println("Ikke admin, legger til: " + deltaker_liste + " og: " + admin);
 			avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
-			System.out.println("Til slutt: " + avtale.getDeltakere());
+			//System.out.println("Til slutt: " + avtale.getDeltakere());
 		}
 		avtale.setAvtaleNavn();
 		avtale.setStranger(strange);

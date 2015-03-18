@@ -16,7 +16,7 @@ import server.db.User;
 public class KalenderDB {
 	final Integer DEV = 0;
 	final Integer LIVE = 1;
-	Integer status = LIVE;
+	Integer status = DEV;
 	
 	String driver = "com.mysql.jdbc.Driver";
 	String url, user, password;
@@ -35,10 +35,10 @@ public class KalenderDB {
 			user = "christwg_fp";
 			password = "krypton";
 		} else if(status == LIVE){
-			ServerMySQL serv = new ServerMySQL();
+			/*ServerMySQL serv = new ServerMySQL();
 			url = serv.getUrl();
 			user = serv.getUser();
-			password = serv.getPassword();
+			password = serv.getPassword();*/
 		}
 		con = DriverManager.getConnection(url,user,password);
 	}
