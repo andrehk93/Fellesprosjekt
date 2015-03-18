@@ -133,9 +133,11 @@ public class Avtale {
 			else {
 				for (Bruker delt : deltakerProperty.getValue()) {
 					if (delt.getEmail().equals(deltaker.getEmail())) {
+						System.out.println("ikke legg til");
 						return;
 					}
 				}
+				System.out.println("dessverre legg til");
 				deltakerProperty.getValue().add(deltaker);
 			}
 		}
@@ -255,7 +257,7 @@ public class Avtale {
 	}
 	
 	public String toString() {
-		String streng = avtaleid;
+		String streng = avtaleid.trim();
 		return streng;
 	}
 	
