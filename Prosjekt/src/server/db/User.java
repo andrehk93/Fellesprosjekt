@@ -129,8 +129,9 @@ import java.sql.Connection;
 					"from bruker\n" + 
 					"where epost not in(select b.epost\n" + 
 					"from avtale as a, ermed as e, bruker as b\n" + 
-					"where a.avtaleid=e.avtaleid and b.epost=e.epost and (dato=\""+date+"\" and (fra<\""+to+"\" and til>\""+to+"\" or fra<\""+from+"\" and til>\""+from+"\"))\n" + 
+					"where a.avtaleid=e.avtaleid and b.epost=e.epost and (dato=\""+date+"\" and (fra<\""+to+"\" and til<\""+to+"\" or fra<\""+from+"\" and til<\""+from+"\"))\n" + 
 					"order by epost)";
+			
 			PreparedStatement statement = con.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
 				

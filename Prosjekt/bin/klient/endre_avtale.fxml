@@ -8,7 +8,6 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.collections.FXCollections ?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.Endre_avtaleController">
@@ -84,12 +83,12 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="25.0">
                                  <children>
-                                    <ComboBox fx:id="legg_til_gjester" prefHeight="38.0" minWidth="260" maxWidth="260" promptText="Legg til e-postadresser.." styleClass="label-errormsg">
+                                    <ComboBox fx:id="legg_til_gjester" maxWidth="260" minWidth="260" prefHeight="38.0" promptText="Legg til e-postadresser.." styleClass="label-errormsg">
                                        <HBox.margin>
                                           <Insets top="7.0" />
                                        </HBox.margin>
                                     </ComboBox>
-                                    <Button fx:id="addGjestBtn" onAction="#addGjesten" Text="Legg til" minWidth="100" maxWidth="100" styleClass="specialButton"/>
+                                    <Button fx:id="addGjestBtn" Text="Legg til" maxWidth="100" minWidth="100" onAction="#addGjesten" styleClass="specialButton" />
                                  </children>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
@@ -113,12 +112,12 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="52.0" prefWidth="479.0" spacing="25.0">
                                  <children>
-                                    <ComboBox fx:id="legg_til_gruppe" prefHeight="38.0" minWidth="260" maxWidth="260" promptText="Legg til grupper..." styleClass="label-errormsg">
+                                    <ComboBox fx:id="legg_til_gruppe" maxWidth="260" minWidth="260" prefHeight="38.0" promptText="Legg til grupper..." styleClass="label-errormsg">
                                        <HBox.margin>
                                           <Insets top="7.0" />
                                        </HBox.margin>
                                     </ComboBox>
-                                    <Button fx:id="addGruppeBtn" onAction="#addGruppen" Text="Legg til" minWidth="100" maxWidth="100" styleClass="specialButton"/>
+                                    <Button fx:id="addGruppeBtn" Text="Legg til" maxWidth="100" minWidth="100" onAction="#addGruppen" styleClass="specialButton" />
                                  </children>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
@@ -174,6 +173,7 @@
          <children>
             <Button fx:id="slett_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#slett" prefHeight="46.0" prefWidth="135.0" styleClass="normalButton" text="Slett" />
             <Button fx:id="lagre_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#lagre" prefHeight="46.0" prefWidth="134.0" styleClass="specialButton" text="Lagre" />
+            <Text fx:id="lagreErrormessage" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Errortekst" />
          	<Button fx:id="avbryt_knapp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#avbryt" prefHeight="46.0" prefWidth="130.0" styleClass="normalButton" text="Avbryt" />
          </children>
       </VBox>

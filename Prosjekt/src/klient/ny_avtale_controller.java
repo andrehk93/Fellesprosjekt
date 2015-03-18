@@ -16,6 +16,7 @@ import org.controlsfx.control.CheckComboBox;
 
 
 
+
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -88,7 +89,7 @@ public class ny_avtale_controller {
 	@FXML
 	CheckBox hele_dagen, gjentakelse;
 	@FXML
-	Text feilDato, feilTekst;
+	Text feilDato, feilTekst, lagreErrormessage;
     @FXML
     DatePicker startdato, sluttdato;
     @FXML
@@ -112,7 +113,7 @@ public class ny_avtale_controller {
     
 	
 	public void initialize() throws IOException {
-		
+		lagreErrormessage.setVisible(false);
 		
 	//INITIALISERER LISTER OVER INVITERTE GRUPPER/BRUKERE
 		
@@ -564,16 +565,16 @@ public class ny_avtale_controller {
     	String rom = "";
     	try {
 	    	if (hele_dagen.isSelected()) {
-	    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", Integer.parseInt(antall_gjester.getText()) + "");
+	    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", antall_gjester.getText());
 	    	}
 	    	else {
-	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), Integer.parseInt(antall_gjester.getText()) + "");
+	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), antall_gjester.getText());
 	    	}
 	    	System.out.println("ROMMENE: " + rom);
 	    	if (isrep){
 	    		repRooms = new ArrayList<String>();
 	    		for(LocalDate date : repDates){
-	    			String[] besteRom = Klienten.getRom(date.toString(), start.toString(), slutt.toString(), gjeste_ComboBox.size() + "").split(" ");
+	    			String[] besteRom = Klienten.getRom(date.toString(), start.toString(), slutt.toString(), antall_gjester.getText()).split(" ");
 	    			repRooms.add(besteRom[0]);
 	    		}
 	    		ArrayList<String> beskjed = new ArrayList<String>();
@@ -582,7 +583,7 @@ public class ny_avtale_controller {
 	    		return;
 	    	}
 	    	else {
-	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), gjeste_ComboBox.size() + "");
+	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), antall_gjester.getText() + "");
 	    		ArrayList<String> rommene = new ArrayList<String>();
 		    	String[] rom_listen = rom.split(" ");
 		    	for (int i = 0; i < rom_listen.length; i++) {
@@ -628,7 +629,7 @@ public class ny_avtale_controller {
 			repDates.add(startdato.getValue());
 		}
 		for (LocalDate datoen : repDates) {
-			if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null) {
+			if (! feilTekst.isVisible() && ! feilDato.isVisible() && avtalenavn.getText() != null && Integer.parseInt(Klienten.getRomStr(valgt_rom.getText()).trim()) >= ant_gjester.getValue().intValue()) {
 				lagre_knapp.setDisable(true);
 				if (isrep) {
 					int i = repDates.indexOf(datoen);
@@ -649,6 +650,14 @@ public class ny_avtale_controller {
 				Klienten.setChanged(true);
 				Klienten.avtaler.add(avtale);
 				ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
+			}
+			else if (feilTekst.isVisible() || avtalenavn.getText() == null){
+				lagreErrormessage.setText("Du må fylle ut alle felter");
+				lagreErrormessage.setVisible(true);
+			}
+			else {
+				lagreErrormessage.setText("Møterommet er ikke stort nok, velg et nytt");
+				lagreErrormessage.setVisible(true);
 			}
 		}
 	}

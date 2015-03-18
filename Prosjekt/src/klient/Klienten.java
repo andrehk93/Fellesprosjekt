@@ -242,6 +242,21 @@ public class Klienten {
 		return allUsers;
 	}
 	
+	public static ArrayList<Bruker> getAllAvailableUserDetails(String dato, String from, String to) throws IOException{
+		String toServer = "GET AVAILABLE USERS " + dato + " " + from + " " + to;
+		String[] users = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
+		for(String email : users){
+			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+				toServer = "GET USERDETAILS "+email;
+				String[] userDetails = sendTilServer(toServer).split(" ");
+				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2], 0);
+				allUsers.add(user);
+			}
+		}
+		return allUsers;
+	}
+	
 	public static String[] getAllUserEmails() throws IOException{
 		Set<String> myset = brukere.keySet();
 		String[] liste = myset.toArray(new String[myset.size()]);

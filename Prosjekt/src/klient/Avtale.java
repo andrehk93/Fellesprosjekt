@@ -23,7 +23,7 @@ public class Avtale {
 	
 	public Avtale(Bruker eier, ArrayList<Bruker> deltakere, TidsIntervall tid, Møterom rom, String avtaleid) throws IOException{
 		this.avtaleid = avtaleid;
-		getAvtaleNavn();
+		setAvtaleNavn();
 		setEier(eier);
 		setDeltakere(deltakere);
 		setTid(tid);
@@ -201,9 +201,7 @@ public class Avtale {
 	}
 	
 	public void setRom(Møterom møterom) {
-		if (romProperty.getValue() == null) {
-			romProperty.setValue(møterom);
-		}
+		romProperty.setValue(møterom);
 	}
 	
 	public ArrayList<Bruker> getDeltakere() {
