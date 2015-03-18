@@ -35,10 +35,14 @@ public class KalenderDB {
 			user = "christwg_fp";
 			password = "krypton";
 		} else if(status == LIVE){
-			/*ServerMySQL serv = new ServerMySQL();
-			url = serv.getUrl();
-			user = serv.getUser();
-			password = serv.getPassword();*/
+			try { 
+				ServerMySQL serv = new ServerMySQL();
+				url = serv.getUrl();
+				user = serv.getUser();
+				password = serv.getPassword();
+			} catch (Exception Exception){
+				
+			}
 		}
 		con = DriverManager.getConnection(url,user,password);
 	}
