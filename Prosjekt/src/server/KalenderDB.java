@@ -14,8 +14,8 @@ import server.db.Notification;
 import server.db.User;
 
 public class KalenderDB {
-	Integer DEV = 0;
-	Integer LIVE = 1;
+	final Integer DEV = 0;
+	final Integer LIVE = 1;
 	Integer status = LIVE;
 	
 	String driver = "com.mysql.jdbc.Driver";
