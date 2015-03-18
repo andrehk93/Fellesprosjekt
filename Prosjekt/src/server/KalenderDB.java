@@ -36,10 +36,10 @@ public class KalenderDB {
 			password = "krypton";
 		} else if(status == LIVE){
 			try { 
-				ServerMySQL serv = new ServerMySQL();
+				/*ServerMySQL serv = new ServerMySQL();
 				url = serv.getUrl();
 				user = serv.getUser();
-				password = serv.getPassword();
+				password = serv.getPassword();*/
 			} catch (Exception Exception){
 				
 			}
