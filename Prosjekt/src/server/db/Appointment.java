@@ -11,7 +11,6 @@ public class Appointment {
 	
 	private Connection con;
 	private String query;
-	private Secrets secrets = new Secrets();
 	
 	public Appointment(Connection con){
 		setCon(con);

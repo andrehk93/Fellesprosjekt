@@ -3,3 +3,4 @@
 .project
 /bin/
 *.class
+/Prosjekt/src/server/ServerMySQL.java
