@@ -107,6 +107,11 @@
                   <TextArea fx:id="begrunnelse" prefHeight="86.0" prefWidth="339.0" styleClass="label-normal-objects" />
                </children>
             </HBox>
+            <CheckBox fx:id="remove" styleClass="label-normal-objects" mnemonicParsing="false" text="Fjern denne avtalen fra kalenderen">
+               <VBox.margin>
+                  <Insets left="116.0" />
+               </VBox.margin>
+            </CheckBox>
          </children>
       </VBox>
       <Rectangle arcHeight="2.0" arcWidth="5.0" fill="#4986e7" height="3.0" layoutX="97.0" layoutY="397.0" opacity="0.02" strokeType="INSIDE" strokeWidth="0.0" width="469.0">

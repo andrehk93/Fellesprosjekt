@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -29,6 +30,7 @@ public class Se_avtaleController {
 	private String avtaleid;
 	private Avtale avtalen;
 	@FXML private Button bekreft;
+	@FXML private CheckBox remove;
 	
 	public void setAvtale() throws IOException {
 		fratid = avtalen.getTid().getStart().toString();
@@ -38,10 +40,12 @@ public class Se_avtaleController {
 		admin = avtalen.getEier().getEmail();
 		avtalenavn = avtalen.getAvtaleNavn();
 		System.out.println(avtalen.getDeltakere() + " og: " +  Klienten.bruker);
-		if(!avtalen.getDeltakere().contains(Klienten.bruker)){
-			skal.disableProperty().set(true);
-			skal_ikke.disableProperty().set(true);
-			ikke_svart.disableProperty().set(true);
+		for(Bruker b : avtalen.getDeltakere()){
+			if(Klienten.bruker.equals(b)){
+				skal.disableProperty().set(true);
+				skal_ikke.disableProperty().set(true);
+				ikke_svart.disableProperty().set(true);
+			}
 		}
 		String deltakerne = Klienten.getDeltakere(avtaleid, "1");
 		String[] deltakere_attender = deltakerne.trim().split(" ");
@@ -172,6 +176,10 @@ public class Se_avtaleController {
 			Klienten.changeStatus(avtaleid, "0");
 		}
 		KalenderController.enheter = null;
+		if(remove.isSelected()){
+			Klienten.deleteAttendant(avtaleid, Klienten.bruker.getEmail());
+			Klienten.avtaler.remove(avtalen);
+		}
 		ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 	}
 	

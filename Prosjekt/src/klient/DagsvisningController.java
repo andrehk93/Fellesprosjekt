@@ -112,8 +112,8 @@ public class DagsvisningController {
 		stack.setMinSize(0, 0);
 		StackPane.setAlignment(box, Pos.TOP_LEFT);
 		StackPane.setAlignment(text, Pos.TOP_LEFT);
-		StackPane.setMargin(box, new Insets(margin+1,0,0,1));
-		StackPane.setMargin(text, new Insets(margin+1,0,0,1));
+		StackPane.setMargin(box, new Insets(margin+1,0,0,0));
+		StackPane.setMargin(text, new Insets(margin+1,0,0,0));
 		bokser.add(stack);
 		ruter.add(stack, 1, gridPos);
 		GridPane.setValignment(stack, VPos.TOP);

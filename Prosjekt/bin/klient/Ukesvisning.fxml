@@ -27,7 +27,7 @@
 		<!-- SCROLLPANE & GRIDPANE -->
 		<ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="215.0" layoutY="150.0" prefHeight="540.0" prefWidth="770.0" styleClass="label-normal-objects" vvalue="0.5">
 			<content>
-				<GridPane fx:id="ruter" gridLinesVisible="true" opacity="0.34" prefHeight="1211.0" prefWidth="761.0" styleClass="label-normal-objects">
+				<GridPane fx:id="ruter" gridLinesVisible="true" opacity="0.34" prefHeight="1200.0" prefWidth="761.0" styleClass="label-normal-objects">
 					<columnConstraints>
 						<ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="58.0" />
 						<ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="105.0" />

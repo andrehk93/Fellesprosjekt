@@ -207,7 +207,6 @@ public class UkesvisningController {
 		for(StackPane panes : bokser){
 			ruter.getChildren().remove(panes);
 		}
-		
 	}
 	
 	private void setUkeAvtaler(){
@@ -383,6 +382,7 @@ public class UkesvisningController {
 	@FXML
 	public void refreshKalender(ActionEvent event) throws Exception {
 		flushView();
+		loadStuff();
 	}
 	
 	@FXML
