@@ -9,15 +9,36 @@ import javafx.beans.property.Property;
 public class Gruppe {
 	
 	private String gruppenavn;
+	private String gruppeid;
+	private Bruker admin;
 	
 	public Gruppe() {
 		
 	}
 	
-	public Gruppe(String navn, ArrayList<Bruker> medlemmer) throws IOException {
+	public Gruppe(String navn, ArrayList<Bruker> medlemmer, String gruppeid, Bruker admin) throws IOException {
 		this.gruppenavn = navn;
+		setGruppeid(gruppeid);
+		setAdmin(admin);
 		setMedlemmer(medlemmer);
 	}
+	
+	public void setGruppeid(String gruppeid) {
+		this.gruppeid = gruppeid;
+	}
+	
+	public String getGruppeid() {
+		return gruppeid;
+	}
+	
+	public void setAdmin(Bruker admin) {
+		this.admin = admin;
+	}
+	
+	public Bruker getAdmin() {
+		return admin;
+	}
+	
 	
 	public void setNavn(String navn){
 		this.gruppenavn = navn;
@@ -80,15 +101,16 @@ public class Gruppe {
 		boolean duplikat = false;
 		try {
 			for (int i = 0; i < medlemListeProperty.getValue().size(); i++) {
-				if (medlem.equals(medlemListeProperty.getValue().get(i))) {
+				if (medlem.getEmail().equals(medlemListeProperty.getValue().get(i).getEmail())) {
 					duplikat = true;
 				}
 			}
 			if (duplikat) {
+				System.out.println("Brukeren " + medlem + " er medlem av gruppen");
 				medlemListeProperty.getValue().remove(medlem);
 			}
 			else {
-				System.out.println("Brukeren er ikke medlem av gruppen");
+				System.out.println("Brukeren " + medlem + " er ikke medlem av gruppen");
 			}
 		}
 		catch (NullPointerException e) {
