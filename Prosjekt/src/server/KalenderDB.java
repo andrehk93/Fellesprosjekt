@@ -1,18 +1,10 @@
 package server;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 import server.db.Appointment;
 import server.db.Group;
@@ -21,14 +13,14 @@ import server.db.Meetingroom;
 import server.db.Notification;
 import server.db.User;
 
-import com.mysql.jdbc.Statement;
-
 public class KalenderDB {
-		
+	final Integer DEV = 0;
+	final Integer LIVE = 1;
+	Integer status = LIVE;
+	
 	String driver = "com.mysql.jdbc.Driver";
-	String url = "jdbc:mysql://mysql.stud.ntnu.no:3306/christwg_fp";
-	String user = "christwg_fp";
-	String password = "krypton";
+	String url, user, password;
+	
 	String query;
 	Connection con;
 	
@@ -38,6 +30,16 @@ public class KalenderDB {
 	
 	private void init() throws Exception{
 		Class.forName(driver);
+		if(status == DEV){
+			url = "jdbc:mysql://mysql.stud.ntnu.no:3306/christwg_fp";
+			user = "christwg_fp";
+			password = "krypton";
+		} else if(status == LIVE){
+			ServerMySQL serv = new ServerMySQL();
+			url = serv.getUrl();
+			user = serv.getUser();
+			password = serv.getPassword();
+		}
 		con = DriverManager.getConnection(url,user,password);
 	}
 	
