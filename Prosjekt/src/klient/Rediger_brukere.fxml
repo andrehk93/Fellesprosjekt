@@ -45,8 +45,8 @@
                <children>
                   <Label prefHeight="27.0" prefWidth="123.0" text="Valgte brukere " />
                   <ListView fx:id="slettListe" prefHeight="224.0" prefWidth="293.0" styleClass="label-normal-objects" />
-                  <Button fx:id="slett" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#slettBrukere" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Slett" />
-                  <Button fx:id="mkAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#makeAdmin" prefHeight="46.0" prefWidth="101.0" styleClass="specialButton" text="Gjør til admin" />
+                  <Button fx:id="slett" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#slettBrukere" prefHeight="46.0" prefWidth="251.0" styleClass="specialButton" text="Slett" />
+                  <Button fx:id="mkAdmin" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#makeAdmin" prefHeight="46.0" prefWidth="251.0" styleClass="specialButton" text="Gjør til admin" />
                </children>
             </VBox>
          </children>

@@ -27,7 +27,7 @@ public class Rediger_brukerController {
 	private TabPane BrukerTabs;
 	
 	@FXML
-	private Button add, remove, slett, mkAdmin, rmAdmin;
+	private Button add, remove, slett, mkAdmin;
 	
 	private List<Bruker> brukere, admins;
 	
@@ -44,7 +44,6 @@ public class Rediger_brukerController {
 	@FXML
 	private void initialize() throws IOException {
 		mkAdmin.setVisible(showBtns);
-		rmAdmin.setVisible(!showBtns);
 		slettBrukere = new ArrayList<Bruker>();
 		brukere = new ArrayList<Bruker>();
 		brukere = Klienten.getAllNonAdmins();
