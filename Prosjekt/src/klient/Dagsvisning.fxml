@@ -13,7 +13,7 @@
    <children>
       <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="220.0" layoutY="160.0" prefHeight="537.0" prefWidth="771.0" styleClass="label-normal-objects" vvalue="0.5">
          <content>
-            <GridPane fx:id="ruter" opacity="0.25" prefHeight="1326.0" prefWidth="757.0" styleClass="label-calenderdays">
+            <GridPane fx:id="ruter" opacity="0.25" prefHeight="1200.0" prefWidth="757.0" styleClass="label-calenderdays">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.0" minWidth="10.0" percentWidth="15.0" prefWidth="106.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="111.0" minWidth="10.0" percentWidth="85.0" prefWidth="94.0" />
