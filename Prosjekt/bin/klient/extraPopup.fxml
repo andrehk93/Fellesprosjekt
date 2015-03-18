@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="300.0" maxWidth="400.0" minHeight="300.0" minWidth="400.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.EPopController">
    <children>
-      <GridPane alignment="CENTER_RIGHT" hgap="20.0" layoutX="45.0" layoutY="65.0" prefHeight="171.0" prefWidth="310.0" vgap="20.0">
+      <GridPane alignment="CENTER_RIGHT" hgap="20.0" layoutX="45.0" layoutY="44.0" prefHeight="213.0" prefWidth="310.0" vgap="20.0">
          <children>
             <TextField fx:id="brukernavn" onKeyReleased="#enterKeyPress" prefHeight="41.0" prefWidth="269.0" promptText="E-post" />
             <Label fx:id="msg" prefHeight="30.0" prefWidth="500.0" styleClass="label-errormsg" GridPane.rowIndex="1">
@@ -22,6 +22,7 @@
                   <Font name="Garamond" size="18.0" />
                </font>
             </Button>
+            <Button fx:id="removeCal" onAction="#handleButtonRemove" mnemonicParsing="false" prefHeight="33.0" prefWidth="343.0" styleClass="normalButton" text="Fjern ekstra kalendere" GridPane.rowIndex="4" />
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
@@ -31,6 +32,8 @@
          </padding>
          <rowConstraints>
             <RowConstraints maxHeight="40.0" minHeight="39.0" prefHeight="39.0" />
+            <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
          </rowConstraints>

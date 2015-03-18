@@ -14,7 +14,7 @@ import javafx.scene.input.KeyEvent;
 public class EPopController {
 	
 	@FXML private TextField brukernavn;
-	@FXML private Button leggtil;
+	@FXML private Button leggtil, removeCal;
 	@FXML private Label msg;
 	
 	void initialize(){}
@@ -62,6 +62,10 @@ public class EPopController {
 		if(event.getCode() == KeyCode.ENTER){
 			sjekkBrukernavn();
 		}
+	}
+	
+	@FXML private void handleButtonRemove(ActionEvent event) throws IOException{
+		Klienten.removeStrangers();
 	}
 
 }
