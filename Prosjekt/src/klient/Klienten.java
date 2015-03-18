@@ -531,5 +531,19 @@ public class Klienten {
 			ekstraBrukere.remove(email);
 		}
 	}
+
+	public static void removeStrangers() {
+		ekstraBrukere.clear();
+		ArrayList<Avtale> toRemove = new ArrayList<Avtale>();
+		for(Avtale app : avtaler){
+			if(app.getStranger()){
+				toRemove.add(app);
+			}
+		}
+		for(Avtale app : toRemove){
+			avtaler.remove(app);
+		}
+		
+	}
 }
 

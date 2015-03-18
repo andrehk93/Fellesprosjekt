@@ -14,10 +14,14 @@ import javafx.scene.input.KeyEvent;
 public class EPopController {
 	
 	@FXML private TextField brukernavn;
-	@FXML private Button leggtil;
+	@FXML private Button leggtil, removeCal;
 	@FXML private Label msg;
 	
-	void initialize(){}
+	public void initialize(){
+		if(Klienten.getEkstraBrukere().isEmpty()){
+			removeCal.disableProperty().set(true);
+		}
+	}
 	
 	private void sjekkBrukernavn() throws IOException{
 		String regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)"
@@ -62,6 +66,10 @@ public class EPopController {
 		if(event.getCode() == KeyCode.ENTER){
 			sjekkBrukernavn();
 		}
+	}
+	
+	@FXML private void handleButtonRemove(ActionEvent event) throws IOException{
+		Klienten.removeStrangers();
 	}
 
 }
