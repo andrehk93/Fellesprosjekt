@@ -100,7 +100,7 @@ public class Klienten {
 		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
 			String navn = getBruker(brukernavn);
-			System.out.println("DETTE ER NAVNET");
+			System.out.println("DETTE ER NAVNET: " + navn);
 			bruker = new Bruker(navn, brukernavn, Integer.parseInt(getRights().trim()));
 		}
 		return svar.trim();
@@ -250,6 +250,10 @@ public class Klienten {
 	public static String getBruker(String email) throws IOException {
 		if (brukere.containsKey(email)) {
 			return brukere.get(email).getNavn();
+		}
+		else if (brukere.isEmpty()) {
+			String toServer = "GET USERFULLNAME " + email;
+			return sendTilServer(toServer);
 		}
 		else {
 			return "no Name";

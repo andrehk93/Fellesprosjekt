@@ -37,6 +37,7 @@ public class Se_avtaleController {
 		rommet = avtalen.getRom().getNavn();
 		admin = avtalen.getEier().getEmail();
 		avtalenavn = avtalen.getAvtaleNavn();
+		System.out.println(avtalen.getDeltakere() + " og: " +  Klienten.bruker);
 		if(!avtalen.getDeltakere().contains(Klienten.bruker)){
 			skal.disableProperty().set(true);
 			skal_ikke.disableProperty().set(true);
@@ -68,6 +69,7 @@ public class Se_avtaleController {
 			}
 		}
 		String deltakerne_ikkeSvart = Klienten.getDeltakere(avtaleid, null);
+		System.out.println("IKKE SVART: " + deltakerne_ikkeSvart);
 		String[] deltakere_ikkeSvart = deltakerne_ikkeSvart.trim().split(" ");
 		for (String deltaker : deltakere_ikkeSvart) {
 			HBox boks = new HBox();
