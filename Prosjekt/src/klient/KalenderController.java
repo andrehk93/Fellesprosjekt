@@ -94,13 +94,16 @@ public class KalenderController {
 						brukere = Klienten.getGroupMembers(Integer.parseInt(id.trim()));
 						boolean duplikat = false;
 						for (Gruppe grupp : Klienten.grupper) {
-							if (grupp.getNavn().equals(gruppenavn)) {
+							if (grupp.getGruppeid().equals(id)) {
 								duplikat = true;
 								break;
 							}
 						}
 						if (! duplikat) {
-							Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere);
+							String admin_email = Klienten.getGroupAdmin(id.trim());
+							System.out.println("EMAIL: " + admin_email.trim());
+							System.out.println("ADMIN: " + Klienten.getBrukere().get(admin_email.trim()));
+							Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere, id.trim(), Klienten.getBrukere().get(admin_email.trim()));
 							Klienten.grupper.add(gruppe);
 						}
 					}

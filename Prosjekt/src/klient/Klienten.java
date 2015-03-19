@@ -33,6 +33,7 @@ public class Klienten {
 	private static boolean changed;
 	private static int filtrering;
 	private static HashMap<String,Bruker> brukere;
+	private static ArrayList<Bruker> brukere_array;
 	private static String dest;
 	private static ArrayList<String> ekstraBrukere;
 	
@@ -43,6 +44,7 @@ public class Klienten {
 	
 	public static void init() throws UnknownHostException, IOException{
 		avtaler = new ArrayList<Avtale>();
+		brukere_array = new ArrayList<Bruker>();
 		grupper = new ArrayList<Gruppe>();
 		alle_møterom = new ArrayList<Møterom>();
 		filtrering = 0;
@@ -75,6 +77,10 @@ public class Klienten {
 	
 	public static HashMap<String, Bruker> getBrukere() {
 		return brukere;
+	}
+	
+	public static ArrayList<Bruker> getBrukereArray() {
+		return brukere_array;
 	}
 	
 	public static void setLest(String email, String avtaleid) throws IOException {
@@ -332,17 +338,27 @@ public class Klienten {
 		String[] members = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> memberList= new ArrayList<Bruker>();
 		for(String email : members){
-			memberList.add(new Bruker(Klienten.getBruker(email), email, 0));
+			memberList.add(brukere.get(email.trim()));
 		}
 		return memberList;
 	}
 	
-	public static void addGruppe(String name, ArrayList<Bruker> members) throws IOException{
+	public static void removeGruppe(String gruppeid) throws IOException {
+		String toServer = "DELETE GROUP " + gruppeid;
+		sendTilServer(toServer);
+	}
+	
+	public static String addGruppe(String name, ArrayList<Bruker> members) throws IOException{
 		String toServer = "CREATE GROUP " + name + " ENDOFMESSAGE";
 		for(Bruker member : members){
 			toServer += " " + member.getEmail();
 		}
-		sendTilServer(toServer);
+		return sendTilServer(toServer);
+	}
+	
+	public static String getGroupAdmin(String gruppeid) throws IOException {
+		String toServer = "GET GROUPADMIN " + gruppeid;
+		return sendTilServer(toServer);
 	}
 
 	public static void setValgtAvtale(String avtale) {
@@ -392,8 +408,8 @@ public class Klienten {
 		sendTilServer(toServer);
 	}
 	
-	public static void removeGroupMember(Bruker user) throws IOException{
-		String toServer = "REMOVE GROUPMEMBER " + user.getEmail();
+	public static void removeGroupMember(String id, Bruker user) throws IOException{
+		String toServer = "REMOVE GROUPMEMBER " + id + " " + user.getEmail();
 		sendTilServer(toServer);
 	}
 	
@@ -501,6 +517,7 @@ public class Klienten {
 		for(Bruker b : brukerListe){
 			String email = b.getEmail();
 			addBruker(email,b);
+			brukere_array.add(b);
 		}
 	}
 	
