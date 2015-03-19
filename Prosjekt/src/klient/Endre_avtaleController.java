@@ -937,10 +937,10 @@ public class Endre_avtaleController {
 		public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			String verdi = "";
 			if(((Integer) newValue).equals((Integer) 0)){
-				verdi = "1";
+				verdi = "null";
 			}
 			else if(((Integer) newValue).equals((Integer) 1)){
-				verdi = "null";
+				verdi = "1";
 			}
 			else{
 				verdi = "0";
