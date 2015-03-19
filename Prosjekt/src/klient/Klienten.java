@@ -18,7 +18,7 @@ import java.util.Set;
 public class Klienten {
 	static final Integer DEV = 0;
 	static final Integer LIVE = 1;
-	static Integer status = LIVE;
+	static Integer status = DEV;
 	
 	
 	public static Socket socket;

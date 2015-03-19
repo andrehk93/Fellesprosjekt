@@ -31,15 +31,15 @@ public class KalenderDB {
 	private void init() throws Exception{
 		Class.forName(driver);
 		if(status == DEV){
-			url = "jdbc:mysql://mysql.stud.ntnu.no:3306/christwg_fp";
+			url = "jdbc:mysql://mysql.stud.ntnu.no:3306/christwg_fp?useUnicode=true&characterEncode=UTF-8";
 			user = "christwg_fp";
 			password = "krypton";
 		} else if(status == LIVE){
 			try { 
-				//ServerMySQL serv = new ServerMySQL();
-				//url = serv.getUrl();
-				//user = serv.getUser();
-				//password = serv.getPassword();
+				ServerMySQL serv = new ServerMySQL();
+				url = serv.getUrl();
+				user = serv.getUser();
+				password = serv.getPassword();
 			} catch (Exception Exception){
 				
 			}
