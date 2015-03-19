@@ -139,8 +139,7 @@ public class KalenderProtocol {
 				break;
 			case "GROUP":
 				String name = findMessage(Arrays.copyOfRange(input, 1, input.length));
-				kalenderdb.group().createGroup(user, name, Arrays.copyOfRange(input, findGroupStart(input), input.length));
-				output = "";
+				output = kalenderdb.group().createGroup(user, name, Arrays.copyOfRange(input, findGroupStart(input), input.length));
 				break;
 		}
 		if(output.trim().equals("")){
@@ -232,6 +231,9 @@ public class KalenderProtocol {
 				break;
 			case "GROUP":
 				output = kalenderdb.group().getGroup(input[1]);
+				break;
+			case "GROUPADMIN":
+				output = kalenderdb.group().getGroupAdmin(input[1]);
 				break;
 			case "STATUS":
 				output = kalenderdb.invitations().getStatus(input[1], input[2]);
@@ -333,6 +335,10 @@ public class KalenderProtocol {
 				break;
 			case "APP":
 				kalenderdb.appointment().deleteApp(input[2]);
+				output = "OK";
+				break;
+			case "GROUP":
+				kalenderdb.group().removeGroup(input[2]);
 				output = "OK";
 				break;
 			case "APPATTENDANT":

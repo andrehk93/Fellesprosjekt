@@ -2,8 +2,8 @@ package server.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Group {
 
@@ -29,7 +29,7 @@ public class Group {
 
 	
 	// GROUP
-	public void createGroup(String user, String name, String[] users) throws Exception {
+	public String createGroup(String user, String name, String[] users) throws Exception {
 		System.out.println("NAVN: " + name);
 		query = "INSERT INTO `christwg_fp`.`gruppe` (`gruppenavn`, `gruppeadmin`) VALUES (?, ?);";
 		PreparedStatement statement = con.prepareStatement(query);
@@ -58,6 +58,7 @@ public class Group {
 			addGroupMember(gruppeId,bruker);
 		}
 		addGroupMember(gruppeId,users);
+		return gruppeId;
 	}
 	
 	
@@ -120,6 +121,19 @@ public class Group {
 		} else {
 			return "";
 		}
+	}
+	
+	public String getGroupAdmin(String id) throws SQLException {
+		query = "SELECT gruppeadmin FROM gruppe WHERE gruppeid = ?";
+		
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, id);
+		ResultSet result = statement.executeQuery();
+		String output = "";
+		if (result.next()){
+			output = result.getString(1);
+		}
+		return output;
 	}
 	
 	// GROUPNAME

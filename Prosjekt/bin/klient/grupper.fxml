@@ -64,7 +64,6 @@
          <children>
             <Button fx:id="lagre_gruppe_knapp" mnemonicParsing="false" onAction="#lagre" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Lagre" />
             <Button fx:id="avbryt_knapp" mnemonicParsing="false" onAction="#avbryt" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Avbryt" />
-            <Button fx:id="forkast_gruppe_knapp" mnemonicParsing="false" prefHeight="46.0" prefWidth="100.0" styleClass="specialButton" text="Forkast" />
          </children>
       </HBox>
 
@@ -79,7 +78,16 @@
             </LinearGradient>
          </stroke>
       </Rectangle>
-
-
+      <HBox layoutX="559.0" layoutY="129.0" prefHeight="48.0" prefWidth="271.0" spacing="10.0">
+         <children>
+            <ComboBox fx:id="gruppe_combobox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" promptText="Dine grupper" styleClass="label-normal-objects" />
+            <Button fx:id="endre" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#endre_gruppe" prefHeight="30.0" prefWidth="70" styleClass="specialButton" text="Endre" />
+            <Button fx:id="slett" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#slett_gruppe" prefHeight="30.0" prefWidth="70" styleClass="specialButton" text="Slett" />
+            <Button fx:id="forlat" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#forlat_gruppe" prefHeight="30.0" prefWidth="70.0" styleClass="normalButton" text="Forlat" />
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </HBox>
    </children>
 </AnchorPane>
