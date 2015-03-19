@@ -187,7 +187,6 @@ public class Endre_avtaleController {
 				listeForGjesteCombobox.add(new Bruker(Klienten.getBruker(email), email, 0));
 			}
 			else {
-				System.out.println(email);
 			}
 		}
 		
@@ -252,7 +251,6 @@ public class Endre_avtaleController {
 		
 		insertAppDetails();
 		
-		System.out.println(oppmoteListe);
 		
 		//layoutX="439.0" layoutY="261.0" prefWidth="150.0"
 		
@@ -350,7 +348,6 @@ public class Endre_avtaleController {
 		valgt_rom.setText(avtalen.getRom().getNavn());
 		valg = new Bruker();
 		fysteGongen = true;
-		System.out.println("DELTAKERE: " + avtalen.getDeltakere());
 		for(Bruker d : avtalen.getDeltakere()){
 			for(Bruker b : listeForGjesteCombobox){
 				if(b.getEmail().equals(d.getEmail())){
@@ -391,14 +388,12 @@ public class Endre_avtaleController {
     @FXML
     public void slett() throws IOException {
     	Klienten.deleteAvtale(avtalen.getAvtaleid());
-    	System.out.println("FØR: "+ Klienten.avtaler);
     	for (Avtale avt : Klienten.avtaler) {
     		if (avt.getAvtaleid().equals(avtaleid)) {
     			Klienten.avtaler.remove(avt);
     			break;
     		}
     	}
-    	System.out.println("ETTER: " + Klienten.avtaler);
     	ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
     }
     
@@ -415,7 +410,6 @@ public class Endre_avtaleController {
 				else{
 					feilDato.setVisible(false);
 					dato = arg2;
-					System.out.println("ÆÆÆÆÆÆÆÆÆ");
 				}
 			}
     	};
@@ -448,7 +442,6 @@ public class Endre_avtaleController {
 				sluttT = Integer.parseInt(timeTil.getItems().get((Integer) newValue));
 				if(sluttM!=999){
 					slutt = LocalTime.of(sluttT, sluttM);
-					System.out.println(slutt);
 					feilTekst.setVisible(!sjekkTid(start, slutt));
 				}
 			}
@@ -592,7 +585,6 @@ public class Endre_avtaleController {
 	    	if(fysteGongen){
 	    		status = Klienten.getStatus(avtalen.getAvtaleid(), valg.getEmail());
 	    		status = correction(status);
-	    		System.out.println("FYSTEGONGEN FOR "+valg.getEmail()+" "+status);
 	    	}
 	    	oppmote.setValue(getStatus(status));
 	    	oppmoteListe.put(valg.getEmail(), correction(status));
@@ -752,7 +744,6 @@ public class Endre_avtaleController {
 	    	if(fysteGongen){
 	    		status = Klienten.getStatus(avtalen.getAvtaleid(), valg.getEmail());
 	    		status = correction(status);
-	    		System.out.println("FYSTEGONGEN FOR "+valg.getEmail()+" "+status);
 	    	}
 	    	oppmote.setValue(getStatus(status));
 	    	oppmoteListe.put(valg.getEmail(), correction(status));
@@ -778,7 +769,6 @@ public class Endre_avtaleController {
 	    	else {
 	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), Integer.parseInt(antall_gjester.getText()) + "");
 	    	}
-	    	System.out.println("ROMMENE: " + rom);
 	    	rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), inviterte_gjester.size() + "");
 	    	ArrayList<String> rommene = new ArrayList<String>();
 		    String[] rom_listen = rom.split(" ");
@@ -788,9 +778,7 @@ public class Endre_avtaleController {
 		    showRom(rommene);
     	}
     	catch (NullPointerException e) {
-    		System.out.println("Må fylle ut avgjørende felter");
     	}
-    	System.out.println("ROMMENE: " + rom);
     	ArrayList<String> rommene = new ArrayList<String>();
     	String[] rom_listen = rom.split(" ");
     	for (int i = 0; i < rom_listen.length; i++) {
@@ -821,13 +809,9 @@ public class Endre_avtaleController {
 	
     @FXML
 	public void lagre(ActionEvent event) throws IOException {
-		System.out.println(start);
-		System.out.println(slutt);
-		System.out.println(dato);
 		if (! feilTekst.isVisible() && avtalenavn.getText() != null && Integer.parseInt(Klienten.getRomStr(valgt_rom.getText()).trim()) >= ant_gjester.getValue().intValue()){
 			lagreErrormessage.setVisible(false);
 			handleChanges();
-			System.out.println();
 			//String oppdatertAvtale = Klienten.hentAvtale(avtaleid); Hvorfor er denne her?
 			for (Avtale avtale : Klienten.avtaler) {
 				if (avtale.getAvtaleid().equals(avtaleid)) {
@@ -897,7 +881,6 @@ public class Endre_avtaleController {
 				if (avtalen.getDeltakere().size() + 1 > i) {
 					b = avtalen.getDeltakere().get(i);
 					if (b.getEmail().equals(Klienten.bruker.getEmail())) {
-						System.out.println("DETTE ER DEEEEG");
 						continue;
 					}
 				}
@@ -910,7 +893,6 @@ public class Endre_avtaleController {
 					if (inviterte_gjester.size() > j) {
 						n = inviterte_gjester.get(j);
 						if (n.getEmail().equals(Klienten.bruker.getEmail())) {
-							System.out.println("DETTE ER MEG");
 							continue;
 						}
 					}
@@ -927,10 +909,8 @@ public class Endre_avtaleController {
 				}
 			}
 		}
-		System.out.println("FJERNA : " + fjerna_gjester);
 		for (Bruker b : fjerna_gjester) {
 			b.deleteAvtale(avtalen);
-			System.out.println("DELETED");
 		}
 		
     }

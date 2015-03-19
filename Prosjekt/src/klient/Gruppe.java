@@ -84,7 +84,6 @@ public class Gruppe {
 				}
 			}
 			if (duplikat) {
-				System.out.println("Brukeren: " + medlem.getNavn() + " er allerede medlem av gruppen");
 			}
 			else {
 				medlemListeProperty.getValue().add(medlem);
@@ -106,15 +105,12 @@ public class Gruppe {
 				}
 			}
 			if (duplikat) {
-				System.out.println("Brukeren " + medlem + " er medlem av gruppen");
 				medlemListeProperty.getValue().remove(medlem);
 			}
 			else {
-				System.out.println("Brukeren " + medlem + " er ikke medlem av gruppen");
 			}
 		}
 		catch (NullPointerException e) {
-			System.out.println("Det er ingen medlemmer i gruppen");
 		}
 	}
 	

@@ -18,7 +18,7 @@ import java.util.Set;
 public class Klienten {
 	static final Integer DEV = 0;
 	static final Integer LIVE = 1;
-	static Integer status = DEV;
+	static Integer status = LIVE;
 	
 	
 	public static Socket socket;
@@ -117,7 +117,6 @@ public class Klienten {
 		String svar = sendTilServer("login " + brukernavn + " " + passw);
 		if (svar.trim().equals("OK")) {
 			String navn = getBruker(brukernavn);
-			System.out.println("DETTE ER NAVNET: " + navn);
 			bruker = new Bruker(navn, brukernavn, Integer.parseInt(getRights().trim()));
 		}
 		return svar.trim();
@@ -214,7 +213,6 @@ public class Klienten {
 	
 	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
 		String toServer = "CHANGE STATUS " + avtaleid.trim() + " " + newStatus;
-		System.out.println(toServer);
 		sendTilServer(toServer);
 	}
 	
@@ -241,7 +239,7 @@ public class Klienten {
 			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
 				toServer = "GET USERDETAILS "+email;
 				String[] userDetails = sendTilServer(toServer).split(" ");
-				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2], 0);
+				Bruker user = new Bruker(userDetails[0]+" "+userDetails[1], userDetails[2].trim(), 0);
 				allUsers.add(user);
 			}
 		}
@@ -433,7 +431,6 @@ public class Klienten {
 		if(what.equals("APPNAME")){
 			toServer += " ENDOFMESSAGE";
 		}
-		System.out.println(toServer);
 		sendTilServer(toServer);
 	}
 	
@@ -465,9 +462,7 @@ public class Klienten {
 		for(String email : oppmoteListe.keySet()){
 			liste += email +" "+ oppmoteListe.get(email) +" ";
 		}
-		System.out.println("Avtaleid: "+avtaleid);
 		String toServer = "CHANGE STATUSES "+avtaleid+" "+liste.substring(0, liste.length()-1);
-		System.out.println(toServer);
 		sendTilServer(toServer);
 	}
 	
@@ -493,8 +488,8 @@ public class Klienten {
 		String[] users = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
-			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
-				allUsers.add(brukere.get(email));
+			if (email.trim().equals("0") || email.trim().length() > 2) {
+				allUsers.add(brukere.get(email.trim()));
 			}
 		}
 		return allUsers;
@@ -506,7 +501,7 @@ public class Klienten {
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
 			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
-				allUsers.add(brukere.get(email));
+				allUsers.add(brukere.get(email.trim()));
 			}
 		}
 		return allUsers;
@@ -515,7 +510,7 @@ public class Klienten {
 	public static void setUpBrukere() throws IOException {
 		ArrayList<Bruker> brukerListe = getAllUserDetails();
 		for(Bruker b : brukerListe){
-			String email = b.getEmail();
+			String email = b.getEmail().trim();
 			addBruker(email,b);
 			brukere_array.add(b);
 		}

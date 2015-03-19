@@ -164,7 +164,6 @@
                               <HBox prefHeight="200.0" prefWidth="466.0">
                                  <children>
                                     <ListView fx:id="møteromliste" prefHeight="100.0" prefWidth="429.0" />
-                                    <Slider fx:id="møteromliste_slider" max="10.0" orientation="VERTICAL" prefHeight="217.0" prefWidth="30.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="332.0" spacing="15.0" />
