@@ -101,8 +101,6 @@ public class KalenderController {
 						}
 						if (! duplikat) {
 							String admin_email = Klienten.getGroupAdmin(id.trim());
-							System.out.println("EMAIL: " + admin_email.trim());
-							System.out.println("ADMIN: " + Klienten.getBrukere().get(admin_email.trim()));
 							Gruppe gruppe = new Gruppe(gruppenavn.trim(), brukere, id.trim(), Klienten.getBrukere().get(admin_email.trim()));
 							Klienten.grupper.add(gruppe);
 						}
@@ -169,7 +167,6 @@ public class KalenderController {
 	}
 
 	public void showBruker() {
-		System.out.println("navnet: " + Klienten.bruker.getNavn());
 		brukernavn.setText(Klienten.bruker.getNavn());
 	}
 
@@ -189,7 +186,6 @@ public class KalenderController {
 						try {
 							pop(newValue);
 						} catch (Exception e) {
-							System.out.println("FEIL: " + e);
 						}
 					}
 				}
@@ -441,9 +437,7 @@ public class KalenderController {
 			avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
 		}
 		else {
-			//System.out.println("Ikke admin, legger til: " + deltaker_liste + " og: " + admin);
 			avtale = new Avtale(admin, deltaker_liste, tid, rom, avtaleid);
-			//System.out.println("Til slutt: " + avtale.getDeltakere());
 		}
 		avtale.setAvtaleNavn();
 		avtale.setStranger(strange);

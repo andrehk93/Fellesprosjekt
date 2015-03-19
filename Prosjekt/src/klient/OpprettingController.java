@@ -65,7 +65,6 @@ public class OpprettingController {
 	
 	public void toggleAdmin(){
 		newUserAdmin = !newUserAdmin;
-		System.out.println(newUserAdmin);
 	}
  
 	public void addListner(){
