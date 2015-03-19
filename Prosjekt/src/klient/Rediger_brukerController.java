@@ -118,6 +118,7 @@ public class Rediger_brukerController {
 		if (! slettBrukere.isEmpty()) {
 			for (Bruker bruker : slettBrukere) {
 				Klienten.deleteUser(bruker);
+				Klienten.fjernBruker(bruker.getEmail(), bruker);
 			}
 			for (int i = 0; i < slettBrukere.size(); i++) {
 				brukere.remove(slettBrukere.get(i));
