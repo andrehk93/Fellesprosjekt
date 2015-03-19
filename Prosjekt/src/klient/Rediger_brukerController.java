@@ -48,7 +48,6 @@ public class Rediger_brukerController {
 		brukere = new ArrayList<Bruker>();
 		brukere = Klienten.getAllNonAdmins();
 		admins = Klienten.getAllAdminDetails();
-		System.out.println("BRUKERNE: " + brukere);
 		items = FXCollections.observableList(brukere);
 		adminItems = FXCollections.observableList(admins);
 		eksisterendeBrukere.setItems(items);
@@ -59,7 +58,6 @@ public class Rediger_brukerController {
 			public void changed(ObservableValue<? extends Bruker> arg0,
 					Bruker arg1, Bruker arg2) {
 				valg = arg2;
-				System.out.println("CHOICE: " + valg);
 			}
 			
 		};
@@ -71,7 +69,6 @@ public class Rediger_brukerController {
 			public void changed(ObservableValue<? extends Bruker> observable,
 					Bruker oldValue, Bruker newValue) {
 				fjernValg = newValue;
-				System.out.println("FJERNVALG: " + fjernValg);
 			}
 			
 		};
@@ -100,7 +97,6 @@ public class Rediger_brukerController {
 	
 	@FXML
 	private void leggTilBruker(ActionEvent event) {
-		System.out.println("Legg til bruker");
 		if (valg != null) {
 			slettBrukere.add(valg);
 			slettItems = FXCollections.observableList(slettBrukere);
@@ -110,7 +106,6 @@ public class Rediger_brukerController {
 	
 	@FXML
 	private void fjernBruker(ActionEvent event) {
-		System.out.println("Fjern bruker");
 		if (fjernValg != null) {
 			slettBrukere.remove(fjernValg);
 			slettItems = FXCollections.observableList(slettBrukere);
@@ -123,6 +118,7 @@ public class Rediger_brukerController {
 		if (! slettBrukere.isEmpty()) {
 			for (Bruker bruker : slettBrukere) {
 				Klienten.deleteUser(bruker);
+				Klienten.fjernBruker(bruker.getEmail(), bruker);
 			}
 			for (int i = 0; i < slettBrukere.size(); i++) {
 				brukere.remove(slettBrukere.get(i));

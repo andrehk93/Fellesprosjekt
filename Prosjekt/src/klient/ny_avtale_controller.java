@@ -33,7 +33,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -102,8 +101,6 @@ public class ny_avtale_controller {
     Button søk_møterom, forkast_knapp, lagre_knapp, addGruppeBtn, leggTil, addGjestBtn;
     @FXML
     ListView<String> møteromliste;
-    @FXML
-    Slider møteromliste_slider;
     @FXML
     TextField antall_gjester, valgt_rom, avtalenavn;
     @FXML
@@ -215,7 +212,6 @@ public class ny_avtale_controller {
 				listeForGjesteCombobox.add(new Bruker(Klienten.getBruker(email), email, 0));
 			}
 			else {
-				System.out.println(email);
 			}
 		}
 		
@@ -459,7 +455,6 @@ public class ny_avtale_controller {
     	while(i.isBefore(tilDato)) {
     		for(String day : repDays){
     			DayOfWeek dag = findWeekDay(day);
-    			System.out.println(dag);
     			int diff = dag.getValue()-i.getDayOfWeek().getValue();
     			if(diff<=0){
     				diff += 7;
@@ -570,7 +565,6 @@ public class ny_avtale_controller {
 	    	else {
 	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), antall_gjester.getText());
 	    	}
-	    	System.out.println("ROMMENE: " + rom);
 	    	if (isrep){
 	    		repRooms = new ArrayList<String>();
 	    		for(LocalDate date : repDates){
@@ -593,7 +587,6 @@ public class ny_avtale_controller {
 	    	}
     	}
     	catch (NullPointerException e) {
-    		System.out.println("Må fylle ut avgjørende felter");
     	}
     	ArrayList<String> rommene = new ArrayList<String>();
     	String[] rom_listen = rom.split(" ");

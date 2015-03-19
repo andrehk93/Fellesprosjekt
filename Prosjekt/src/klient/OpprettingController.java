@@ -60,12 +60,16 @@ public class OpprettingController {
 		Klienten.createUser(epost.getText(), fornavn.getText(), etternavn.getText(), passord.getText());
 		if(newUserAdmin){
 			Klienten.makeAdmin(new Bruker(Klienten.getBruker(epost.getText()), epost.getText(), 1));
+			Klienten.addBruker(epost.getText(), new Bruker(fornavn.getText() + " " + etternavn.getText(), epost.getText(), 1));
 		}
+		else {
+			Klienten.addBruker(epost.getText(), new Bruker(fornavn.getText() + " " + etternavn.getText(), epost.getText(), 0));
+		}
+		
 	}
 	
 	public void toggleAdmin(){
 		newUserAdmin = !newUserAdmin;
-		System.out.println(newUserAdmin);
 	}
  
 	public void addListner(){

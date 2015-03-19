@@ -30,15 +30,12 @@ public class Group {
 	
 	// GROUP
 	public String createGroup(String user, String name, String[] users) throws Exception {
-		System.out.println("NAVN: " + name);
 		query = "INSERT INTO `christwg_fp`.`gruppe` (`gruppenavn`, `gruppeadmin`) VALUES (?, ?);";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, name);
 		statement.setString(2, user);
 		statement.executeUpdate();
-		System.out.println("ADDER TIL GRUPPE: " );
 		for (String userstr : users) {
-			System.out.println(userstr);
 		}
 		query = "SELECT LAST_INSERT_ID();";
 		statement = con.prepareStatement(query);
@@ -72,7 +69,6 @@ public class Group {
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setString(1, newMembers[i]);
 			statement.setString(2, groupId);
-			System.out.println("LEGGER TIL: " + newMembers[i]);
 			statement.executeUpdate();
 		}
 	}
