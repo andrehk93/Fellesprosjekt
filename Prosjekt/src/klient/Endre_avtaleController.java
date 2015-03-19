@@ -583,7 +583,8 @@ public class Endre_avtaleController {
 	    	oppmote.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
 	    	String status = "0";
 	    	if(fysteGongen){
-	    		status = Klienten.getStatus(avtalen.getAvtaleid(), valg.getEmail());
+	    		System.out.println("henter status");
+	    		status = Klienten.getStatus(avtalen.getAvtaleid().trim(), valg.getEmail().trim());
 	    		status = correction(status);
 	    	}
 	    	oppmote.setValue(getStatus(status));

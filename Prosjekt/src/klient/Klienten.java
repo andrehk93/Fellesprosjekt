@@ -84,7 +84,7 @@ public class Klienten {
 	}
 	
 	public static void setLest(String email, String avtaleid) throws IOException {
-		String toServer = "CHANGE NOTIFICATION " + email + " " + avtaleid;
+		String toServer = "CHANGE NOTIFICATION " + email + " " + avtaleid.trim();
 		sendTilServer(toServer);
 	}
 	
@@ -93,7 +93,7 @@ public class Klienten {
 	}
 	
 	public static String hentAvtale(String avtaleid) throws IOException {
-		String toServer = "GET APPDETAILS " + avtaleid;
+		String toServer = "GET APPDETAILS " + avtaleid.trim();
 		return sendTilServer(toServer);
 	}
 	
@@ -123,31 +123,31 @@ public class Klienten {
 	}
 	
 	public static void deleteAttendant(String avtaleid, String email) throws IOException {
-		String toServer = "DELETE APPATTENDANT " + avtaleid + " " + email;
+		String toServer = "DELETE APPATTENDANT " + avtaleid.trim() + " " + email;
 		sendTilServer(toServer);
 	}
 	
 	public static String getDeltakere(String avtaleid, String status) throws IOException {
 		String toServer = "";
 		if(status == null){
-			toServer = "GET APPATTS " + avtaleid + " "+ status;
+			toServer = "GET APPATTS " + avtaleid.trim() + " "+ status;
 		}
 		else if (status.equals("2")) {
-			toServer = "GET ALLAPPATTS " + avtaleid;
+			toServer = "GET ALLAPPATTS " + avtaleid.trim();
 		}
 		else {
-			toServer = "GET APPATTS " + avtaleid + " " + status;
+			toServer = "GET APPATTS " + avtaleid.trim() + " " + status;
 		}
 		return sendTilServer(toServer);
 	}
 	
 	public static String getAlleInviterte(String avtaleid) throws IOException {
-		String toServer = "GET ALLAPPATTS " + avtaleid;
+		String toServer = "GET ALLAPPATTS " + avtaleid.trim();
 		return sendTilServer(toServer);
 	}
 	
 	public static String getTidspunkt(String avtaleid) throws IOException {
-		String toServer = "GET APPTIME " + avtaleid;
+		String toServer = "GET APPTIME " + avtaleid.trim();
 		return sendTilServer(toServer);
 	}
 	
@@ -197,7 +197,7 @@ public class Klienten {
 	}
 	
 	public static String getAvtaleRom(String avtaleid) throws IOException {
-		String toServer = "GET MYAVTALEROM " + avtaleid;
+		String toServer = "GET MYAVTALEROM " + avtaleid.trim();
 		return sendTilServer(toServer);
 	}
 	
@@ -212,17 +212,17 @@ public class Klienten {
 	}
 	
 	public static void changeStatus(String avtaleid, String newStatus) throws IOException {
-		String toServer = "CHANGE STATUS " + avtaleid.trim() + " " + newStatus;
+		String toServer = "CHANGE STATUS " + avtaleid.trim() + " " + newStatus.trim();
 		sendTilServer(toServer);
 	}
 	
 	public static String getStatus(String avtaleid, String email) throws IOException {
-		String toServer = "GET STATUS " + avtaleid + " " + email;
+		String toServer = "GET STATUS " + avtaleid.trim() + " " + email.trim();
 		return sendTilServer(toServer);
 	}
 	
 	public static String getAvtaleAdmin(String avtaleid) throws IOException {
-		String toServer = "GET APPADMIN " + avtaleid;
+		String toServer = "GET APPADMIN " + avtaleid.trim();
 		return sendTilServer(toServer);
 	}
 	
@@ -312,12 +312,12 @@ public class Klienten {
 	}
 	
 	public static String getAppNavn(String avtaleid) throws IOException {
-		String toServer = "GET APPNAME " + avtaleid;
+		String toServer = "GET APPNAME " + avtaleid.trim();
 		return sendTilServer(toServer);
 	}
 	
 	public static void sendVarsel(String id, String email, String melding) throws IOException {
-		String toServer = "CREATE NOTIFICATION " + id + " "+ email + " " + melding + " ENDOFMESSAGE";
+		String toServer = "CREATE NOTIFICATION " + id.trim() + " "+ email + " " + melding + " ENDOFMESSAGE";
 		sendTilServer(toServer);
 	}
 	
@@ -373,12 +373,12 @@ public class Klienten {
 		int kapasitet = Integer.parseInt(Klienten.getRomStr(romnavn).trim());
 		Møterom rom = new Møterom(kapasitet, romnavn);
 		Klienten.alle_møterom.add(rom);
-		String[] tiden = Klienten.getTidspunkt(avtaleid).split(" ");
+		String[] tiden = Klienten.getTidspunkt(avtaleid.trim()).split(" ");
 		TidsIntervall tid = new TidsIntervall(LocalTime.of(Integer.parseInt(tiden[0].substring(0,2)),
 				Integer.parseInt(tiden[0].substring(3,5))), LocalTime.of(Integer.parseInt(tiden[1].substring(0,2)),
 						Integer.parseInt(tiden[1].substring(3,5))), LocalDate.of(Integer.parseInt(dato.substring(0,4)),
 								Integer.parseInt(dato.substring(5,7)), Integer.parseInt(dato.substring(8,10))));
-		String[] deltakere = Klienten.getDeltakere(avtaleid, "1").split(" ");
+		String[] deltakere = Klienten.getDeltakere(avtaleid.trim(), "1").split(" ");
 		if (! deltakere.toString().equals(null) && ! deltakere.equals("NONE")) {
 			for (String epost : deltakere) {
 				if (epost.trim().equals("NONE") || epost.trim().equals("")) {
@@ -393,7 +393,7 @@ public class Klienten {
 				}
 			}
 		}
-		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid);
+		Avtale avtale = new Avtale(Klienten.bruker, deltaker_liste, tid, rom, avtaleid.trim());
 		avtale.setAvtaleNavn();
 		return avtale;
 	}
@@ -407,7 +407,7 @@ public class Klienten {
 	}
 	
 	public static void removeGroupMember(String id, Bruker user) throws IOException{
-		String toServer = "REMOVE GROUPMEMBER " + id + " " + user.getEmail();
+		String toServer = "REMOVE GROUPMEMBER " + id.trim() + " " + user.getEmail();
 		sendTilServer(toServer);
 	}
 	
@@ -432,7 +432,7 @@ public class Klienten {
 	}
 	
 	public static void changeAvtale(String appID, String value, String what) throws IOException{
-		String toServer = "CHANGE "+what+" "+appID+" "+value;
+		String toServer = "CHANGE "+what.trim()+" "+appID.trim()+" "+value.trim();
 		if(what.equals("APPNAME")){
 			toServer += " ENDOFMESSAGE";
 		}
@@ -458,7 +458,7 @@ public class Klienten {
 	}
 
 	public static void deleteAvtale(String avtaleid) throws IOException {
-		String toServer = "DELETE APP "+avtaleid;
+		String toServer = "DELETE APP "+avtaleid.trim();
 		sendTilServer(toServer);
 	}
 
@@ -467,7 +467,7 @@ public class Klienten {
 		for(String email : oppmoteListe.keySet()){
 			liste += email +" "+ oppmoteListe.get(email) +" ";
 		}
-		String toServer = "CHANGE STATUSES "+avtaleid+" "+liste.substring(0, liste.length()-1);
+		String toServer = "CHANGE STATUSES "+avtaleid.trim()+" "+liste.substring(0, liste.length()-1);
 		sendTilServer(toServer);
 	}
 	
