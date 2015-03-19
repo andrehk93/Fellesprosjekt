@@ -1,23 +1,32 @@
 package server;
 
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.io.*;
  
 public class KalenderThread extends Thread {
     private Socket socket = null;
+    private Boolean debug = false;
  
     public KalenderThread(Socket socket) {
         super("KalenderThread");
         this.socket = socket;
     }
+    
+    public KalenderThread(Socket socket, Boolean debug) {
+        super("KalenderThread");
+        this.socket = socket;
+        this.debug = debug;
+        System.out.println("Debug = " + debug);
+    }
      
     public void run() {
  
         try (
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.ISO_8859_1), true);
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(
-                    socket.getInputStream()));
+                    socket.getInputStream(), StandardCharsets.ISO_8859_1));
         ) {
         	String inputLine, outputLine;
             
@@ -32,8 +41,10 @@ public class KalenderThread extends Thread {
 	            	} catch(Exception ArrayIndexOutOfBoudsException){
 	        			outputLine = "ABSOLUTT RAR INPUT \r\n";
 	        		}
-	            	System.out.println("INPUT: " + inputLine);
-	            	System.out.println("OUTPUT: " + outputLine);
+            		if(debug){
+		            	System.out.println("INPUT: " + inputLine);
+		            	System.out.println("OUTPUT: " + outputLine);
+            		}
 		            if (! outputLine.trim().equals("-1 ")) {
 		              	out.println(outputLine);
 		            }

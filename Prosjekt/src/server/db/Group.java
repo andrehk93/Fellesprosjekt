@@ -35,8 +35,6 @@ public class Group {
 		statement.setString(1, name);
 		statement.setString(2, user);
 		statement.executeUpdate();
-		for (String userstr : users) {
-		}
 		query = "SELECT LAST_INSERT_ID();";
 		statement = con.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
