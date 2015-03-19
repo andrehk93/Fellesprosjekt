@@ -241,6 +241,9 @@ public class KalenderProtocol {
 			case "USERFULLNAME":
 				output = kalenderdb.user().getUserFullname(input[1]);
 				break;
+			case "FULLUSERS":
+				output = kalenderdb.user().getFullUsers();
+				break;
 			case "LASTID":
 				output = kalenderdb.getLastID();
 				break;

@@ -246,6 +246,20 @@ public class Klienten {
 		return allUsers;
 	}
 	
+	public static ArrayList<Bruker> getFullUsers() throws IOException{
+		String toServer = "GET FULLUSERS";
+		String[] users = sendTilServer(toServer).split(" ");
+		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
+		for(int i=2;i<users.length;i+=3){
+			String email = users[i];
+			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+				Bruker user = new Bruker(users[i-1]+" "+users[i],users[i-2],0);
+				allUsers.add(user);
+			}
+		}
+		return allUsers;
+	}
+	
 	public static ArrayList<Bruker> getAllAvailableUserDetails(String dato, String from, String to) throws IOException{
 		String toServer = "GET AVAILABLE USERS " + dato + " " + from + " " + to;
 		String[] users = sendTilServer(toServer).split(" ");
@@ -513,7 +527,7 @@ public class Klienten {
 	}
 	
 	public static void setUpBrukere() throws IOException {
-		ArrayList<Bruker> brukerListe = getAllUserDetails();
+		ArrayList<Bruker> brukerListe = getFullUsers();
 		for(Bruker b : brukerListe){
 			String email = b.getEmail().trim();
 			addBruker(email,b);
