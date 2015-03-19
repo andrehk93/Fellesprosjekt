@@ -18,7 +18,7 @@ import java.util.Set;
 public class Klienten {
 	static final Integer DEV = 0;
 	static final Integer LIVE = 1;
-	static Integer status = LIVE;
+	static Integer status = DEV;
 	
 	
 	public static Socket socket;
@@ -421,6 +421,11 @@ public class Klienten {
 		sendTilServer(toServer);
 	}
 	
+	public static void fjernBruker(String email, Bruker bruker) {
+		brukere.remove(email);
+		brukere_array.remove(bruker);
+	}
+	
 	public static String getRights() throws NumberFormatException, IOException{
 		String toServer = "GET RIGHTS";
 		return sendTilServer(toServer);
@@ -512,12 +517,12 @@ public class Klienten {
 		for(Bruker b : brukerListe){
 			String email = b.getEmail().trim();
 			addBruker(email,b);
-			brukere_array.add(b);
 		}
 	}
 	
 	public static void addBruker(String email, Bruker bruker) {
 		brukere.putIfAbsent(email, bruker);
+		brukere_array.add(bruker);
 	}
 	
 	public static void setDest(String d) {
