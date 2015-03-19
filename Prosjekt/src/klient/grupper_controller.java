@@ -239,10 +239,10 @@ public class grupper_controller {
     		Klienten.grupper.remove(valgt_gruppe);
 			Klienten.removeGruppe(valgt_gruppe.getGruppeid());
 			gruppe_observable.remove(valgt_gruppe);
-			for (Bruker bruker : valgt_gruppe.getMedlemmer()) {
+			for (Bruker bruker : medlemmer) {
 				søkBrukere.add(bruker);
-				medlemmer.remove(bruker);
 			}
+			medlemmer.clear();
 			gruppemedlemmer_liste(medlemmer);
     		brukerliste(søkBrukere);
     		gruppenavn.setText(null);
