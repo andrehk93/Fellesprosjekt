@@ -3,8 +3,8 @@ package server.db;
 import java.security.SecureRandom;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Random;
-
 import java.sql.Connection;
 
 	public class User {
@@ -153,6 +153,19 @@ import java.sql.Connection;
 			result.next();
 			
 			return result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
+		}
+		
+		// FULLUSER
+		public String getFullUsers() throws SQLException{
+			query = "SELECT epost,fornavn,etternavn FROM bruker";
+			PreparedStatement statement = con.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			
+			String output = "";
+			while(result.next()){
+				output += result.getString(1)+" "+result.getString(2)+" "+result.getString(3)+" ";
+			}
+			return output.substring(0, output.length()-1);
 		}
 		
 		// USERFULLNAME
