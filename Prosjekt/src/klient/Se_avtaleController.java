@@ -91,10 +91,20 @@ public class Se_avtaleController {
 	
 	public void initialize() throws IOException {
 		for(Avtale app : Klienten.avtaler){
-			if(Klienten.getValgtAvtale().equals(app.getAvtaleid())){
+			if(Klienten.getValgtAvtale() != null && Klienten.getValgtAvtale().equals(app.getAvtaleid())){
 				avtalen = app;
 				avtaleid = app.getAvtaleid();
 				break;
+			}
+		}
+		if (avtalen == null) {
+			if (KalenderController.enheter[1] != null) {
+				for(Avtale app : Klienten.avtaler){
+					if (KalenderController.enheter[1].trim().equals(app.getAvtaleid().trim())) {
+						avtalen = app;
+						avtaleid = app.getAvtaleid();
+					}
+				}
 			}
 		}
 		setAvtale();
