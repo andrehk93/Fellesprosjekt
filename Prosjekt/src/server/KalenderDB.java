@@ -39,7 +39,7 @@ public class KalenderDB {
 				//ServerMySQL serv = new ServerMySQL();
 				//url = serv.getUrl();
 				//user = serv.getUser();
-				//password = serv.getPassword();
+				//password = serv.getPassword();z
 			} catch (Exception Exception){
 				
 			}
