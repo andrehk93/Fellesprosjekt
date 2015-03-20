@@ -51,6 +51,7 @@ public class PopupController {
 		}
 	}
 	
+	@FXML
 	public void ferdig(ActionEvent event) throws IOException {
 		if (lest.isSelected()) {
 			Klienten.setLest(email, avtaleid);

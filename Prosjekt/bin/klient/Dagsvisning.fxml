@@ -89,11 +89,6 @@
       </HBox>
       <VBox alignment="TOP_CENTER" layoutY="100.0" prefHeight="610.0" prefWidth="200.0" spacing="20.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Innlogget som:">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Text>
             <Label fx:id="brukernavn" styleClass="label-name" text="brukernavn">
                <font>
                   <Font size="15.0" />
@@ -113,7 +108,7 @@
                         <Font size="15.0" />
                      </font>
                   </Text>
-                  <ListView fx:id="notifikasjoner_lv" prefHeight="200.0" prefWidth="200.0" />
+                  <ListView fx:id="notifikasjoner_lv" prefHeight="150.0" prefWidth="200.0" />
                   <ChoiceBox fx:id="filtrering" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="150.0" styleClass="label-calenderdays">
                      <padding>
                         <Insets bottom="5.0" />
@@ -123,6 +118,23 @@
                      <children>
                         <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextPaneLogOut" prefHeight="40.0" prefWidth="150.0" styleClass="normalButton" text="Logg ut" />
                         <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshKalender" prefHeight="40.0" prefWidth="150.0" styleClass="normalButton" text="Last inn igjen" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Legg til kalender">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="ekstraKal" contentDisplay="CENTER" mnemonicParsing="false" onAction="#extraCal" prefHeight="30.0" prefWidth="30.0" styleClass="specialButton" text="+" textOverrun="CLIP">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

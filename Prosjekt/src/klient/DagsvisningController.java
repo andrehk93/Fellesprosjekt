@@ -29,6 +29,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class DagsvisningController {
 	
@@ -379,6 +380,13 @@ public class DagsvisningController {
 	@FXML
 	private void nextPaneLogOut(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+	}
+	
+	@FXML
+	public void extraCal(ActionEvent event) throws IOException{
+		Klienten.setDest("/klient/extraPopup.fxml");
+		Popup pop = new Popup();
+		pop.start(new Stage());
 	}
 	
 	@FXML
