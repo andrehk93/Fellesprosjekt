@@ -558,17 +558,23 @@ public class ny_avtale_controller {
     @FXML
     public void finnRom(ActionEvent event) throws IOException {
     	String rom = "";
+    	String antGjester = antall_gjester.getText();
+    	if(antGjester.length() == 0){
+    		antGjester = "0";
+    	}
+    	System.out.println(dato+" "+start+" "+slutt);
     	try {
 	    	if (hele_dagen.isSelected()) {
-	    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", antall_gjester.getText());
+	    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", antGjester);
 	    	}
 	    	else {
-	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), antall_gjester.getText());
+	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), antGjester);
+	    		System.out.println(rom);
 	    	}
 	    	if (isrep){
 	    		repRooms = new ArrayList<String>();
 	    		for(LocalDate date : repDates){
-	    			String[] besteRom = Klienten.getRom(date.toString(), start.toString(), slutt.toString(), antall_gjester.getText()).split(" ");
+	    			String[] besteRom = Klienten.getRom(date.toString(), start.toString(), slutt.toString(), antGjester).split(" ");
 	    			repRooms.add(besteRom[0]);
 	    		}
 	    		ArrayList<String> beskjed = new ArrayList<String>();
@@ -577,7 +583,7 @@ public class ny_avtale_controller {
 	    		return;
 	    	}
 	    	else {
-	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), antall_gjester.getText() + "");
+	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), antGjester + "");
 	    		ArrayList<String> rommene = new ArrayList<String>();
 		    	String[] rom_listen = rom.split(" ");
 		    	for (int i = 0; i < rom_listen.length; i++) {

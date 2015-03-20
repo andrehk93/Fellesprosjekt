@@ -251,7 +251,7 @@ public class Klienten {
 		String[] users = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(int i=2;i<users.length;i+=3){
-			String email = users[i];
+			String email = users[i-2];
 			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
 				Bruker user = new Bruker(users[i-1]+" "+users[i],users[i-2],0);
 				allUsers.add(user);

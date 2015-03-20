@@ -15,6 +15,8 @@ import java.util.List;
 
 
 
+
+
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
@@ -379,6 +381,10 @@ public class Endre_avtaleController {
     	    public void changed(ObservableValue<? extends String> observable,
     	            String oldValue, String newValue) {
     	    	valgt_rom.setText(newValue);
+    	    	if(lagreErrormessage.getText().equals("Rommet er opptatt")){
+    	    		lagreErrormessage.setText("");
+    	    		lagreErrormessage.setVisible(false);
+    	    	}
     	    }
     	});
     	ObservableList<String> rom = FXCollections.observableList(rommene);
@@ -581,7 +587,7 @@ public class Endre_avtaleController {
 	    	oppmote.setPrefHeight(boks.getPrefHeight());
 	    	oppmote.getSelectionModel().selectedIndexProperty().addListener(handleOppmote);
 	    	oppmote.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
-	    	String status = "0";
+	    	String status = "null";
 	    	if(fysteGongen){
 	    		System.out.println("henter status");
 	    		status = Klienten.getStatus(avtalen.getAvtaleid().trim(), valg.getEmail().trim());
@@ -763,14 +769,17 @@ public class Endre_avtaleController {
     @FXML
     public void finnRom(ActionEvent event) throws IOException {
     	String rom = "";
+    	String antGjester = antall_gjester.getText();
+    	if(antGjester.length() == 0){
+    		antGjester = "0";
+    	}
     	try {
 	    	if (hele_dagen.isSelected()) {
-	    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", Integer.parseInt(antall_gjester.getText()) + "");
+	    		rom = Klienten.getRom(dato.toString(), "00:00", "23:59", Integer.parseInt(antGjester) + "");
 	    	}
 	    	else {
-	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), Integer.parseInt(antall_gjester.getText()) + "");
+	    		rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), Integer.parseInt(antGjester) + "");
 	    	}
-	    	rom = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), inviterte_gjester.size() + "");
 	    	ArrayList<String> rommene = new ArrayList<String>();
 		    String[] rom_listen = rom.split(" ");
 		    for (int i = 0; i < rom_listen.length; i++) {
@@ -812,16 +821,17 @@ public class Endre_avtaleController {
 	public void lagre(ActionEvent event) throws IOException {
 		if (! feilTekst.isVisible() && avtalenavn.getText() != null && Integer.parseInt(Klienten.getRomStr(valgt_rom.getText()).trim()) >= ant_gjester.getValue().intValue()){
 			lagreErrormessage.setVisible(false);
-			handleChanges();
-			//String oppdatertAvtale = Klienten.hentAvtale(avtaleid); Hvorfor er denne her?
-			for (Avtale avtale : Klienten.avtaler) {
-				if (avtale.getAvtaleid().equals(avtaleid)) {
-					Klienten.avtaler.remove(avtale);
-					Klienten.avtaler.add(avtalen);
-					break;
+			if(handleChanges()){
+				//String oppdatertAvtale = Klienten.hentAvtale(avtaleid); Hvorfor er denne her?
+				for (Avtale avtale : Klienten.avtaler) {
+					if (avtale.getAvtaleid().equals(avtaleid)) {
+						Klienten.avtaler.remove(avtale);
+						Klienten.avtaler.add(avtalen);
+						break;
+					}
 				}
+				ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 			}
-			ScreenNavigator.loadScreen(ScreenNavigator.getForrigeScreen());
 		}
 		else if (feilTekst.isVisible() || avtalenavn.getText() == null){
 			lagreErrormessage.setText("Du må fylle ut alle felter");
@@ -833,7 +843,7 @@ public class Endre_avtaleController {
 		}
 	}
     
-    private void handleChanges() throws IOException{
+    private boolean handleChanges() throws IOException{
 		if(!avtalenavn.getText().equals(avtalen.getAvtaleNavn())){
 			Klienten.changeAvtale(avtalen.getAvtaleid(), avtalenavn.getText(), "APPNAME");
 			avtalen.setAvtaleNavn(avtalenavn.getText());
@@ -848,10 +858,17 @@ public class Endre_avtaleController {
 		if(!start.equals(avtalen.getTid().getStart())){
 			Klienten.changeAvtale(avtalen.getAvtaleid(), start.toString(),"STARTTIME");
 			avtalen.setTid(new TidsIntervall(start,slutt,dato));
+			if(!isLedigRom()){
+				return false;
+			}
 		}
 		if(!slutt.equals(avtalen.getTid().getSlutt())){
 			Klienten.changeAvtale(avtalen.getAvtaleid(), slutt.toString(),"ENDTIME");
 			avtalen.setTid(new TidsIntervall(start,slutt,dato));
+			if(!isLedigRom()){
+				return false;
+			}
+			
 		}
 		if(!dato.equals(avtalen.getTid().getDato())){
 			Klienten.changeAvtale(avtalen.getAvtaleid(), dato.toString(), "DATE");
@@ -913,11 +930,36 @@ public class Endre_avtaleController {
 		for (Bruker b : fjerna_gjester) {
 			b.deleteAvtale(avtalen);
 		}
+		return true;
 		
     }
 	
 	public Bruker getBruker() {
 		return Klienten.bruker;
+	}
+	
+	private boolean isLedigRom() throws NumberFormatException, IOException {
+		String antGjester = antall_gjester.getText();
+    	if(antGjester.length() == 0){
+    		antGjester = "0";
+    	}
+    	String[] rommene = Klienten.getRom(dato.toString(), start.toString(), slutt.toString(), Integer.parseInt(antGjester) + "").split(" ");
+    	boolean sjekk = false;
+    	for(String rom : rommene){
+    		if(valgt_rom.getText().equals(rom)){
+    			sjekk = true;
+    			break;
+    		}
+    	}
+    	if(!sjekk) {
+    		lagreErrormessage.setText("Rommet er opptatt");
+    		lagreErrormessage.setVisible(true);
+    	}
+    	else{
+    		lagreErrormessage.setText("");
+    		lagreErrormessage.setVisible(false);
+    	}
+    	return sjekk;
 	}
 	
 
