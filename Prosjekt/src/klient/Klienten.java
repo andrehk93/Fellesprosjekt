@@ -18,7 +18,7 @@ import java.util.Set;
 public class Klienten {
 	static final Integer DEV = 0;
 	static final Integer LIVE = 1;
-	static Integer status = LIVE;
+	static Integer status = DEV;
 	
 	
 	public static Socket socket;
@@ -251,7 +251,7 @@ public class Klienten {
 		String[] users = sendTilServer(toServer).split(" ");
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(int i=2;i<users.length;i+=3){
-			String email = users[i];
+			String email = users[i-2];
 			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
 				Bruker user = new Bruker(users[i-1]+" "+users[i],users[i-2],0);
 				allUsers.add(user);
@@ -295,12 +295,9 @@ public class Klienten {
 		if (brukere.containsKey(email)) {
 			return brukere.get(email).getNavn();
 		}
-		else if (brukere.isEmpty()) {
+		else {
 			String toServer = "GET USERFULLNAME " + email;
 			return sendTilServer(toServer);
-		}
-		else {
-			return "no Name";
 		}
 	}
 
@@ -319,7 +316,6 @@ public class Klienten {
         
         String passw = sb.toString();
 		
-		System.out.println(passw);
 		
 		String toServer = "CREATE USER " + email + " " + fornavn + " " + etternavn + " " + passw;
 		sendTilServer(toServer);
@@ -508,6 +504,9 @@ public class Klienten {
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
 			if (email.trim().equals("0") || email.trim().length() > 2) {
+				if(brukere.get(email.trim()) == null){
+					brukere.put(email.trim(), new Bruker(getBruker(email.trim()),email.trim(), 0));
+				}
 				allUsers.add(brukere.get(email.trim()));
 			}
 		}
@@ -516,10 +515,14 @@ public class Klienten {
 	
 	public static ArrayList<Bruker> getAllNonAdmins() throws IOException {
 		String toServer = "GET NORMALUSERS";
-		String[] users = sendTilServer(toServer).split(" ");
+		String response = sendTilServer(toServer);
+		String[] users = response.split(" ");
 		ArrayList<Bruker> allUsers = new ArrayList<Bruker>();
 		for(String email : users){
 			if (email.trim().equals("q") || email.trim().equals("0") || email.trim().equals("1") || email.trim().equals("2") || email.trim().equals("3") || email.trim().length() > 2) {
+				if(brukere.get(email.trim()) == null){
+					brukere.put(email.trim(), new Bruker(getBruker(email.trim()),email.trim(), 0));
+				}
 				allUsers.add(brukere.get(email.trim()));
 			}
 		}
