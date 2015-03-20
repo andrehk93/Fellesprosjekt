@@ -61,8 +61,16 @@ public class Rediger_brukerController {
 			}
 			
 		};
+		ChangeListener<Bruker> currentAdminValg = new ChangeListener<Bruker>(){
+			@Override
+			public void changed(ObservableValue<? extends Bruker> arg0,
+					Bruker arg1, Bruker arg2){
+				arg2.setRights(1);
+				valg = arg2;
+			}
+		};
 		eksisterendeBrukere.getSelectionModel().selectedItemProperty().addListener(currentValg);
-		eksisterendeAdministratorer.getSelectionModel().selectedItemProperty().addListener(currentValg);
+		eksisterendeAdministratorer.getSelectionModel().selectedItemProperty().addListener(currentAdminValg);
 		ChangeListener<Bruker> currentFjern = new ChangeListener<Bruker>() {
 
 			@Override
@@ -78,6 +86,19 @@ public class Rediger_brukerController {
 			        @Override
 			        public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
 						toggleBtns();
+						if(!showBtns){
+							for(Bruker bruker : slettBrukere){
+								brukere.add(bruker);
+							}
+							items = FXCollections.observableList(brukere);
+							eksisterendeBrukere.setItems(items);
+						} else {
+							for(Bruker bruker : slettBrukere){
+								admins.add(bruker);
+							}
+							adminItems = FXCollections.observableList(admins);
+							eksisterendeAdministratorer.setItems(adminItems);
+						}
 						slettBrukere.clear();
 						slettItems = FXCollections.observableList(slettBrukere);
 						slettListe.setItems(slettItems);
@@ -101,15 +122,33 @@ public class Rediger_brukerController {
 			slettBrukere.add(valg);
 			slettItems = FXCollections.observableList(slettBrukere);
 			slettListe.setItems(slettItems);
+			brukere.remove(valg);
+			admins.remove(valg);
+			items = FXCollections.observableList(brukere);
+			adminItems = FXCollections.observableList(admins);
+			eksisterendeBrukere.setItems(items);
+			eksisterendeAdministratorer.setItems(adminItems);
+			valg = null;
 		}
 	}
 	
 	@FXML
 	private void fjernBruker(ActionEvent event) {
 		if (fjernValg != null) {
+			System.out.println(fjernValg.getRights());
 			slettBrukere.remove(fjernValg);
+			if(!showBtns){
+				admins.add(fjernValg);
+				adminItems = FXCollections.observableList(admins);
+				eksisterendeAdministratorer.setItems(adminItems);
+			} else {
+				brukere.add(fjernValg);
+				items = FXCollections.observableList(brukere);
+				eksisterendeBrukere.setItems(items);
+			}
 			slettItems = FXCollections.observableList(slettBrukere);
 			slettListe.setItems(slettItems);
+			fjernValg = null;
 		}
 	}
 	
