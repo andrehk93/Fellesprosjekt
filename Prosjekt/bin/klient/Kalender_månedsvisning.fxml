@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.KalenderController">
+<AnchorPane prefHeight="650.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klient.KalenderController">
 
 	<!-- KALENDER TITTEL -->
 	<children>
@@ -122,7 +122,7 @@
 								<Font size="15.0" />
 							</font>
 						</Text>
-						<ListView fx:id="notifikasjoner" prefHeight="211.0" prefWidth="169.0" />
+						<ListView fx:id="notifikasjoner" prefHeight="150.0" prefWidth="169.0" />
 					</children>
 					<children>
 						<ChoiceBox fx:id="filtrering" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="150.0" styleClass="label-calenderdays">

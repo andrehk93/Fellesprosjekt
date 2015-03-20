@@ -29,6 +29,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class DagsvisningController {
 	
@@ -103,7 +104,7 @@ public class DagsvisningController {
 		else{
 			box.setFill(Color.BLUE);
 		}
-		Text text = new Text(app.getAvtaleid());
+		Text text = new Text(app.getAvtaleNavn());
 	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
 	    text.setFill(Color.WHITE);
 	    text.setStroke(Color.WHITE); 
@@ -379,6 +380,13 @@ public class DagsvisningController {
 	@FXML
 	private void nextPaneLogOut(ActionEvent event) {
 		ScreenNavigator.loadScreen(ScreenNavigator.INNLOGGING);
+	}
+	
+	@FXML
+	public void extraCal(ActionEvent event) throws IOException{
+		Klienten.setDest("/klient/extraPopup.fxml");
+		Popup pop = new Popup();
+		pop.start(new Stage());
 	}
 	
 	@FXML

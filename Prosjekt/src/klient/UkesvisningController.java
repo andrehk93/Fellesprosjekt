@@ -240,10 +240,11 @@ public class UkesvisningController {
 		else{
 			box.setFill(Color.BLUE);
 		}
-		Text text = new Text(app.getAvtaleid());
-	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
+		Text text = new Text(app.getAvtaleNavn());
+	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 14));
 	    text.setFill(Color.WHITE);
 	    text.setStroke(Color.WHITE); 
+	    text.setWrappingWidth(95);
 	    setUpBox(box,app);
 		stack.getChildren().addAll(box,text);
 		stack.setMinSize(0, 0);
