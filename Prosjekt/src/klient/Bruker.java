@@ -78,7 +78,7 @@ public class Bruker {
 		return avtaleListeProperty.getValue();
 	}
 	
-	public Number getRighs(){
+	public Number getRights(){
 		return rightsProperty.getValue();
 	}
 	

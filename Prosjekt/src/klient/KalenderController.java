@@ -60,7 +60,7 @@ public class KalenderController {
 		setUpFiltrering();
 		makeGroups();
 		flushView();
-		brukerredigering.setVisible(Klienten.bruker.getRighs().intValue()>0);
+		brukerredigering.setVisible(Klienten.bruker.getRights().intValue()>0);
 	}
 
 	public void flushView() throws Exception{
