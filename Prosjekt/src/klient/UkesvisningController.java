@@ -240,7 +240,7 @@ public class UkesvisningController {
 		else{
 			box.setFill(Color.BLUE);
 		}
-		Text text = new Text(app.getAvtaleid());
+		Text text = new Text(app.getAvtaleNavn());
 	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
 	    text.setFill(Color.WHITE);
 	    text.setStroke(Color.WHITE); 

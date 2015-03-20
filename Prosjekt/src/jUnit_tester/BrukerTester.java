@@ -22,7 +22,7 @@ public class BrukerTester {
 		bruker.setRights(1);
 		assertEquals("ahk9339@gmail.com", bruker.getEmail());
 		assertEquals("Andreas", bruker.getNavn());
-		assertEquals(1, bruker.getRighs());
+		assertEquals(1, bruker.getRights());
 		assertEquals(null, bruker.getAvtaler());
 		Avtale avt = new Avtale();
 		bruker.addAvtale(avt);
