@@ -14,7 +14,7 @@ public class Popup extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		this.primaryStage = primaryStage;
+		Popup.primaryStage = primaryStage;
 		primaryStage.setMinHeight(350);
 		primaryStage.setMinWidth(500);
 		primaryStage.setMaxHeight(350);

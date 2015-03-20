@@ -31,7 +31,6 @@ public class InnloggingController {//implements Initializable
 	public Socket socket;
 	public DataOutputStream outToServer;
 	public BufferedReader inFromServer;
-	private static String modifiedSentence;
 
 	public void initialize() {
 	}

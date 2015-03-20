@@ -68,7 +68,6 @@ public class ny_avtale_controller {
 	
 	//LEDIGE BRUKERE OG GRUPPER
 	private String[] ledigeBrukerEmailer;
-    private String[] ledigeGrupperId;
 	
 	//LISTENER TIL LISTVIEW SINE GJELDENDE VALG (MULIG IKKE FUNGERER)
 	private Bruker valg;
@@ -215,7 +214,6 @@ public class ny_avtale_controller {
 			}
 		}
 		
-		ledigeGrupperId = Klienten.getGroups().split(" ");
 		
 		//LEGGER GRUPPER TIL I GRUPPE_COMBOBOX
 		lagGrupper();

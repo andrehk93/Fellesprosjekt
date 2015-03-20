@@ -1,7 +1,6 @@
 package klient;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
@@ -42,11 +41,9 @@ public class DagsvisningController {
 	
 	private String[] notifikasjonene;
 	private boolean ingenInvitasjoner;
-	private DayOfWeek weekday;
 	private List<String> list;
 	private ArrayList<Varsel> oppdelte_notifikasjoner;
 	private ObservableList<String> items;
-	private String[] avtaleListe;
 	private ArrayList<StackPane> bokser;
 	private Dag dagen;
 	private int weekNumber;
@@ -65,7 +62,6 @@ public class DagsvisningController {
 	}
 	
 	private void loadStuff() throws Exception {
-		weekday = dagen.getDato().getDayOfWeek();
 		weekNumber = dagen.getDato().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 		ukenrTekst.setText(String.valueOf(weekNumber));
 		aarTekst.setText(String.valueOf(dagen.getDato().getYear()));

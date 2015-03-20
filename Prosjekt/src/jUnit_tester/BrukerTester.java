@@ -28,7 +28,7 @@ public class BrukerTester {
 		bruker.addAvtale(avt);
 		assertEquals(avt, bruker.getAvtaler().get(0));
 		bruker.removeAvtale(avt);
-		assertEquals(new ArrayList(), bruker.getAvtaler());
+		assertEquals(new ArrayList<Avtale>(), bruker.getAvtaler());
 	}
 
 }

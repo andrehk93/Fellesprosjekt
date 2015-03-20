@@ -3,7 +3,6 @@ package klient;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -30,9 +28,7 @@ public class grupper_controller {
 	private Gruppe currentChanging;
 	private Gruppe gruppe;
 	private String søk;
-	private Scene scene;
 	private String gruppeNavn;
-    public void setScene(Scene scene) { this.scene = scene; }
     
     @FXML
     TextField gruppenavn, brukersøk;

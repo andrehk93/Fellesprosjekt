@@ -2,8 +2,6 @@ package klient;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,7 +15,6 @@ import javafx.scene.control.TextField;
 
 public class OpprettingController {
 
-	private String fornavnText;
     @FXML private TextField fornavn, etternavn, epost;
     @FXML private Label fornavn_lbl, etternavn_lbl, epost_lbl,passord_lbl, passord2_lbl;
     @FXML private PasswordField passord, passord2;
