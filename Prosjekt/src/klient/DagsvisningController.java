@@ -1,7 +1,6 @@
 package klient;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
@@ -42,11 +41,9 @@ public class DagsvisningController {
 	
 	private String[] notifikasjonene;
 	private boolean ingenInvitasjoner;
-	private DayOfWeek weekday;
 	private List<String> list;
 	private ArrayList<Varsel> oppdelte_notifikasjoner;
 	private ObservableList<String> items;
-	private String[] avtaleListe;
 	private ArrayList<StackPane> bokser;
 	private Dag dagen;
 	private int weekNumber;
@@ -65,7 +62,6 @@ public class DagsvisningController {
 	}
 	
 	private void loadStuff() throws Exception {
-		weekday = dagen.getDato().getDayOfWeek();
 		weekNumber = dagen.getDato().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 		ukenrTekst.setText(String.valueOf(weekNumber));
 		aarTekst.setText(String.valueOf(dagen.getDato().getYear()));
@@ -108,7 +104,7 @@ public class DagsvisningController {
 	    text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 18));
 	    text.setFill(Color.WHITE);
 	    text.setStroke(Color.WHITE); 
-	    setUpBox(box,app);
+	    setUpBox(box,app, text);
 		stack.getChildren().addAll(box,text);
 		stack.setMinSize(0, 0);
 		StackPane.setAlignment(box, Pos.TOP_LEFT);
@@ -121,7 +117,7 @@ public class DagsvisningController {
 		
 	}
 	
-	private void setUpBox(Rectangle box, Avtale app) {
+	private void setUpBox(Rectangle box, Avtale app, Text text) {
 		box.setOnMouseEntered(new EventHandler<Event>() {
 		    public void handle(Event event) {
 		    	if(app.getStranger()){
@@ -154,6 +150,42 @@ public class DagsvisningController {
 					}
 					catch (NullPointerException e) {
 					}
+					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
+				}
+				else{
+					ScreenNavigator.loadScreen(ScreenNavigator.SE_AVTALE);
+				}
+			}
+		});
+		
+		text.setOnMouseEntered(new EventHandler<Event>() {
+		    public void handle(Event event) {
+		    	if(app.getStranger()){
+					box.setFill(Color.PINK);
+				}
+				else{
+					box.setFill(Color.LIGHTBLUE);
+				}
+		    }
+		});
+		
+		text.setOnMouseExited(new EventHandler<Event>() {
+			public void handle(Event event) {
+				if(app.getStranger()){
+					box.setFill(Color.RED);
+				}
+				else{
+					box.setFill(Color.BLUE);
+				}
+			}
+		});
+		
+		text.setOnMouseClicked(new EventHandler<Event>() {
+			public void handle(Event event) {
+				String avtale = app.getAvtaleid();
+				Klienten.setValgtAvtale(avtale);
+				if(app.getEier().getEmail().equals(Klienten.bruker.getEmail())){
+					
 					ScreenNavigator.loadScreen(ScreenNavigator.ENDRE_AVTALE);
 				}
 				else{

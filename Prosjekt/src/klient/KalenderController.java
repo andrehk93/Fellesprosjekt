@@ -324,7 +324,7 @@ public class KalenderController {
 		for(int j=firstDiM;j<7;j++){
 			Label label = new Label(dager.get(t).getDayinMonth());
 			ruter.add(label, j, 0);
-			ruter.setValignment(label, VPos.TOP);
+			GridPane.setValignment(label, VPos.TOP);
 			setTexts(j,0,t);
 			t++;
 		}
@@ -332,7 +332,7 @@ public class KalenderController {
 			for(int j=0;j<7;j++){
 				Label label = new Label(dager.get(t).getDayinMonth());
 				ruter.add(label, j, i);
-				ruter.setValignment(label, VPos.TOP);
+				GridPane.setValignment(label, VPos.TOP);
 				setTexts(j,i,t);
 				t++;
 				if(t>=lengde){

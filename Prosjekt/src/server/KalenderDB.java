@@ -16,7 +16,7 @@ import server.db.User;
 public class KalenderDB {
 	final Integer DEV = 0;
 	final Integer LIVE = 1;
-	Integer status = DEV;
+	Integer status = LIVE;
 	
 	String driver = "com.mysql.jdbc.Driver";
 	String url, user, password;
