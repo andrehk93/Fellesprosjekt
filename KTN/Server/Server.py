@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 import SocketServer
+import json
+import time
 
+
+users = []
+all_messages = []
 
 class ClientHandler(SocketServer.BaseRequestHandler):
     """
@@ -9,6 +14,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
     only connected clients, and not the server itself. If you want to write
     logic for the server, you must write it outside this class
     """
+    sentMsgs = 0
+    loggedin = False
 
     def handle(self):
         """
@@ -17,12 +24,52 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         self.ip = self.client_address[0]
         self.port = self.client_address[1]
         self.connection = self.request
+        self.recieved_string = ""
+
+        print "Client connected at " + self.ip + ":" + str(self.port)
 
         # Loop that listens for messages from the client
         while True:
-            received_string = self.connection.recv(4096)
-            
-            # TODO: Add handling of received payload from client
+            self.received_string = self.connection.recv(4096).strip()
+            print self.received_string
+            self.process(self.received_string)
+
+    def login(self, username):
+        global users
+        if(not username in users):
+            users.append(username)
+            self.send({"response" : "login", "username" : username})
+            self.loggedin = True
+            self.broadcast(username + " joined the chat")
+            self.send_updates()
+        else:
+            self.send({"response" : "login", "error": "Username already taken"})
+
+    def send(self, data):
+        self.request.sendall(json.dumps(data))
+
+    def broadcast(self, msg):
+        all_messages.append(msg)
+
+    def send_updates(self):
+        while True:
+            if self.sentMsgs < len(all_messages) and self.loggedin:
+                #couldnt send a list directly, will fix with json later
+                for x in range(self.sentMsgs, len(all_messages)):
+                    self.send({"response":"message", "message":all_messages[x]})
+                    print all_messages[x]
+                    self.sentMsgs += 1
+            #Have to sleep it, else it will try to drain the cpu
+            time.sleep(0.2) #0.2 seconds
+
+    def process(self, data):
+        msg = json.loads(data)
+
+        if(msg["request"] == "login"):
+            self.login(msg["username"])
+        elif(msg["request"] == "message"):
+            print("messaaaaaaaaage")
+            self.broadcast(msg["username"] + ": " + msg["message"])
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):

@@ -56,8 +56,8 @@ class Client:
         msg = json.loads(data)
 
         if(msg['response'] == "login"):
-            if(msg['username']):
-                self.loggedin = msg['username']
+            if(msg["username"]):
+                self.loggedin = msg["username"]
             else:
                 print msg['error']
         elif(msg['response'] == 'message'):
