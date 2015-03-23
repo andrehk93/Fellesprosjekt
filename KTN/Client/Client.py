@@ -6,64 +6,58 @@ class Client:
     """
     This is the chat client class
     """
-    
     def __init__(self, host, server_port):
         """
         This method is run when creating a new Client object
         """
-        self.loggedin = False;
         input = ""
-        response = ""
         self.host = host
         self.server_port = server_port
         # Set up the socket connection to the server
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        messRec = MessageReceiver(self, self.connection)
+        self.messRec = MessageReceiver(self, self.connection)
         self.run()
-        messRec.start()
-        while not self.loggedin:
-            username = raw_input("Username: ")
-            self.login(username)
-            time.sleep(2.0)
-            string = username
-
-        self.username = string
-        
-        while input[0:7] != "/logout":
-            input = raw_input("")
-            self.sendMessage(input)
 
     def run(self):
         # Initiate the connection to the server
         print "Connecting to " + self.host + ":" + str(self.server_port)
         self.connection.connect((self.host, self.server_port))
+        self.messRec.start()
+        while True:
+            input = raw_input("")
+            self.send_payload(input)
         
 
     def disconnect(self):
         self.disconnect
         pass
 
-    def login(self, username):
-        message = {"request" : "login", "username": username}
-        self.send_payload(json.dumps(message))
-
-    def sendMessage(self, msg):
-        message = {"request" : "message", "message" : msg, "username" : self.username }
-        self.send_payload(json.dumps(message))
-
-    def send_payload(self, data):
-        self.connection.sendall(data)
+    def send_payload(self, input):
+        data = input.split()
+        request = data[0]
+        content = ' '.join(data[1:])
+        payload = {"request" : request, "content" : content}
+        self.connection.sendall(json.dumps(payload))
 
     def process(self, data):
         msg = json.loads(data)
+        timestamp = msg["timestamp"]
+        sender = msg["sender"]
+        response = msg["response"]
+        content = msg["content"]
 
-        if(msg["response"] == "login"):
-            if(msg["username"]):
-                self.loggedin = True
-            else:
-                print msg['error']
-        elif(msg["response"] == "message"):
-            print msg["message"]
+        if(response == "info"):
+            print "INFO: "+content
+        elif(response == "message"):
+            print sender+": "+content
+        elif(response == "error"):
+            print "<"+timestamp+">ERROR: "+content
+        elif(response == "history"):
+            if(content == "start"):
+                print "===============HISTORY==============="
+            elif(content == "stop"):
+                print "====================================="
+
                 
 
 
@@ -74,4 +68,4 @@ if __name__ == '__main__':
 
     No alterations is necessary
     """
-    client = Client('78.91.30.205', 9998)
+    client = Client('localhost', 9998)

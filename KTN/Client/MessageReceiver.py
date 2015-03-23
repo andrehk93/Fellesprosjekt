@@ -22,5 +22,5 @@ class MessageReceiver(Thread):
 
     def run(self):
         while True:
-            recieved_str = self.connection.recv(1024).strip()
+            recieved_str = self.connection.recv(4096).strip()
             self.client.process(recieved_str)
