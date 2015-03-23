@@ -38,23 +38,23 @@ class MessageReceiver(Thread):
         self.connection.sendall(json.dumps(message))
 
     def login(self, username):
-        message = {'request' : 'login', 'username': username}
+        message = {"request" : "login", "username": username}
         self.client.send_payload(json.dumps(message))
 
     def process(self, data):
         msg = json.loads(data)
 
-        if(msg['response'] == "login"):
-            if(msg['username']):
+        if(msg["response"] == "login"):
+            if(msg["username"]):
                 self.loggedin = msg['username']
             else:
                 print msg['error']
-        elif(msg['response'] == 'message'):
-            print msg['message']     
+        elif(msg["response"] == "message"):
+            print msg["message"]     
 
     def receive_message(self):
         pass
 
     def sendMessage(self, msg):
-        message = {'request' : 'message', 'message' : msg, 'username' : self.loggedin }
+        message = {"request" : "message", "message" : msg, "username" : self.loggedin }
         self.client.send_payload(json.dumps(message))

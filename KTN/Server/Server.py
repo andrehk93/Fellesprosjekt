@@ -31,8 +31,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         # Loop that listens for messages from the client
         while True:
             self.received_string = self.connection.recv(4096).strip()
-            print self.received_string
             self.process(self.received_string)
+
 
     def login(self, username):
         global users
@@ -46,21 +46,19 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.send({"response" : "login", "error": "Username already taken"})
 
     def send(self, data):
-        self.request.sendall(json.dumps(data))
+        self.connection.sendall(json.dumps(data))
 
     def broadcast(self, msg):
         all_messages.append(msg)
 
     def send_updates(self):
-        while True:
-            if self.sentMsgs < len(all_messages) and self.loggedin:
-                #couldnt send a list directly, will fix with json later
-                for x in range(self.sentMsgs, len(all_messages)):
-                    self.send({"response":"message", "message":all_messages[x]})
-                    print all_messages[x]
-                    self.sentMsgs += 1
+        if self.loggedin:
+            #couldnt send a list directly, will fix with json later
+            for x in all_messages:
+                self.send({"response" : "message", "message" : x})
+                print x
+                all_messages.pop(0)
             #Have to sleep it, else it will try to drain the cpu
-            time.sleep(0.2) #0.2 seconds
 
     def process(self, data):
         msg = json.loads(data)
@@ -68,8 +66,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         if(msg["request"] == "login"):
             self.login(msg["username"])
         elif(msg["request"] == "message"):
-            print("messaaaaaaaaage")
             self.broadcast(msg["username"] + ": " + msg["message"])
+            self.send_updates()
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
@@ -88,7 +86,7 @@ if __name__ == "__main__":
 
     No alterations is necessary
     """
-    HOST, PORT = 'localhost', 9998
+    HOST, PORT = "78.91.30.205", 9998
     print 'Server running...'
 
     # Set up and initiate the TCP server
