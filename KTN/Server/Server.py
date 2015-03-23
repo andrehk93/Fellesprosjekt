@@ -6,6 +6,8 @@ import time
 
 users = []
 all_messages = []
+clienthandlers = []
+
 
 class ClientHandler(SocketServer.BaseRequestHandler):
     """
@@ -21,6 +23,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         """
         This method handles the connection between a client and the server.
         """
+        clienthandlers.append(self)
         self.ip = self.client_address[0]
         self.port = self.client_address[1]
         self.connection = self.request
@@ -46,6 +49,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.send({"response" : "login", "error": "Username already taken"})
 
     def send(self, data):
+        print ("send data", data)
         self.connection.sendall(json.dumps(data))
 
     def broadcast(self, msg):
@@ -53,12 +57,10 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
     def send_updates(self):
         if self.loggedin:
-            #couldnt send a list directly, will fix with json later
             for x in all_messages:
                 self.send({"response" : "message", "message" : x})
                 print x
                 all_messages.pop(0)
-            #Have to sleep it, else it will try to drain the cpu
 
     def process(self, data):
         msg = json.loads(data)
@@ -66,8 +68,10 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         if(msg["request"] == "login"):
             self.login(msg["username"])
         elif(msg["request"] == "message"):
-            self.broadcast(msg["username"] + ": " + msg["message"])
+            mes = msg["username"] + ": " + msg["message"]
+            self.broadcast(mes)
             self.send_updates()
+            allhand.handleUpdates(mes, self)
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
@@ -79,6 +83,14 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     """
     allow_reuse_address = True
 
+class allTheHandlers():
+
+    def handleUpdates(self, message, clienthandler):
+        for ch in clienthandlers:
+            if (ch is not clienthandler):
+                ch.broadcast(message)
+                ch.send_updates()
+
 if __name__ == "__main__":
     """
     This is the main method and is executed when you type "python Server.py"
@@ -86,9 +98,18 @@ if __name__ == "__main__":
 
     No alterations is necessary
     """
+
+    global allhand
+    allhand = allTheHandlers()
+
     HOST, PORT = "78.91.30.205", 9998
     print 'Server running...'
-
+    ch = ClientHandler
     # Set up and initiate the TCP server
-    server = ThreadedTCPServer((HOST, PORT), ClientHandler)
+    server = ThreadedTCPServer((HOST, PORT), ch)
     server.serve_forever()
+
+
+
+
+

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from threading import Thread
 import json
+import time
 
 class MessageReceiver(Thread):
     """
@@ -30,30 +31,32 @@ class MessageReceiver(Thread):
 
         
         while input[0:7] != "/logout":
+            time.sleep(1.5)
             input = raw_input("> ")
             self.sendMessage(input)
             self.process(self.connection.recv(1024).strip())
-
-    def send(self, message):
-        self.connection.sendall(json.dumps(message))
 
     def login(self, username):
         message = {"request" : "login", "username": username}
         self.client.send_payload(json.dumps(message))
 
     def process(self, data):
-        msg = json.loads(data)
-
-        if(msg["response"] == "login"):
-            if(msg["username"]):
-                self.loggedin = msg['username']
+        print "mottar: ", data
+        string = ""
+        for x in data:
+            if (x != "}"):
+                string += x
             else:
-                print msg['error']
-        elif(msg["response"] == "message"):
-            print msg["message"]     
-
-    def receive_message(self):
-        pass
+                string += x
+                msg = json.loads(string)
+                if(msg["response"] == "login"):
+                    if(msg["username"]):
+                        self.loggedin = msg['username']
+                    else:
+                        print msg['error']
+                elif(msg["response"] == "message"):
+                    print msg["message"]
+                string = ""
 
     def sendMessage(self, msg):
         message = {"request" : "message", "message" : msg, "username" : self.loggedin }
