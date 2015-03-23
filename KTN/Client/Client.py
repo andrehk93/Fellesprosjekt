@@ -6,12 +6,12 @@ class Client:
     """
     This is the chat client class
     """
-    loggedin = False;
+    
     def __init__(self, host, server_port):
         """
         This method is run when creating a new Client object
         """
-
+        self.loggedin = False;
         input = ""
         response = ""
         self.host = host
@@ -24,16 +24,20 @@ class Client:
         while not self.loggedin:
             username = raw_input("Username: ")
             self.login(username)
+            time.sleep(2.0)
+            string = username
 
+        self.username = string
         
         while input[0:7] != "/logout":
-            input = raw_input("> ")
+            input = raw_input("")
             self.sendMessage(input)
 
     def run(self):
         # Initiate the connection to the server
         print "Connecting to " + self.host + ":" + str(self.server_port)
         self.connection.connect((self.host, self.server_port))
+        
 
     def disconnect(self):
         self.disconnect
@@ -44,29 +48,23 @@ class Client:
         self.send_payload(json.dumps(message))
 
     def sendMessage(self, msg):
-        message = {"request" : "message", "message" : msg, "username" : self.loggedin }
+        message = {"request" : "message", "message" : msg, "username" : self.username }
         self.send_payload(json.dumps(message))
 
     def send_payload(self, data):
         self.connection.sendall(data)
 
     def process(self, data):
-        print "mottar: ", data
-        string = ""
-        for x in data:
-            if (x != "}"):
-                string += x
+        msg = json.loads(data)
+
+        if(msg["response"] == "login"):
+            if(msg["username"]):
+                self.loggedin = True
             else:
-                string += x
-                msg = json.loads(string)
-                if(msg["response"] == "login"):
-                    if(msg["username"]):
-                        self.loggedin = msg['username']
-                    else:
-                        print msg['error']
-                elif(msg["response"] == "message"):
-                    print msg["message"]
-                string = ""
+                print msg['error']
+        elif(msg["response"] == "message"):
+            print msg["message"]
+                
 
 
 if __name__ == '__main__':
