@@ -39,7 +39,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
     def login(self, username):
         global users
-        if(not username in users):
+        if(not username in users) and not self.loggedin:
             users.append(username)
             self.send({"response" : "login", "username" : username})
             self.loggedin = True
@@ -65,7 +65,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
     def process(self, data):
         msg = json.loads(data)
 
-        if(msg["request"] == "login"):
+        if(msg["request"] == "login" and not self.loggedin):
             self.login(msg["username"])
         elif(msg["request"] == "message"):
             mes = msg["username"] + ": " + msg["message"]
