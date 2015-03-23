@@ -8,6 +8,26 @@ users = []
 history = []
 clienthandlers = []
 
+offlineHelp ="""
+===========================HELP===========================
+login <username> - Log in with a username of your choosing
+                   to begin chatting.\n
+help             - View the help text.\n
+MARK: Log in for more options.
+=========================================================="""
+
+onlineHelp = """
+===========================HELP===========================
+login <username> - Log in with a username of your choosing
+                   to begin chatting.\n
+msg <message>    - Send a message to the other people in
+                   the chat room.\n
+names            - Get the names of the people in this chat
+                   room.\n
+logout           - Log out of the chat room.\n
+help             - View the help text
+=========================================================="""
+
 class ClientHandler(SocketServer.BaseRequestHandler):
     """
     This is the ClientHandler class. Everytime a new client connects to the
@@ -15,14 +35,12 @@ class ClientHandler(SocketServer.BaseRequestHandler):
     only connected clients, and not the server itself. If you want to write
     logic for the server, you must write it outside this class
     """
-    sentMsgs = 0
     loggedin = False 
 
     def handle(self):
         """
         This method handles the connection between a client and the server.
         """
-        clienthandlers.append(self)
         self.ip = self.client_address[0]
         self.port = self.client_address[1]
         self.connection = self.request
@@ -38,7 +56,6 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.process(self.received_string)
 
     def send(self, data):
-        print "send data", data
         self.connection.sendall(json.dumps(data))
 
     def handleUpdates(self, message):
@@ -63,42 +80,67 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.logout()
         elif(request == "msg"):
             self.msg(content)
+        elif(request == "names"):
+            self.names()
+        elif(request == "help"):
+            self.help()
         else:
             self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Invalid input"})
 
     def login(self, username):
-        if(not username in users) and not self.loggedin:
+        if(not username in users) or not self.loggedin:
             self.ownusername = username
             users.append(self.ownusername)
             self.loggedin = True
+            clienthandlers.append(self)
             self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "info", "content": "Logged in as "+self.ownusername})
             self.handleUpdates({"timestamp" : datetime.now().__str__()[0:19], "sender" : self.ownusername, "response" : "info", "content": self.ownusername + " joined the chat"})
             if(history):
                 self.history()
+        elif(self.loggedin):
+            self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Already logged in"})
         elif (username in users):
             self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Username already taken"})
-        else:
-            self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Already logged in"})
 
     def logout(self):
         if(self.loggedin):
-            users.pop(self.ownusername)
+            users.remove(self.ownusername)
+            clienthandlers.remove(self)
             self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "info", "content": "Logged out"})
             self.handleUpdates({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "info", "content": self.ownusername + " left the chat"})
         else:
             self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Already logged out"})
-
+        self.loggedin = False
 
     def msg(self, message):
-        mes = {"timestamp" : datetime.now().__str__()[0:19], "sender" : self.ownusername, "response" : "message", "content": message}
-        history.append(mes)
-        self.handleUpdates(mes)
+        if(self.loggedin):
+            mes = {"timestamp" : datetime.now().__str__()[0:19], "sender" : self.ownusername, "response" : "message", "content": message}
+            history.append(mes)
+            self.handleUpdates(mes)
+        else:
+            self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Log in to send messages."})
 
     def history(self):
         self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "history", "content": "start"})
         for message in history:
             self.send(message)
         self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "history", "content": "stop"})
+
+    def names(self):
+        if(self.loggedin):
+            info = "\n========USERS========\n"
+            for user in users:
+                info += user+"\n"
+            info += "====================="
+            self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "info", "content": info})
+        else:
+            self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Log in to see users."})
+
+    def help(self):
+        if(self.loggedin):
+            self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "info", "content": onlineHelp})
+        else:
+            self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "info", "content": offlineHelp})
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
@@ -124,7 +166,6 @@ if __name__ == "__main__":
     # Set up and initiate the TCP server
     server = ThreadedTCPServer((HOST, PORT), ch)
     server.serve_forever()
-
 
 
 
