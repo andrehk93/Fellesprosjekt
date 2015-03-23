@@ -48,7 +48,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         if(msg['request'] == "login"):
             self.login(msg['username'])
         elif(msg['request'] == "message"):
-            broadcast(msg['username'] + ": " + msg['message'])
+            print("messaaaaaaaaage")
+            self.broadcast(msg['username'] + ": " + msg['message'])
 
     def login(self, username):
         global users
