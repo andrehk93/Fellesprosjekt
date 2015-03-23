@@ -21,43 +21,6 @@ class MessageReceiver(Thread):
         self.deamon = True
 
     def run(self):
-        input = ""
-        response = ""
-
-        while not self.loggedin:
-            username = raw_input("Username: ")
-            self.login(username)
-            self.process(self.connection.recv(1024).strip())
-
-        
-        while input[0:7] != "/logout":
-            time.sleep(1.5)
-            input = raw_input("> ")
-            self.sendMessage(input)
-            self.process(self.connection.recv(1024).strip())
-
-    def login(self, username):
-        message = {"request" : "login", "username": username}
-        self.client.send_payload(json.dumps(message))
-
-    def process(self, data):
-        print "mottar: ", data
-        string = ""
-        for x in data:
-            if (x != "}"):
-                string += x
-            else:
-                string += x
-                msg = json.loads(string)
-                if(msg["response"] == "login"):
-                    if(msg["username"]):
-                        self.loggedin = msg['username']
-                    else:
-                        print msg['error']
-                elif(msg["response"] == "message"):
-                    print msg["message"]
-                string = ""
-
-    def sendMessage(self, msg):
-        message = {"request" : "message", "message" : msg, "username" : self.loggedin }
-        self.client.send_payload(json.dumps(message))
+        while True:
+            recieved_str = self.connection.recv(1024).strip()
+            self.client.process(recieved_str)
