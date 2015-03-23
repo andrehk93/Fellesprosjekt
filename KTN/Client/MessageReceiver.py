@@ -20,6 +20,14 @@ class MessageReceiver(Thread):
         # Flag to run thread as a deamon
         self.deamon = True
 
+    def connect(self):
+        while True:
+            self.process(self.connection.recv(1024).strip())
+
+    thread = threading.Thread(target=connect)
+    thread.daemon = True
+    thread.start()
+
     def run(self):
         input = ""
         response = ""
@@ -29,12 +37,10 @@ class MessageReceiver(Thread):
             self.login(username)
             self.process(self.connection.recv(1024).strip())
 
-        
-        while input[0:7] != "/logout":
-            time.sleep(1.5)
+        while True:
             input = raw_input("> ")
             self.sendMessage(input)
-            self.process(self.connection.recv(1024).strip())
+            
 
     def login(self, username):
         message = {"request" : "login", "username": username}
