@@ -24,14 +24,17 @@ class Client:
         while not self.loggedin:
             username = raw_input("Username: ")
             self.login(username)
-            time.sleep(2.0)
+            time.sleep(1.0)
             string = username
 
         self.username = string
         
         while input[0:7] != "/logout":
-            input = raw_input("")
+            input = raw_input(self.username + ": ")
             self.sendMessage(input)
+            time.sleep(0.2)
+
+        self.disconnect
 
     def run(self):
         # Initiate the connection to the server
@@ -48,7 +51,7 @@ class Client:
         self.send_payload(json.dumps(message))
 
     def sendMessage(self, msg):
-        message = {"request" : "message", "message" : msg, "username" : self.username }
+        message = {"request" : "message", "message" : msg}
         self.send_payload(json.dumps(message))
 
     def send_payload(self, data):
@@ -62,7 +65,7 @@ class Client:
                 self.loggedin = True
             else:
                 print msg['error']
-        elif(msg["response"] == "message"):
+        elif(msg["response"] == "message" and msg["username"] != self.username):
             print msg["message"]
                 
 

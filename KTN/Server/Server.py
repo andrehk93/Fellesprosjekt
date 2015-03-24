@@ -40,6 +40,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
     def login(self, username):
         global users
         if(not username in users) and not self.loggedin:
+            self.username = username
             users.append(username)
             self.send({"response" : "login", "username" : username})
             self.loggedin = True
@@ -49,7 +50,6 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.send({"response" : "login", "error": "Username already taken"})
 
     def send(self, data):
-        print ("send data", data)
         self.connection.sendall(json.dumps(data))
 
     def broadcast(self, msg):
@@ -68,7 +68,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         if(msg["request"] == "login" and not self.loggedin):
             self.login(msg["username"])
         elif(msg["request"] == "message"):
-            mes = msg["username"] + ": " + msg["message"]
+            mes = self.username + ": " + msg["message"]
             self.broadcast(mes)
             self.send_updates()
             allhand.handleUpdates(mes, self)
@@ -90,6 +90,8 @@ class allTheHandlers():
             if (ch is not clienthandler):
                 ch.broadcast(message)
                 ch.send_updates()
+            else:
+                print ("THIS IS THE CH")
 
 if __name__ == "__main__":
     """
