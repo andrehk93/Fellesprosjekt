@@ -36,6 +36,8 @@ class Client:
         data = input.split()
         request = data[0]
         content = ' '.join(data[1:])
+        if(content == ''):
+            content = None
         payload = {"request" : request, "content" : content}
         self.connection.sendall(json.dumps(payload))
 
@@ -68,4 +70,4 @@ if __name__ == '__main__':
 
     No alterations is necessary
     """
-    client = Client('localhost', 9998)
+    client = Client('78.91.47.219', 9998)

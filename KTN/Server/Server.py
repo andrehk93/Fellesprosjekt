@@ -2,6 +2,7 @@
 import SocketServer
 import json
 import time
+import re
 from datetime import datetime
 
 users = []
@@ -18,8 +19,6 @@ MARK: Log in for more options.
 
 onlineHelp = """
 ===========================HELP===========================
-login <username> - Log in with a username of your choosing
-                   to begin chatting.\n
 msg <message>    - Send a message to the other people in
                    the chat room.\n
 names            - Get the names of the people in this chat
@@ -35,7 +34,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
     only connected clients, and not the server itself. If you want to write
     logic for the server, you must write it outside this class
     """
-    loggedin = False 
+    loggedin = False
 
     def handle(self):
         """
@@ -44,7 +43,6 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         self.ip = self.client_address[0]
         self.port = self.client_address[1]
         self.connection = self.request
-        self.recieved_string = ""
         self.ownusername = ""
         self.all_messages = []
 
@@ -52,19 +50,20 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
         # Loop that listens for messages from the client
         while True:
-            self.received_string = self.connection.recv(4096).strip()
-            self.process(self.received_string)
+            received_string = self.connection.recv(4096).strip()
+            self.process(received_string)
 
     def send(self, data):
+        print data
         self.connection.sendall(json.dumps(data))
 
     def handleUpdates(self, message):
         for ch in clienthandlers:
             if (ch is not self):
                 ch.all_messages.append(message)
-                ch.send_updates()
+                ch.prepareUpdates()
 
-    def send_updates(self):
+    def prepareUpdates(self):
         for x in self.all_messages:
             self.send(x)
             self.all_messages.pop(0)
@@ -88,7 +87,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Invalid input"})
 
     def login(self, username):
-        if(not username in users) or not self.loggedin:
+        if(not username in users) and (not self.loggedin) and (re.match('[a-zA-Z0-9]+$',username)):
             self.ownusername = username
             users.append(self.ownusername)
             self.loggedin = True
@@ -97,6 +96,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.handleUpdates({"timestamp" : datetime.now().__str__()[0:19], "sender" : self.ownusername, "response" : "info", "content": self.ownusername + " joined the chat"})
             if(history):
                 self.history()
+        elif(not re.match('[a-zA-Z0-9]+$',username)):
+            self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Username must be alphanumeric"})
         elif(self.loggedin):
             self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "error", "content": "Already logged in"})
         elif (username in users):
@@ -160,7 +161,7 @@ if __name__ == "__main__":
     No alterations is necessary
     """
 
-    HOST, PORT = "localhost", 9998
+    HOST, PORT = "78.91.47.219", 9998
     print 'Server running...'
     ch = ClientHandler
     # Set up and initiate the TCP server
