@@ -124,6 +124,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
     def history(self):
         self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "history", "content": "start"})
         for message in history:
+            message["response"] = "history"
             self.send(message)
         self.send({"timestamp" : datetime.now().__str__()[0:19], "sender" : "Server", "response" : "history", "content": "stop"})
 
@@ -161,7 +162,7 @@ if __name__ == "__main__":
     No alterations is necessary
     """
 
-    HOST, PORT = "78.91.47.219", 9998
+    HOST, PORT = "78.91.47.7", 9998
     print 'Server running...'
     ch = ClientHandler
     # Set up and initiate the TCP server

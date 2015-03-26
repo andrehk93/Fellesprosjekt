@@ -59,6 +59,8 @@ class Client:
                 print "===============HISTORY==============="
             elif(content == "stop"):
                 print "====================================="
+            else:
+                print sender+": "+content
 
                 
 
@@ -70,4 +72,4 @@ if __name__ == '__main__':
 
     No alterations is necessary
     """
-    client = Client('78.91.47.219', 9998)
+    client = Client('78.91.47.7', 9998)
